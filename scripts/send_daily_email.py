@@ -131,8 +131,30 @@ def _latest_prediction_path(prediction_file: str | None = None) -> str:
         if "predictions_t1_" not in os.path.basename(f)
     )
     if not candidates:
-        raise FileNotFoundError("No predictions_YYYY-MM-DD.csv files were found.")
+        raise FileNotFoundError("No predictions_YYYY-MM-DD.csv were found.")
     return candidates[-1]
+
+
+def _latest_t1_prediction_path() -> str | None:
+    candidates = sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_t1_*.csv")))
+    return candidates[-1] if candidates else None
+
+
+def _load_t1_leaderboard(top_n: int = 20) -> tuple[str, pd.DataFrame]:
+    """載入最新 T+1 預測 leaderboard，回傳 (prediction_date, df)."""
+    path = _latest_t1_prediction_path()
+    if path is None:
+        return "", pd.DataFrame()
+    df = pd.read_csv(path)
+    if df.empty:
+        return "", pd.DataFrame()
+    prediction_date = str(df["date"].iloc[0]) if "date" in df.columns else ""
+    selected = df[df.get("selected_for_trade", pd.Series(dtype=bool)) == True].copy()
+    if selected.empty:
+        selected = df.head(top_n).copy()
+    else:
+        selected = selected.head(top_n)
+    return prediction_date, selected.reset_index(drop=True)
 
 
 def _load_leaderboard(prediction_path: str, top_n: int) -> tuple[str, pd.DataFrame, pd.DataFrame]:
@@ -318,6 +340,56 @@ def _render_leaderboard_rows(df: pd.DataFrame) -> str:
     return "\n".join(rows)
 
 
+def _render_t1_rows(df: pd.DataFrame) -> str:
+    rows = []
+    for _, row in df.iterrows():
+        rank = int(row.get("selection_rank", 0)) if pd.notna(row.get("selection_rank")) else "-"
+        ticker = _html_cell(row.get("ticker"))
+        sector = _html_cell(row.get("sector") or "-")
+        close = _fmt_num(row.get("close"), 1)
+        hit_prob = _fmt_pct(float(row.get("hit_prob_3pct", 0)) * 100) if pd.notna(row.get("hit_prob_3pct")) else "-"
+        t1_score = f"{float(row.get('t1_score', 0)):.3f}" if pd.notna(row.get("t1_score")) else "-"
+        recommendation = _html_cell(row.get("recommendation"))
+        setup = _html_cell(row.get("setup_tags") or "-")
+        risk_html = _format_risk_html(row.get("risk_tags"))
+        tp = _fmt_pct(float(row.get("take_profit", 0)) * 100) if pd.notna(row.get("take_profit")) else "-"
+        sl = _fmt_pct(float(row.get("stop_loss", 0)) * -100) if pd.notna(row.get("stop_loss")) else "-"
+        rows.append(
+            """
+            <tr>
+              <td class="col-rank">#{rank}</td>
+              <td class="col-target">
+                <div class="cell-title">{ticker}</div>
+                <div class="cell-sub">{sector} / 收盤 {close}</div>
+                <div class="cell-badges">
+                  <span class="{rec_class}">{recommendation}</span>
+                </div>
+                <div class="cell-sub" style="margin-top:4px;">型態：{setup}</div>
+              </td>
+              <td class="col-return">
+                <div class="cell-title">{hit_prob}</div>
+                <div class="cell-sub">T1分數 {t1_score}</div>
+                <div class="cell-sub">停利 {tp} / 停損 {sl}</div>
+              </td>
+            </tr>
+            """.format(
+                rank=rank,
+                ticker=ticker,
+                sector=sector,
+                close=close,
+                hit_prob=hit_prob,
+                t1_score=t1_score,
+                rec_class=_badge_class(row.get("recommendation"), kind="recommendation"),
+                recommendation=recommendation,
+                setup=setup,
+                risk_html=risk_html,
+                tp=tp,
+                sl=sl,
+            )
+        )
+    return "\n".join(rows)
+
+
 def _render_portfolio_rows(df: pd.DataFrame) -> str:
     rows = []
     for _, row in df.iterrows():
@@ -374,6 +446,8 @@ def build_email_html(
     leaderboard_df: pd.DataFrame,
     portfolio_summary: dict[str, object],
     portfolio_df: pd.DataFrame,
+    t1_date: str = "",
+    t1_df: pd.DataFrame | None = None,
 ) -> str:
     sentiment = _html_cell(all_pred_df["market_sentiment"].iloc[0]) if "market_sentiment" in all_pred_df.columns else "-"
     q25 = (
@@ -449,6 +523,31 @@ def build_email_html(
         if not portfolio_df.empty
         else "<p class='muted'>目前沒有可顯示的帳本部位資料。</p>"
     )
+
+    _t1_df = t1_df if t1_df is not None else pd.DataFrame()
+    t1_section = ""
+    if not _t1_df.empty:
+        t1_count = len(_t1_df)
+        t1_section = f"""
+    <div class="section">
+      <h2>T+1 次日動能排行（{html.escape(t1_date)}）</h2>
+      <div class="muted">短線隔日沖 Top {t1_count}。命中率 = 隔日漲幅 &ge; 3% 的機率。</div>
+      <table class="data-table leaderboard-table">
+        <thead>
+          <tr>
+            <th class="col-rank">名次</th>
+            <th class="col-target">標的 / 推薦 / 型態</th>
+            <th class="col-return">命中率 / 停利停損</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_render_t1_rows(_t1_df)}
+        </tbody>
+      </table>
+    </div>
+"""
+    else:
+        t1_section = ""
 
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"""<!DOCTYPE html>
@@ -771,10 +870,12 @@ def build_email_html(
     </div>
 
     <div class="section">
-      <h2>今日 ML 排行</h2>
+      <h2>今日 ML 排行（20 日）</h2>
       <div class="muted">本封信顯示 Top {top_count}。風險標籤改為每檔下一行整列顯示，避免手機版擠壓跑版。</div>
       {leaderboard_section}
     </div>
+
+    {t1_section}
 
     <div class="section">
       <h2>實戰帳本摘要</h2>
@@ -830,6 +931,7 @@ def send_latest_email(
         db_path=DEFAULT_DB_PATH,
         limit=0,
     )
+    t1_date, t1_df = _load_t1_leaderboard(top_n=20)
 
     html_body = build_email_html(
         prediction_date=prediction_date,
@@ -837,6 +939,8 @@ def send_latest_email(
         leaderboard_df=leaderboard_df,
         portfolio_summary=portfolio_summary,
         portfolio_df=portfolio_df,
+        t1_date=t1_date,
+        t1_df=t1_df,
     )
     preview_target = preview_path or DEFAULT_PREVIEW_PATH
     os.makedirs(os.path.dirname(preview_target), exist_ok=True)
