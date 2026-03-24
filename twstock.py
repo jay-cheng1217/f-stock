@@ -395,6 +395,16 @@ def step2_update_fund_data():
         time.sleep(0.3)
         r2 = _fetch_tpex_fund(d_str)
         time.sleep(0.3)
+        # 近 3 天失敗時重試（避免 5am 排程時 TWSE API 暫時無資料）
+        if "ok" not in (r1, r2) and d >= TODAY - timedelta(days=3):
+            for attempt in range(3):
+                time.sleep(2 ** (attempt + 1))
+                if r1 not in ("ok", "exists"):
+                    r1 = _fetch_twse_fund(d8)
+                if r2 not in ("ok", "exists"):
+                    r2 = _fetch_tpex_fund(d_str)
+                if "ok" in (r1, r2):
+                    break
         if "ok" in (r1, r2):
             ok += 1
         else:
@@ -492,6 +502,16 @@ def step3_update_margin_data():
         tpex_path = os.path.join(RAW_MARGIN_DIR, f"raw_margin_tpex_{ymd}.json")
         r1 = _download_twse_margin(d, twse_path)
         r2 = _download_tpex_margin(d, tpex_path)
+        # 近 3 天失敗時重試（避免 5am 排程時 TWSE API 暫時無資料）
+        if "ok" not in (r1, r2) and d >= TODAY - timedelta(days=3):
+            for attempt in range(3):
+                time.sleep(2 ** (attempt + 1))
+                if r1 not in ("ok", "exists"):
+                    r1 = _download_twse_margin(d, twse_path)
+                if r2 not in ("ok", "exists"):
+                    r2 = _download_tpex_margin(d, tpex_path)
+                if "ok" in (r1, r2):
+                    break
         if "ok" in (r1, r2):
             ok += 1
         time.sleep(0.35)
