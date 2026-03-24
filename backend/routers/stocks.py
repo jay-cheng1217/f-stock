@@ -16,16 +16,20 @@ def stock_list(
     offset = (page - 1) * size
 
     if q:
-        df = query_df(f"""
+        like_q = f"%{q}%"
+        df = query_df(
+            f"""
             SELECT * FROM stock_list
-            WHERE Ticker LIKE '%{q}%' OR Name LIKE '%{q}%'
+            WHERE Ticker LIKE ? OR Name LIKE ?
             ORDER BY Ticker
             LIMIT {size} OFFSET {offset}
-        """)
-        total_df = query_df(f"""
-            SELECT COUNT(*) AS cnt FROM stock_list
-            WHERE Ticker LIKE '%{q}%' OR Name LIKE '%{q}%'
-        """)
+            """,
+            [like_q, like_q],
+        )
+        total_df = query_df(
+            "SELECT COUNT(*) AS cnt FROM stock_list WHERE Ticker LIKE ? OR Name LIKE ?",
+            [like_q, like_q],
+        )
     else:
         df = query_df(f"""
             SELECT * FROM stock_list

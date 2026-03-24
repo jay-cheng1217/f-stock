@@ -78,6 +78,20 @@ def get_previous_trading_day():
 
 
 def build_session():
+    # 優先使用 OS 憑證庫（Windows Certificate Store），避免 verify=False
+    try:
+        import truststore
+        truststore.inject_into_ssl()
+        _verify = True
+    except Exception:
+        import warnings
+        warnings.warn(
+            "truststore 載入失敗，SSL 驗證已停用（MITM 風險）。"
+            "請執行 pip install truststore 修正。",
+            stacklevel=2,
+        )
+        _verify = False
+
     s = requests.Session()
     retries = Retry(
         total=5, backoff_factor=1.0,
@@ -89,7 +103,7 @@ def build_session():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         "Referer": "https://www.twse.com.tw/",
     })
-    s.verify = False  # TWSE/TPEx 憑證在 Python 3.14 會觸發 SSL 錯誤
+    s.verify = _verify
     return s
 
 
@@ -1475,7 +1489,7 @@ def _fetch_foreign_twse(dt):
     )
     rows = []
     try:
-        r = SESSION.get(url, timeout=30, verify=False)
+        r = SESSION.get(url, timeout=30)
         data = r.json()
         if data.get("stat") != "OK" or "data" not in data:
             return rows
@@ -1503,7 +1517,7 @@ def _fetch_foreign_tpex(dt):
     )
     rows = []
     try:
-        r = SESSION.get(url, timeout=30, verify=False)
+        r = SESSION.get(url, timeout=30)
         data = r.json()
         # TPEx 格式: tables[0]["data"], 非 aaData
         table = []

@@ -48,3 +48,4 @@ def execute(sql: str, params: list | None = None):
         conn.execute(sql, params)
     else:
         conn.execute(sql)
+    conn.commit()
