@@ -9,6 +9,77 @@ from datetime import datetime, timedelta
 import pandas as pd
 from tqdm import tqdm
 
+
+def load_market_lookup():
+    db_path = r'F:\stock\stock.duckdb'
+    if not os.path.exists(db_path):
+        return {}
+    try:
+        import duckdb
+
+        con = duckdb.connect(db_path, read_only=True)
+        rows = con.execute(
+            """
+            WITH ranked AS (
+                SELECT
+                    Ticker,
+                    Market,
+                    row_number() OVER (
+                        PARTITION BY Ticker
+                        ORDER BY Year DESC, Season DESC
+                    ) AS rn
+                FROM financials
+                WHERE Market IN ('TWSE', 'OTC')
+            )
+            SELECT Ticker, Market
+            FROM ranked
+            WHERE rn = 1
+            """
+        ).fetchall()
+        con.close()
+        return {str(ticker): str(market) for ticker, market in rows if ticker and market}
+    except Exception:
+        return {}
+
+
+def fund_cache_dates_by_market(cache_dir: str):
+    markets = {'TWSE': set(), 'OTC': set()}
+    for name in os.listdir(cache_dir):
+        if not name.endswith('.csv'):
+            continue
+        if name.startswith('fund_tpex_'):
+            date8 = name[len('fund_tpex_'):-4]
+            if len(date8) == 8 and date8.isdigit():
+                markets['OTC'].add(f'{date8[:4]}-{date8[4:6]}-{date8[6:]}')
+        elif name.startswith('fund_'):
+            date8 = name[len('fund_'):-4]
+            if len(date8) == 8 and date8.isdigit():
+                markets['TWSE'].add(f'{date8[:4]}-{date8[4:6]}-{date8[6:]}')
+    return markets
+
+
+def fill_missing_fund_values(df_daily_idx: pd.DataFrame, ticker: str, market_lookup: dict, cache_dates_by_market: dict):
+    market = market_lookup.get(ticker)
+    if market not in cache_dates_by_market:
+        return 0
+
+    covered_dates = cache_dates_by_market[market]
+    if not covered_dates:
+        return 0
+
+    cols = ['Foreign_BuySell', 'Trust_BuySell', 'Dealer_BuySell']
+    covered_mask = df_daily_idx.index.isin(covered_dates)
+    if not covered_mask.any():
+        return 0
+
+    filled = 0
+    for col in cols:
+        missing_mask = covered_mask & df_daily_idx[col].isna()
+        if missing_mask.any():
+            filled += int(missing_mask.sum())
+            df_daily_idx.loc[missing_mask, col] = 0.0
+    return filled
+
 # -----------------------------
 # 1) 設定本地資料夾路徑
 # -----------------------------
@@ -91,6 +162,8 @@ for col in ['Foreign_BuySell', 'Trust_BuySell', 'Dealer_BuySell']:
 
 # 以 Ticker 分組，提高存取效能
 grouped_fund = all_fund_data.groupby('Ticker', sort=False)
+market_lookup = load_market_lookup()
+cache_dates_by_market = fund_cache_dates_by_market(FUND_CACHE_DIR)
 print(f"法人資料載入完成，共 {len(all_fund_data):,} 筆記錄，股票數：{len(grouped_fund):,} 支。")
 
 # -----------------------------
@@ -101,13 +174,15 @@ print(f"\n步驟 2/3: 準備更新 {len(all_stock_files):,} 支股票的日K資�
 
 updated = 0
 skipped = 0
+zero_filled_cells = 0
 
 for filename in tqdm(all_stock_files, desc="更新日K檔"):
     ticker = os.path.splitext(filename)[0]
     path = os.path.join(DATA_DIR, filename)
 
     # 只有這支股票在法人表中才處理
-    if ticker not in grouped_fund.groups:
+    has_fund_rows = ticker in grouped_fund.groups
+    if (not has_fund_rows) and (ticker not in market_lookup):
         skipped += 1
         continue
 
@@ -120,21 +195,20 @@ for filename in tqdm(all_stock_files, desc="更新日K檔"):
                 df_daily.loc[:, col] = 0.0
 
         # 取該股票的法人資料，並按 Date 去重（保險）
-        sfd = grouped_fund.get_group(ticker).copy()
-        sfd = (
-            sfd.sort_values('Date')
-               .drop_duplicates(subset=['Date'], keep='last')
-               .set_index('Date')
-        )
-
-        # 只保留要更新的欄位
-        sfd = sfd[['Foreign_BuySell', 'Trust_BuySell', 'Dealer_BuySell']]
-
         # 以 Date 為索引進行對齊更新
         df_daily_idx = df_daily.set_index('Date')
 
         # pandas.DataFrame.update：只會覆蓋相同 index/column 的值，且不會用 NaN 覆蓋有值
-        df_daily_idx.update(sfd)
+        if has_fund_rows:
+            sfd = grouped_fund.get_group(ticker).copy()
+            sfd = (
+                sfd.sort_values('Date')
+                   .drop_duplicates(subset=['Date'], keep='last')
+                   .set_index('Date')
+            )
+            sfd = sfd[['Foreign_BuySell', 'Trust_BuySell', 'Dealer_BuySell']]
+            df_daily_idx.update(sfd)
+        zero_filled_cells += fill_missing_fund_values(df_daily_idx, ticker, market_lookup, cache_dates_by_market)
 
         # 寫回檔案
         df_out = df_daily_idx.reset_index()
