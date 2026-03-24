@@ -95,11 +95,22 @@ def compute_tdcc_features(
         ).astype(np.float32)
     )
 
+    # --- 散戶出場指標：散戶持股比例的 12 週百分位排名 ---
+    # 值越低 (趨近 0) 代表散戶持股創 12 週新低（籌碼洗清訊號）
+    # 結合股價下跌可視為強力底部訊號
+    tk["retail_capitulation"] = (
+        tk["retail_pct"]
+        .rolling(12, min_periods=4)
+        .rank(pct=True)
+        .astype(np.float32)
+    )
+
     # Point-in-time merge
     feature_cols = [
         "tdcc_date", "retail_pct", "whale_pct",
         "whale_pct_chg", "retail_pct_chg",
         "holders_chg_pct", "whale_retail_ratio", "whale_trend_4w",
+        "retail_capitulation",
     ]
     tdcc_features = tk[feature_cols].copy()
 
@@ -195,4 +206,5 @@ TDCC_FEATURE_COLS = [
     "holders_chg_pct",
     "whale_retail_ratio",
     "whale_trend_4w",
+    "retail_capitulation",   # 散戶持股 12 週百分位排名（低=籌碼洗清）
 ]
