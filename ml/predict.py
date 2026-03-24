@@ -323,6 +323,7 @@ def load_latest_model():
     meta_files = sorted(
         f for f in glob.glob(os.path.join(MODEL_DIR, "*_meta.json"))
         if "lgbm_v2_" not in os.path.basename(f)
+        and "lgbm_t1_" not in os.path.basename(f)
     )
     if not meta_files:
         raise FileNotFoundError("找不到已訓練的模型，請先執行 train.py")
