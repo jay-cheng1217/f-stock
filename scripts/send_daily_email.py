@@ -26,6 +26,11 @@ from scripts.update_paper_portfolio import (
     connect_db,
     summarize_ledger,
 )
+from scripts.update_paper_portfolio_t1 import (
+    DEFAULT_DB_PATH as T1_DB_PATH,
+    connect_db as t1_connect_db,
+    summarize_ledger as t1_summarize_ledger,
+)
 
 DEFAULT_EMAIL_TOP_N = 30
 DEFAULT_PORTFOLIO_LIMIT = 12
@@ -228,6 +233,41 @@ def _load_portfolio_snapshot(
             params = ("2026-03-18", int(limit))
 
         detail_df = pd.read_sql_query(query, conn, params=params)
+    return summary, detail_df
+
+
+def _load_t1_portfolio_snapshot(
+    db_path: str = T1_DB_PATH,
+) -> tuple[dict[str, object], pd.DataFrame]:
+    if not os.path.exists(db_path):
+        return {}, pd.DataFrame()
+
+    with t1_connect_db(db_path) as conn:
+        summary = t1_summarize_ledger(conn)
+        detail_df = pd.read_sql_query(
+            """
+            SELECT
+                prediction_date,
+                selection_rank,
+                ticker,
+                sector,
+                recommendation,
+                setup_tags,
+                status,
+                ROUND(selection_close, 2) AS selection_close,
+                ROUND(entry_open, 2) AS entry_open,
+                ROUND(exit_close, 2) AS exit_close,
+                ROUND(realized_return_pct * 100, 2) AS return_pct,
+                ROUND(max_intraday_gain_pct * 100, 2) AS max_gain_pct,
+                ROUND(max_intraday_drawdown_pct * 100, 2) AS max_dd_pct,
+                hit_3pct
+            FROM t1_positions
+            WHERE prediction_date >= ?
+            ORDER BY prediction_date DESC, selection_rank ASC
+            """,
+            conn,
+            params=("2026-03-23",),
+        )
     return summary, detail_df
 
 
@@ -440,6 +480,63 @@ def _render_portfolio_rows(df: pd.DataFrame) -> str:
     return "\n".join(rows)
 
 
+def _render_t1_portfolio_rows(df: pd.DataFrame) -> str:
+    rows = []
+    for _, row in df.iterrows():
+        pred_date = _html_cell(row.get("prediction_date"))
+        rank = int(row.get("selection_rank")) if pd.notna(row.get("selection_rank")) else "-"
+        ticker = _html_cell(row.get("ticker"))
+        status = _html_cell(row.get("status"))
+        setup = _html_cell(row.get("setup_tags") or "-")
+        entry = _fmt_num(row.get("entry_open"), 2)
+        exit_c = _fmt_num(row.get("exit_close"), 2)
+        ret = _fmt_pct(row.get("return_pct"))
+        max_gain = _fmt_pct(row.get("max_gain_pct"))
+        max_dd = _fmt_pct(row.get("max_dd_pct"))
+        hit = row.get("hit_3pct")
+        hit_str = "O" if hit == 1 else ("X" if hit == 0 else "-")
+        hit_class = "value-up" if hit == 1 else ("value-down" if hit == 0 else "value-flat")
+        ret_class = _signed_value_class(row.get("return_pct"))
+        rows.append(
+            """
+            <tr>
+              <td class="col-date">
+                <div class="cell-title">{pred_date}</div>
+                <div class="cell-sub">#{rank} / {ticker}</div>
+              </td>
+              <td class="col-target">
+                <div class="cell-badges">
+                  <span class="{status_class}">{status}</span>
+                </div>
+                <div class="cell-sub">開 {entry} → 收 {exit_c}</div>
+                <div class="cell-sub" style="margin-top:2px;">{setup}</div>
+              </td>
+              <td class="col-return">
+                <div class="cell-title {ret_class}">{ret}</div>
+                <div class="cell-sub">高 {max_gain} / 低 {max_dd}</div>
+                <div class="cell-sub {hit_class}">命中 {hit_str}</div>
+              </td>
+            </tr>
+            """.format(
+                pred_date=pred_date,
+                rank=rank,
+                ticker=ticker,
+                status_class=_badge_class(row.get("status"), kind="status"),
+                status=status,
+                entry=entry,
+                exit_c=exit_c,
+                ret=ret,
+                max_gain=max_gain,
+                max_dd=max_dd,
+                hit_str=hit_str,
+                hit_class=hit_class,
+                ret_class=ret_class,
+                setup=setup,
+            )
+        )
+    return "\n".join(rows)
+
+
 def build_email_html(
     prediction_date: str,
     all_pred_df: pd.DataFrame,
@@ -448,6 +545,8 @@ def build_email_html(
     portfolio_df: pd.DataFrame,
     t1_date: str = "",
     t1_df: pd.DataFrame | None = None,
+    t1_portfolio_summary: dict[str, object] | None = None,
+    t1_portfolio_df: pd.DataFrame | None = None,
 ) -> str:
     sentiment = _html_cell(all_pred_df["market_sentiment"].iloc[0]) if "market_sentiment" in all_pred_df.columns else "-"
     q25 = (
@@ -548,6 +647,54 @@ def build_email_html(
 """
     else:
         t1_section = ""
+
+    # T+1 portfolio section
+    _t1_port_df = t1_portfolio_df if t1_portfolio_df is not None else pd.DataFrame()
+    _t1_port_summary = t1_portfolio_summary or {}
+    if not _t1_port_df.empty or _t1_port_summary:
+        t1_total = _t1_port_summary.get("closed_positions", 0)
+        t1_hit = _t1_port_summary.get("hit_count", 0)
+        t1_hit_rate = _fmt_pct(float(_t1_port_summary["hit_rate"]) * 100, 1) if _t1_port_summary.get("hit_rate") is not None else "-"
+        t1_avg_ret = _fmt_pct(float(_t1_port_summary["avg_realized_return_pct"]) * 100) if _t1_port_summary.get("avg_realized_return_pct") is not None else "-"
+        t1_pending = _t1_port_summary.get("pending_positions", 0)
+
+        t1_cards_html = f"""
+        <div class="summary-card"><div class="label">已結算</div><div class="value">{t1_total}</div></div>
+        <div class="summary-card"><div class="label">待結算</div><div class="value">{t1_pending}</div></div>
+        <div class="summary-card"><div class="label">命中率（盤中 &ge;3%）</div><div class="value">{t1_hit}/{t1_total} = {t1_hit_rate}</div></div>
+        <div class="summary-card"><div class="label">平均開→收報酬</div><div class="value">{t1_avg_ret}</div></div>
+        """
+
+        t1_port_table = (
+            f"""
+            <table class="data-table portfolio-table">
+              <thead>
+                <tr>
+                  <th class="col-date">預測日 / 名次 / 代號</th>
+                  <th class="col-target">狀態 / 型態 / 價格</th>
+                  <th class="col-return">報酬 / 高低 / 命中</th>
+                </tr>
+              </thead>
+              <tbody>
+                {_render_t1_portfolio_rows(_t1_port_df)}
+              </tbody>
+            </table>
+            """
+            if not _t1_port_df.empty
+            else "<p class='muted'>目前沒有 T+1 帳本資料。</p>"
+        )
+
+        t1_portfolio_section = f"""
+    <div class="section">
+      <h2>T+1 實戰帳本</h2>
+      <div class="grid">
+        {t1_cards_html}
+      </div>
+      {t1_port_table}
+    </div>
+"""
+    else:
+        t1_portfolio_section = ""
 
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"""<!DOCTYPE html>
@@ -878,12 +1025,14 @@ def build_email_html(
     {t1_section}
 
     <div class="section">
-      <h2>實戰帳本摘要</h2>
+      <h2>20 日實戰帳本</h2>
       <div class="grid">
         {cards_html}
       </div>
       {portfolio_section}
     </div>
+
+    {t1_portfolio_section}
 
     <div class="foot">
       此信件由 F:\\stock 每日 pipeline 自動產生。
@@ -932,6 +1081,7 @@ def send_latest_email(
         limit=0,
     )
     t1_date, t1_df = _load_t1_leaderboard(top_n=20)
+    t1_portfolio_summary, t1_portfolio_df = _load_t1_portfolio_snapshot()
 
     html_body = build_email_html(
         prediction_date=prediction_date,
@@ -941,6 +1091,8 @@ def send_latest_email(
         portfolio_df=portfolio_df,
         t1_date=t1_date,
         t1_df=t1_df,
+        t1_portfolio_summary=t1_portfolio_summary,
+        t1_portfolio_df=t1_portfolio_df,
     )
     preview_target = preview_path or DEFAULT_PREVIEW_PATH
     os.makedirs(os.path.dirname(preview_target), exist_ok=True)

@@ -60,8 +60,10 @@ def run_step(name: str, func) -> bool:
 
 def exec_paper_portfolio() -> None:
     from scripts.update_paper_portfolio import sync_paper_portfolio
+    from scripts.update_paper_portfolio_t1 import sync_paper_portfolio_t1
 
     sync_paper_portfolio(top_n=30)
+    sync_paper_portfolio_t1(top_n=20)
 
 
 def exec_email() -> None:
