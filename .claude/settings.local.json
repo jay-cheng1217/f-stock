@@ -1,0 +1,130 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd F:/stock && python -c \"import yfinance, pandas, requests, tqdm, bs4; print\\('yfinance:', yfinance.__version__\\); print\\('pandas:', pandas.__version__\\)\")",
+      "Bash(cd F:/stock && python -c \"\nimport pandas as pd\ndf = pd.read_csv\\(r'F:\\\\stock\\\\日K資料\\\\2330.csv', dtype={'Date': str}\\)\nprint\\('最後日期:', df['Date'].max\\(\\)\\)\nprint\\('總筆數:', len\\(df\\)\\)\n\" && python -c \"\nimport pandas as pd\ndf = pd.read_csv\\(r'F:\\\\stock\\\\月營收\\\\revenue_2330.csv', dtype={'Date': str}\\)\nprint\\('月營收最後:', df['Date'].max\\(\\)\\)\n\" && python -c \"\nimport pandas as pd\ndf = pd.read_csv\\(r'F:\\\\stock\\\\清理後資料\\\\cleaned_all_margin_data.csv', dtype={'Date': str}, nrows=1\\)\nprint\\('融資券欄位:', list\\(df.columns\\)\\)\nimport json\nwith open\\(r'F:\\\\stock\\\\清理後資料\\\\margin_merge_status.json'\\) as f:\n    print\\('融資合併狀態:', json.load\\(f\\)\\)\n\")",
+      "Bash(cd F:/stock && python -c \"\nimport os\nfiles = sorted\\(os.listdir\\(r'F:\\\\stock\\\\原始融資資料'\\)\\)\nprint\\('原始融資最後5檔:', files[-5:] if files else 'none'\\)\nprint\\('原始融資總檔數:', len\\(files\\)\\)\n\")",
+      "Bash(cd F:/stock && python twstock.py --help)",
+      "Bash(cd F:/stock && python twstock.py --skip-revenue)",
+      "Bash(systeminfo | findstr /C:\"Total Physical Memory\" /C:\"OS Name\" && wmic cpu get name && wmic path win32_videocontroller get name,adapterram)",
+      "Bash(wmic cpu:*)",
+      "Bash(cd F:/stock && python twstock.py --step 2)",
+      "Bash(cd F:/stock && python twstock.py --step 3)",
+      "Bash(cd F:/stock && python twstock.py --step 8)",
+      "Bash(cd F:/stock && python twstock.py --step 9)",
+      "Bash(cd F:/stock && python twstock.py --step 10)",
+      "Bash(cd F:/stock && python twstock.py --step 6)",
+      "Bash(cd F:/stock && python -c \"\nimport pandas as pd\ndf = pd.read_csv\\(r'季報財務/financial_2025Q3.csv', encoding='utf-8-sig', nrows=5\\)\nprint\\('欄位:', list\\(df.columns\\)\\)\nprint\\(\\)\nprint\\(df.head\\(\\).to_string\\(\\)\\)\n\")",
+      "Bash(cd F:/stock && python -c \"\nimport pandas as pd\ndf = pd.read_csv\\(r'集保分散/tdcc_summary.csv', encoding='utf-8-sig', nrows=5\\)\nprint\\('集保摘要欄位:', list\\(df.columns\\)\\)\nprint\\(df.head\\(\\).to_string\\(\\)\\)\n\")",
+      "Bash(cd F:/stock && python -c \"\nimport pandas as pd\ndf = pd.read_csv\\(r'大盤指數/index_TWII.csv', dtype={'Date':str}, nrows=3\\)\nprint\\('大盤指數欄位:', list\\(df.columns\\)\\)\nprint\\(df.tail\\(3\\).to_string\\(\\)\\)\n\")",
+      "Bash(git config:*)",
+      "Bash(cd F:/stock && python -c \"\nimport pandas as pd, os\n\nprint\\('='*60\\)\nprint\\('7. 大盤指數 檢查'\\)\nprint\\('='*60\\)\nfor fn in sorted\\(os.listdir\\('大盤指數'\\)\\):\n    p = f'大盤指數/{fn}'\n    df = pd.read_csv\\(p, dtype={'Date':str}\\)\n    print\\(f'  {fn}: 欄位={list\\(df.columns\\)}, 範圍={df[\\\\\"Date\\\\\"].min\\(\\)}~{df[\\\\\"Date\\\\\"].max\\(\\)}, 筆數={len\\(df\\)}, 空值={df.isna\\(\\).sum\\(\\).sum\\(\\)}'\\)\n\")",
+      "Bash(cd F:/stock && rm -f 季報財務/financial_*.csv && rm -f 集保分散/tdcc_summary.csv && echo \"Deleted old files\")",
+      "Bash(cd F:/stock && python -c \"\nimport pandas as pd\ndf = pd.read_csv\\(r'集保分散\\\\tdcc_summary.csv', encoding='utf-8-sig'\\)\nprint\\('集保摘要修正後:'\\)\nprint\\(f'  筆數: {len\\(df\\)}'\\)\nprint\\(f'  Whale_Pct: min={df[\\\\\"Whale_Pct\\\\\"].min\\(\\)}, max={df[\\\\\"Whale_Pct\\\\\"].max\\(\\):.2f}, mean={df[\\\\\"Whale_Pct\\\\\"].mean\\(\\):.2f}'\\)\nprint\\(f'  Retail_Pct: min={df[\\\\\"Retail_Pct\\\\\"].min\\(\\)}, max={df[\\\\\"Retail_Pct\\\\\"].max\\(\\):.2f}, mean={df[\\\\\"Retail_Pct\\\\\"].mean\\(\\):.2f}'\\)\nprint\\(f'  Whale_Pct > 100: {len\\(df[df[\\\\\"Whale_Pct\\\\\"] > 100]\\)}'\\)\nt = df[df['Ticker'] == '2330']\nif not t.empty:\n    print\\(f'  2330: Retail={t[\\\\\"Retail_Pct\\\\\"].values[0]}%, Whale={t[\\\\\"Whale_Pct\\\\\"].values[0]}%'\\)\nt2 = df[df['Ticker'] == '2317']\nif not t2.empty:\n    print\\(f'  2317: Retail={t2[\\\\\"Retail_Pct\\\\\"].values[0]}%, Whale={t2[\\\\\"Whale_Pct\\\\\"].values[0]}%'\\)\n\")",
+      "Bash(cd F:/stock && python -c \"\nimport os, pandas as pd\ndf = pd.read_csv\\(os.path.join\\(r'F:\\\\stock', '集保分散', 'tdcc_summary.csv'\\), encoding='utf-8-sig'\\)\nprint\\('集保摘要修正後:'\\)\nprint\\(f'  筆數: {len\\(df\\)}'\\)\nprint\\(f'  Whale_Pct: min={df[\\\\\"Whale_Pct\\\\\"].min\\(\\)}, max={df[\\\\\"Whale_Pct\\\\\"].max\\(\\):.2f}, mean={df[\\\\\"Whale_Pct\\\\\"].mean\\(\\):.2f}'\\)\nprint\\(f'  Retail_Pct: min={df[\\\\\"Retail_Pct\\\\\"].min\\(\\)}, max={df[\\\\\"Retail_Pct\\\\\"].max\\(\\):.2f}, mean={df[\\\\\"Retail_Pct\\\\\"].mean\\(\\):.2f}'\\)\nprint\\(f'  Whale_Pct > 100: {len\\(df[df[\\\\\"Whale_Pct\\\\\"] > 100]\\)}'\\)\nt = df[df['Ticker'] == '2330']\nif not t.empty: print\\(f'  2330: Retail={t[\\\\\"Retail_Pct\\\\\"].values[0]}%, Whale={t[\\\\\"Whale_Pct\\\\\"].values[0]}%'\\)\nt2 = df[df['Ticker'] == '2317']\nif not t2.empty: print\\(f'  2317: Retail={t2[\\\\\"Retail_Pct\\\\\"].values[0]}%, Whale={t2[\\\\\"Whale_Pct\\\\\"].values[0]}%'\\)\nt3 = df[df['Ticker'] == '2454']\nif not t3.empty: print\\(f'  2454: Retail={t3[\\\\\"Retail_Pct\\\\\"].values[0]}%, Whale={t3[\\\\\"Whale_Pct\\\\\"].values[0]}%'\\)\n\")",
+      "Bash(cd F:/stock && python -c \"\nimport pandas as pd, os\nfiles = sorted\\(os.listdir\\('季報財務'\\)\\)\nprint\\(f'季報財務檔案數: {len\\(files\\)}'\\)\nfor f in files[:3]:\n    df = pd.read_csv\\(f'季報財務/{f}', encoding='utf-8-sig', nrows=2\\)\n    print\\(f'  {f}: 欄位={list\\(df.columns\\)}, 筆數估計={len\\(pd.read_csv\\(f\\\\\"季報財務/{f}\\\\\", encoding=\\\\\"utf-8-sig\\\\\"\\)\\)}'\\)\nif files:\n    last = files[-1]\n    df = pd.read_csv\\(f'季報財務/{last}', encoding='utf-8-sig', nrows=2\\)\n    print\\(f'  {last}: 欄位={list\\(df.columns\\)}, 筆數={len\\(pd.read_csv\\(f\\\\\"季報財務/{last}\\\\\", encoding=\\\\\"utf-8-sig\\\\\"\\)\\)}'\\)\n\")",
+      "Bash(ls -la \"F:/stock/data/\" 2>/dev/null || echo \"No data dir\"; ls -d \"F:/stock/\"*/ 2>/dev/null)",
+      "Bash(head -5 \"F:/stock/月營收/revenue_2330.csv\" 2>/dev/null || head -5 \"F:/stock/月營收/\"*.csv 2>/dev/null | head -20)",
+      "Bash(git -C \"F:/stock\" log --oneline -20)",
+      "Bash(ls *.py 2>/dev/null; ls *.ipynb 2>/dev/null)",
+      "Bash(ls *.csv 2>/dev/null; ls 每日收盤行情/ 2>/dev/null | head -20)",
+      "Bash(ls -d */ 2>/dev/null)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//f/stock/**)",
+      "Bash(done)",
+      "Bash(echo \"=== 法人快取: 最後日期 ===\" && ls 法人快取/*.csv | sort | tail -3)",
+      "Bash(echo \"=== 集保 只有一天的 raw ===\" && ls 集保分散/tdcc_2026*.csv)",
+      "Bash(tasklist | grep -i python)",
+      "Bash(cd F:/stock && python twstock.py --retry-revenue)",
+      "Bash(sed 's/\\\\.csv//')",
+      "Bash(ls:*)",
+      "Bash(git add:*)",
+      "Bash(cd:*)",
+      "Bash(for t:*)",
+      "Read(//f/stock/日K資料/**)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(tasklist:*)",
+      "Bash(git status:*)",
+      "Bash(git commit:*)",
+      "Bash(grep:*)",
+      "Bash(schtasks:*)",
+      "Bash(find:*)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)",
+      "Bash(wmic process:*)",
+      "Bash(cmd.exe //c 'schtasks /create /tn \"TW_Stock_Daily\" /tr \"F:\\\\stock\\\\scripts\\\\run_daily.bat\" /sc weekly /d MON,TUE,WED,THU,FRI /st 17:00 /f')",
+      "Bash(cmd.exe /c \"schtasks /create /tn \\\\\"TW_Stock_Daily\\\\\" /tr \\\\\"F:\\\\stock\\\\scripts\\\\run_daily.bat\\\\\" /sc weekly /d MON,TUE,WED,THU,FRI /st 17:00 /f\")",
+      "Bash(powershell.exe -Command \"schtasks /create /tn 'TW_Stock_Daily' /tr 'F:\\\\stock\\\\scripts\\\\run_daily.bat' /sc weekly /d MON,TUE,WED,THU,FRI /st 17:00 /f\")",
+      "Bash(powershell.exe -Command \"schtasks /create /tn 'TW_Stock_Weekly_Retrain' /tr 'F:\\\\stock\\\\scripts\\\\run_weekly_retrain.bat' /sc weekly /d SAT /st 10:00 /f\")",
+      "WebSearch",
+      "WebFetch(domain:mopsov.twse.com.tw)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:hackmd.io)",
+      "WebFetch(domain:mops.twse.com.tw)",
+      "Bash(git -C /f/stock status --short)",
+      "Bash(git:*)",
+      "Skill(update-config)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(jq:*)",
+      "Bash(curl.exe -s -H \"Content-Type: application/json\" -d \"{\"\"topic\"\":\"\"twstock-96917ab5\"\",\"\"title\"\":\"\"Claude Code\"\",\"\"message\"\":\"\"test with curl.exe\"\"}\" ntfy.sh)",
+      "Bash(/c/Windows/System32/curl.exe -s -H \"Content-Type: application/json\" -d \"{\\\\\"topic\\\\\":\\\\\"twstock-96917ab5\\\\\",\\\\\"title\\\\\":\\\\\"Claude Code\\\\\",\\\\\"message\\\\\":\\\\\"test system curl\\\\\"}\" ntfy.sh)",
+      "Bash(/c/Windows/System32/curl.exe -s -H \"Content-Type: application/json\" -d \"{\\\\\"topic\\\\\":\\\\\"twstock-96917ab5\\\\\",\\\\\"title\\\\\":\\\\\"Claude Code\\\\\",\\\\\"message\\\\\":\\\\\"Test - push notification working!\\\\\"}\" ntfy.sh)",
+      "Bash(pip show:*)",
+      "WebFetch(domain:sinotrade.github.io)",
+      "WebFetch(domain:pypi.org)",
+      "WebFetch(domain:www.twse.com.tw)",
+      "WebFetch(domain:www.tpex.org.tw)",
+      "WebFetch(domain:apiservice.tpex.org.tw)",
+      "WebFetch(domain:openapi.twse.com.tw)",
+      "WebFetch(domain:data.gov.tw)",
+      "Bash(python -c \":*)",
+      "Bash(2)",
+      "Bash(xargs head:*)",
+      "Bash(tail -100 logs/*.log)",
+      "Bash(tail -100 *.log)",
+      "Bash(/dev/null:*)",
+      "Bash(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader)",
+      "Bash(gh pr:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -c \"import urllib.request,json; urllib.request.urlopen(urllib.request.Request('https://ntfy.sh',data=json.dumps({'topic':'twstock-96917ab5','title':'Claude Code','message':'Task completed'}).encode(),headers={'Content-Type':'application/json'}))\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -c \"import urllib.request,json,sys; data=json.load(sys.stdin); msg=data.get('message','需要你的操作'); urllib.request.urlopen(urllib.request.Request('https://ntfy.sh',data=json.dumps({'topic':'twstock-96917ab5','title':'Claude Code 等待中','message':msg}).encode(),headers={'Content-Type':'application/json'}))\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /f/stock && git add -A && if git diff --cached --quiet 2>/dev/null; then echo '{\"systemMessage\":\"[auto-commit] 無新修改\"}'; else msg=$(git commit -m 'auto: save progress before new task' 2>&1) && echo \"{\\\"systemMessage\\\":\\\"[auto-commit] $msg\\\"}\" || echo \"{\\\"systemMessage\\\":\\\"[auto-commit] commit 失敗: $msg\\\"}\"; fi",
+            "timeout": 30,
+            "statusMessage": "自動 commit 未提交的修改..."
+          }
+        ]
+      }
+    ]
+  }
+}

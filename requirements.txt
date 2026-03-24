@@ -1,0 +1,18 @@
+# Phase 1: Data pipeline
+pandas>=2.0
+numpy>=1.24
+requests>=2.31
+beautifulsoup4>=4.12
+yfinance>=0.2
+python-dateutil>=2.8
+tqdm>=4.65
+urllib3>=2.0
+truststore>=0.8
+lxml>=4.9
+
+# Phase 2: Web system
+fastapi>=0.111
+uvicorn[standard]>=0.30
+duckdb>=1.0
+pydantic>=2.7
+httpx>=0.27

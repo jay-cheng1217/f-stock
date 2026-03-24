@@ -1,0 +1,51 @@
+"""ML 預測模型設定檔"""
+import os
+
+# === 路徑 ===
+BASE_DIR = r"F:\stock"
+DAILY_K_DIR = os.path.join(BASE_DIR, "日K資料")
+REVENUE_DIR = os.path.join(BASE_DIR, "月營收")
+FINANCIAL_DIR = os.path.join(BASE_DIR, "季報財務")
+INDEX_DIR = os.path.join(BASE_DIR, "大盤指數")
+VALUATION_DIR = os.path.join(BASE_DIR, "估值資料")
+MODEL_DIR = os.path.join(BASE_DIR, "ml", "models")
+REPORT_DIR = os.path.join(BASE_DIR, "ml", "reports")
+
+# === 預測目標 (超額報酬 = 個股報酬 - 大盤報酬) ===
+FORWARD_DAYS = 5            # 預測 N 日後報酬
+UP_THRESHOLD = 0.015        # 超額報酬 > +1.5% 為 UP
+DOWN_THRESHOLD = -0.015     # 超額報酬 < -1.5% 為 DOWN
+TARGET_CLASSES = {0: "DOWN", 1: "FLAT", 2: "UP"}
+
+# === 過濾條件 ===
+MIN_AVG_VOLUME = 250_000    # 最低日均量 (股)
+MIN_PRICE = 10.0            # 最低股價
+MIN_HISTORY_DAYS = 120      # 最少需要的歷史交易日
+
+# === 訓練設定 ===
+WALK_FORWARD_TRAIN_MONTHS = 36   # 訓練窗口 (月)
+WALK_FORWARD_VAL_MONTHS = 3     # 驗證窗口 (月)
+WALK_FORWARD_TEST_MONTHS = 1    # 測試窗口 (月)
+RETRAIN_EVERY_MONTHS = 1        # 每 N 月重新訓練
+
+# === LightGBM 預設參數 ===
+LGBM_PARAMS = {
+    "objective": "multiclass",
+    "num_class": 3,
+    "metric": "multi_logloss",
+    "boosting_type": "gbdt",
+    "device": "gpu",
+    "num_leaves": 63,
+    "learning_rate": 0.05,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 5,
+    "verbose": -1,
+    "n_jobs": -1,
+    "seed": 42,
+}
+LGBM_NUM_ROUNDS = 1000
+LGBM_EARLY_STOPPING = 50
+
+# === 特徵窗口 ===
+ROLLING_WINDOWS = [5, 10, 20]

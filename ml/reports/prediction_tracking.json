@@ -1,0 +1,72 @@
+{
+  "verified": [
+    {
+      "prediction_date": "2026-03-11",
+      "verified_at": "2026-03-19",
+      "days_elapsed": 8,
+      "total_stocks": 828,
+      "v1": {
+        "n_verified": 828,
+        "signal_accuracy": {
+          "UP": {
+            "count": 19,
+            "correct": 14,
+            "hit_rate": 73.7,
+            "avg_actual_return": 15.49
+          },
+          "FLAT": {
+            "count": 43,
+            "correct": 21,
+            "hit_rate": 48.8,
+            "avg_actual_return": 0.33
+          },
+          "DOWN": {
+            "count": 766,
+            "correct": 135,
+            "hit_rate": 17.6,
+            "avg_actual_return": 4.54
+          }
+        },
+        "top30_by_up_prob_avg_return": 13.84,
+        "top30_win_rate": 83.3
+      }
+    },
+    {
+      "prediction_date": "2026-03-13",
+      "verified_at": "2026-03-21",
+      "days_elapsed": 8,
+      "total_stocks": 839,
+      "v1": {
+        "n_verified": 839,
+        "signal_accuracy": {
+          "UP": {
+            "count": 17,
+            "correct": 8,
+            "hit_rate": 47.1,
+            "avg_actual_return": 3.41
+          },
+          "FLAT": {
+            "count": 24,
+            "correct": 19,
+            "hit_rate": 79.2,
+            "avg_actual_return": -0.41
+          },
+          "DOWN": {
+            "count": 798,
+            "correct": 208,
+            "hit_rate": 26.1,
+            "avg_actual_return": 3.45
+          }
+        },
+        "top30_by_up_prob_avg_return": 8.99,
+        "top30_win_rate": 70.0
+      }
+    }
+  ],
+  "summary": {
+    "last_updated": "2026-03-21 13:06",
+    "v1": {
+      "n_periods_verified": 2
+    }
+  }
+}

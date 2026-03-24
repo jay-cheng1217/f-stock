@@ -1,0 +1,72 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Test and coverage artifacts
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Local env and machine-specific config
+.env
+.env.*
+*.local
+
+# Logs and temp folders
+*.log
+logs/
+tmp/
+temp/
+
+# DuckDB runtime database
+stock.duckdb
+stock.duckdb.wal
+
+# Paper portfolio ledger
+paper_portfolio.db
+paper_portfolio.db-journal
+paper_portfolio.db-shm
+paper_portfolio.db-wal
+
+# Market data directories (re-downloadable via twstock.py)
+日K資料/
+估值資料/
+原始融資資料/
+外資持股/
+大盤指數/
+季報財務/
+新聞資料/
+月營收/
+月營收 - 複製/
+法人快取/
+清理後資料/
+資產負債/
+集保分散/
+
+# Trained model binaries and large ML artifacts
+ml/models/lgbm_*.txt
+ml/models/*.parquet
+ml/models/*.pkl
+ml/models/predictions_*.csv
+ml/reports/backtest_detail_*.csv
+ml/reports/feature_importance_*.csv

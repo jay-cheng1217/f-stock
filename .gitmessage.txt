@@ -1,0 +1,8 @@
+# <type>(<scope>): <summary>
+#
+# Body (optional):
+# - What changed
+# - Why it changed
+#
+# Footer (optional):
+# - Issue: #123

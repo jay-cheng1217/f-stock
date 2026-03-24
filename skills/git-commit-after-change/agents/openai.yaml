@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Commit After Change"
+  short_description: "Commit every completed modification task."
+  default_prompt: "Use $git-commit-after-change to apply my requested edits and always commit when the task is complete."
