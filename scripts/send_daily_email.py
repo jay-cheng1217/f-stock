@@ -126,7 +126,10 @@ def _latest_prediction_path(prediction_file: str | None = None) -> str:
             return prediction_file
         return os.path.join(BASE_DIR, prediction_file)
 
-    candidates = sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
+    candidates = sorted(
+        f for f in glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv"))
+        if "predictions_t1_" not in os.path.basename(f)
+    )
     if not candidates:
         raise FileNotFoundError("No predictions_YYYY-MM-DD.csv files were found.")
     return candidates[-1]
