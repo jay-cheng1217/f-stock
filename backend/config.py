@@ -20,3 +20,6 @@ DUCKDB_PATH = os.path.join(BASE_DIR, "stock.duckdb")
 DEFAULT_PAGE_SIZE = 50
 MAX_PAGE_SIZE = 500
 CACHE_TTL_SECONDS = 300  # 5 分鐘
+
+# FinMind API
+FINMIND_TOKEN = os.environ.get("FINMIND_TOKEN", "")
