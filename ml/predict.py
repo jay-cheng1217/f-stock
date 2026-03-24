@@ -17,6 +17,28 @@ from ml.dataset import build_latest_snapshot
 from ml.features.entry import ENTRY_INFO_COLS
 from ml.features.sector import load_sector_mapping
 
+# === 處置股名單（每日更新）===
+from ml.config import BASE_DIR as _ML_BASE_DIR
+_DISPOSITION_PATH = os.path.join(_ML_BASE_DIR, "disposition_active.csv")
+
+
+def _load_disposition_set() -> set:
+    """載入目前處置中的股票代號集合"""
+    from datetime import date
+    try:
+        if not os.path.exists(_DISPOSITION_PATH):
+            return set()
+        df = pd.read_csv(_DISPOSITION_PATH, dtype=str)
+        if df.empty or "stock_id" not in df.columns:
+            return set()
+        today = date.today()
+        if "period_end" in df.columns:
+            df["period_end"] = pd.to_datetime(df["period_end"], errors="coerce").dt.date
+            df = df[df["period_end"] >= today]
+        return set(df["stock_id"].str.strip())
+    except Exception:
+        return set()
+
 # === 產業對應表（用於組合防呆）===
 _SECTOR_DF = load_sector_mapping()
 _SECTOR_LOOKUP = {}
@@ -443,7 +465,16 @@ def _apply_recommendation_rules(pred_df: pd.DataFrame, snapshot: pd.DataFrame) -
     strong_buy = strong_buy & price_ok & inst_ok & (~low_vol) & (~crash) & (~chip_bear) & (~op_loss)
     pred_df.loc[strong_buy, "recommendation"] = "強力買進"
 
+    # 處置股硬擋（最優先）：改分盤交易，流動性極差
+    disposition_set = _load_disposition_set()
+    if disposition_set and "ticker" in pred_df.columns:
+        is_disposition = pred_df["ticker"].isin(disposition_set)
+        pred_df.loc[is_disposition, "risk_tags"] += "⚠️處置股（分盤交易）"
+    else:
+        is_disposition = pd.Series(False, index=pred_df.index)
+
     buy_labels = ["強力買進", "建議買進"]
+    pred_df.loc[is_disposition, "recommendation"] = "觀望（處置股）"
     pred_df.loc[low_vol & pred_df["recommendation"].isin(buy_labels), "recommendation"] = "觀望（流動性不足）"
     pred_df.loc[crash & pred_df["recommendation"].isin(buy_labels), "recommendation"] = "觀望（異常暴跌）"
     pred_df.loc[extreme_pred & pred_df["recommendation"].isin(buy_labels), "recommendation"] = "觀望（預測值異常）"

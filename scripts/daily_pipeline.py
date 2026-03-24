@@ -91,6 +91,17 @@ def run_news_update():
         print(f"  [警告] fetch_daily_news.py 回傳錯誤碼 {result.returncode}")
 
 
+def run_disposition_update():
+    """更新處置股名單 (每日，FinMind backer)"""
+    result = subprocess.run(
+        [sys.executable, os.path.join(BASE_DIR, "scripts", "fetch_disposition.py")],
+        cwd=BASE_DIR,
+        capture_output=False,
+    )
+    if result.returncode != 0:
+        print(f"  [警告] fetch_disposition.py 回傳錯誤碼 {result.returncode}")
+
+
 def run_tdcc_update():
     """更新 TDCC 集保股權分散表 (每週五收盤後更新)"""
     if date.today().weekday() != 4:  # 只在週五執行
@@ -174,6 +185,7 @@ def main():
         step_status["日K/法人/融資券/營收"] = run_step("更新台股日K/法人/融資券/營收", run_data_update)
         step_status["估值(PE/PB/殖利率)"] = run_step("更新估值資料 (PE/PB/殖利率)", run_valuation_update)
         step_status["MOPS重大訊息"] = run_step("更新 MOPS 重大訊息 (消息面)", run_news_update)
+        step_status["處置股名單"] = run_step("更新處置股名單", run_disposition_update)
         step_status["TDCC集保分散"] = run_step("更新 TDCC 集保分散 (週五)", run_tdcc_update)
         step_status["DuckDB匯入"] = run_step("匯入資料到 DuckDB", run_ingest)
 

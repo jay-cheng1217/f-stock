@@ -2068,6 +2068,20 @@ def prediction_explain(ticker: str):
     from ml.features.institutional import INSTITUTIONAL_FEATURE_COLS
     from ml.predict import load_v2_model, _DIMENSION_MAP
 
+    # 處置股硬擋（最優先）：不需要載入模型，直接回傳
+    from ml.predict import _load_disposition_set
+    if ticker in _load_disposition_set():
+        return {
+            "ticker": ticker,
+            "recommendation": "觀望（處置股）",
+            "domain_warnings": [
+                "此股票目前處於主管機關處置期間，採分盤撮合交易（每20分鐘撮合一次），"
+                "流動性極差，進場後難以迅速出場，系統強制觀望。"
+            ],
+            "narrative": "【處置股警示】此股票目前受主管機關處置，改為分盤交易，"
+                         "每20分鐘才撮合一次，買賣價差極大，不建議操作。",
+        }
+
     try:
         snapshot, model, meta = _get_prediction_context()
     except FileNotFoundError:
