@@ -71,8 +71,11 @@ SELECTED_FEATURES = [
     # 產業
     "sector_relative_return_5d", "sector_relative_return_20d",
     "sector_momentum_20d", "sector_breadth",
-    # 集保
-    "whale_pct", "whale_pct_chg", "retail_pct_chg",
+    # 集保（完整 8 特徵，已有 282 週歷史資料）
+    "retail_pct", "whale_pct",
+    "whale_pct_chg", "retail_pct_chg",
+    "holders_chg_pct", "whale_retail_ratio",
+    "whale_trend_4w", "retail_capitulation",
     # 進場因子 v2
     "price_vs_inst_cost", "vol_contraction_ratio",
     "inst_buy_ratio_20d", "mom_20d",
