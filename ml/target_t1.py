@@ -13,6 +13,8 @@ T1_LABEL_COLUMNS = [
     "t1_high_return",
     "t1_low_return",
     "t1_hit_3pct",
+    "t1_close_positive",
+    "t1_open_to_close_return",
 ]
 
 
@@ -63,5 +65,16 @@ def compute_t1_targets(
         (out["t1_high_return"] >= high_hit_threshold).astype(np.int8),
         np.nan,
     )
+
+    # close-to-close positive: did next day's close beat today's close?
+    close_mask = out["t1_close_return"].notna()
+    out["t1_close_positive"] = np.where(
+        close_mask,
+        (out["t1_close_return"] > 0).astype(np.int8),
+        np.nan,
+    )
+
+    # open-to-close return: practical tradeable return if entering at next open
+    out["t1_open_to_close_return"] = (next_close / next_open.replace(0, np.nan) - 1.0).astype(np.float32)
 
     return out

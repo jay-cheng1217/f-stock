@@ -33,44 +33,67 @@ def _build_market_features(index_dir: str) -> pd.DataFrame:
 
     features = None
 
+    def _merge_feat(base, new_feat):
+        if base is None:
+            return new_feat
+        return pd.merge_asof(
+            base.sort_values("Date"),
+            new_feat.sort_values("Date"),
+            on="Date", direction="backward",
+        )
+
     # TWII 加權指數
     twii = _load_index(index_dir, "index_TWII.csv")
     if twii is not None:
         twii = twii.copy()
-        twii["twii_return_5d"] = twii["Close"].pct_change(5).astype(np.float32)
-        twii["twii_return_20d"] = twii["Close"].pct_change(20).astype(np.float32)
-        features = twii[["Date", "twii_return_5d", "twii_return_20d"]].copy()
+        c = pd.to_numeric(twii["Close"], errors="coerce")
+        twii["twii_return_5d"] = c.pct_change(5).astype(np.float32)
+        twii["twii_return_20d"] = c.pct_change(20).astype(np.float32)
+        ma5 = c.rolling(5, min_periods=3).mean()
+        ma20 = c.rolling(20, min_periods=10).mean()
+        ma60 = c.rolling(60, min_periods=30).mean()
+        twii["twii_above_ma5"] = (c > ma5).astype(np.float32)
+        twii["twii_above_ma20"] = (c > ma20).astype(np.float32)
+        twii["twii_above_ma60"] = (c > ma60).astype(np.float32)
+        twii["twii_ma5_slope"] = (ma5.pct_change(3) * 100).clip(-5, 5).astype(np.float32)
+        twii["twii_ma20_slope"] = (ma20.pct_change(5) * 100).clip(-5, 5).astype(np.float32)
+        twii["twii_volatility_20d"] = c.pct_change().rolling(20, min_periods=10).std().astype(np.float32)
+        twii_cols = [col for col in twii.columns if col.startswith("twii_")]
+        features = twii[["Date"] + twii_cols].copy()
 
     # VIX
     vix = _load_index(index_dir, "index_VIX.csv")
     if vix is not None:
         vix = vix.copy()
-        vix["vix_level"] = vix["Close"].astype(np.float32)
-        vix["vix_change_5d"] = vix["Close"].pct_change(5).astype(np.float32)
-        vix_feat = vix[["Date", "vix_level", "vix_change_5d"]].copy()
-        if features is not None:
-            features = pd.merge_asof(
-                features.sort_values("Date"),
-                vix_feat.sort_values("Date"),
-                on="Date", direction="backward",
-            )
-        else:
-            features = vix_feat
+        c = pd.to_numeric(vix["Close"], errors="coerce")
+        vix["vix_level"] = c.astype(np.float32)
+        vix["vix_change_5d"] = c.pct_change(5).astype(np.float32)
+        vix_ma20 = c.rolling(20, min_periods=10).mean()
+        vix["vix_ma20_ratio"] = (c / vix_ma20.replace(0, np.nan)).clip(0.5, 2.0).astype(np.float32)
+        vix_feat = vix[["Date", "vix_level", "vix_change_5d", "vix_ma20_ratio"]].copy()
+        features = _merge_feat(features, vix_feat)
 
     # SOX 費城半導體
     sox = _load_index(index_dir, "index_SOX.csv")
     if sox is not None:
         sox = sox.copy()
-        sox["sox_return_5d"] = sox["Close"].pct_change(5).astype(np.float32)
-        sox_feat = sox[["Date", "sox_return_5d"]].copy()
-        if features is not None:
-            features = pd.merge_asof(
-                features.sort_values("Date"),
-                sox_feat.sort_values("Date"),
-                on="Date", direction="backward",
-            )
-        else:
-            features = sox_feat
+        c = pd.to_numeric(sox["Close"], errors="coerce")
+        sox["sox_return_5d"] = c.pct_change(5).astype(np.float32)
+        ma20 = c.rolling(20, min_periods=10).mean()
+        sox["sox_above_ma20"] = (c > ma20).astype(np.float32)
+        sox_feat = sox[["Date", "sox_return_5d", "sox_above_ma20"]].copy()
+        features = _merge_feat(features, sox_feat)
+
+    # GSPC S&P 500
+    gspc = _load_index(index_dir, "index_GSPC.csv")
+    if gspc is not None:
+        gspc = gspc.copy()
+        c = pd.to_numeric(gspc["Close"], errors="coerce")
+        gspc["gspc_return_5d"] = c.pct_change(5).astype(np.float32)
+        ma20 = c.rolling(20, min_periods=10).mean()
+        gspc["gspc_above_ma20"] = (c > ma20).astype(np.float32)
+        gspc_feat = gspc[["Date", "gspc_return_5d", "gspc_above_ma20"]].copy()
+        features = _merge_feat(features, gspc_feat)
 
     # USD/TWD
     usdtwd = _load_index(index_dir, "index_USDTWDX.csv")
@@ -78,14 +101,7 @@ def _build_market_features(index_dir: str) -> pd.DataFrame:
         usdtwd = usdtwd.copy()
         usdtwd["usdtwd_change_5d"] = usdtwd["Close"].pct_change(5).astype(np.float32)
         usd_feat = usdtwd[["Date", "usdtwd_change_5d"]].copy()
-        if features is not None:
-            features = pd.merge_asof(
-                features.sort_values("Date"),
-                usd_feat.sort_values("Date"),
-                on="Date", direction="backward",
-            )
-        else:
-            features = usd_feat
+        features = _merge_feat(features, usd_feat)
 
     if features is None:
         features = pd.DataFrame(columns=["Date"] + MARKET_FEATURE_COLS)
@@ -133,4 +149,15 @@ MARKET_FEATURE_COLS = [
     "vix_change_5d",
     "sox_return_5d",
     "usdtwd_change_5d",
+    # Market regime features
+    "twii_above_ma5",
+    "twii_above_ma20",
+    "twii_above_ma60",
+    "twii_ma5_slope",
+    "twii_ma20_slope",
+    "twii_volatility_20d",
+    "vix_ma20_ratio",
+    "gspc_return_5d",
+    "gspc_above_ma20",
+    "sox_above_ma20",
 ]

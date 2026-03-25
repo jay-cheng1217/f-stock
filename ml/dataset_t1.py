@@ -46,6 +46,16 @@ T1_MARKET_FEATURE_COLUMNS = [
     "vix_return_5d",
     "usdtwd_return_1d",
     "usdtwd_return_5d",
+    # Market regime features
+    "twii_above_ma5",
+    "twii_above_ma20",
+    "twii_above_ma60",
+    "twii_ma5_slope",
+    "twii_ma20_slope",
+    "twii_volatility_20d",
+    "vix_ma20_ratio",
+    "gspc_above_ma20",
+    "sox_above_ma20",
 ]
 
 T1_BASE_FEATURE_COLUMNS = [
@@ -194,11 +204,30 @@ def _build_market_features() -> pd.DataFrame:
         if idx is None or idx.empty:
             continue
         idx = idx.copy()
+        close = pd.to_numeric(idx["Close"], errors="coerce")
         if keep_level:
-            idx[f"{prefix}_level"] = pd.to_numeric(idx["Close"], errors="coerce").astype(np.float32)
-        idx[f"{prefix}_return_1d"] = idx["Close"].pct_change(1).astype(np.float32)
-        idx[f"{prefix}_return_5d"] = idx["Close"].pct_change(5).astype(np.float32)
-        cols = ["Date"] + [col for col in idx.columns if col.startswith(prefix)]
+            idx[f"{prefix}_level"] = close.astype(np.float32)
+        idx[f"{prefix}_return_1d"] = close.pct_change(1).astype(np.float32)
+        idx[f"{prefix}_return_5d"] = close.pct_change(5).astype(np.float32)
+
+        # Market regime features for specific indices
+        if prefix in ("twii", "gspc", "sox"):
+            ma5 = close.rolling(5, min_periods=3).mean()
+            ma20 = close.rolling(20, min_periods=10).mean()
+            ma60 = close.rolling(60, min_periods=30).mean()
+            idx[f"{prefix}_above_ma20"] = (close > ma20).astype(np.float32)
+            if prefix == "twii":
+                idx[f"{prefix}_above_ma5"] = (close > ma5).astype(np.float32)
+                idx[f"{prefix}_above_ma60"] = (close > ma60).astype(np.float32)
+                idx[f"{prefix}_ma5_slope"] = (ma5.pct_change(3) * 100).clip(-5, 5).astype(np.float32)
+                idx[f"{prefix}_ma20_slope"] = (ma20.pct_change(5) * 100).clip(-5, 5).astype(np.float32)
+                idx[f"{prefix}_volatility_20d"] = close.pct_change().rolling(20, min_periods=10).std().astype(np.float32)
+
+        if prefix == "vix":
+            vix_ma20 = close.rolling(20, min_periods=10).mean()
+            idx["vix_ma20_ratio"] = (close / vix_ma20.replace(0, np.nan)).clip(0.5, 2.0).astype(np.float32)
+
+        cols = ["Date"] + [col for col in idx.columns if col.startswith(prefix) or col == "vix_ma20_ratio"]
         feat = idx[cols]
         merged = (
             feat
@@ -389,8 +418,9 @@ def build_t1_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
 
     dataset = pd.concat(frames, ignore_index=True)
     dataset = compute_sector_features(dataset)
-    dataset = dataset.dropna(subset=["t1_high_return", "t1_hit_3pct"]).copy()
+    dataset = dataset.dropna(subset=["t1_high_return", "t1_hit_3pct", "t1_close_positive"]).copy()
     dataset["t1_hit_3pct"] = dataset["t1_hit_3pct"].astype(np.int8)
+    dataset["t1_close_positive"] = dataset["t1_close_positive"].astype(np.int8)
     dataset = _finalize_frame(dataset)
 
     if verbose:
