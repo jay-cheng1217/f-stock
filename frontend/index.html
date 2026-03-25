@@ -293,6 +293,7 @@
     <div class="tab" data-section="portfolio" onclick="switchTab('portfolio')">實戰帳本</div>
     <div class="tab" data-section="t1-predictions" onclick="switchTab('t1-predictions')">T+1 預測</div>
     <div class="tab" data-section="t1-portfolio" onclick="switchTab('t1-portfolio')">T+1 帳本</div>
+    <div class="tab" data-section="cross-confirm" onclick="switchTab('cross-confirm')">雙重確認</div>
     <div class="tab" data-section="rankings" onclick="switchTab('rankings')">排行榜</div>
     <div class="tab" data-section="stock-detail" onclick="switchTab('stock-detail')">個股分析</div>
     <div class="tab" data-section="backtest" onclick="switchTab('backtest')">回測績效</div>
@@ -485,6 +486,36 @@
         </div>
     </div>
 
+    <!-- ===== Cross Confirm ===== -->
+    <div id="section-cross-confirm" class="section">
+        <div class="card">
+            <div class="card-title prediction-card-title">
+                <span>T+1 × 20D 雙重確認</span>
+                <button type="button" class="dl-btn" onclick="loadCrossConfirm()">重新載入</button>
+            </div>
+            <div style="font-size:12px;color:#8899aa;margin-bottom:10px;line-height:1.8">
+                兩套模型同時看多的標的，T+1 提供短線動能確認，20D 提供中期方向確認。
+            </div>
+            <div class="grid-4" id="crossConfirmStats" style="margin-bottom:12px;"></div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>標的</th>
+                        <th>T+1 機率</th>
+                        <th>T+1 排名</th>
+                        <th>20D 預測報酬</th>
+                        <th>20D 推薦</th>
+                        <th>綜合分數</th>
+                        <th>標籤</th>
+                    </tr>
+                </thead>
+                <tbody id="crossConfirmBody">
+                    <tr><td colspan="7" style="text-align:center;color:#8899aa;">尚未載入...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- ===== Rankings ===== -->
     <div id="section-rankings" class="section">
         <div style="margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap;">
@@ -565,6 +596,7 @@ function switchTab(name) {
     if (name === 'portfolio') loadPortfolio();
     if (name === 't1-predictions') loadT1Predictions();
     if (name === 't1-portfolio') loadT1Portfolio();
+    if (name === 'cross-confirm') loadCrossConfirm();
     if (name === 'rankings') loadRanking('foreign_buy');
     if (name === 'backtest') loadBacktest();
 }
@@ -1056,6 +1088,58 @@ async function loadT1Portfolio() {
         table.innerHTML = html || '<tr><td colspan="8" style="text-align:center;color:#8899aa;">尚未產生 T+1 帳本資料</td></tr>';
     } catch (e) {
         table.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#ef5350;">載入失敗: ${e.message || e}</td></tr>`;
+    }
+}
+
+// ===== Cross Confirm =====
+async function loadCrossConfirm() {
+    const stats = document.getElementById('crossConfirmStats');
+    const table = document.getElementById('crossConfirmBody');
+    if (!stats || !table) return;
+
+    stats.innerHTML = '';
+    table.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#8899aa;">載入中...</td></tr>';
+
+    try {
+        const resp = await fetchJson('/api/predictions/cross-confirm?top_n=20');
+        if (resp.status !== 'success') {
+            table.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#ef5350;">${resp.error || '載入失敗'}</td></tr>`;
+            return;
+        }
+
+        stats.innerHTML = `
+            <div class="card index-card">
+                <div class="name">總評估股數</div>
+                <div class="value">${resp.total || 0}</div>
+            </div>
+            <div class="card index-card">
+                <div class="name">雙重確認</div>
+                <div class="value" style="color:#7bd389;">${resp.confirmed_count || 0}</div>
+                <div class="change">兩模型同時看多</div>
+            </div>
+            <div class="card index-card">
+                <div class="name">訊號衝突</div>
+                <div class="value" style="color:#ffd166;">${resp.conflict_count || 0}</div>
+                <div class="change">模型方向不一致</div>
+            </div>
+        `;
+
+        let html = '';
+        (resp.data || []).forEach((row) => {
+            const d20Color = row.d20_pred_return > 0 ? '#ef5350' : row.d20_pred_return < 0 ? '#26a69a' : '#ccc';
+            html += `<tr>
+                <td>${tickerLink(row.ticker)}</td>
+                <td>${row.t1_prob != null ? (row.t1_prob * 100).toFixed(1) + '%' : '-'}</td>
+                <td>${row.t1_rank != null ? '#' + row.t1_rank : '-'}</td>
+                <td style="color:${d20Color};font-weight:700;">${row.d20_pred_return != null ? fmtPct(row.d20_pred_return * 100) : '-'}</td>
+                <td>${recBadge(row.d20_recommendation)}</td>
+                <td style="font-weight:700;">${row.cross_score != null ? row.cross_score.toFixed(2) : '-'}</td>
+                <td>${row.cross_label || '-'}</td>
+            </tr>`;
+        });
+        table.innerHTML = html || '<tr><td colspan="7" style="text-align:center;color:#8899aa;">目前無雙重確認標的</td></tr>';
+    } catch (e) {
+        table.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#ef5350;">載入失敗: ${e.message || e}</td></tr>`;
     }
 }
 
