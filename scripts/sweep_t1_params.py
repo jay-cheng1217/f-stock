@@ -69,6 +69,7 @@ def prepare_scored_folds(
     val_months: int,
     test_months: int,
     device: str,
+    target: str = "t1_close_positive",
 ) -> tuple[pd.DataFrame, list[str], list[dict], str]:
     """Train one walk-forward score cache for later rule replays."""
     dataset = build_t1_dataset(max_stocks=max_stocks, verbose=True)
@@ -89,12 +90,12 @@ def prepare_scored_folds(
         list(iterator),
         desc="Train T+1 folds",
     ):
-        if train_df["t1_hit_3pct"].nunique() < 2 or val_df["t1_hit_3pct"].nunique() < 2:
+        if train_df[target].nunique() < 2 or val_df[target].nunique() < 2:
             continue
 
-        model, params = train_binary_fold(train_df, val_df, feature_cols, device=actual_device)
+        model, params = train_binary_fold(train_df, val_df, feature_cols, device=actual_device, target_col=target)
         actual_device = params["device"]
-        scored = score_fold_predictions(model=model, test_df=test_df, feature_cols=feature_cols)
+        scored = score_fold_predictions(model=model, test_df=test_df, feature_cols=feature_cols, target_col=target)
 
         scored_folds.append(
             {
@@ -112,6 +113,7 @@ def prepare_scored_folds(
 
 def run_t1_param_sweep(
     max_stocks: int = 0,
+    target: str = "t1_close_positive",
     take_profits: list[float] | None = None,
     stop_losses: list[float | None] | None = None,
     min_probs: list[float] | None = None,
@@ -148,6 +150,7 @@ def run_t1_param_sweep(
         val_months=val_months,
         test_months=test_months,
         device=device,
+        target=target,
     )
 
     results = []
@@ -166,6 +169,7 @@ def run_t1_param_sweep(
                 stop_loss=stop_loss,
                 friction=friction,
                 ambiguous_fill=fill_mode,
+                target_col=target,
             )
             summary.fold = fold_info["fold"]
             summary.test_month = fold_info["test_month"]
@@ -233,7 +237,8 @@ def run_t1_param_sweep(
                 str(pd.Timestamp(dataset["Date"].min()).date()),
                 str(pd.Timestamp(dataset["Date"].max()).date()),
             ],
-            "positive_rate": float(dataset["t1_hit_3pct"].mean()),
+            "positive_rate": float(dataset[target].mean()),
+            "target": target,
             "feature_count": len(feature_cols),
         },
         "walk_forward": {
@@ -289,6 +294,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sweep T+1 trading-rule parameters.")
     parser.add_argument("--max-stocks", type=int, default=0, help="Limit the universe size for quick tests.")
     parser.add_argument(
+        "--target",
+        default="t1_close_positive",
+        choices=["t1_close_positive", "t1_hit_3pct"],
+        help="Binary target column for the classifier.",
+    )
+    parser.add_argument(
         "--take-profits",
         default="0.02,0.03,0.04,0.05",
         help="Comma-separated take-profit grid.",
@@ -324,6 +335,7 @@ if __name__ == "__main__":
 
     run_t1_param_sweep(
         max_stocks=args.max_stocks,
+        target=args.target,
         take_profits=[float(v) for v in _parse_float_grid(args.take_profits)],
         stop_losses=_parse_float_grid(args.stop_losses, allow_none=True),
         min_probs=[float(v) for v in _parse_float_grid(args.min_probs)],

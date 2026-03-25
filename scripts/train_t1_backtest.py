@@ -1,7 +1,8 @@
 """T+1 momentum training + friction-aware walk-forward backtest.
 
-This script trains a binary LightGBM classifier on ``t1_hit_3pct`` and
-evaluates it with practical next-day trading rules:
+This script trains a binary LightGBM classifier on a configurable target
+(default: ``t1_close_positive``) and evaluates it with practical next-day
+trading rules:
 
 1. Enter at today's close.
 2. Exit tomorrow at:
@@ -10,8 +11,13 @@ evaluates it with practical next-day trading rules:
    - otherwise tomorrow's close.
 3. Subtract a fixed friction cost from every round-trip trade.
 
+Supported targets:
+    t1_close_positive  — binary: next close > today's close (~46% rate)
+    t1_hit_3pct        — binary: next high ≥ +3% vs today's close (~15% rate)
+
 Usage examples:
     python scripts/train_t1_backtest.py
+    python scripts/train_t1_backtest.py --target t1_hit_3pct
     python scripts/train_t1_backtest.py --top 10 --min-prob 0.70
     python scripts/train_t1_backtest.py --max-stocks 100 --device cpu
 """
@@ -38,6 +44,7 @@ from ml.config import MODEL_DIR, REPORT_DIR
 from ml.dataset_t1 import T1_FEATURE_COLUMNS, build_t1_dataset
 
 
+DEFAULT_TARGET = "t1_close_positive"
 DEFAULT_TOP_N = 20
 DEFAULT_MIN_PROB = 0.0
 DEFAULT_TAKE_PROFIT = 0.03
@@ -139,12 +146,13 @@ def train_binary_fold(
     val_df: pd.DataFrame,
     feature_cols: list[str],
     device: str = "gpu",
+    target_col: str = DEFAULT_TARGET,
 ) -> tuple[lgb.Booster, dict]:
     """Train one T+1 binary classifier fold."""
     X_train = train_df[feature_cols].values
-    y_train = train_df["t1_hit_3pct"].astype(int).values
+    y_train = train_df[target_col].astype(int).values
     X_val = val_df[feature_cols].values
-    y_val = val_df["t1_hit_3pct"].astype(int).values
+    y_val = val_df[target_col].astype(int).values
 
     pos_count = max(int(y_train.sum()), 1)
     neg_count = max(len(y_train) - pos_count, 1)
@@ -260,20 +268,19 @@ def score_fold_predictions(
     model: lgb.Booster,
     test_df: pd.DataFrame,
     feature_cols: list[str],
+    target_col: str = DEFAULT_TARGET,
 ) -> pd.DataFrame:
     """Attach predicted hit probabilities to one fold."""
-    scored = test_df[
-        [
-            "ticker",
-            "Date",
-            "Close",
-            "t1_open_return",
-            "t1_close_return",
-            "t1_high_return",
-            "t1_low_return",
-            "t1_hit_3pct",
-        ]
-    ].copy()
+    base_cols = [
+        "ticker", "Date", "Close",
+        "t1_open_return", "t1_close_return", "t1_high_return", "t1_low_return",
+    ]
+    if target_col not in base_cols:
+        base_cols.append(target_col)
+    # Also include t1_hit_3pct for trade-level hit tracking if available
+    if "t1_hit_3pct" not in base_cols and "t1_hit_3pct" in test_df.columns:
+        base_cols.append("t1_hit_3pct")
+    scored = test_df[[c for c in base_cols if c in test_df.columns]].copy()
     scored["hit_prob"] = np.clip(model.predict(test_df[feature_cols].values), 1e-6, 1.0 - 1e-6)
     scored["pred_label"] = (scored["hit_prob"] >= 0.5).astype(np.int8)
     return scored
@@ -287,9 +294,10 @@ def evaluate_scored_fold(
     stop_loss: float | None,
     friction: float,
     ambiguous_fill: str,
+    target_col: str = DEFAULT_TARGET,
 ) -> tuple[FoldSummary, list[dict], list[dict]]:
     """Replay one scored fold under a given trading rule set."""
-    y_true = scored["t1_hit_3pct"].astype(int).values
+    y_true = scored[target_col].astype(int).values
     y_prob = scored["hit_prob"].values
     y_pred = scored["pred_label"].values
 
@@ -347,7 +355,7 @@ def evaluate_scored_fold(
                     "ticker": row["ticker"],
                     "close": float(row["Close"]),
                     "hit_prob": float(row["hit_prob"]),
-                    "t1_hit_3pct": int(row["t1_hit_3pct"]),
+                    "target_label": int(row[target_col]),
                     "t1_open_return": _safe_float(row["t1_open_return"]),
                     "t1_high_return": _safe_float(row["t1_high_return"]),
                     "t1_low_return": _safe_float(row["t1_low_return"]),
@@ -409,7 +417,7 @@ def evaluate_scored_fold(
         logloss=_safe_float(ll) or np.nan,
         precision_at_50=precision,
         recall_at_50=recall,
-        selected_hit_rate=float(trade_df["t1_hit_3pct"].mean()),
+        selected_hit_rate=float(trade_df["target_label"].mean()),
         trade_win_rate=float((trade_df["net_return"] > 0).mean()),
         avg_net_return=float(trade_df["net_return"].mean()),
         avg_day_return=float(daily_df["portfolio_net_return"].mean()) if not daily_df.empty else 0.0,
@@ -431,9 +439,10 @@ def evaluate_fold(
     stop_loss: float | None,
     friction: float,
     ambiguous_fill: str,
+    target_col: str = DEFAULT_TARGET,
 ) -> tuple[FoldSummary, list[dict], list[dict]]:
     """Score a test fold and simulate T+1 trades."""
-    scored = score_fold_predictions(model=model, test_df=test_df, feature_cols=feature_cols)
+    scored = score_fold_predictions(model=model, test_df=test_df, feature_cols=feature_cols, target_col=target_col)
     return evaluate_scored_fold(
         scored=scored,
         top_n=top_n,
@@ -442,6 +451,7 @@ def evaluate_fold(
         stop_loss=stop_loss,
         friction=friction,
         ambiguous_fill=ambiguous_fill,
+        target_col=target_col,
     )
 
 
@@ -457,7 +467,7 @@ def summarize_backtest_overall(
 
     global_avg_expectancy = float(trade_df["net_return"].mean()) if not trade_df.empty else 0.0
     global_trade_win_rate = float((trade_df["net_return"] > 0).mean()) if not trade_df.empty else 0.0
-    global_selected_hit_rate = float(trade_df["t1_hit_3pct"].mean()) if not trade_df.empty else 0.0
+    global_selected_hit_rate = float(trade_df["target_label"].mean()) if not trade_df.empty else 0.0
     global_take_profit_rate = (
         float(trade_df["exit_reason"].str.contains("take_profit").mean()) if not trade_df.empty else 0.0
     )
@@ -520,6 +530,7 @@ def _train_final_model(
     device: str,
     save_model: bool,
     backtest_meta: dict,
+    target_col: str = DEFAULT_TARGET,
 ) -> tuple[str | None, str | None, str | None]:
     if not save_model:
         return None, None, None
@@ -531,7 +542,7 @@ def _train_final_model(
         train_df = dataset.iloc[:- max(1, len(dataset) // 10)].copy()
         val_df = dataset.iloc[-max(1, len(dataset) // 10):].copy()
 
-    model, params = train_binary_fold(train_df, val_df, feature_cols, device=device)
+    model, params = train_binary_fold(train_df, val_df, feature_cols, device=device, target_col=target_col)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     os.makedirs(MODEL_DIR, exist_ok=True)
@@ -551,7 +562,7 @@ def _train_final_model(
 
     meta = {
         "model_file": model_path,
-        "model_version": "t1_binary_hit3pct",
+        "model_version": f"t1_binary_{target_col}",
         "trained_at": timestamp,
         "device": params["device"],
         "feature_columns": feature_cols,
@@ -562,7 +573,7 @@ def _train_final_model(
             str(pd.Timestamp(dataset["Date"].min()).date()),
             str(pd.Timestamp(dataset["Date"].max()).date()),
         ],
-        "target": "t1_hit_3pct",
+        "target": target_col,
         "trade_rules": backtest_meta["trade_rules"],
         "walk_forward": backtest_meta["walk_forward"],
         "backtest_summary": backtest_meta["overall"],
@@ -576,6 +587,7 @@ def _train_final_model(
 
 def run_t1_backtest(
     max_stocks: int = 0,
+    target: str = DEFAULT_TARGET,
     top_n: int = DEFAULT_TOP_N,
     min_prob: float = DEFAULT_MIN_PROB,
     take_profit: float = DEFAULT_TAKE_PROFIT,
@@ -589,9 +601,9 @@ def run_t1_backtest(
     save_final_model: bool = True,
     save_reports: bool = True,
 ):
-    """Train and backtest the T+1 hit-3% classifier."""
+    """Train and backtest the T+1 binary classifier."""
     print("=" * 78)
-    print("  T+1 Momentum Backtest (binary hit-3% classifier)")
+    print(f"  T+1 Momentum Backtest (target: {target})")
     print("=" * 78)
     print(
         f"  Rules: top={top_n}, min_prob={min_prob:.2f}, "
@@ -606,7 +618,7 @@ def run_t1_backtest(
 
     feature_cols = _ensure_feature_columns(dataset)
     print(f"  Features: {len(feature_cols)}")
-    print(f"  Positive rate: {dataset['t1_hit_3pct'].mean() * 100:.2f}%")
+    print(f"  Target: {target}, positive rate: {dataset[target].mean() * 100:.2f}%")
 
     fold_summaries: list[FoldSummary] = []
     all_trade_records: list[dict] = []
@@ -619,11 +631,11 @@ def run_t1_backtest(
         val_months=val_months,
         test_months=test_months,
     ):
-        if train_df["t1_hit_3pct"].nunique() < 2 or val_df["t1_hit_3pct"].nunique() < 2:
+        if train_df[target].nunique() < 2 or val_df[target].nunique() < 2:
             print(f"  Fold {fold_idx:02d} {pd.Timestamp(test_start).date()}: skipped (single-class train/val)")
             continue
 
-        model, params = train_binary_fold(train_df, val_df, feature_cols, device=actual_device)
+        model, params = train_binary_fold(train_df, val_df, feature_cols, device=actual_device, target_col=target)
         actual_device = params["device"]
 
         summary, trade_records, daily_records = evaluate_fold(
@@ -636,6 +648,7 @@ def run_t1_backtest(
             stop_loss=stop_loss,
             friction=friction,
             ambiguous_fill=ambiguous_fill,
+            target_col=target,
         )
         summary.fold = fold_idx
         summary.test_month = str(pd.Timestamp(test_start).date())
@@ -678,7 +691,8 @@ def run_t1_backtest(
                 str(pd.Timestamp(dataset["Date"].min()).date()),
                 str(pd.Timestamp(dataset["Date"].max()).date()),
             ],
-            "positive_rate": float(dataset["t1_hit_3pct"].mean()),
+            "positive_rate": float(dataset[target].mean()),
+            "target": target,
         },
         "walk_forward": {
             "train_months": train_months,
@@ -719,6 +733,7 @@ def run_t1_backtest(
         device=actual_device,
         save_model=save_final_model,
         backtest_meta=result,
+        target_col=target,
     )
 
     print("\n" + "=" * 78)
@@ -753,6 +768,12 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Train and backtest the T+1 momentum classifier.")
     parser.add_argument("--max-stocks", type=int, default=0, help="Limit the universe size for quick tests.")
+    parser.add_argument(
+        "--target",
+        default=DEFAULT_TARGET,
+        choices=["t1_close_positive", "t1_hit_3pct"],
+        help="Binary target column for the classifier.",
+    )
     parser.add_argument("--top", type=int, default=DEFAULT_TOP_N, help="Top N names to trade each day.")
     parser.add_argument("--min-prob", type=float, default=DEFAULT_MIN_PROB, help="Minimum hit probability to enter.")
     parser.add_argument("--take-profit", type=float, default=DEFAULT_TAKE_PROFIT, help="Take-profit threshold.")
@@ -780,6 +801,7 @@ if __name__ == "__main__":
     stop_loss = args.stop_loss if args.stop_loss and args.stop_loss > 0 else None
     run_t1_backtest(
         max_stocks=args.max_stocks,
+        target=args.target,
         top_n=args.top,
         min_prob=args.min_prob,
         take_profit=args.take_profit,
