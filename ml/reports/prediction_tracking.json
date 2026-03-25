@@ -92,12 +92,43 @@
         "top30_by_up_prob_avg_return": -6.89,
         "top30_win_rate": 20.0
       }
+    },
+    {
+      "prediction_date": "2026-03-18",
+      "verified_at": "2026-03-26",
+      "days_elapsed": 8,
+      "total_stocks": 1080,
+      "v1": {
+        "n_verified": 1061,
+        "signal_accuracy": {
+          "UP": {
+            "count": 41,
+            "correct": 12,
+            "hit_rate": 29.3,
+            "avg_actual_return": -4.43
+          },
+          "FLAT": {
+            "count": 135,
+            "correct": 72,
+            "hit_rate": 53.3,
+            "avg_actual_return": -1.1
+          },
+          "DOWN": {
+            "count": 885,
+            "correct": 508,
+            "hit_rate": 57.4,
+            "avg_actual_return": -1.59
+          }
+        },
+        "top30_by_up_prob_avg_return": -6.18,
+        "top30_win_rate": 33.3
+      }
     }
   ],
   "summary": {
-    "last_updated": "2026-03-25 06:26",
+    "last_updated": "2026-03-26 06:28",
     "v1": {
-      "n_periods_verified": 3
+      "n_periods_verified": 4
     }
   }
 }
