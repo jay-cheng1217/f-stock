@@ -20,6 +20,7 @@ BASE_DIR = r"F:\stock"
 sys.path.insert(0, BASE_DIR)
 
 from ml.config import MODEL_DIR
+from ml.cross_confirm import get_dual_confirmed_tickers
 from ml.predict import apply_sector_cap, _sort_prediction_df
 from scripts.update_paper_portfolio import (
     DEFAULT_DB_PATH,
@@ -537,6 +538,38 @@ def _render_t1_portfolio_rows(df: pd.DataFrame) -> str:
     return "\n".join(rows)
 
 
+def _render_cross_confirm_rows(items: list[dict]) -> str:
+    rows = []
+    for i, item in enumerate(items, 1):
+        ticker = html.escape(str(item.get("ticker", "")))
+        t1_prob = f"{float(item.get('t1_prob', 0)) * 100:.1f}%" if item.get("t1_prob") else "-"
+        t1_rank = f"#{item['t1_rank']}" if item.get("t1_rank") else "-"
+        d20_ret = _fmt_pct(float(item.get("d20_pred_return", 0)) * 100) if item.get("d20_pred_return") else "-"
+        d20_rec = html.escape(str(item.get("d20_recommendation", "")))
+        cross_score = f"{float(item.get('cross_score', 0)):.4f}" if item.get("cross_score") else "-"
+        setup = html.escape(str(item.get("t1_setup_tags", "") or "-"))
+        rows.append(
+            f"""
+            <tr>
+              <td class="col-rank">#{i}</td>
+              <td class="col-target">
+                <div class="cell-title">{ticker}</div>
+                <div class="cell-sub">T+1 排名 {t1_rank} / 機率 {t1_prob}</div>
+                <div class="cell-badges">
+                  <span class="{_badge_class(d20_rec, kind='recommendation')}">{d20_rec}</span>
+                </div>
+                <div class="cell-sub" style="margin-top:4px;">型態：{setup}</div>
+              </td>
+              <td class="col-return">
+                <div class="cell-title">{d20_ret}</div>
+                <div class="cell-sub">綜合分數 {cross_score}</div>
+              </td>
+            </tr>
+            """
+        )
+    return "\n".join(rows)
+
+
 def build_email_html(
     prediction_date: str,
     all_pred_df: pd.DataFrame,
@@ -547,6 +580,7 @@ def build_email_html(
     t1_df: pd.DataFrame | None = None,
     t1_portfolio_summary: dict[str, object] | None = None,
     t1_portfolio_df: pd.DataFrame | None = None,
+    cross_confirmed: list[dict] | None = None,
 ) -> str:
     sentiment = _html_cell(all_pred_df["market_sentiment"].iloc[0]) if "market_sentiment" in all_pred_df.columns else "-"
     q25 = (
@@ -695,6 +729,31 @@ def build_email_html(
 """
     else:
         t1_portfolio_section = ""
+
+    # Cross-confirmation section
+    _cross = cross_confirmed or []
+    if _cross:
+        cross_count = len(_cross)
+        cross_section = f"""
+    <div class="section">
+      <h2>T+1 x 20D 雙重確認</h2>
+      <div class="muted">以下 {cross_count} 檔同時被 T+1（次日動能）和 20D（中期趨勢）模型看好，訊號一致性較高。</div>
+      <table class="data-table leaderboard-table">
+        <thead>
+          <tr>
+            <th class="col-rank">名次</th>
+            <th class="col-target">標的 / T+1 排名 / 20D 推薦</th>
+            <th class="col-return">20D 預估報酬 / 綜合分數</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_render_cross_confirm_rows(_cross)}
+        </tbody>
+      </table>
+    </div>
+"""
+    else:
+        cross_section = ""
 
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"""<!DOCTYPE html>
@@ -1024,6 +1083,8 @@ def build_email_html(
 
     {t1_section}
 
+    {cross_section}
+
     <div class="section">
       <h2>20 日實戰帳本</h2>
       <div class="grid">
@@ -1083,6 +1144,12 @@ def send_latest_email(
     t1_date, t1_df = _load_t1_leaderboard(top_n=20)
     t1_portfolio_summary, t1_portfolio_df = _load_t1_portfolio_snapshot()
 
+    # Cross-model confirmation (T+1 x 20D)
+    try:
+        cross_confirmed = get_dual_confirmed_tickers(top_n=10)
+    except Exception:
+        cross_confirmed = []
+
     html_body = build_email_html(
         prediction_date=prediction_date,
         all_pred_df=all_pred_df,
@@ -1093,6 +1160,7 @@ def send_latest_email(
         t1_df=t1_df,
         t1_portfolio_summary=t1_portfolio_summary,
         t1_portfolio_df=t1_portfolio_df,
+        cross_confirmed=cross_confirmed,
     )
     preview_target = preview_path or DEFAULT_PREVIEW_PATH
     os.makedirs(os.path.dirname(preview_target), exist_ok=True)

@@ -10,6 +10,7 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from ml.config import DAILY_K_DIR, MODEL_DIR
+from ml.cross_confirm import get_dual_confirmed_tickers, load_cross_confirmed
 from ml.predict_t1 import (
     load_latest_t1_model,
     load_latest_t1_predictions_csv,
@@ -22,10 +23,10 @@ router = APIRouter(tags=["t1"])
 DEFAULT_T1_RULES = {
     "top_n": 20,
     "min_prob": 0.0,
-    "take_profit": 0.03,
-    "stop_loss": 0.02,
-    "friction": 0.006,
-    "ambiguous_fill": "stop_first",
+    "take_profit": None,
+    "stop_loss": None,
+    "friction": 0.004,
+    "ambiguous_fill": "close",
 }
 
 
@@ -52,10 +53,14 @@ def _extract_trade_rules(meta: dict[str, Any] | None) -> dict[str, Any]:
     if stop_loss in ("", 0):
         stop_loss = None
 
+    take_profit = trade_rules.get("take_profit")
+    if take_profit in ("", 0):
+        take_profit = None
+
     return {
         "top_n": int(selection.get("top_n", DEFAULT_T1_RULES["top_n"]) or DEFAULT_T1_RULES["top_n"]),
         "min_prob": float(selection.get("min_prob", DEFAULT_T1_RULES["min_prob"]) or DEFAULT_T1_RULES["min_prob"]),
-        "take_profit": float(trade_rules.get("take_profit", DEFAULT_T1_RULES["take_profit"]) or DEFAULT_T1_RULES["take_profit"]),
+        "take_profit": float(take_profit) if take_profit is not None else None,
         "stop_loss": float(stop_loss) if stop_loss is not None else None,
         "friction": float(trade_rules.get("friction", DEFAULT_T1_RULES["friction"]) or DEFAULT_T1_RULES["friction"]),
         "ambiguous_fill": str(trade_rules.get("ambiguous_fill", DEFAULT_T1_RULES["ambiguous_fill"])),
@@ -134,7 +139,7 @@ def _load_daily_price_frame(ticker: str) -> pd.DataFrame:
 def _simulate_t1_trade(
     entry_close: float,
     next_bar: pd.Series,
-    take_profit: float,
+    take_profit: float | None,
     friction: float,
     stop_loss: float | None,
     ambiguous_fill: str,
@@ -144,13 +149,13 @@ def _simulate_t1_trade(
     high_ret = float(next_bar["High"] / entry_close - 1.0)
     low_ret = float(next_bar["Low"] / entry_close - 1.0)
 
-    hit_take_profit = high_ret >= take_profit
+    hit_take_profit = take_profit is not None and high_ret >= take_profit
     hit_stop_loss = stop_loss is not None and low_ret <= -stop_loss
 
     if stop_loss is not None and open_ret <= -stop_loss:
         gross_return = open_ret
         exit_reason = "gap_stop"
-    elif open_ret >= take_profit:
+    elif take_profit is not None and open_ret >= take_profit:
         gross_return = take_profit
         exit_reason = "gap_take_profit"
     elif hit_take_profit and hit_stop_loss:
@@ -487,3 +492,40 @@ def download_t1_portfolio():
         )
     except Exception as exc:
         return JSONResponse({"error": str(exc)}, status_code=500)
+
+
+@router.get("/api/predictions/cross-confirm")
+def get_cross_confirmed(top_n: int = 10):
+    """Return stocks confirmed by both T+1 and 20D models."""
+    try:
+        merged = load_cross_confirmed()
+        if merged.empty:
+            return {"status": "success", "data": [], "total": 0, "confirmed_count": 0}
+
+        confirmed = merged[merged["cross_both_buy"]].head(top_n)
+        conflict = merged[merged["cross_conflict"]]
+
+        records = []
+        for _, row in confirmed.iterrows():
+            records.append({
+                "ticker": str(row["ticker"]),
+                "t1_prob": round(float(row.get("t1_prob", 0)), 4) if pd.notna(row.get("t1_prob")) else None,
+                "t1_rank": int(row["t1_rank"]) if pd.notna(row.get("t1_rank")) else None,
+                "d20_pred_return": round(float(row.get("d20_pred_return", 0)), 4) if pd.notna(row.get("d20_pred_return")) else None,
+                "d20_recommendation": str(row.get("d20_recommendation", "")),
+                "cross_score": round(float(row.get("cross_score", 0)), 4),
+                "cross_label": str(row.get("cross_label", "")),
+            })
+
+        return {
+            "status": "success",
+            "total": len(merged),
+            "confirmed_count": len(merged[merged["cross_both_buy"]]),
+            "conflict_count": len(conflict),
+            "data": records,
+        }
+    except Exception as exc:
+        return JSONResponse(
+            content={"status": "error", "error": str(exc), "data": []},
+            status_code=500,
+        )
