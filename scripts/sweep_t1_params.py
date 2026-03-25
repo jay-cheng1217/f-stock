@@ -33,11 +33,11 @@ from scripts.train_t1_backtest import (
 )
 
 
-DEFAULT_TAKE_PROFITS = [0.02, 0.03, 0.04, 0.05]
-DEFAULT_STOP_LOSSES = [0.015, 0.02, 0.03, 0.05, None]
+DEFAULT_TAKE_PROFITS = [None, 0.03, 0.05]
+DEFAULT_STOP_LOSSES = [None, 0.02, 0.03]
 DEFAULT_MIN_PROBS = [0.50, 0.55, 0.60, 0.65, 0.70]
 DEFAULT_TOP_NS = [1, 3, 5, 10, 20]
-DEFAULT_AMBIGUOUS_FILLS = ["stop_first", "target_first", "close"]
+DEFAULT_AMBIGUOUS_FILLS = ["close"]
 
 
 def _parse_float_grid(text: str, allow_none: bool = False) -> list[float | None]:
@@ -187,6 +187,7 @@ def run_t1_param_sweep(
         results.append(
             {
                 "take_profit": take_profit,
+                "take_profit_label": _format_rule_label(take_profit),
                 "stop_loss": stop_loss,
                 "stop_loss_label": _format_rule_label(stop_loss),
                 "min_prob": min_prob,

@@ -102,10 +102,10 @@
       "top_n": 20,
       "min_prob": 0.0
     },
-    "take_profit": 0.03,
-    "stop_loss": 0.02,
-    "friction": 0.006,
-    "ambiguous_fill": "stop_first"
+    "take_profit": null,
+    "stop_loss": null,
+    "friction": 0.004,
+    "ambiguous_fill": "close"
   },
   "walk_forward": {
     "train_months": 24,

@@ -47,9 +47,9 @@ from ml.dataset_t1 import T1_FEATURE_COLUMNS, build_t1_dataset
 DEFAULT_TARGET = "t1_close_positive"
 DEFAULT_TOP_N = 20
 DEFAULT_MIN_PROB = 0.0
-DEFAULT_TAKE_PROFIT = 0.03
-DEFAULT_STOP_LOSS = 0.02
-DEFAULT_FRICTION = 0.006
+DEFAULT_TAKE_PROFIT = None  # None = hold to close (optimal for close_positive)
+DEFAULT_STOP_LOSS = None    # None = no stop loss
+DEFAULT_FRICTION = 0.004    # close-to-close round-trip friction
 DEFAULT_TRAIN_MONTHS = 24
 DEFAULT_VAL_MONTHS = 3
 DEFAULT_TEST_MONTHS = 1
@@ -211,7 +211,7 @@ def train_binary_fold(
 
 def simulate_trade(
     row: pd.Series,
-    take_profit: float,
+    take_profit: float | None,
     friction: float,
     stop_loss: float | None = None,
     ambiguous_fill: str = "stop_first",
@@ -225,13 +225,13 @@ def simulate_trade(
     if close_ret is None or high_ret is None or low_ret is None:
         return None
 
-    hit_take_profit = high_ret >= take_profit
+    hit_take_profit = take_profit is not None and high_ret >= take_profit
     hit_stop_loss = stop_loss is not None and low_ret <= -stop_loss
 
     if stop_loss is not None and open_ret is not None and open_ret <= -stop_loss:
         gross_return = open_ret
         exit_reason = "gap_stop"
-    elif open_ret is not None and open_ret >= take_profit:
+    elif take_profit is not None and open_ret is not None and open_ret >= take_profit:
         gross_return = take_profit
         exit_reason = "gap_take_profit"
     elif hit_take_profit and hit_stop_loss:
@@ -290,7 +290,7 @@ def evaluate_scored_fold(
     scored: pd.DataFrame,
     top_n: int,
     min_prob: float,
-    take_profit: float,
+    take_profit: float | None,
     stop_loss: float | None,
     friction: float,
     ambiguous_fill: str,
@@ -435,7 +435,7 @@ def evaluate_fold(
     feature_cols: list[str],
     top_n: int,
     min_prob: float,
-    take_profit: float,
+    take_profit: float | None,
     stop_loss: float | None,
     friction: float,
     ambiguous_fill: str,
@@ -590,10 +590,10 @@ def run_t1_backtest(
     target: str = DEFAULT_TARGET,
     top_n: int = DEFAULT_TOP_N,
     min_prob: float = DEFAULT_MIN_PROB,
-    take_profit: float = DEFAULT_TAKE_PROFIT,
+    take_profit: float | None = DEFAULT_TAKE_PROFIT,
     stop_loss: float | None = DEFAULT_STOP_LOSS,
     friction: float = DEFAULT_FRICTION,
-    ambiguous_fill: str = "stop_first",
+    ambiguous_fill: str = "close",
     train_months: int = DEFAULT_TRAIN_MONTHS,
     val_months: int = DEFAULT_VAL_MONTHS,
     test_months: int = DEFAULT_TEST_MONTHS,
@@ -776,18 +776,18 @@ if __name__ == "__main__":
     )
     parser.add_argument("--top", type=int, default=DEFAULT_TOP_N, help="Top N names to trade each day.")
     parser.add_argument("--min-prob", type=float, default=DEFAULT_MIN_PROB, help="Minimum hit probability to enter.")
-    parser.add_argument("--take-profit", type=float, default=DEFAULT_TAKE_PROFIT, help="Take-profit threshold.")
+    parser.add_argument("--take-profit", type=float, default=None, help="Take-profit threshold. Omit for hold-to-close.")
     parser.add_argument(
         "--stop-loss",
         type=float,
-        default=DEFAULT_STOP_LOSS,
-        help="Stop-loss threshold. Set to 0 or a negative value to disable.",
+        default=None,
+        help="Stop-loss threshold. Omit or set to 0 to disable.",
     )
     parser.add_argument("--friction", type=float, default=DEFAULT_FRICTION, help="Round-trip friction cost.")
     parser.add_argument(
         "--ambiguous-fill",
         choices=["stop_first", "target_first", "close"],
-        default="stop_first",
+        default="close",
         help="How to resolve same-day take-profit and stop-loss hits with only daily OHLC.",
     )
     parser.add_argument("--train-months", type=int, default=DEFAULT_TRAIN_MONTHS, help="Rolling train window.")
@@ -798,13 +798,14 @@ if __name__ == "__main__":
     parser.add_argument("--skip-reports", action="store_true", help="Skip writing JSON/CSV backtest reports.")
     args = parser.parse_args()
 
+    take_profit = args.take_profit if args.take_profit and args.take_profit > 0 else None
     stop_loss = args.stop_loss if args.stop_loss and args.stop_loss > 0 else None
     run_t1_backtest(
         max_stocks=args.max_stocks,
         target=args.target,
         top_n=args.top,
         min_prob=args.min_prob,
-        take_profit=args.take_profit,
+        take_profit=take_profit,
         stop_loss=stop_loss,
         friction=args.friction,
         ambiguous_fill=args.ambiguous_fill,

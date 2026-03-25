@@ -17,9 +17,9 @@ from ml.config import MODEL_DIR
 from ml.dataset_t1 import build_latest_t1_snapshot
 from ml.features.sector import load_sector_mapping
 
-T1_STRONG_BUY_PROB = 0.75
-T1_BUY_PROB = 0.60
-T1_WATCH_PROB = 0.45
+T1_STRONG_BUY_PROB = 0.70
+T1_BUY_PROB = 0.55
+T1_WATCH_PROB = 0.50
 T1_LONG_UPPER_WICK_CUTOFF = 0.04
 T1_BREAKOUT_STRETCH_CUTOFF = 0.08
 T1_VOLUME_BURST_MIN = 1.20
@@ -78,10 +78,10 @@ def _extract_trade_rules(meta: dict[str, Any]) -> dict[str, Any]:
     return {
         "top_n": int(selection.get("top_n", 20) or 20),
         "min_prob": float(selection.get("min_prob", 0.0) or 0.0),
-        "take_profit": float(trade_rules.get("take_profit", 0.03) or 0.03),
+        "take_profit": float(tp) if (tp := trade_rules.get("take_profit")) else None,
         "stop_loss": float(stop_loss) if stop_loss is not None else None,
-        "friction": float(trade_rules.get("friction", 0.006) or 0.006),
-        "ambiguous_fill": str(trade_rules.get("ambiguous_fill", "stop_first")),
+        "friction": float(trade_rules.get("friction", 0.004) or 0.004),
+        "ambiguous_fill": str(trade_rules.get("ambiguous_fill", "close")),
     }
 
 
@@ -386,15 +386,14 @@ def main() -> int:
 
     trade_rules = _extract_trade_rules(meta)
     selected_count = int(pred_df["selected_for_trade"].fillna(False).sum())
-    stop_loss_text = "off"
-    if trade_rules["stop_loss"] is not None:
-        stop_loss_text = f"{trade_rules['stop_loss']:.1%}"
+    tp_text = "off" if trade_rules["take_profit"] is None else f"{trade_rules['take_profit']:.1%}"
+    sl_text = "off" if trade_rules["stop_loss"] is None else f"{trade_rules['stop_loss']:.1%}"
     _safe_print(
         "T+1 live signal summary: "
         f"{len(pred_df):,} names | "
         f"selected={selected_count} | "
-        f"tp={trade_rules['take_profit']:.1%} | "
-        f"sl={stop_loss_text}"
+        f"tp={tp_text} | "
+        f"sl={sl_text}"
     )
     return 0
 
