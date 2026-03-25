@@ -15,6 +15,7 @@ T1_LABEL_COLUMNS = [
     "t1_hit_3pct",
     "t1_close_positive",
     "t1_open_to_close_return",
+    "t1_open_to_close_positive",
     "t1_high_from_open",
     "t1_low_from_open",
     "t1_open_next_close_return",
@@ -81,6 +82,14 @@ def compute_t1_targets(
     # open-to-close return: practical tradeable return if entering at next open
     next_open_safe = next_open.replace(0, np.nan)
     out["t1_open_to_close_return"] = (next_close / next_open_safe - 1.0).astype(np.float32)
+
+    # open-to-close positive: does the stock close above its own open? (green candle)
+    otc_mask = out["t1_open_to_close_return"].notna()
+    out["t1_open_to_close_positive"] = np.where(
+        otc_mask,
+        (out["t1_open_to_close_return"] > 0).astype(np.int8),
+        np.nan,
+    )
 
     # high/low relative to next open (for TP/SL simulation in open-entry mode)
     out["t1_high_from_open"] = (next_high / next_open_safe - 1.0).astype(np.float32)

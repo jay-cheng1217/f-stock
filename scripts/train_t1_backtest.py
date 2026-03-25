@@ -45,7 +45,7 @@ from ml.config import MODEL_DIR, REPORT_DIR
 from ml.dataset_t1 import T1_FEATURE_COLUMNS, build_t1_dataset
 
 
-DEFAULT_TARGET = "t1_open_next_close_positive"
+DEFAULT_TARGET = "t1_close_positive"
 DEFAULT_TOP_N = 20
 DEFAULT_MIN_PROB = 0.0
 DEFAULT_TAKE_PROFIT = None  # None = hold to close
@@ -373,7 +373,7 @@ def evaluate_scored_fold(
 ) -> tuple[FoldSummary, list[dict], list[dict]]:
     """Replay one scored fold under a given trading rule set."""
     if entry_mode is None:
-        entry_mode = "open" if "open_next_close" in target_col else "close"
+        entry_mode = "open" if ("open_next_close" in target_col or "open_to_close" in target_col) else "close"
     y_true = scored[target_col].astype(int).values
     y_prob = scored["hit_prob"].values
     y_pred = scored["pred_label"].values
@@ -685,7 +685,7 @@ def run_t1_backtest(
     print("=" * 78)
     print(
         f"  Rules: top={top_n}, min_prob={min_prob:.2f}, "
-        f"take_profit={take_profit:.2%}, "
+        f"take_profit={'off' if take_profit is None else f'{take_profit:.2%}'}, "
         f"stop_loss={'off' if stop_loss is None else f'{stop_loss:.2%}'}, "
         f"friction={friction:.2%}, ambiguous={ambiguous_fill}"
     )
@@ -849,7 +849,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--target",
         default=DEFAULT_TARGET,
-        choices=["t1_open_next_close_positive", "t1_close_positive", "t1_hit_3pct"],
+        choices=["t1_open_to_close_positive", "t1_open_next_close_positive", "t1_close_positive", "t1_hit_3pct"],
         help="Binary target column for the classifier.",
     )
     parser.add_argument("--top", type=int, default=DEFAULT_TOP_N, help="Top N names to trade each day.")

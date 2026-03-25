@@ -296,8 +296,8 @@ if __name__ == "__main__":
     parser.add_argument("--max-stocks", type=int, default=0, help="Limit the universe size for quick tests.")
     parser.add_argument(
         "--target",
-        default="t1_open_next_close_positive",
-        choices=["t1_open_next_close_positive", "t1_close_positive", "t1_hit_3pct"],
+        default="t1_close_positive",
+        choices=["t1_open_to_close_positive", "t1_open_next_close_positive", "t1_close_positive", "t1_hit_3pct"],
         help="Binary target column for the classifier.",
     )
     parser.add_argument(
