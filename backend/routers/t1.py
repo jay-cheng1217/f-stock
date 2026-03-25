@@ -467,7 +467,7 @@ def download_t1_predictions(top_n: int = 30):
 def get_t1_portfolio():
     try:
         detail_df, summary = _load_t1_portfolio_detail_and_summary()
-        detail_records = [] if detail_df.empty else detail_df.where(detail_df.notna(), None).to_dict(orient="records")
+        detail_records = [] if detail_df.empty else detail_df.astype(object).where(detail_df.notna(), None).to_dict(orient="records")
         return JSONResponse(
             content={"status": "success", "data": detail_records, "summary": summary}
         )
