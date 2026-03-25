@@ -34,9 +34,10 @@ from scripts.train_t1_backtest import (
 
 
 DEFAULT_TAKE_PROFITS = [0.02, 0.03, 0.04, 0.05]
-DEFAULT_STOP_LOSSES = [0.015, 0.02, 0.03, None]
-DEFAULT_MIN_PROBS = [0.55, 0.60, 0.65, 0.70]
-DEFAULT_TOP_NS = [1, 3, 5, 10]
+DEFAULT_STOP_LOSSES = [0.015, 0.02, 0.03, 0.05, None]
+DEFAULT_MIN_PROBS = [0.50, 0.55, 0.60, 0.65, 0.70]
+DEFAULT_TOP_NS = [1, 3, 5, 10, 20]
+DEFAULT_AMBIGUOUS_FILLS = ["stop_first", "target_first", "close"]
 
 
 def _parse_float_grid(text: str, allow_none: bool = False) -> list[float | None]:
@@ -115,6 +116,7 @@ def run_t1_param_sweep(
     stop_losses: list[float | None] | None = None,
     min_probs: list[float] | None = None,
     top_ns: list[int] | None = None,
+    ambiguous_fills: list[str] | None = None,
     friction: float = 0.006,
     ambiguous_fill: str = "stop_first",
     train_months: int = 24,
@@ -128,14 +130,16 @@ def run_t1_param_sweep(
     stop_losses = stop_losses or DEFAULT_STOP_LOSSES
     min_probs = min_probs or DEFAULT_MIN_PROBS
     top_ns = top_ns or DEFAULT_TOP_NS
+    fills = ambiguous_fills or [ambiguous_fill]
 
+    total = len(take_profits) * len(stop_losses) * len(min_probs) * len(top_ns) * len(fills)
     print("=" * 86)
     print("  T+1 Trading Rule Sweep")
     print("=" * 86)
     print(
-        f"  Grid size: {len(take_profits)} x {len(stop_losses)} x "
-        f"{len(min_probs)} x {len(top_ns)} = "
-        f"{len(take_profits) * len(stop_losses) * len(min_probs) * len(top_ns)} combos"
+        f"  Grid size: {len(take_profits)} TP x {len(stop_losses)} SL x "
+        f"{len(min_probs)} prob x {len(top_ns)} topN x {len(fills)} fill = "
+        f"{total} combos"
     )
 
     dataset, feature_cols, scored_folds, actual_device = prepare_scored_folds(
@@ -147,8 +151,8 @@ def run_t1_param_sweep(
     )
 
     results = []
-    grid = list(product(take_profits, stop_losses, min_probs, top_ns))
-    for take_profit, stop_loss, min_prob, top_n in tqdm(grid, desc="Replay rule grid"):
+    grid = list(product(take_profits, stop_losses, min_probs, top_ns, fills))
+    for take_profit, stop_loss, min_prob, top_n, fill_mode in tqdm(grid, desc="Replay rule grid"):
         fold_summaries = []
         trade_records = []
         daily_records = []
@@ -161,7 +165,7 @@ def run_t1_param_sweep(
                 take_profit=take_profit,
                 stop_loss=stop_loss,
                 friction=friction,
-                ambiguous_fill=ambiguous_fill,
+                ambiguous_fill=fill_mode,
             )
             summary.fold = fold_info["fold"]
             summary.test_month = fold_info["test_month"]
@@ -183,6 +187,7 @@ def run_t1_param_sweep(
                 "stop_loss_label": _format_rule_label(stop_loss),
                 "min_prob": min_prob,
                 "top_n": top_n,
+                "ambiguous_fill": fill_mode,
                 "avg_expectancy": overall["avg_expectancy"],
                 "avg_day_return": overall["avg_day_return"],
                 "cumulative_portfolio_return": overall["cumulative_portfolio_return"],
@@ -244,7 +249,7 @@ def run_t1_param_sweep(
             "min_probs": min_probs,
             "top_ns": top_ns,
             "friction": friction,
-            "ambiguous_fill": ambiguous_fill,
+            "ambiguous_fills": fills,
         },
         "result_files": {
             "csv": csv_path,
@@ -262,6 +267,7 @@ def run_t1_param_sweep(
         "stop_loss_label",
         "min_prob",
         "top_n",
+        "ambiguous_fill",
         "avg_expectancy",
         "avg_day_return",
         "cumulative_portfolio_return",
