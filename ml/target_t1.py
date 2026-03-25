@@ -15,6 +15,10 @@ T1_LABEL_COLUMNS = [
     "t1_hit_3pct",
     "t1_close_positive",
     "t1_open_to_close_return",
+    "t1_high_from_open",
+    "t1_low_from_open",
+    "t1_open_next_close_return",
+    "t1_open_next_close_positive",
 ]
 
 
@@ -75,6 +79,23 @@ def compute_t1_targets(
     )
 
     # open-to-close return: practical tradeable return if entering at next open
-    out["t1_open_to_close_return"] = (next_close / next_open.replace(0, np.nan) - 1.0).astype(np.float32)
+    next_open_safe = next_open.replace(0, np.nan)
+    out["t1_open_to_close_return"] = (next_close / next_open_safe - 1.0).astype(np.float32)
+
+    # high/low relative to next open (for TP/SL simulation in open-entry mode)
+    out["t1_high_from_open"] = (next_high / next_open_safe - 1.0).astype(np.float32)
+    out["t1_low_from_open"] = (next_low / next_open_safe - 1.0).astype(np.float32)
+
+    # open-to-next-close return: buy at today's open, sell at tomorrow's close (1.5 day hold)
+    # Label = (Close[T+1] - Open[T]) / Open[T]
+    today_open = pd.to_numeric(out["Open"], errors="coerce").replace(0, np.nan)
+    out["t1_open_next_close_return"] = (next_close / today_open - 1.0).astype(np.float32)
+
+    onc_mask = out["t1_open_next_close_return"].notna()
+    out["t1_open_next_close_positive"] = np.where(
+        onc_mask,
+        (out["t1_open_next_close_return"] > 0).astype(np.int8),
+        np.nan,
+    )
 
     return out

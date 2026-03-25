@@ -1,19 +1,20 @@
 """T+1 momentum training + friction-aware walk-forward backtest.
 
 This script trains a binary LightGBM classifier on a configurable target
-(default: ``t1_close_positive``) and evaluates it with practical next-day
+(default: ``t1_open_next_close_positive``) and evaluates it with practical
 trading rules:
 
-1. Enter at today's close.
-2. Exit tomorrow at:
-   - +take_profit if the name stretches far enough intraday.
-   - -stop_loss if downside protection is enabled and gets hit first.
-   - otherwise tomorrow's close.
-3. Subtract a fixed friction cost from every round-trip trade.
+1. Model runs after day D close, using D's features.
+2. User enters at D+1 open (next morning 09:00).
+3. Exit at D+1 close (same day 13:30), or earlier if TP/SL hit.
+4. Subtract a fixed friction cost from every round-trip trade.
 
 Supported targets:
-    t1_close_positive  — binary: next close > today's close (~46% rate)
-    t1_hit_3pct        — binary: next high ≥ +3% vs today's close (~15% rate)
+    t1_open_next_close_positive — binary: (Close[D+1] - Open[D]) / Open[D] > 0 (~46% rate)
+                                  Training target for open-entry strategy.
+                                  Backtest uses realistic open→close return.
+    t1_close_positive           — binary: next close > today's close (~46% rate)
+    t1_hit_3pct                 — binary: next high ≥ +3% vs today's close (~15% rate)
 
 Usage examples:
     python scripts/train_t1_backtest.py
@@ -44,12 +45,12 @@ from ml.config import MODEL_DIR, REPORT_DIR
 from ml.dataset_t1 import T1_FEATURE_COLUMNS, build_t1_dataset
 
 
-DEFAULT_TARGET = "t1_close_positive"
+DEFAULT_TARGET = "t1_open_next_close_positive"
 DEFAULT_TOP_N = 20
 DEFAULT_MIN_PROB = 0.0
-DEFAULT_TAKE_PROFIT = None  # None = hold to close (optimal for close_positive)
+DEFAULT_TAKE_PROFIT = None  # None = hold to close
 DEFAULT_STOP_LOSS = None    # None = no stop loss
-DEFAULT_FRICTION = 0.004    # close-to-close round-trip friction
+DEFAULT_FRICTION = 0.004    # round-trip friction (open-entry)
 DEFAULT_TRAIN_MONTHS = 24
 DEFAULT_VAL_MONTHS = 3
 DEFAULT_TEST_MONTHS = 1
@@ -215,8 +216,79 @@ def simulate_trade(
     friction: float,
     stop_loss: float | None = None,
     ambiguous_fill: str = "stop_first",
+    entry_mode: str = "close",
 ) -> dict[str, float | str | int | None] | None:
-    """Simulate one next-day trade from daily OHLC targets."""
+    """Simulate one next-day trade from daily OHLC targets.
+
+    entry_mode:
+        "close" — enter at today's close, exit based on next-day OHLC (legacy)
+        "open"  — enter at next-day open, exit at next-day close.
+                   The user's actual trade: buy D+1 open, sell D+1 close.
+                   TP/SL are measured from open, using intraday high/low vs open.
+    """
+    if entry_mode == "open":
+        # Open-entry: user buys at next open, sells at next close
+        otc_ret = _safe_float(row.get("t1_open_to_close_return"))
+        if otc_ret is None:
+            return None
+
+        # For TP/SL in open-entry mode, use high/low relative to next open
+        # high_from_open = (High[D+1] - Open[D+1]) / Open[D+1]
+        # low_from_open  = (Low[D+1]  - Open[D+1]) / Open[D+1]
+        high_from_open = _safe_float(row.get("t1_high_from_open"))
+        low_from_open = _safe_float(row.get("t1_low_from_open"))
+
+        if take_profit is None and stop_loss is None:
+            # Simple hold: enter at open, exit at close
+            gross_return = otc_ret
+            exit_reason = "close"
+            net_return = gross_return - friction
+            return {
+                "gross_return": gross_return,
+                "net_return": net_return,
+                "exit_reason": exit_reason,
+                "target_hit": 0,
+                "stop_loss_hit": 0,
+            }
+
+        # With TP/SL from open
+        if high_from_open is None or low_from_open is None:
+            gross_return = otc_ret
+            exit_reason = "close"
+        else:
+            hit_tp = take_profit is not None and high_from_open >= take_profit
+            hit_sl = stop_loss is not None and low_from_open <= -stop_loss
+
+            if hit_tp and hit_sl:
+                if ambiguous_fill == "target_first":
+                    gross_return = take_profit
+                    exit_reason = "ambiguous_take_profit"
+                elif ambiguous_fill == "close":
+                    gross_return = otc_ret
+                    exit_reason = "ambiguous_close"
+                else:
+                    gross_return = -stop_loss
+                    exit_reason = "ambiguous_stop_loss"
+            elif hit_tp:
+                gross_return = take_profit
+                exit_reason = "take_profit"
+            elif hit_sl:
+                gross_return = -stop_loss
+                exit_reason = "stop_loss"
+            else:
+                gross_return = otc_ret
+                exit_reason = "close"
+
+        net_return = gross_return - friction
+        return {
+            "gross_return": gross_return,
+            "net_return": net_return,
+            "exit_reason": exit_reason,
+            "target_hit": int(take_profit is not None and high_from_open is not None and high_from_open >= take_profit),
+            "stop_loss_hit": int(stop_loss is not None and low_from_open is not None and low_from_open <= -stop_loss),
+        }
+
+    # Legacy close-entry mode
     open_ret = _safe_float(row.get("t1_open_return"))
     close_ret = _safe_float(row.get("t1_close_return"))
     high_ret = _safe_float(row.get("t1_high_return"))
@@ -272,8 +344,10 @@ def score_fold_predictions(
 ) -> pd.DataFrame:
     """Attach predicted hit probabilities to one fold."""
     base_cols = [
-        "ticker", "Date", "Close",
+        "ticker", "Date", "Close", "Open",
         "t1_open_return", "t1_close_return", "t1_high_return", "t1_low_return",
+        "t1_open_to_close_return", "t1_high_from_open", "t1_low_from_open",
+        "t1_open_next_close_return",
     ]
     if target_col not in base_cols:
         base_cols.append(target_col)
@@ -295,8 +369,11 @@ def evaluate_scored_fold(
     friction: float,
     ambiguous_fill: str,
     target_col: str = DEFAULT_TARGET,
+    entry_mode: str | None = None,
 ) -> tuple[FoldSummary, list[dict], list[dict]]:
     """Replay one scored fold under a given trading rule set."""
+    if entry_mode is None:
+        entry_mode = "open" if "open_next_close" in target_col else "close"
     y_true = scored[target_col].astype(int).values
     y_prob = scored["hit_prob"].values
     y_pred = scored["pred_label"].values
@@ -340,6 +417,7 @@ def evaluate_scored_fold(
                 friction=friction,
                 stop_loss=stop_loss,
                 ambiguous_fill=ambiguous_fill,
+                entry_mode=entry_mode,
             )
             if trade is None:
                 continue
@@ -771,7 +849,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--target",
         default=DEFAULT_TARGET,
-        choices=["t1_close_positive", "t1_hit_3pct"],
+        choices=["t1_open_next_close_positive", "t1_close_positive", "t1_hit_3pct"],
         help="Binary target column for the classifier.",
     )
     parser.add_argument("--top", type=int, default=DEFAULT_TOP_N, help="Top N names to trade each day.")
