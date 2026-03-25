@@ -342,8 +342,8 @@ def _load_t1_portfolio_detail_and_summary() -> tuple[pd.DataFrame, dict[str, Any
         "total_positions": int(len(detail_df)),
         "closed_positions": int(len(closed_df)),
         "pending_positions": int((detail_df["status"] == "pending").sum()),
-        "avg_net_return_pct": round(float(closed_df["net_return_pct"].mean()), 2) if not closed_df.empty else None,
-        "win_rate_pct": round(float((closed_df["net_return_pct"] > 0).mean() * 100), 2) if not closed_df.empty else None,
+        "avg_net_return_pct": round(float(v), 2) if not closed_df.empty and pd.notna(v := closed_df["net_return_pct"].mean()) else None,
+        "win_rate_pct": round(float(v2), 2) if not closed_df.empty and pd.notna(v2 := (closed_df["net_return_pct"].dropna() > 0).mean() * 100) else None,
         "take_profit_hits": take_profit_hits,
         "stop_loss_hits": stop_loss_hits,
         "latest_exit_date": closed_df["exit_date"].max() if not closed_df.empty else None,
@@ -467,7 +467,7 @@ def download_t1_predictions(top_n: int = 30):
 def get_t1_portfolio():
     try:
         detail_df, summary = _load_t1_portfolio_detail_and_summary()
-        detail_records = [] if detail_df.empty else detail_df.to_dict(orient="records")
+        detail_records = [] if detail_df.empty else detail_df.where(detail_df.notna(), None).to_dict(orient="records")
         return JSONResponse(
             content={"status": "success", "data": detail_records, "summary": summary}
         )
