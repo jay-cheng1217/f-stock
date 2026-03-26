@@ -358,6 +358,23 @@ def exec_retrain_t1():
 
 
 def exec_ingest():
+    """嘗試透過 server API 觸發 ingest（避免 DuckDB 鎖衝突），失敗時 fallback 到直接執行."""
+    import urllib.request
+    import json as _json
+
+    api_url = "http://127.0.0.1:8001/api/pipeline/ingest"
+    try:
+        req = urllib.request.Request(api_url, method="POST", data=b"",
+                                     headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            result = _json.loads(resp.read())
+            if result.get("success"):
+                print(f"[ingest] via API OK: {result.get('results')}")
+                return
+            raise RuntimeError(f"API ingest failed: {result}")
+    except Exception as e:
+        print(f"[ingest] API 不可用 ({e})，fallback 到直接執行")
+
     subprocess.run(
         [
             sys.executable,

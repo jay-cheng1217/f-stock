@@ -3366,6 +3366,22 @@ def trigger_update():
     return {"status": "done", "results": results}
 
 
+@app.post("/api/pipeline/ingest", tags=["pipeline"])
+def trigger_ingest():
+    """觸發 CSV → DuckDB 匯入 (在 server process 內執行，不需另開 process)"""
+    pipeline_log.info("=== 手動觸發 ingest ===")
+    try:
+        t0 = time.time()
+        from backend.db.ingest import ingest_all
+        results = ingest_all()
+        elapsed = time.time() - t0
+        pipeline_log.info(f"  ingest 完成: {results} ({elapsed:.1f}s)")
+        return {"success": True, "elapsed_sec": round(elapsed, 1), "results": results}
+    except Exception as e:
+        pipeline_log.error(f"  ingest exception: {e}")
+        return {"success": False, "error": str(e)}
+
+
 @app.post("/api/pipeline/retrain", tags=["pipeline"])
 def trigger_retrain():
     """觸發模型重新訓練"""
@@ -3479,8 +3495,28 @@ async def startup():
             from backend.db.ingest import ingest_all
             ingest_all()
         else:
+            # 檢查 CSV 是否比 DB 新，自動 ingest
+            db_max = conn.execute("SELECT MAX(date) FROM daily_k").fetchone()[0]
             row_count = conn.execute("SELECT COUNT(*) FROM daily_k").fetchone()[0]
-            pipeline_log.info(f"DuckDB 已有 {row_count:,} 筆日K資料")
+            pipeline_log.info(f"DuckDB 已有 {row_count:,} 筆日K資料 (最新日期: {db_max})")
+
+            import glob as _g
+            from backend.config import DAILY_K_DIR
+            sample_csv = sorted(_g.glob(os.path.join(DAILY_K_DIR, "2330.csv")))
+            if sample_csv:
+                import pandas as _pd
+                try:
+                    tail = _pd.read_csv(sample_csv[0], usecols=[0], nrows=0)
+                    date_col = tail.columns[0]
+                    last_rows = _pd.read_csv(sample_csv[0], usecols=[date_col]).iloc[-1:]
+                    csv_max = str(last_rows.iloc[0, 0])[:10]
+                    db_max_str = str(db_max)[:10]
+                    if csv_max > db_max_str:
+                        pipeline_log.info(f"CSV 最新 {csv_max} > DB {db_max_str}，自動 ingest...")
+                        from backend.db.ingest import ingest_all
+                        ingest_all()
+                except Exception as e:
+                    pipeline_log.warning(f"自動 ingest 檢查失敗: {e}")
 
         if "stock_list" not in tables:
             pipeline_log.info("建立 stock_list...")
