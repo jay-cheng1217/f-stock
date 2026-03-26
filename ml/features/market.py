@@ -66,11 +66,14 @@ def _build_market_features(index_dir: str) -> pd.DataFrame:
     if vix is not None:
         vix = vix.copy()
         c = pd.to_numeric(vix["Close"], errors="coerce")
-        vix["vix_level"] = c.astype(np.float32)
+        # 用 60 日滾動百分位取代絕對值，避免 regime-specific overfitting
+        vix["vix_percentile_60d"] = c.rolling(60, min_periods=20).apply(
+            lambda x: (x[-1] >= x[:-1]).mean() if len(x) > 1 else 0.5, raw=True
+        ).astype(np.float32)
         vix["vix_change_5d"] = c.pct_change(5).astype(np.float32)
         vix_ma20 = c.rolling(20, min_periods=10).mean()
         vix["vix_ma20_ratio"] = (c / vix_ma20.replace(0, np.nan)).clip(0.5, 2.0).astype(np.float32)
-        vix_feat = vix[["Date", "vix_level", "vix_change_5d", "vix_ma20_ratio"]].copy()
+        vix_feat = vix[["Date", "vix_percentile_60d", "vix_change_5d", "vix_ma20_ratio"]].copy()
         features = _merge_feat(features, vix_feat)
 
     # SOX 費城半導體
@@ -145,7 +148,7 @@ def compute_market_features(
 MARKET_FEATURE_COLS = [
     "twii_return_5d",
     "twii_return_20d",
-    "vix_level",
+    "vix_percentile_60d",
     "vix_change_5d",
     "sox_return_5d",
     "usdtwd_change_5d",

@@ -165,7 +165,7 @@ def train_binary_fold(
         "device": device,
         "num_leaves": 63,
         "learning_rate": 0.03,
-        "feature_fraction": 0.8,
+        "feature_fraction": 0.7,  # 強迫模型挖掘個股 alpha，不依賴大盤特徵
         "bagging_fraction": 0.8,
         "bagging_freq": 5,
         "min_data_in_leaf": 80,

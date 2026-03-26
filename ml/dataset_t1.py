@@ -41,7 +41,7 @@ T1_MARKET_FEATURE_COLUMNS = [
     "gspc_return_5d",
     "sox_return_1d",
     "sox_return_5d",
-    "vix_level",
+    "vix_percentile_60d",
     "vix_return_1d",
     "vix_return_5d",
     "usdtwd_return_1d",
@@ -71,7 +71,7 @@ T1_BASE_FEATURE_COLUMNS = [
     "high_low_range",
     "vol_ratio_5_20",
     "vol_zscore",
-    "atr_pct",
+    "atr_pct_rank",  # 截面百分位，取代絕對 atr_pct 避免波動度獨大
     "bb_position",
     "rsi_6",
     "rsi_14",
@@ -206,7 +206,10 @@ def _build_market_features() -> pd.DataFrame:
         idx = idx.copy()
         close = pd.to_numeric(idx["Close"], errors="coerce")
         if keep_level:
-            idx[f"{prefix}_level"] = close.astype(np.float32)
+            # 用 60 日滾動百分位取代絕對值，避免 regime-specific overfitting
+            idx[f"{prefix}_percentile_60d"] = close.rolling(60, min_periods=20).apply(
+                lambda x: (x[-1] >= x[:-1]).mean() if len(x) > 1 else 0.5, raw=True
+            ).astype(np.float32)
         idx[f"{prefix}_return_1d"] = close.pct_change(1).astype(np.float32)
         idx[f"{prefix}_return_5d"] = close.pct_change(5).astype(np.float32)
 
@@ -418,6 +421,11 @@ def build_t1_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
 
     dataset = pd.concat(frames, ignore_index=True)
     dataset = compute_sector_features(dataset)
+    # atr_pct 截面百分位：同一天內跨股票排序，削弱波動度絕對值的宰制力
+    if "atr_pct" in dataset.columns:
+        dataset["atr_pct_rank"] = dataset.groupby("Date")["atr_pct"].rank(pct=True).astype(np.float32)
+    else:
+        dataset["atr_pct_rank"] = np.nan
     dataset = dataset.dropna(subset=["t1_high_return", "t1_hit_3pct", "t1_close_positive"]).copy()
     dataset["t1_hit_3pct"] = dataset["t1_hit_3pct"].astype(np.int8)
     dataset["t1_close_positive"] = dataset["t1_close_positive"].astype(np.int8)
@@ -452,6 +460,11 @@ def build_latest_t1_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.Da
 
     snapshot = pd.concat(rows, ignore_index=True)
     snapshot = compute_sector_features(snapshot)
+    # atr_pct 截面百分位（snapshot 只有一天，直接 rank）
+    if "atr_pct" in snapshot.columns:
+        snapshot["atr_pct_rank"] = snapshot["atr_pct"].rank(pct=True).astype(np.float32)
+    else:
+        snapshot["atr_pct_rank"] = np.nan
     snapshot = _finalize_frame(snapshot)
 
     if verbose:
