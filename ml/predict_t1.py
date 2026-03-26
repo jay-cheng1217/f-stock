@@ -5,6 +5,7 @@ from __future__ import annotations
 import glob
 import json
 import os
+import sqlite3
 import sys
 from datetime import datetime
 from typing import Any
@@ -33,6 +34,9 @@ T1_SCORE_UPPER_WICK_PENALTY = 0.04
 # --- 實戰防護常數 ---
 T1_MIN_AVG_AMOUNT = 10_000_000       # 5日均成交額門檻 (1000萬台幣)
 T1_MARKET_CIRCUIT_BREAKER = -0.015   # 大盤跌 > 1.5% 熔斷，不出手
+T1_MDD_HALT_PCT = 0.10              # 帳本 MDD > 10% 熔斷
+T1_CONSECUTIVE_LOSS_HALT = 5         # 連續 5 日虧損熔斷
+T1_PORTFOLIO_DB = os.path.join(os.path.dirname(os.path.dirname(__file__)), "paper_portfolio_t1.db")
 
 T1_SNAPSHOT_CACHE_PATH = os.path.join(MODEL_DIR, "snapshot_t1_cache.pkl")
 
@@ -52,6 +56,44 @@ def _safe_print(text: str) -> None:
             errors="replace",
         )
         print(safe_text)
+
+
+def _check_portfolio_mdd_halt() -> tuple[bool, str]:
+    """檢查帳本是否觸發 MDD 或連續虧損熔斷。"""
+    if not os.path.exists(T1_PORTFOLIO_DB):
+        return False, ""
+    try:
+        conn = sqlite3.connect(T1_PORTFOLIO_DB)
+        df = pd.read_sql_query(
+            "SELECT prediction_date, realized_return_pct "
+            "FROM t1_positions WHERE status = 'closed' AND realized_return_pct IS NOT NULL "
+            "ORDER BY prediction_date",
+            conn,
+        )
+        conn.close()
+    except Exception:
+        return False, ""
+
+    if df.empty or len(df) < 3:
+        return False, ""
+
+    # 每日平均報酬
+    daily = df.groupby("prediction_date")["realized_return_pct"].mean()
+
+    # 連續虧損檢查
+    last_n = daily.tail(T1_CONSECUTIVE_LOSS_HALT)
+    if len(last_n) >= T1_CONSECUTIVE_LOSS_HALT and (last_n < 0).all():
+        return True, f"連續{T1_CONSECUTIVE_LOSS_HALT}日虧損"
+
+    # MDD 檢查
+    equity = (1 + daily).cumprod()
+    peak = equity.cummax()
+    drawdown = (equity - peak) / peak
+    mdd = drawdown.min()
+    if mdd < -T1_MDD_HALT_PCT:
+        return True, f"MDD={mdd:.1%}"
+
+    return False, ""
 
 
 def _find_latest_20d_prediction(pred_date: str) -> str | None:
@@ -314,6 +356,9 @@ def build_live_t1_prediction_df(
     pred_df["position_weight"] = np.nan
     pred_df["veto_reason"] = ""
 
+    # --- [防護0] MDD / 連續虧損熔斷 ---
+    mdd_halted, mdd_reason = _check_portfolio_mdd_halt()
+
     # --- [防護1] 大盤熔斷 ---
     twii_ret = snapshot["twii_return_1d"].iloc[0] if "twii_return_1d" in snapshot.columns else 0.0
     market_halted = (twii_ret <= T1_MARKET_CIRCUIT_BREAKER) if pd.notna(twii_ret) else False
@@ -345,7 +390,10 @@ def build_live_t1_prediction_df(
     pred_df.loc[~liquidity_ok, "veto_reason"] = pred_df.loc[~liquidity_ok, "veto_reason"] + "流動性不足 "
     pred_df.loc[d20_veto, "veto_reason"] = pred_df.loc[d20_veto, "veto_reason"] + "20D看空 "
 
-    if market_halted:
+    if mdd_halted:
+        # MDD 熔斷：全數不選
+        pred_df["veto_reason"] = f"帳本熔斷({mdd_reason}) " + pred_df["veto_reason"]
+    elif market_halted:
         # 大盤熔斷：全數不選
         pred_df["veto_reason"] = f"大盤熔斷({twii_ret:.2%}) " + pred_df["veto_reason"]
     else:
@@ -469,6 +517,7 @@ def main() -> int:
     liq_vetoed = int(veto_col.str.contains("流動性不足").sum())
     d20_vetoed = int(veto_col.str.contains("20D看空").sum())
     mkt_halted = int(veto_col.str.contains("大盤熔斷").sum()) > 0
+    mdd_halted = int(veto_col.str.contains("帳本熔斷").sum()) > 0
 
     _safe_print(
         "T+1 live signal summary: "
@@ -479,7 +528,8 @@ def main() -> int:
     )
     _safe_print(
         f"  Filters: liquidity_vetoed={liq_vetoed} | d20_vetoed={d20_vetoed} | "
-        f"market_halted={'YES' if mkt_halted else 'no'}"
+        f"market_halted={'YES' if mkt_halted else 'no'} | "
+        f"mdd_halted={'YES' if mdd_halted else 'no'}"
     )
     if selected_count > 0:
         sel = pred_df[pred_df["selected_for_trade"] == True]

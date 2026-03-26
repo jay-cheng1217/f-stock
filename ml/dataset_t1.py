@@ -32,30 +32,17 @@ T1_CONTEXT_COLUMNS = [
     "Low",
     "Close",
     "Volume",
+    "atr_pct",        # 保留供 risk parity 部位計算（非模型特徵）
 ]
 
 T1_MARKET_FEATURE_COLUMNS = [
-    "twii_return_1d",
-    "twii_return_5d",
-    "gspc_return_1d",
-    "gspc_return_5d",
-    "sox_return_1d",
-    "sox_return_5d",
-    "vix_percentile_60d",
-    "vix_return_1d",
-    "vix_return_5d",
-    "usdtwd_return_1d",
-    "usdtwd_return_5d",
-    # Market regime features
-    "twii_above_ma5",
-    "twii_above_ma20",
-    "twii_above_ma60",
-    "twii_ma5_slope",
-    "twii_ma20_slope",
-    "twii_volatility_20d",
-    "vix_ma20_ratio",
-    "gspc_above_ma20",
-    "sox_above_ma20",
+    # 精簡為 5 個不重複市場特徵，避免大盤特徵宰制模型
+    # （舊版 19 個高度相關的市場特徵導致 87.7% 重要性集中）
+    "twii_return_1d",      # 大盤日報酬（也供大盤熔斷機制使用）
+    "vix_percentile_60d",  # 相對恐慌度（取代絕對 VIX）
+    "twii_above_ma20",     # 趨勢方向（二元）
+    "twii_volatility_20d", # 波動度體制
+    "sox_return_1d",       # 半導體先行指標（台股特有）
 ]
 
 T1_BASE_FEATURE_COLUMNS = [
@@ -394,7 +381,7 @@ def load_single_stock_t1(ticker: str) -> pd.DataFrame | None:
 
 
 def _finalize_frame(df: pd.DataFrame) -> pd.DataFrame:
-    keep = T1_CONTEXT_COLUMNS + T1_FEATURE_COLUMNS + T1_LABEL_COLUMNS
+    keep = list(dict.fromkeys(T1_CONTEXT_COLUMNS + T1_FEATURE_COLUMNS + T1_LABEL_COLUMNS))
     existing = [col for col in keep if col in df.columns]
     out = df.loc[:, existing].copy()
     float_cols = out.select_dtypes(include=["float64"]).columns
