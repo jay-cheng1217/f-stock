@@ -76,9 +76,9 @@ def _extract_trade_rules(meta: dict[str, Any]) -> dict[str, Any]:
         stop_loss = None
 
     return {
-        "top_n": int(selection.get("top_n", 20) or 20),
-        "min_prob": float(selection.get("min_prob", 0.0) or 0.0),
-        "take_profit": float(tp) if (tp := trade_rules.get("take_profit")) else None,
+        "top_n": int(selection.get("top_n", 10) or 10),
+        "min_prob": float(selection.get("min_prob", 0.60) or 0.60),
+        "take_profit": float(tp) if (tp := trade_rules.get("take_profit")) else 0.05,
         "stop_loss": float(stop_loss) if stop_loss is not None else None,
         "friction": float(trade_rules.get("friction", 0.004) or 0.004),
         "ambiguous_fill": str(trade_rules.get("ambiguous_fill", "close")),

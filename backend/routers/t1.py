@@ -21,9 +21,9 @@ from ml.predict_t1 import (
 router = APIRouter(tags=["t1"])
 
 DEFAULT_T1_RULES = {
-    "top_n": 20,
-    "min_prob": 0.0,
-    "take_profit": None,
+    "top_n": 10,
+    "min_prob": 0.60,
+    "take_profit": 0.05,
     "stop_loss": None,
     "friction": 0.004,
     "ambiguous_fill": "close",

@@ -46,9 +46,9 @@ from ml.dataset_t1 import T1_FEATURE_COLUMNS, build_t1_dataset
 
 
 DEFAULT_TARGET = "t1_close_positive"
-DEFAULT_TOP_N = 20
-DEFAULT_MIN_PROB = 0.0
-DEFAULT_TAKE_PROFIT = None  # None = hold to close
+DEFAULT_TOP_N = 10
+DEFAULT_MIN_PROB = 0.60
+DEFAULT_TAKE_PROFIT = 0.05  # 5% take-profit
 DEFAULT_STOP_LOSS = None    # None = no stop loss
 DEFAULT_FRICTION = 0.004    # round-trip friction (open-entry)
 DEFAULT_TRAIN_MONTHS = 24
