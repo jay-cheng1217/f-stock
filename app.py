@@ -3475,6 +3475,15 @@ def index():
     )
 
 
+@app.get("/sw.js", tags=["frontend"], include_in_schema=False)
+def service_worker():
+    """Service Worker 需從根路徑提供以控制全站快取範圍"""
+    return FileResponse(
+        os.path.join(STATIC_DIR, "sw.js"),
+        media_type="application/javascript",
+    )
+
+
 # ==============================================================================
 # 啟動事件
 # ==============================================================================
