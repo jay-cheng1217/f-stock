@@ -297,6 +297,7 @@
     <div class="tab" data-section="rankings" onclick="switchTab('rankings')">排行榜</div>
     <div class="tab" data-section="stock-detail" onclick="switchTab('stock-detail')">個股分析</div>
     <div class="tab" data-section="backtest" onclick="switchTab('backtest')">回測績效</div>
+    <div class="tab" data-section="monitor" onclick="switchTab('monitor')">模型監控</div>
 </div>
 
 <div class="main">
@@ -552,6 +553,40 @@
         </div>
     </div>
 
+    <!-- ===== Model Monitor ===== -->
+    <div id="section-monitor" class="section">
+        <h2 style="margin-bottom:12px;">T+1 模型監控儀表板</h2>
+        <div id="monitorAlerts" style="margin-bottom:12px;"></div>
+        <div class="grid-4" id="monitorCards" style="margin-bottom:16px;"></div>
+        <div class="card" style="margin-bottom:16px;">
+            <h3>Rolling IC (Information Coefficient)</h3>
+            <table class="data-table" id="monitorIcTable">
+                <thead><tr><th>日期</th><th>IC</th><th>Spread</th><th>Top10%</th><th>Bot10%</th><th>樣本數</th><th>狀態</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="grid-2" style="gap:16px;">
+            <div class="card">
+                <h3>校準度 (Calibration)</h3>
+                <table class="data-table" id="monitorCalTable">
+                    <thead><tr><th>機率區間</th><th>筆數</th><th>預測</th><th>實際</th><th>Gap</th><th>均報酬</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h3>Execution Gap</h3>
+                <div id="monitorExecGap"></div>
+            </div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+            <h3>每日績效</h3>
+            <table class="data-table" id="monitorDailyTable">
+                <thead><tr><th>日期</th><th>日報酬</th><th>勝率</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -599,6 +634,7 @@ function switchTab(name) {
     if (name === 'cross-confirm') loadCrossConfirm();
     if (name === 'rankings') loadRanking('foreign_buy');
     if (name === 'backtest') loadBacktest();
+    if (name === 'monitor') loadMonitor();
 }
 
 // ===== Helpers =====
@@ -1745,6 +1781,72 @@ function renderInstitutionalChart(data) {
         ],
     });
     window.addEventListener('resize', () => chart.resize());
+}
+
+// ===== Monitor =====
+async function loadMonitor() {
+    try {
+        const res = await fetch(API + '/api/monitor/t1');
+        const data = await res.json();
+        if (data.status !== 'success') {
+            document.getElementById('monitorCards').innerHTML = '<div class="card">尚無監控資料，請先執行 python scripts/monitor_t1.py</div>';
+            return;
+        }
+
+        // Alert banner
+        const alerts = data.anomalies || [];
+        const alertHtml = alerts.map(a => {
+            const cls = a.level === 'CRITICAL' ? 'color:#ff4444' : a.level === 'WARNING' ? 'color:#ffaa00' : 'color:#88aacc';
+            const icon = a.level === 'CRITICAL' ? '🔴' : a.level === 'WARNING' ? '🟡' : '🔵';
+            return `<div style="${cls};padding:4px 8px;background:#1a2332;border-radius:4px;margin-bottom:4px;font-size:13px;">${icon} ${a.message}</div>`;
+        }).join('');
+        document.getElementById('monitorAlerts').innerHTML = alertHtml || '<div style="color:#44cc88;padding:4px 8px;">All clear</div>';
+
+        // Summary cards
+        const s = data.summary || {};
+        const p = data.portfolio || {};
+        const cards = [
+            {label: 'Avg IC', value: s.avg_ic != null ? s.avg_ic.toFixed(4) : '-', sub: `${s.ic_count || 0} days`},
+            {label: '勝率', value: p.overall_win_rate != null ? (p.overall_win_rate*100).toFixed(1)+'%' : '-', sub: `${p.total_positions||0} trades`},
+            {label: 'MDD', value: p.mdd != null ? (p.mdd*100).toFixed(1)+'%' : '-', sub: `equity ${p.equity_latest||'-'}`},
+            {label: '異常', value: `${s.critical_count||0} critical`, sub: `${s.anomaly_count||0} total`},
+        ];
+        document.getElementById('monitorCards').innerHTML = cards.map(c =>
+            `<div class="card"><div style="color:#88aacc;font-size:12px;">${c.label}</div><div style="font-size:22px;font-weight:bold;">${c.value}</div><div style="color:#667;font-size:11px;">${c.sub}</div></div>`
+        ).join('');
+
+        // IC table
+        const icRows = (data.rolling_ic || []).map(ic => {
+            const ok = ic.ic_spearman >= 0.02;
+            return `<tr><td>${ic.date}</td><td style="color:${ok?'#44cc88':'#ff4444'}">${ic.ic_spearman.toFixed(4)}</td><td>${ic.spread.toFixed(4)}</td><td>${(ic.top_10pct_avg_return*100).toFixed(2)}%</td><td>${(ic.bot_10pct_avg_return*100).toFixed(2)}%</td><td>${ic.n_stocks}</td><td>${ok?'OK':'DECAY'}</td></tr>`;
+        }).join('');
+        document.querySelector('#monitorIcTable tbody').innerHTML = icRows || '<tr><td colspan="7">No IC data</td></tr>';
+
+        // Calibration table
+        const calRows = (p.calibration || []).map(c => {
+            const drift = Math.abs(c.gap) > 0.15;
+            return `<tr><td>${c.bin}</td><td>${c.n}</td><td>${(c.predicted_prob*100).toFixed(1)}%</td><td style="color:${drift?'#ff4444':'#44cc88'}">${(c.actual_win_rate*100).toFixed(1)}%</td><td>${(c.gap*100).toFixed(1)}%</td><td>${(c.avg_return*100).toFixed(2)}%</td></tr>`;
+        }).join('');
+        document.querySelector('#monitorCalTable tbody').innerHTML = calRows || '<tr><td colspan="6">No calibration data</td></tr>';
+
+        // Execution Gap
+        const eg = p.execution_gap || {};
+        document.getElementById('monitorExecGap').innerHTML = eg.backtest_expectancy != null ? `
+            <div style="padding:12px;">
+                <div style="margin-bottom:8px;">回測期望值: <strong>${(eg.backtest_expectancy*100).toFixed(2)}%</strong></div>
+                <div style="margin-bottom:8px;">實際均報酬: <strong style="color:${eg.actual_avg_return>=0?'#44cc88':'#ff4444'}">${(eg.actual_avg_return*100).toFixed(2)}%</strong></div>
+                <div style="margin-bottom:8px;">Gap: <strong style="color:#ffaa00">${(eg.execution_gap*100).toFixed(2)}%</strong> (${eg.gap_pct_of_expected.toFixed(0)}%)</div>
+            </div>` : '<div style="padding:12px;">No execution data</div>';
+
+        // Daily table
+        const dailyRows = (p.daily_returns || []).map(d =>
+            `<tr><td>${d.date}</td><td style="color:${d.return>=0?'#44cc88':'#ff4444'}">${(d.return*100).toFixed(2)}%</td><td>${(d.win_rate*100).toFixed(1)}%</td></tr>`
+        ).join('');
+        document.querySelector('#monitorDailyTable tbody').innerHTML = dailyRows || '<tr><td colspan="3">No daily data</td></tr>';
+
+    } catch(e) {
+        document.getElementById('monitorCards').innerHTML = `<div class="card" style="color:#ff4444;">載入失敗: ${e.message}</div>`;
+    }
 }
 
 // ===== Init =====

@@ -1,0 +1,126 @@
+{
+  "generated_at": "2026-03-26 17:11:28",
+  "lookback_days": 5,
+  "rolling_ic": [
+    {
+      "date": "2026-03-23",
+      "ic_spearman": -0.5603,
+      "p_value": 0.0,
+      "n_stocks": 1088,
+      "top_10pct_avg_return": -0.048,
+      "bot_10pct_avg_return": -0.001,
+      "spread": -0.047
+    },
+    {
+      "date": "2026-03-24",
+      "ic_spearman": -0.3306,
+      "p_value": 0.0,
+      "n_stocks": 1072,
+      "top_10pct_avg_return": -0.0007,
+      "bot_10pct_avg_return": 0.0168,
+      "spread": -0.0175
+    },
+    {
+      "date": "2026-03-25",
+      "ic_spearman": -0.0056,
+      "p_value": 0.8968,
+      "n_stocks": 542,
+      "top_10pct_avg_return": -0.0154,
+      "bot_10pct_avg_return": -0.0102,
+      "spread": -0.0052
+    }
+  ],
+  "portfolio": {
+    "total_positions": 40,
+    "trading_days": 2,
+    "overall_win_rate": 0.25,
+    "avg_return": -0.0366,
+    "median_return": -0.0312,
+    "avg_hit_prob": 0.4931,
+    "hit_3pct_rate": 0.4,
+    "mdd": -0.0131,
+    "max_consecutive_losses": 2,
+    "equity_latest": 0.9277,
+    "latest_rolling_5d_wr": null,
+    "latest_rolling_10d_wr": null,
+    "daily_returns": [
+      {
+        "date": "2026-03-23",
+        "return": -0.06,
+        "win_rate": 0.2
+      },
+      {
+        "date": "2026-03-24",
+        "return": -0.0131,
+        "win_rate": 0.3
+      }
+    ],
+    "calibration": [
+      {
+        "bin": "<50",
+        "n": 19,
+        "predicted_prob": 0.473,
+        "actual_win_rate": 0.211,
+        "avg_return": -0.0284,
+        "gap": -0.263
+      },
+      {
+        "bin": "50-55",
+        "n": 21,
+        "predicted_prob": 0.511,
+        "actual_win_rate": 0.286,
+        "avg_return": -0.0439,
+        "gap": -0.225
+      }
+    ],
+    "execution_gap": {
+      "backtest_expectancy": 0.0084,
+      "actual_avg_return": -0.0366,
+      "execution_gap": -0.045,
+      "gap_pct_of_expected": -535.2
+    }
+  },
+  "anomalies": [
+    {
+      "level": "CRITICAL",
+      "type": "IC_DECAY",
+      "message": "近 3 日平均 IC=-0.2988 < 0.02，模型可能失效",
+      "value": -0.2988,
+      "threshold": 0.02
+    },
+    {
+      "level": "WARNING",
+      "type": "SPREAD_COLLAPSE",
+      "message": "Top/Bottom 10% 報酬差距消失 (spread=-0.0232)，模型無區分力",
+      "value": -0.0232
+    },
+    {
+      "level": "WARNING",
+      "type": "LOW_WIN_RATE",
+      "message": "整體勝率 25.0% < 45% 警戒線",
+      "value": 0.25,
+      "threshold": 0.45
+    },
+    {
+      "level": "INFO",
+      "type": "CALIBRATION_DRIFT",
+      "message": "機率區間 <50: 預測 47.3% vs 實際 21.1%",
+      "bin": "<50",
+      "gap": -0.263
+    },
+    {
+      "level": "INFO",
+      "type": "CALIBRATION_DRIFT",
+      "message": "機率區間 50-55: 預測 51.1% vs 實際 28.6%",
+      "bin": "50-55",
+      "gap": -0.225
+    }
+  ],
+  "summary": {
+    "ic_count": 3,
+    "avg_ic": -0.2988,
+    "avg_spread": -0.0232,
+    "anomaly_count": 5,
+    "critical_count": 1
+  }
+}

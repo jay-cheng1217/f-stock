@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import glob
+import json
 import os
 from functools import lru_cache
 from typing import Any
@@ -10,6 +11,8 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from ml.config import DAILY_K_DIR, MODEL_DIR
+
+MONITOR_REPORT_PATH = os.path.join(MODEL_DIR, "..", "reports", "monitor_t1_latest.json")
 from ml.cross_confirm import get_dual_confirmed_tickers, load_cross_confirmed
 from ml.predict_t1 import (
     load_latest_t1_model,
@@ -529,3 +532,20 @@ def get_cross_confirmed(top_n: int = 10):
             content={"status": "error", "error": str(exc), "data": []},
             status_code=500,
         )
+
+
+@router.get("/api/monitor/t1")
+def get_t1_monitor():
+    """Return latest T+1 model monitoring report."""
+    rpath = os.path.normpath(MONITOR_REPORT_PATH)
+    if not os.path.exists(rpath):
+        return JSONResponse(
+            content={"status": "error", "message": "No monitor report yet"},
+            status_code=404,
+        )
+    try:
+        with open(rpath, "r", encoding="utf-8") as f:
+            report = json.load(f)
+        return JSONResponse(content={"status": "success", **report})
+    except Exception as exc:
+        return JSONResponse(content={"status": "error", "message": str(exc)}, status_code=500)

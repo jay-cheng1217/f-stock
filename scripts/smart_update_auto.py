@@ -66,6 +66,11 @@ def exec_paper_portfolio() -> None:
     sync_paper_portfolio_t1(top_n=10)
 
 
+def exec_monitor() -> None:
+    from scripts.monitor_t1 import generate_report
+    generate_report(lookback_days=20)
+
+
 def exec_email() -> None:
     from scripts.send_daily_email import send_latest_email
 
@@ -182,11 +187,13 @@ def main(argv: list[str] | None = None) -> int:
 
     if predict_ok:
         portfolio_ok = run_step("Sync paper portfolio", exec_paper_portfolio)
+        monitor_ok = run_step("Model monitoring", exec_monitor)
         verify_ok = run_step("Verify historical predictions", smart_update.exec_verify)
         email_ok = run_step("Send daily email report", exec_email)
         step_results.extend(
             [
                 ("Sync paper portfolio", portfolio_ok),
+                ("Model monitoring", monitor_ok),
                 ("Verify historical predictions", verify_ok),
                 ("Send daily email report", email_ok),
             ]
