@@ -2043,7 +2043,7 @@ def pipeline_status():
     """回傳資料管線最新狀態，供前端顯示資料鮮度"""
     import json as _json
     from datetime import datetime as _dt
-    status_path = os.path.join(BASE_DIR, "ml", "models", "pipeline_status.json")
+    status_path = os.path.join(os.path.dirname(__file__), "ml", "models", "pipeline_status.json")
     if not os.path.exists(status_path):
         return {"error": "尚無 pipeline 執行紀錄", "stale": True}
     with open(status_path, "r", encoding="utf-8") as f:
