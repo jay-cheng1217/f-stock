@@ -22,7 +22,7 @@ from ml.config import DAILY_K_DIR, MODEL_DIR
 
 DEFAULT_DB_PATH = os.path.join(BASE_DIR, "paper_portfolio_t1.db")
 DEFAULT_RULE_VERSION = "t1-v1"
-DEFAULT_TOP_N = 20
+DEFAULT_TOP_N = 10
 PORTFOLIO_START_DATE = "2026-03-23"
 HOLD_DAYS = 1
 
