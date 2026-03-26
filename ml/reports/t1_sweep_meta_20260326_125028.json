@@ -1,0 +1,53 @@
+{
+  "generated_at": "20260326_125028",
+  "dataset": {
+    "n_rows": 1598925,
+    "n_stocks": 1091,
+    "date_range": [
+      "2020-01-02",
+      "2026-03-24"
+    ],
+    "positive_rate": 0.4574936285316697,
+    "target": "t1_close_positive",
+    "feature_count": 83
+  },
+  "walk_forward": {
+    "train_months": 24,
+    "val_months": 3,
+    "test_months": 1,
+    "device": "gpu",
+    "n_folds": 48
+  },
+  "grid": {
+    "take_profits": [
+      0.03,
+      0.05
+    ],
+    "stop_losses": [
+      null,
+      0.03
+    ],
+    "min_probs": [
+      0.0,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75
+    ],
+    "top_ns": [
+      5,
+      10,
+      20
+    ],
+    "friction": 0.004,
+    "ambiguous_fills": [
+      "close"
+    ]
+  },
+  "result_files": {
+    "csv": "F:\\stock\\ml\\reports\\t1_sweep_results_20260326_125028.csv",
+    "latest_csv": "F:\\stock\\ml\\reports\\t1_sweep_results_latest.csv"
+  }
+}
