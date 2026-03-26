@@ -30,6 +30,10 @@ T1_SCORE_BREAKOUT_WEIGHT = 0.02
 T1_SCORE_INST_WEIGHT = 0.03
 T1_SCORE_UPPER_WICK_PENALTY = 0.04
 
+# --- 實戰防護常數 ---
+T1_MIN_AVG_AMOUNT = 10_000_000       # 5日均成交額門檻 (1000萬台幣)
+T1_MARKET_CIRCUIT_BREAKER = -0.015   # 大盤跌 > 1.5% 熔斷，不出手
+
 T1_SNAPSHOT_CACHE_PATH = os.path.join(MODEL_DIR, "snapshot_t1_cache.pkl")
 
 _SECTOR_DF = load_sector_mapping()
@@ -48,6 +52,20 @@ def _safe_print(text: str) -> None:
             errors="replace",
         )
         print(safe_text)
+
+
+def _find_latest_20d_prediction(pred_date: str) -> str | None:
+    """Find the 20D prediction CSV matching or closest to pred_date."""
+    pattern = os.path.join(MODEL_DIR, "predictions_*.csv")
+    candidates = [f for f in sorted(glob.glob(pattern)) if "t1" not in os.path.basename(f)]
+    if not candidates:
+        return None
+    # Prefer exact date match, fallback to latest
+    for f in reversed(candidates):
+        basename = os.path.basename(f)
+        if pred_date in basename:
+            return f
+    return candidates[-1]
 
 
 def load_latest_t1_model() -> tuple[lgb.Booster, dict[str, Any]]:
@@ -293,23 +311,77 @@ def build_live_t1_prediction_df(
     pred_df["friction"] = trade_rules["friction"]
     pred_df["selected_for_trade"] = False
     pred_df["selection_rank"] = pd.Series(pd.NA, index=pred_df.index, dtype="Int64")
+    pred_df["position_weight"] = np.nan
+    pred_df["veto_reason"] = ""
+
+    # --- [防護1] 大盤熔斷 ---
+    twii_ret = snapshot["twii_return_1d"].iloc[0] if "twii_return_1d" in snapshot.columns else 0.0
+    market_halted = (twii_ret <= T1_MARKET_CIRCUIT_BREAKER) if pd.notna(twii_ret) else False
+
+    # --- [防護2] 流動性門檻：5日均成交額 > T1_MIN_AVG_AMOUNT ---
+    vol_burst = pd.to_numeric(snapshot.get("t1_volume_burst_5d"), errors="coerce").fillna(1.0).clip(lower=0.01)
+    avg_5d_vol = pd.to_numeric(snapshot["Volume"], errors="coerce") / vol_burst
+    pred_df["avg_5d_amount"] = avg_5d_vol * pred_df["close"]
+
+    # --- [防護3] 載入 20D 預測 ---
+    d20_pred_file = _find_latest_20d_prediction(pred_df["date"].iloc[0] if not pred_df.empty else "")
+    d20_map = None
+    if d20_pred_file is not None:
+        d20_df = pd.read_csv(d20_pred_file, dtype={"ticker": str}, usecols=["ticker", "signal", "pred_return_20d"])
+        d20_map = d20_df.set_index("ticker")
 
     pred_df = sort_t1_prediction_df(pred_df)
 
-    eligible = pred_df[pred_df["hit_prob_3pct"] >= trade_rules["min_prob"]].copy()
-    selected = eligible.head(trade_rules["top_n"]).copy()
-    if not selected.empty:
-        pred_df.loc[selected.index, "selected_for_trade"] = True
-        pred_df.loc[selected.index, "selection_rank"] = pd.Series(
-            range(1, len(selected) + 1),
-            index=selected.index,
-            dtype="Int64",
+    # sort 後 index 已重置，用 pred_df 欄位重建 mask
+    liquidity_ok = pred_df["avg_5d_amount"] >= T1_MIN_AVG_AMOUNT
+
+    d20_veto = pd.Series(False, index=pred_df.index)
+    if d20_pred_file is not None:
+        matched_signal = pred_df["ticker"].map(d20_map["signal"]).fillna("")
+        matched_return = pred_df["ticker"].map(d20_map["pred_return_20d"]).fillna(0.0)
+        d20_veto = (matched_signal == "DOWN") & (matched_return < 0)
+
+    # 標記否決原因
+    pred_df.loc[~liquidity_ok, "veto_reason"] = pred_df.loc[~liquidity_ok, "veto_reason"] + "流動性不足 "
+    pred_df.loc[d20_veto, "veto_reason"] = pred_df.loc[d20_veto, "veto_reason"] + "20D看空 "
+
+    if market_halted:
+        # 大盤熔斷：全數不選
+        pred_df["veto_reason"] = f"大盤熔斷({twii_ret:.2%}) " + pred_df["veto_reason"]
+    else:
+        # 篩選：機率 + 流動性 + 20D不否決
+        eligible_mask = (
+            (pred_df["hit_prob_3pct"] >= trade_rules["min_prob"])
+            & liquidity_ok
+            & (~d20_veto)
         )
-        selected_watch = selected.index[
-            pred_df.loc[selected.index, "recommendation"].astype(str).str.startswith("觀望")
-        ]
-        if len(selected_watch) > 0:
-            pred_df.loc[selected_watch, "recommendation"] = "建議買進"
+        eligible = pred_df[eligible_mask].copy()
+        selected = eligible.head(trade_rules["top_n"]).copy()
+
+        if not selected.empty:
+            pred_df.loc[selected.index, "selected_for_trade"] = True
+            pred_df.loc[selected.index, "selection_rank"] = pd.Series(
+                range(1, len(selected) + 1),
+                index=selected.index,
+                dtype="Int64",
+            )
+            selected_watch = selected.index[
+                pred_df.loc[selected.index, "recommendation"].astype(str).str.startswith("觀望")
+            ]
+            if len(selected_watch) > 0:
+                pred_df.loc[selected_watch, "recommendation"] = "建議買進"
+
+            # --- [防護4] 波動度風險平價部位 (用 ticker 對應，避免 index 錯位) ---
+            if "atr_pct" in snapshot.columns:
+                atr_map = snapshot.set_index("ticker")["atr_pct"]
+                sel_atr = pd.to_numeric(
+                    selected["ticker"].map(atr_map), errors="coerce"
+                ).fillna(0.03).clip(lower=0.005)
+            else:
+                sel_atr = pd.Series(0.03, index=selected.index)
+            inv_atr = 1.0 / sel_atr
+            weights = inv_atr / inv_atr.sum()
+            pred_df.loc[selected.index, "position_weight"] = weights.values
 
     out_cols = [
         "ticker",
@@ -327,6 +399,9 @@ def build_live_t1_prediction_df(
         "take_profit",
         "stop_loss",
         "friction",
+        "position_weight",
+        "avg_5d_amount",
+        "veto_reason",
     ]
     out_cols.extend(
         col
@@ -388,6 +463,13 @@ def main() -> int:
     selected_count = int(pred_df["selected_for_trade"].fillna(False).sum())
     tp_text = "off" if trade_rules["take_profit"] is None else f"{trade_rules['take_profit']:.1%}"
     sl_text = "off" if trade_rules["stop_loss"] is None else f"{trade_rules['stop_loss']:.1%}"
+
+    # 統計各防護機制攔截數量
+    veto_col = pred_df.get("veto_reason", pd.Series("", index=pred_df.index)).fillna("")
+    liq_vetoed = int(veto_col.str.contains("流動性不足").sum())
+    d20_vetoed = int(veto_col.str.contains("20D看空").sum())
+    mkt_halted = int(veto_col.str.contains("大盤熔斷").sum()) > 0
+
     _safe_print(
         "T+1 live signal summary: "
         f"{len(pred_df):,} names | "
@@ -395,6 +477,15 @@ def main() -> int:
         f"tp={tp_text} | "
         f"sl={sl_text}"
     )
+    _safe_print(
+        f"  Filters: liquidity_vetoed={liq_vetoed} | d20_vetoed={d20_vetoed} | "
+        f"market_halted={'YES' if mkt_halted else 'no'}"
+    )
+    if selected_count > 0:
+        sel = pred_df[pred_df["selected_for_trade"] == True]
+        weights = sel["position_weight"]
+        if weights.notna().any():
+            _safe_print(f"  Position weights: min={weights.min():.1%} max={weights.max():.1%} (risk-parity)")
     return 0
 
 
