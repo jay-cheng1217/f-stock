@@ -1817,15 +1817,17 @@ async function loadMonitor() {
 
         // IC table
         const icRows = (data.rolling_ic || []).map(ic => {
-            const ok = ic.ic_spearman >= 0.02;
-            return `<tr><td>${ic.date}</td><td style="color:${ok?'#44cc88':'#ff4444'}">${ic.ic_spearman.toFixed(4)}</td><td>${ic.spread.toFixed(4)}</td><td>${(ic.top_10pct_avg_return*100).toFixed(2)}%</td><td>${(ic.bot_10pct_avg_return*100).toFixed(2)}%</td><td>${ic.n_stocks}</td><td>${ok?'OK':'DECAY'}</td></tr>`;
+            const icv = ic.ic_spearman ?? 0, sp = ic.spread ?? 0;
+            const ok = icv >= 0.02;
+            return `<tr><td>${ic.date}</td><td style="color:${ok?'#44cc88':'#ff4444'}">${icv.toFixed(4)}</td><td>${sp.toFixed(4)}</td><td>${((ic.top_10pct_avg_return||0)*100).toFixed(2)}%</td><td>${((ic.bot_10pct_avg_return||0)*100).toFixed(2)}%</td><td>${ic.n_stocks||0}</td><td>${ok?'OK':'DECAY'}</td></tr>`;
         }).join('');
         document.querySelector('#monitorIcTable tbody').innerHTML = icRows || '<tr><td colspan="7">No IC data</td></tr>';
 
         // Calibration table
         const calRows = (p.calibration || []).map(c => {
-            const drift = Math.abs(c.gap) > 0.15;
-            return `<tr><td>${c.bin}</td><td>${c.n}</td><td>${(c.predicted_prob*100).toFixed(1)}%</td><td style="color:${drift?'#ff4444':'#44cc88'}">${(c.actual_win_rate*100).toFixed(1)}%</td><td>${(c.gap*100).toFixed(1)}%</td><td>${(c.avg_return*100).toFixed(2)}%</td></tr>`;
+            const g = c.gap ?? 0, pp = c.predicted_prob ?? 0, aw = c.actual_win_rate ?? 0, ar = c.avg_return ?? 0;
+            const drift = Math.abs(g) > 0.15;
+            return `<tr><td>${c.bin}</td><td>${c.n||0}</td><td>${(pp*100).toFixed(1)}%</td><td style="color:${drift?'#ff4444':'#44cc88'}">${(aw*100).toFixed(1)}%</td><td>${(g*100).toFixed(1)}%</td><td>${(ar*100).toFixed(2)}%</td></tr>`;
         }).join('');
         document.querySelector('#monitorCalTable tbody').innerHTML = calRows || '<tr><td colspan="6">No calibration data</td></tr>';
 
@@ -1835,13 +1837,14 @@ async function loadMonitor() {
             <div style="padding:12px;">
                 <div style="margin-bottom:8px;">回測期望值: <strong>${(eg.backtest_expectancy*100).toFixed(2)}%</strong></div>
                 <div style="margin-bottom:8px;">實際均報酬: <strong style="color:${eg.actual_avg_return>=0?'#44cc88':'#ff4444'}">${(eg.actual_avg_return*100).toFixed(2)}%</strong></div>
-                <div style="margin-bottom:8px;">Gap: <strong style="color:#ffaa00">${(eg.execution_gap*100).toFixed(2)}%</strong> (${eg.gap_pct_of_expected.toFixed(0)}%)</div>
+                <div style="margin-bottom:8px;">Gap: <strong style="color:#ffaa00">${((eg.execution_gap||0)*100).toFixed(2)}%</strong> (${(eg.gap_pct_of_expected||0).toFixed(0)}%)</div>
             </div>` : '<div style="padding:12px;">No execution data</div>';
 
         // Daily table
-        const dailyRows = (p.daily_returns || []).map(d =>
-            `<tr><td>${d.date}</td><td style="color:${d.return>=0?'#44cc88':'#ff4444'}">${(d.return*100).toFixed(2)}%</td><td>${(d.win_rate*100).toFixed(1)}%</td></tr>`
-        ).join('');
+        const dailyRows = (p.daily_returns || []).map(d => {
+            const ret = d.return ?? 0, wr = d.win_rate ?? 0;
+            return `<tr><td>${d.date}</td><td style="color:${ret>=0?'#44cc88':'#ff4444'}">${(ret*100).toFixed(2)}%</td><td>${(wr*100).toFixed(1)}%</td></tr>`;
+        }).join('');
         document.querySelector('#monitorDailyTable tbody').innerHTML = dailyRows || '<tr><td colspan="3">No daily data</td></tr>';
 
     } catch(e) {
