@@ -32,6 +32,10 @@ T1_SCORE_BREAKOUT_WEIGHT = 0.02
 T1_SCORE_INST_WEIGHT = 0.03
 T1_SCORE_UPPER_WICK_PENALTY = 0.04
 
+# --- 追高警告常數 ---
+T1_CHASE_INTRADAY_PCT = 0.05    # 當日漲幅 >5% 標記追高警告
+T1_CHASE_FROM_ENTRY_PCT = 0.08  # 現價距建議掛單 >8% 標記遠離支撐
+
 # --- 實戰防護常數 ---
 T1_MIN_AVG_AMOUNT = 10_000_000       # 5日均成交額門檻 (1000萬台幣)
 T1_MARKET_CIRCUIT_BREAKER = -0.015   # 大盤跌 > 1.5% 熔斷，不出手
@@ -231,6 +235,24 @@ def _build_t1_risk_tags(snapshot: pd.DataFrame) -> pd.Series:
             risk_tags,
             snapshot["t1_inst_net_ratio_1d"].fillna(0) <= -T1_INST_RATIO_MIN,
             "法人反向",
+        )
+
+    # 追高警告：當日漲幅過大
+    if "return_1d" in snapshot.columns:
+        risk_tags = _append_tag(
+            risk_tags,
+            snapshot["return_1d"].fillna(0) >= T1_CHASE_INTRADAY_PCT,
+            "已起漲勿追",
+        )
+    elif "Open" in snapshot.columns and "Close" in snapshot.columns:
+        intraday_chg = (
+            pd.to_numeric(snapshot["Close"], errors="coerce")
+            / pd.to_numeric(snapshot["Open"], errors="coerce") - 1
+        ).fillna(0)
+        risk_tags = _append_tag(
+            risk_tags,
+            intraday_chg >= T1_CHASE_INTRADAY_PCT,
+            "已起漲勿追",
         )
 
     return risk_tags.str.strip()
@@ -512,6 +534,17 @@ def predict_t1_all(save_csv: bool = True, verbose: bool = True) -> tuple[pd.Data
         if verbose:
             with_entry = levels["suggested_entry"].notna().sum()
             _safe_print(f"Key levels computed for {len(selected_tickers)} selected, {with_entry} with suggested entry")
+
+        # --- 追高警告：現價遠離建議掛單價 ---
+        if "suggested_entry" in pred_df.columns and "risk_tags" in pred_df.columns:
+            entry = pd.to_numeric(pred_df["suggested_entry"], errors="coerce")
+            close = pd.to_numeric(pred_df["close"], errors="coerce")
+            gap_from_entry = (close - entry) / entry
+            far_from_support = (gap_from_entry >= T1_CHASE_FROM_ENTRY_PCT) & entry.notna()
+            if far_from_support.any():
+                pred_df.loc[far_from_support, "risk_tags"] = (
+                    pred_df.loc[far_from_support, "risk_tags"].fillna("") + " 遠離支撐"
+                ).str.strip()
 
     if save_csv:
         output_path = os.path.join(MODEL_DIR, f"predictions_t1_{pred_date}.csv")
