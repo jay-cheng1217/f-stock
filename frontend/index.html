@@ -275,11 +275,12 @@
         }
 
         @media (max-width: 768px) {
-            .header { padding: 10px 12px; }
-            .header h1 { font-size: 16px; }
-            .header .search-box input { width: 100px; font-size: 14px; }
+            .header { padding: 8px 10px; }
+            .header h1 { font-size: 15px; }
+            .header .search-box input { width: 90px; font-size: 13px; padding: 6px 10px; }
+            .header button { padding: 6px 12px; font-size: 13px; }
             .nav-tabs {
-                padding: 0 8px;
+                padding: 0 4px;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
@@ -287,25 +288,45 @@
             }
             .nav-tabs::-webkit-scrollbar { display: none; }
             .nav-tabs .tab {
-                padding: 10px 14px;
-                font-size: 13px;
+                padding: 8px 10px;
+                font-size: 12px;
                 flex-shrink: 0;
             }
-            .main { padding: 10px 8px; }
-            .grid-2, .grid-3, .grid-4, .grid-left-right {
+            .main { padding: 8px 6px; }
+            .grid-2, .grid-3, .grid-left-right {
                 grid-template-columns: 1fr;
             }
-            .card { padding: 12px; }
-            .card-title-actions {
-                margin-left: 0;
-                width: 100%;
+            .grid-4 {
+                grid-template-columns: 1fr 1fr;
             }
-            table { font-size: 12px; }
-            td, th { padding: 6px 8px; }
-            .table-wrapper {
+            .card { padding: 10px; margin-bottom: 10px; }
+            .card-title { font-size: 13px; margin-bottom: 8px; }
+            .card-title-actions { margin-left: 0; width: 100%; }
+            .stat-value { font-size: 22px; }
+            .stat-label { font-size: 11px; }
+            .index-card .value { font-size: 18px; }
+            .index-card .name { font-size: 11px; }
+            .data-table { font-size: 11px; }
+            .data-table th { padding: 6px 6px; font-size: 11px; white-space: nowrap; }
+            .data-table td { padding: 5px 6px; }
+            .rec-badge { font-size: 10px; padding: 1px 5px; }
+            .chart-container { height: 280px; }
+            .chart-small { height: 200px; }
+            .stock-header .ticker-name { font-size: 18px; }
+            .stock-header .price { font-size: 22px; }
+            .stock-header .change-info { font-size: 13px; }
+            .table-wrapper, .data-table {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
             }
+        }
+        @media (max-width: 480px) {
+            .header { flex-wrap: wrap; gap: 6px; }
+            .header h1 { width: 100%; font-size: 14px; }
+            .nav-tabs .tab { padding: 7px 8px; font-size: 11px; }
+            .grid-4 { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .data-table { font-size: 10px; }
+            .data-table th, .data-table td { padding: 4px 4px; }
         }
     </style>
 </head>
@@ -326,6 +347,7 @@
     <div class="tab" data-section="portfolio" onclick="switchTab('portfolio')">實戰帳本</div>
     <div class="tab" data-section="t1-predictions" onclick="switchTab('t1-predictions')">T+1 預測</div>
     <div class="tab" data-section="t1-portfolio" onclick="switchTab('t1-portfolio')">T+1 帳本</div>
+    <div class="tab" data-section="value-screen" onclick="switchTab('value-screen')">低基期精選</div>
     <div class="tab" data-section="cross-confirm" onclick="switchTab('cross-confirm')">雙重確認</div>
     <div class="tab" data-section="rankings" onclick="switchTab('rankings')">排行榜</div>
     <div class="tab" data-section="stock-detail" onclick="switchTab('stock-detail')">個股分析</div>
@@ -552,6 +574,39 @@
         </div>
     </div>
 
+    <!-- ===== Value Screen ===== -->
+    <div id="section-value-screen" class="section">
+        <div class="card">
+            <div class="card-title prediction-card-title">
+                <span>低基期價值股精選</span>
+                <button type="button" class="dl-btn" onclick="loadValueScreen()">重新載入</button>
+            </div>
+            <div style="font-size:12px;color:#8899aa;margin-bottom:10px;line-height:1.8">
+                篩選條件：PE &lt; 20、最新季 EPS 正成長、MA5 乖離 &lt; 5%、近20日漲幅 &lt; 10%、日均量 &gt; 500 張
+            </div>
+            <div class="grid-4" id="valueScreenStats" style="margin-bottom:12px;"></div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>標的</th>
+                        <th>收盤</th>
+                        <th>PE</th>
+                        <th>EPS(TTM)</th>
+                        <th>季增</th>
+                        <th>營收YoY</th>
+                        <th>MA5乖離</th>
+                        <th>20D漲幅</th>
+                        <th>動能機率</th>
+                    </tr>
+                </thead>
+                <tbody id="valueScreenBody">
+                    <tr><td colspan="10" style="text-align:center;color:#8899aa;">尚未載入...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- ===== Rankings ===== -->
     <div id="section-rankings" class="section">
         <div style="margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap;">
@@ -667,6 +722,7 @@ function switchTab(name) {
     if (name === 't1-predictions') loadT1Predictions();
     if (name === 't1-portfolio') loadT1Portfolio();
     if (name === 'cross-confirm') loadCrossConfirm();
+    if (name === 'value-screen') loadValueScreen();
     if (name === 'rankings') loadRanking('foreign_buy');
     if (name === 'backtest') loadBacktest();
     if (name === 'monitor') loadMonitor();
@@ -1234,6 +1290,73 @@ async function loadCrossConfirm() {
         table.innerHTML = html || '<tr><td colspan="7" style="text-align:center;color:#8899aa;">目前無雙重確認標的</td></tr>';
     } catch (e) {
         table.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#ef5350;">載入失敗: ${e.message || e}</td></tr>`;
+    }
+}
+
+// ===== Value Screen =====
+async function loadValueScreen() {
+    const stats = document.getElementById('valueScreenStats');
+    const table = document.getElementById('valueScreenBody');
+    if (!stats || !table) return;
+
+    stats.innerHTML = '';
+    table.innerHTML = '<tr><td colspan="10" style="text-align:center;color:#8899aa;">載入中...</td></tr>';
+
+    try {
+        const resp = await fetchJson('/api/value/screen');
+        if (resp.status !== 'success') {
+            table.innerHTML = `<tr><td colspan="10" style="text-align:center;color:#ef5350;">${resp.error || '載入失敗'}</td></tr>`;
+            return;
+        }
+        const criteria = resp.criteria || {};
+        stats.innerHTML = `
+            <div class="card index-card">
+                <div class="name">符合條件</div>
+                <div class="value" style="color:#7bd389;">${resp.count || 0}</div>
+            </div>
+            <div class="card index-card">
+                <div class="name">PE 上限</div>
+                <div class="value">${criteria.max_pe || '-'}</div>
+            </div>
+            <div class="card index-card">
+                <div class="name">MA5 乖離上限</div>
+                <div class="value">${criteria.max_ma5_bias || '-'}</div>
+            </div>
+            <div class="card index-card">
+                <div class="name">20D 漲幅上限</div>
+                <div class="value">${criteria.max_ret_20d || '-'}</div>
+            </div>
+        `;
+
+        let html = '';
+        (resp.data || []).forEach((row, i) => {
+            const sector = row.sector ? `<div style="font-size:10px;color:#8899aa">${row.sector}</div>` : '';
+            const epsQoq = row.eps_qoq != null ? `<span style="color:#7bd389">+${row.eps_qoq.toFixed(2)}</span>` : '-';
+            const revYoy = row.rev_yoy != null
+                ? `<span style="color:${row.rev_yoy > 0 ? '#ef5350' : '#26a69a'}">${row.rev_yoy > 0 ? '+' : ''}${row.rev_yoy.toFixed(0)}%</span>`
+                : '-';
+            const ma5Color = row.ma5_bias != null ? (row.ma5_bias < 0 ? '#4fc3f7' : row.ma5_bias < 2 ? '#7bd389' : '#ffb74d') : '#888';
+            const ma5Text = row.ma5_bias != null ? `<span style="color:${ma5Color}">${row.ma5_bias > 0 ? '+' : ''}${row.ma5_bias.toFixed(1)}%</span>` : '-';
+            const ret20Color = row.ret_20d != null ? (row.ret_20d > 0 ? '#ef5350' : '#26a69a') : '#888';
+            const ret20 = row.ret_20d != null ? `<span style="color:${ret20Color}">${row.ret_20d > 0 ? '+' : ''}${row.ret_20d.toFixed(1)}%</span>` : '-';
+            const prob = row.hit_prob != null ? `${row.hit_prob.toFixed(1)}%` : '-';
+
+            html += `<tr>
+                <td>${i + 1}</td>
+                <td>${tickerLink(row.ticker)}${sector}</td>
+                <td>${row.close != null ? row.close.toFixed(1) : '-'}</td>
+                <td style="color:#ffb74d;font-weight:700">${row.pe != null ? row.pe.toFixed(1) : '-'}</td>
+                <td style="font-weight:700">${row.eps_ttm != null ? row.eps_ttm.toFixed(2) : '-'}</td>
+                <td>${epsQoq}</td>
+                <td>${revYoy}</td>
+                <td>${ma5Text}</td>
+                <td>${ret20}</td>
+                <td>${prob}</td>
+            </tr>`;
+        });
+        table.innerHTML = html || '<tr><td colspan="10" style="text-align:center;color:#8899aa;">目前無符合條件標的</td></tr>';
+    } catch (e) {
+        table.innerHTML = `<tr><td colspan="10" style="text-align:center;color:#ef5350;">載入失敗: ${e.message || e}</td></tr>`;
     }
 }
 
