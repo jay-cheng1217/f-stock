@@ -32,9 +32,9 @@ T1_SCORE_BREAKOUT_WEIGHT = 0.02
 T1_SCORE_INST_WEIGHT = 0.03
 T1_SCORE_UPPER_WICK_PENALTY = 0.04
 
-# --- 追高警告常數 ---
-T1_CHASE_INTRADAY_PCT = 0.07    # 當日漲幅 >7% 且無安全進場價才標記
-T1_CHASE_FROM_ENTRY_PCT = 0.08  # 現價距建議掛單 >8% 標記遠離支撐
+# --- 乖離率追高警告 ---
+T1_MA5_OVEREXTEND_PCT = 0.10    # MA5 正乖離 >10% → 短線過熱（P99 水位才10.4%）
+T1_MA5_PULLBACK_PCT = 0.03      # MA5 乖離 <3% → 回測均線，動能進場點
 
 # --- 實戰防護常數 ---
 T1_MIN_AVG_AMOUNT = 10_000_000       # 5日均成交額門檻 (1000萬台幣)
@@ -148,6 +148,27 @@ def _extract_trade_rules(meta: dict[str, Any]) -> dict[str, Any]:
         "friction": float(trade_rules.get("friction", 0.004) or 0.004),
         "ambiguous_fill": str(trade_rules.get("ambiguous_fill", "close")),
     }
+
+
+# --- 動態門檻：取代寫死的 60% ---
+T1_MIN_PROB_FLOOR = 0.30        # 絕對下限（校準後 30% 已是 P90 水位）
+T1_MIN_PROB_PERCENTILE = 95     # 取全市場 top 5% 的機率值作為門檻
+
+
+def _dynamic_min_prob(hit_probs: pd.Series, static_min: float) -> float:
+    """依據當日全市場機率分布，動態決定進場門檻。
+
+    邏輯：取 static_min 和 percentile 門檻中「較低」的那個，
+    但不低於 T1_MIN_PROB_FLOOR。
+    這樣在模型校準偏低時（如最高只有 52%），仍能選出頂尖標的。
+    """
+    if hit_probs.empty:
+        return static_min
+    pct_threshold = float(np.percentile(hit_probs.dropna(), T1_MIN_PROB_PERCENTILE))
+    # 取 static 和 percentile 中較低者（讓更多頂尖標的入選）
+    effective = min(static_min, pct_threshold)
+    # 但不可低於絕對下限
+    return max(effective, T1_MIN_PROB_FLOOR)
 
 
 def _append_tag(
@@ -323,14 +344,19 @@ def build_live_t1_prediction_df(
     pred_df["t1_score"] = _compute_t1_score(snapshot, pred_df["hit_prob_3pct"])
     pred_df["recommendation"] = "觀望"
 
-    buy_mask = pred_df["hit_prob_3pct"] >= max(T1_BUY_PROB, trade_rules["min_prob"])
+    # 推薦等級也用動態門檻，不再寫死 60%
+    dyn_buy_prob = _dynamic_min_prob(pred_df["hit_prob_3pct"], trade_rules["min_prob"])
+    buy_mask = pred_df["hit_prob_3pct"] >= dyn_buy_prob
     strong_mask = (
-        (pred_df["hit_prob_3pct"] >= T1_STRONG_BUY_PROB)
+        buy_mask
+        & (pred_df["hit_prob_3pct"] >= float(np.percentile(pred_df["hit_prob_3pct"].dropna(), 99)))
         & (snapshot.get("t1_volume_burst_5d", pd.Series(0, index=snapshot.index)).fillna(0) >= T1_VOLUME_BURST_MIN)
         & (snapshot.get("t1_strong_close_flag", pd.Series(0, index=snapshot.index)).fillna(0) >= 1.0)
         & (snapshot.get("t1_upper_wick_pct", pd.Series(0, index=snapshot.index)).fillna(0) < T1_LONG_UPPER_WICK_CUTOFF)
     )
-    weak_mask = pred_df["hit_prob_3pct"] < T1_WATCH_PROB
+    # 觀望標籤：低於 P75 就是勝率不足（相對市場水位）
+    dyn_watch_prob = float(np.percentile(pred_df["hit_prob_3pct"].dropna(), 75))
+    weak_mask = pred_df["hit_prob_3pct"] < dyn_watch_prob
 
     pred_df.loc[buy_mask, "recommendation"] = "建議買進"
     pred_df.loc[strong_mask, "recommendation"] = "強力買進"
@@ -402,9 +428,13 @@ def build_live_t1_prediction_df(
         # 大盤熔斷：全數不選
         pred_df["veto_reason"] = f"大盤熔斷({twii_ret:.2%}) " + pred_df["veto_reason"]
     else:
-        # 篩選：機率 + 流動性 + 20D不否決
+        # 動態門檻：取代寫死的 60%
+        effective_min_prob = _dynamic_min_prob(
+            pred_df["hit_prob_3pct"], trade_rules["min_prob"]
+        )
+        # 篩選：動態機率 + 流動性 + 20D不否決
         eligible_mask = (
-            (pred_df["hit_prob_3pct"] >= trade_rules["min_prob"])
+            (pred_df["hit_prob_3pct"] >= effective_min_prob)
             & liquidity_ok
             & (~d20_veto)
         )
@@ -478,6 +508,8 @@ def build_live_t1_prediction_df(
             "level_source",
             "support_strength",
             "entry_note",
+            "trade_route",
+            "ma5_bias",
         ]
         if col in pred_df.columns
     )
@@ -496,12 +528,13 @@ def predict_t1_all(save_csv: bool = True, verbose: bool = True) -> tuple[pd.Data
     pred_df = build_live_t1_prediction_df(snapshot=snapshot, model=model, meta=meta)
     pred_date = str(pred_df["date"].iloc[0]) if not pred_df.empty else datetime.now().strftime("%Y-%m-%d")
 
-    # --- 關鍵價位：計算支撐/壓力/建議掛單價（對 top 30 都算）---
+    # --- 關鍵價位：計算支撐/壓力/建議掛單價（selected + top 30）---
     selected_tickers = pred_df.loc[
         pred_df["selected_for_trade"].fillna(False).astype(bool), "ticker"
     ].tolist()
-    if not selected_tickers:
-        selected_tickers = pred_df.head(30)["ticker"].tolist()
+    # 一律對 top 30 都算（selected 可能不在 top 30 裡，用 union）
+    top30_tickers = pred_df.head(30)["ticker"].tolist()
+    selected_tickers = list(dict.fromkeys(selected_tickers + top30_tickers))  # 保序去重
     if selected_tickers:
         closes_map = dict(zip(pred_df["ticker"], pred_df["close"]))
         levels = compute_key_levels(selected_tickers, closes_map)
@@ -520,32 +553,43 @@ def predict_t1_all(save_csv: bool = True, verbose: bool = True) -> tuple[pd.Data
             with_entry = levels["suggested_entry"].notna().sum()
             _safe_print(f"Key levels computed for {len(selected_tickers)} selected, {with_entry} with suggested entry")
 
-        # --- 追高警告（分三種情境）---
-        if "risk_tags" in pred_df.columns:
-            entry = pd.to_numeric(pred_df.get("suggested_entry"), errors="coerce")
-            close = pd.to_numeric(pred_df["close"], errors="coerce")
-            has_entry = entry.notna()
+    # --- MA5 乖離率（全量計算，不限 top 30）---
+    ma5_bias_map = dict(zip(
+        snapshot["ticker"].astype(str),
+        pd.to_numeric(snapshot.get("price_vs_ma5"), errors="coerce").fillna(0),
+    ))
+    pred_df["ma5_bias"] = pred_df["ticker"].map(ma5_bias_map).fillna(0)
 
-            # 情境1: 有建議掛單但現價遠離 → 「遠離支撐」
-            gap_from_entry = (close - entry) / entry
-            far_from_support = has_entry & (gap_from_entry >= T1_CHASE_FROM_ENTRY_PCT)
-            if far_from_support.any():
-                pred_df.loc[far_from_support, "risk_tags"] = (
-                    pred_df.loc[far_from_support, "risk_tags"].fillna("") + " 遠離支撐"
-                ).str.strip()
+    # --- trade_route 分流（全量，不限 top 30）---
+    entry = pd.to_numeric(pred_df.get("suggested_entry"), errors="coerce")
+    has_entry = entry.notna()
 
-            # 情境2: 無建議掛單 + 當日大漲 → 「已起漲勿追」（無安全進場點）
-            ret_1d = pd.to_numeric(snapshot["return_1d"], errors="coerce") if "return_1d" in snapshot.columns else pd.Series(0, index=pred_df.index)
-            # 用 ticker map 對齊（snapshot 和 pred_df 順序可能不同）
-            ret_map = dict(zip(snapshot["ticker"].astype(str), ret_1d))
-            pred_ret = pred_df["ticker"].map(ret_map).fillna(0)
-            no_safe_entry = ~has_entry & (pred_ret >= T1_CHASE_INTRADAY_PCT)
-            if no_safe_entry.any():
-                pred_df.loc[no_safe_entry, "risk_tags"] = (
-                    pred_df.loc[no_safe_entry, "risk_tags"].fillna("") + " 已起漲勿追"
-                ).str.strip()
+    # A路線(動能進場): MA5 乖離率適中 → 均線附近可直接進
+    # B路線(等待低接): 乖離過大需等回測，或有掛單價且折價空間大
+    pred_df["trade_route"] = ""
+    ma5_ok = pred_df["ma5_bias"] <= T1_MA5_OVEREXTEND_PCT  # 乖離不過大
+    ma5_pullback = pred_df["ma5_bias"] <= T1_MA5_PULLBACK_PCT  # 貼近均線
 
-            # 情境3: 有建議掛單 + 合理折價 → 不警告（這就是安全進場點）
+    pred_df.loc[ma5_ok, "trade_route"] = "A_動能"
+    pred_df.loc[ma5_pullback, "trade_route"] = "A_動能回測"
+
+    # 有掛單價且折價空間大 → B路線等待低接
+    discount = pd.to_numeric(pred_df.get("entry_discount_pct"), errors="coerce").fillna(0).abs()
+    b_route = has_entry & (discount >= 0.05)  # 折價 ≥5%
+    pred_df.loc[b_route, "trade_route"] = "B_等待低接"
+
+    # --- 風險標籤：MA5 正乖離過大 → 短線過熱 ---
+    if "risk_tags" in pred_df.columns:
+        overextended = pred_df["ma5_bias"] > T1_MA5_OVEREXTEND_PCT
+        if overextended.any():
+            bias_str = pred_df.loc[overextended, "ma5_bias"].apply(
+                lambda x: f"均線乖離+{x:.0%}"
+            )
+            pred_df.loc[overextended, "risk_tags"] = (
+                pred_df.loc[overextended, "risk_tags"].fillna("") + " " + bias_str
+            ).str.strip()
+            # 過熱的股票不適合A路線動能，改為等待回測
+            pred_df.loc[overextended, "trade_route"] = "B_等待回測"
 
     if save_csv:
         output_path = os.path.join(MODEL_DIR, f"predictions_t1_{pred_date}.csv")

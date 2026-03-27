@@ -464,18 +464,18 @@
                 </span>
             </div>
             <div style="font-size:12px;color:#8899aa;margin-bottom:10px;line-height:1.8">
-                T+1 版本以「今日收盤進場，觀察明日是否觸及 +3%」為主，榜單依模型機率與短線量價型態排序。
+                A路線＝動能進場（MA5乖離低，尾盤直接買）；B路線＝等待低接（掛單等拉回支撐）。
             </div>
             <table class="data-table">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>標的</th>
+                        <th>路線</th>
                         <th>收盤價</th>
+                        <th>MA5乖離</th>
                         <th>建議掛單</th>
-                        <th>折價</th>
-                        <th>觸及 +3% 機率</th>
-                        <th>T+1 分數</th>
+                        <th>觸及 +3%</th>
                         <th>推薦</th>
                         <th>型態亮點</th>
                         <th>風險標籤</th>
@@ -1076,29 +1076,40 @@ async function loadT1Predictions() {
 
         let html = '';
         (resp.data || []).forEach((row, i) => {
-            const score = row.t1_score != null ? row.t1_score.toFixed(3) : '-';
             const setup = row.setup_tags ? `<span style="font-size:11px;color:#7bd389">${row.setup_tags}</span>` : '<span style="color:#555">-</span>';
             const risk = row.risk_tags && row.risk_tags !== 'nan' ? `<span style="font-size:11px;color:#ffb74d">${row.risk_tags}</span>` : '<span style="color:#555">-</span>';
             const selected = row.selected_for_trade ? `<div style="font-size:11px;color:#4a9eff;margin-top:4px;">策略順位 #${row.selection_rank || '-'}</div>` : '';
             const sector = row.sector ? `<div style="font-size:11px;color:#8899aa;margin-top:4px;">${row.sector}</div>` : '';
+            // 路線標籤
+            const routeMap = {
+                'A_動能': {color:'#4caf50', label:'A 動能'},
+                'A_動能回測': {color:'#81c784', label:'A 回測均線'},
+                'B_等待低接': {color:'#4fc3f7', label:'B 等待低接'},
+                'B_等待回測': {color:'#ffb74d', label:'B 等待回測'},
+            };
+            const routeInfo = routeMap[row.trade_route] || {color:'#888', label: row.trade_route || '-'};
+            const routeBadge = `<span style="color:${routeInfo.color};font-weight:700;font-size:11px;border:1px solid ${routeInfo.color};border-radius:4px;padding:1px 5px;">${routeInfo.label}</span>`;
+            // MA5 乖離
+            const ma5 = row.ma5_bias != null ? row.ma5_bias : null;
+            const ma5Color = ma5 != null ? (ma5 > 6 ? '#ef5350' : ma5 > 3 ? '#ffb74d' : ma5 > 0 ? '#7bd389' : '#4fc3f7') : '#555';
+            const ma5Text = ma5 != null ? `<span style="color:${ma5Color};font-weight:700">${ma5 > 0 ? '+' : ''}${ma5.toFixed(1)}%</span>` : '-';
+            // 建議掛單 (含支撐強度)
             const strengthColor = {strong:'#4caf50',moderate:'#ffb74d',weak:'#ef5350',untested:'#888'}[row.support_strength] || '#888';
             const strengthDot = row.support_strength && row.support_strength !== 'none'
                 ? `<span style="color:${strengthColor};font-size:9px;" title="${row.entry_note || ''}">${({strong:'●強',moderate:'●中',weak:'●弱',untested:'○未驗'})[row.support_strength]||''}</span>`
                 : '';
+            const discount = row.entry_discount_pct != null ? ` <span style="font-size:10px;color:#7bd389">-${row.entry_discount_pct.toFixed(1)}%</span>` : '';
             const entry = row.suggested_entry != null
-                ? `<span style="color:#4fc3f7;font-weight:700">${row.suggested_entry}</span><div style="font-size:10px;color:#8899aa">${row.level_source || ''} ${strengthDot}</div>${row.entry_note ? '<div style="font-size:9px;color:#aaa">'+row.entry_note+'</div>' : ''}`
+                ? `<span style="color:#4fc3f7;font-weight:700">${row.suggested_entry}</span>${discount}<div style="font-size:10px;color:#8899aa">${row.level_source || ''} ${strengthDot}</div>${row.entry_note ? '<div style="font-size:9px;color:#aaa">'+row.entry_note+'</div>' : ''}`
                 : '<span style="color:#555">-</span>';
-            const discount = row.entry_discount_pct != null
-                ? `<span style="color:#7bd389">-${row.entry_discount_pct.toFixed(1)}%</span>`
-                : '-';
             html += `<tr>
                 <td>${i + 1}</td>
                 <td>${tickerLink(row.ticker)}${sector}${selected}</td>
+                <td>${routeBadge}</td>
                 <td>${fmt(row.close)}</td>
+                <td>${ma5Text}</td>
                 <td>${entry}</td>
-                <td>${discount}</td>
                 <td style="color:#ef5350;font-weight:700">${fmtProb(row.hit_prob_3pct)}</td>
-                <td>${score}</td>
                 <td>${recBadge(row.recommendation)}</td>
                 <td>${setup}</td>
                 <td>${risk}</td>

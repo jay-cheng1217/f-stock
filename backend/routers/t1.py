@@ -456,6 +456,12 @@ def latest_t1_predictions(top_n: int = 30):
                 "entry_note": str(row.get("entry_note", ""))
                 if pd.notna(row.get("entry_note"))
                 else None,
+                "trade_route": str(row.get("trade_route", ""))
+                if pd.notna(row.get("trade_route")) and str(row.get("trade_route", "")).strip() not in ("", "nan")
+                else None,
+                "ma5_bias": round(float(row["ma5_bias"]) * 100, 2)
+                if pd.notna(row.get("ma5_bias"))
+                else None,
             }
         )
 
