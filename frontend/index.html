@@ -472,6 +472,8 @@
                         <th>#</th>
                         <th>標的</th>
                         <th>收盤價</th>
+                        <th>建議掛單</th>
+                        <th>折價</th>
                         <th>觸及 +3% 機率</th>
                         <th>T+1 分數</th>
                         <th>推薦</th>
@@ -480,7 +482,7 @@
                     </tr>
                 </thead>
                 <tbody id="t1PredTable">
-                    <tr><td colspan="8" style="text-align:center;color:#8899aa;">尚未載入 T+1 預測...</td></tr>
+                    <tr><td colspan="10" style="text-align:center;color:#8899aa;">尚未載入 T+1 預測...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1049,13 +1051,13 @@ async function loadT1Predictions() {
     if (!stats || !table) return;
 
     stats.innerHTML = '';
-    table.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#8899aa;">載入中...</td></tr>';
+    table.innerHTML = '<tr><td colspan="10" style="text-align:center;color:#8899aa;">載入中...</td></tr>';
 
     try {
         const resp = await fetchJson('/api/predictions/t1/latest?top_n=30');
         if (resp.status !== 'success') {
             const message = resp.error || '尚未建立 T+1 模型與預測檔';
-            table.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#ef5350;">${message}</td></tr>`;
+            table.innerHTML = `<tr><td colspan="10" style="text-align:center;color:#ef5350;">${message}</td></tr>`;
             return;
         }
 
@@ -1079,10 +1081,18 @@ async function loadT1Predictions() {
             const risk = row.risk_tags ? `<span style="font-size:11px;color:#ffb74d">${row.risk_tags}</span>` : '<span style="color:#555">-</span>';
             const selected = row.selected_for_trade ? `<div style="font-size:11px;color:#4a9eff;margin-top:4px;">策略順位 #${row.selection_rank || '-'}</div>` : '';
             const sector = row.sector ? `<div style="font-size:11px;color:#8899aa;margin-top:4px;">${row.sector}</div>` : '';
+            const entry = row.suggested_entry != null
+                ? `<span style="color:#4fc3f7;font-weight:700">${row.suggested_entry}</span><div style="font-size:10px;color:#8899aa">${row.level_source || ''}</div>`
+                : '<span style="color:#555">-</span>';
+            const discount = row.entry_discount_pct != null
+                ? `<span style="color:#7bd389">-${row.entry_discount_pct.toFixed(1)}%</span>`
+                : '-';
             html += `<tr>
                 <td>${i + 1}</td>
                 <td>${tickerLink(row.ticker)}${sector}${selected}</td>
                 <td>${fmt(row.close)}</td>
+                <td>${entry}</td>
+                <td>${discount}</td>
                 <td style="color:#ef5350;font-weight:700">${fmtProb(row.hit_prob_3pct)}</td>
                 <td>${score}</td>
                 <td>${recBadge(row.recommendation)}</td>
@@ -1090,9 +1100,9 @@ async function loadT1Predictions() {
                 <td>${risk}</td>
             </tr>`;
         });
-        table.innerHTML = html || '<tr><td colspan="8" style="text-align:center;color:#8899aa;">目前沒有 T+1 候選</td></tr>';
+        table.innerHTML = html || '<tr><td colspan="10" style="text-align:center;color:#8899aa;">目前沒有 T+1 候選</td></tr>';
     } catch (e) {
-        table.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#ef5350;">載入失敗: ${e.message || e}</td></tr>`;
+        table.innerHTML = `<tr><td colspan="10" style="text-align:center;color:#ef5350;">載入失敗: ${e.message || e}</td></tr>`;
     }
 }
 

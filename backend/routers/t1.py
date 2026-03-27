@@ -432,6 +432,24 @@ def latest_t1_predictions(top_n: int = 30):
                 "breakout_20d": round(float(pd.to_numeric(row.get("t1_breakout_20d"), errors="coerce")) * 100, 2)
                 if pd.notna(pd.to_numeric(row.get("t1_breakout_20d"), errors="coerce"))
                 else None,
+                "support_1": round(float(row["support_1"]), 2)
+                if pd.notna(row.get("support_1"))
+                else None,
+                "support_1_src": str(row.get("support_1_src", ""))
+                if pd.notna(row.get("support_1_src"))
+                else None,
+                "resistance_1": round(float(row["resistance_1"]), 2)
+                if pd.notna(row.get("resistance_1"))
+                else None,
+                "suggested_entry": round(float(row["suggested_entry"]), 2)
+                if pd.notna(row.get("suggested_entry"))
+                else None,
+                "entry_discount_pct": round(float(row["entry_discount_pct"]) * 100, 2)
+                if pd.notna(row.get("entry_discount_pct"))
+                else None,
+                "level_source": str(row.get("level_source", ""))
+                if pd.notna(row.get("level_source"))
+                else None,
             }
         )
 

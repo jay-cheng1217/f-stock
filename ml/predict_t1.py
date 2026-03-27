@@ -16,6 +16,7 @@ import pandas as pd
 
 from ml.config import MODEL_DIR
 from ml.dataset_t1 import build_latest_t1_snapshot
+from ml.features.key_levels import compute_key_levels
 from ml.features.sector import load_sector_mapping
 
 T1_STRONG_BUY_PROB = 0.70
@@ -462,6 +463,15 @@ def build_live_t1_prediction_df(
             "t1_strong_close_flag",
             "t1_long_upper_shadow_flag",
             "t1_gap_above_prev_high",
+            "support_1",
+            "support_1_src",
+            "support_2",
+            "support_2_src",
+            "resistance_1",
+            "resistance_2",
+            "suggested_entry",
+            "entry_discount_pct",
+            "level_source",
         ]
         if col in pred_df.columns
     )
@@ -479,6 +489,27 @@ def predict_t1_all(save_csv: bool = True, verbose: bool = True) -> tuple[pd.Data
 
     pred_df = build_live_t1_prediction_df(snapshot=snapshot, model=model, meta=meta)
     pred_date = str(pred_df["date"].iloc[0]) if not pred_df.empty else datetime.now().strftime("%Y-%m-%d")
+
+    # --- 關鍵價位：計算支撐/壓力/建議掛單價 ---
+    selected_tickers = pred_df.loc[
+        pred_df["selected_for_trade"].fillna(False).astype(bool), "ticker"
+    ].tolist()
+    if selected_tickers:
+        closes_map = dict(zip(pred_df["ticker"], pred_df["close"]))
+        levels = compute_key_levels(selected_tickers, closes_map)
+        level_cols = [
+            "support_1", "support_1_src", "support_2", "support_2_src",
+            "resistance_1", "resistance_2",
+            "suggested_entry", "entry_discount_pct", "level_source",
+        ]
+        levels_indexed = levels.set_index("ticker")[level_cols]
+        for col in level_cols:
+            pred_df[col] = pred_df["ticker"].map(
+                levels_indexed[col].to_dict()
+            )
+        if verbose:
+            with_entry = levels["suggested_entry"].notna().sum()
+            _safe_print(f"Key levels computed for {len(selected_tickers)} selected, {with_entry} with suggested entry")
 
     if save_csv:
         output_path = os.path.join(MODEL_DIR, f"predictions_t1_{pred_date}.csv")
