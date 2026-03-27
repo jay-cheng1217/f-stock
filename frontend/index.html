@@ -1078,7 +1078,7 @@ async function loadT1Predictions() {
         (resp.data || []).forEach((row, i) => {
             const score = row.t1_score != null ? row.t1_score.toFixed(3) : '-';
             const setup = row.setup_tags ? `<span style="font-size:11px;color:#7bd389">${row.setup_tags}</span>` : '<span style="color:#555">-</span>';
-            const risk = row.risk_tags ? `<span style="font-size:11px;color:#ffb74d">${row.risk_tags}</span>` : '<span style="color:#555">-</span>';
+            const risk = row.risk_tags && row.risk_tags !== 'nan' ? `<span style="font-size:11px;color:#ffb74d">${row.risk_tags}</span>` : '<span style="color:#555">-</span>';
             const selected = row.selected_for_trade ? `<div style="font-size:11px;color:#4a9eff;margin-top:4px;">策略順位 #${row.selection_rank || '-'}</div>` : '';
             const sector = row.sector ? `<div style="font-size:11px;color:#8899aa;margin-top:4px;">${row.sector}</div>` : '';
             const strengthColor = {strong:'#4caf50',moderate:'#ffb74d',weak:'#ef5350',untested:'#888'}[row.support_strength] || '#888';

@@ -417,7 +417,7 @@ def latest_t1_predictions(top_n: int = 30):
                 else None,
                 "recommendation": str(row.get("recommendation", "")),
                 "setup_tags": str(row.get("setup_tags", "")),
-                "risk_tags": str(row.get("risk_tags", "")),
+                "risk_tags": str(row.get("risk_tags", "")) if pd.notna(row.get("risk_tags")) and str(row.get("risk_tags", "")).strip() not in ("", "nan") else "",
                 "sector": str(row.get("sector", "")),
                 "selected_for_trade": bool(row.get("selected_for_trade", False)),
                 "selection_rank": int(row["selection_rank"])
