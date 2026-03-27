@@ -19,10 +19,12 @@ from ml.config import (
 )
 from ml.features.institutional import compute_institutional_features
 from ml.features.sector import compute_sector_features
+from ml.features.tdcc import TDCC_FEATURE_COLS, compute_tdcc_features
 from ml.features.technical import compute_technical_features
 from ml.target_t1 import T1_LABEL_COLUMNS, compute_t1_targets
 
 FOREIGN_DIR = os.path.join(BASE_DIR, "外資持股")
+TDCC_SUMMARY_PATH = os.path.join(BASE_DIR, "集保分散", "tdcc_summary.csv")
 
 T1_CONTEXT_COLUMNS = [
     "ticker",
@@ -117,11 +119,21 @@ T1_SECTOR_FEATURE_COLUMNS = [
     "sector_id",
 ]
 
+# 集保分散特徵：挑對 T+1 短線最有預測力的 4 個
+# （完整 8 個中，retail_pct/whale_pct 絕對值變動慢，對次日預測貢獻低）
+T1_TDCC_FEATURE_COLUMNS = [
+    "whale_pct_chg",        # 大戶週增減持（最直接的籌碼訊號）
+    "retail_pct_chg",       # 散戶週增減持（反向指標）
+    "whale_trend_4w",       # 4 週大戶趨勢（持續吸籌 vs 出貨）
+    "retail_capitulation",  # 散戶投降指標（底部訊號）
+]
+
 T1_FEATURE_COLUMNS = (
     T1_BASE_FEATURE_COLUMNS
     + T1_CUSTOM_FEATURE_COLUMNS
     + T1_MARKET_FEATURE_COLUMNS
     + T1_SECTOR_FEATURE_COLUMNS
+    + T1_TDCC_FEATURE_COLUMNS
 )
 
 _ISSUED_SHARES_CACHE: dict[str, float] | None = None
@@ -373,6 +385,7 @@ def load_single_stock_t1(ticker: str) -> pd.DataFrame | None:
     df = compute_t1_targets(df)
     df = compute_technical_features(df)
     df = compute_institutional_features(df)
+    df = compute_tdcc_features(df, ticker, TDCC_SUMMARY_PATH)
     df = _add_turnover_rate(df, ticker)
     df = _merge_market_features(df)
     df = _add_t1_short_features(df)
