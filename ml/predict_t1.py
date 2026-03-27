@@ -33,7 +33,7 @@ T1_SCORE_INST_WEIGHT = 0.03
 T1_SCORE_UPPER_WICK_PENALTY = 0.04
 
 # --- 追高警告常數 ---
-T1_CHASE_INTRADAY_PCT = 0.05    # 當日漲幅 >5% 標記追高警告
+T1_CHASE_INTRADAY_PCT = 0.07    # 當日漲幅 >7% 且無安全進場價才標記
 T1_CHASE_FROM_ENTRY_PCT = 0.08  # 現價距建議掛單 >8% 標記遠離支撐
 
 # --- 實戰防護常數 ---
@@ -235,24 +235,6 @@ def _build_t1_risk_tags(snapshot: pd.DataFrame) -> pd.Series:
             risk_tags,
             snapshot["t1_inst_net_ratio_1d"].fillna(0) <= -T1_INST_RATIO_MIN,
             "法人反向",
-        )
-
-    # 追高警告：當日漲幅過大
-    if "return_1d" in snapshot.columns:
-        risk_tags = _append_tag(
-            risk_tags,
-            snapshot["return_1d"].fillna(0) >= T1_CHASE_INTRADAY_PCT,
-            "已起漲勿追",
-        )
-    elif "Open" in snapshot.columns and "Close" in snapshot.columns:
-        intraday_chg = (
-            pd.to_numeric(snapshot["Close"], errors="coerce")
-            / pd.to_numeric(snapshot["Open"], errors="coerce") - 1
-        ).fillna(0)
-        risk_tags = _append_tag(
-            risk_tags,
-            intraday_chg >= T1_CHASE_INTRADAY_PCT,
-            "已起漲勿追",
         )
 
     return risk_tags.str.strip()
@@ -535,16 +517,32 @@ def predict_t1_all(save_csv: bool = True, verbose: bool = True) -> tuple[pd.Data
             with_entry = levels["suggested_entry"].notna().sum()
             _safe_print(f"Key levels computed for {len(selected_tickers)} selected, {with_entry} with suggested entry")
 
-        # --- 追高警告：現價遠離建議掛單價 ---
-        if "suggested_entry" in pred_df.columns and "risk_tags" in pred_df.columns:
-            entry = pd.to_numeric(pred_df["suggested_entry"], errors="coerce")
+        # --- 追高警告（分三種情境）---
+        if "risk_tags" in pred_df.columns:
+            entry = pd.to_numeric(pred_df.get("suggested_entry"), errors="coerce")
             close = pd.to_numeric(pred_df["close"], errors="coerce")
+            has_entry = entry.notna()
+
+            # 情境1: 有建議掛單但現價遠離 → 「遠離支撐」
             gap_from_entry = (close - entry) / entry
-            far_from_support = (gap_from_entry >= T1_CHASE_FROM_ENTRY_PCT) & entry.notna()
+            far_from_support = has_entry & (gap_from_entry >= T1_CHASE_FROM_ENTRY_PCT)
             if far_from_support.any():
                 pred_df.loc[far_from_support, "risk_tags"] = (
                     pred_df.loc[far_from_support, "risk_tags"].fillna("") + " 遠離支撐"
                 ).str.strip()
+
+            # 情境2: 無建議掛單 + 當日大漲 → 「已起漲勿追」（無安全進場點）
+            ret_1d = pd.to_numeric(snapshot["return_1d"], errors="coerce") if "return_1d" in snapshot.columns else pd.Series(0, index=pred_df.index)
+            # 用 ticker map 對齊（snapshot 和 pred_df 順序可能不同）
+            ret_map = dict(zip(snapshot["ticker"].astype(str), ret_1d))
+            pred_ret = pred_df["ticker"].map(ret_map).fillna(0)
+            no_safe_entry = ~has_entry & (pred_ret >= T1_CHASE_INTRADAY_PCT)
+            if no_safe_entry.any():
+                pred_df.loc[no_safe_entry, "risk_tags"] = (
+                    pred_df.loc[no_safe_entry, "risk_tags"].fillna("") + " 已起漲勿追"
+                ).str.strip()
+
+            # 情境3: 有建議掛單 + 合理折價 → 不警告（這就是安全進場點）
 
     if save_csv:
         output_path = os.path.join(MODEL_DIR, f"predictions_t1_{pred_date}.csv")
