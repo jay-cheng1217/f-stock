@@ -490,10 +490,12 @@ def predict_t1_all(save_csv: bool = True, verbose: bool = True) -> tuple[pd.Data
     pred_df = build_live_t1_prediction_df(snapshot=snapshot, model=model, meta=meta)
     pred_date = str(pred_df["date"].iloc[0]) if not pred_df.empty else datetime.now().strftime("%Y-%m-%d")
 
-    # --- 關鍵價位：計算支撐/壓力/建議掛單價 ---
+    # --- 關鍵價位：計算支撐/壓力/建議掛單價（對 top 30 都算）---
     selected_tickers = pred_df.loc[
         pred_df["selected_for_trade"].fillna(False).astype(bool), "ticker"
     ].tolist()
+    if not selected_tickers:
+        selected_tickers = pred_df.head(30)["ticker"].tolist()
     if selected_tickers:
         closes_map = dict(zip(pred_df["ticker"], pred_df["close"]))
         levels = compute_key_levels(selected_tickers, closes_map)
