@@ -476,6 +476,8 @@ def build_live_t1_prediction_df(
             "suggested_entry",
             "entry_discount_pct",
             "level_source",
+            "support_strength",
+            "entry_note",
         ]
         if col in pred_df.columns
     )
@@ -507,6 +509,7 @@ def predict_t1_all(save_csv: bool = True, verbose: bool = True) -> tuple[pd.Data
             "support_1", "support_1_src", "support_2", "support_2_src",
             "resistance_1", "resistance_2",
             "suggested_entry", "entry_discount_pct", "level_source",
+            "support_strength", "entry_note",
         ]
         levels_indexed = levels.set_index("ticker")[level_cols]
         for col in level_cols:

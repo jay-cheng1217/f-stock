@@ -450,6 +450,12 @@ def latest_t1_predictions(top_n: int = 30):
                 "level_source": str(row.get("level_source", ""))
                 if pd.notna(row.get("level_source"))
                 else None,
+                "support_strength": str(row.get("support_strength", ""))
+                if pd.notna(row.get("support_strength"))
+                else None,
+                "entry_note": str(row.get("entry_note", ""))
+                if pd.notna(row.get("entry_note"))
+                else None,
             }
         )
 

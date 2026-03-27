@@ -195,12 +195,51 @@ def compute_single_ticker_levels(ticker: str, current_close: float | None = None
     supports = [(p, src) for p, src, _ in candidates[:2]] if candidates else []
     resistances = [(r, "前高壓力") for r in resistance_levels[:2]] if resistance_levels else []
 
-    # 建議掛單價 = 最佳支撐位上方微幅（讓單容易成交）
+    # --- 支撐強度驗證 ---
+    support_strength = "none"
+    entry_note = ""
     if supports:
         best_support = supports[0][0]
         suggested = _tick_round(best_support * (1 + ENTRY_BUFFER_PCT), close)
         source = supports[0][1]
         discount = (close - suggested) / close
+
+        # 驗證 1: 支撐被測試過幾次？（近期低點接近支撐的次數）
+        tolerance = best_support * PRICE_CLUSTER_PCT
+        touch_count = int((df["Low"] - best_support).abs().le(tolerance).sum())
+
+        # 驗證 2: 最近一次觸及支撐後是否反彈？
+        near_support = df[(df["Low"] - best_support).abs() <= tolerance]
+        bounced = False
+        if not near_support.empty:
+            last_touch_idx = near_support.index[-1]
+            after_touch = df.loc[last_touch_idx + 1:] if last_touch_idx + 1 < len(df) else pd.DataFrame()
+            if not after_touch.empty:
+                bounce_return = float(after_touch.iloc[0]["Close"]) / best_support - 1
+                bounced = bounce_return > 0.01
+
+        # 驗證 3: 趨勢方向 — MA20 斜率
+        ma20 = df["Close"].rolling(20).mean()
+        ma20_slope = (ma20.iloc[-1] - ma20.iloc[-5]) / ma20.iloc[-5] if len(ma20.dropna()) >= 5 else 0
+
+        # 綜合評分
+        if touch_count >= 3 and bounced:
+            support_strength = "strong"
+            entry_note = f"支撐經{touch_count}次驗證且反彈"
+        elif touch_count >= 2 and bounced:
+            support_strength = "moderate"
+            entry_note = f"支撐經{touch_count}次驗證"
+        elif touch_count >= 1:
+            support_strength = "weak"
+            entry_note = "僅觸及1次，需觀察"
+        else:
+            support_strength = "untested"
+            entry_note = "未經驗證的推測支撐"
+
+        # 趨勢修正：下跌趨勢中的支撐更不可靠
+        if ma20_slope < -0.02:
+            if support_strength in ("weak", "untested"):
+                entry_note += "，趨勢向下慎接"
     else:
         suggested = None
         source = None
@@ -218,6 +257,8 @@ def compute_single_ticker_levels(ticker: str, current_close: float | None = None
         "suggested_entry": suggested,
         "entry_discount_pct": discount,
         "level_source": source,
+        "support_strength": support_strength,
+        "entry_note": entry_note if entry_note else None,
     }
 
 
@@ -247,6 +288,8 @@ def _empty_result(ticker: str) -> dict:
         "resistance_1": None, "resistance_2": None,
         "suggested_entry": None, "entry_discount_pct": None,
         "level_source": None,
+        "support_strength": "none",
+        "entry_note": None,
     }
 
 

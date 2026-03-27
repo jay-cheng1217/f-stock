@@ -1081,8 +1081,12 @@ async function loadT1Predictions() {
             const risk = row.risk_tags ? `<span style="font-size:11px;color:#ffb74d">${row.risk_tags}</span>` : '<span style="color:#555">-</span>';
             const selected = row.selected_for_trade ? `<div style="font-size:11px;color:#4a9eff;margin-top:4px;">策略順位 #${row.selection_rank || '-'}</div>` : '';
             const sector = row.sector ? `<div style="font-size:11px;color:#8899aa;margin-top:4px;">${row.sector}</div>` : '';
+            const strengthColor = {strong:'#4caf50',moderate:'#ffb74d',weak:'#ef5350',untested:'#888'}[row.support_strength] || '#888';
+            const strengthDot = row.support_strength && row.support_strength !== 'none'
+                ? `<span style="color:${strengthColor};font-size:9px;" title="${row.entry_note || ''}">${({strong:'●強',moderate:'●中',weak:'●弱',untested:'○未驗'})[row.support_strength]||''}</span>`
+                : '';
             const entry = row.suggested_entry != null
-                ? `<span style="color:#4fc3f7;font-weight:700">${row.suggested_entry}</span><div style="font-size:10px;color:#8899aa">${row.level_source || ''}</div>`
+                ? `<span style="color:#4fc3f7;font-weight:700">${row.suggested_entry}</span><div style="font-size:10px;color:#8899aa">${row.level_source || ''} ${strengthDot}</div>${row.entry_note ? '<div style="font-size:9px;color:#aaa">'+row.entry_note+'</div>' : ''}`
                 : '<span style="color:#555">-</span>';
             const discount = row.entry_discount_pct != null
                 ? `<span style="color:#7bd389">-${row.entry_discount_pct.toFixed(1)}%</span>`
