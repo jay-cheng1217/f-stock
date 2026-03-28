@@ -3482,6 +3482,7 @@ def service_worker():
     return FileResponse(
         os.path.join(STATIC_DIR, "sw.js"),
         media_type="application/javascript",
+        headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
     )
 
 
