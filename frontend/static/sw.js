@@ -1,4 +1,4 @@
-const CACHE_NAME = 'stock-v1';
+const CACHE_NAME = 'stock-v2';
 const PRECACHE = ['/', '/static/manifest.json'];
 
 self.addEventListener('install', e => {
@@ -19,7 +19,11 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
-  // API requests: network-first
+
+  // Skip non-GET requests (POST, etc.) — let browser handle normally
+  if (e.request.method !== 'GET') return;
+
+  // API requests: network-first, fallback to cache, then error response
   if (url.pathname.startsWith('/api/')) {
     e.respondWith(
       fetch(e.request)
@@ -28,17 +32,29 @@ self.addEventListener('fetch', e => {
           caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
           return r;
         })
-        .catch(() => caches.match(e.request))
+        .catch(() =>
+          caches.match(e.request).then(cached =>
+            cached || new Response(JSON.stringify({ error: '離線無快取資料' }), {
+              status: 503,
+              headers: { 'Content-Type': 'application/json' }
+            })
+          )
+        )
     );
     return;
   }
-  // Static assets: cache-first
+
+  // Static assets: cache-first, fallback to network
   e.respondWith(
     caches.match(e.request)
-      .then(cached => cached || fetch(e.request).then(r => {
-        const clone = r.clone();
-        caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
-        return r;
-      }))
+      .then(cached => {
+        if (cached) return cached;
+        return fetch(e.request).then(r => {
+          const clone = r.clone();
+          caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+          return r;
+        });
+      })
+      .catch(() => new Response('Offline', { status: 503 }))
   );
 });
