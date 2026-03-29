@@ -1,25 +1,32 @@
-# Fix TW_Stock_Daily via schtasks (avoids credential issue)
-schtasks /change /tn "TW_Stock_Daily" /ST 05:00
-# Enable StartWhenAvailable via XML export/import
+# Export current task XML, modify settings, re-create
 $xml = [xml](Export-ScheduledTask -TaskName 'TW_Stock_Daily')
 $ns = $xml.Task.NamespaceURI
 $settings = $xml.Task.Settings
-if (-not $settings.StartWhenAvailable) {
+
+# Set StartWhenAvailable
+$node = $settings.SelectSingleNode('*[local-name()="StartWhenAvailable"]')
+if ($node) { $node.InnerText = 'true' }
+else {
     $elem = $xml.CreateElement('StartWhenAvailable', $ns)
     $elem.InnerText = 'true'
     $settings.AppendChild($elem) | Out-Null
-} else {
-    $settings.StartWhenAvailable = 'true'
 }
-if (-not $settings.WakeToRun) {
+
+# Set WakeToRun
+$node = $settings.SelectSingleNode('*[local-name()="WakeToRun"]')
+if ($node) { $node.InnerText = 'true' }
+else {
     $elem = $xml.CreateElement('WakeToRun', $ns)
     $elem.InnerText = 'true'
     $settings.AppendChild($elem) | Out-Null
-} else {
-    $settings.WakeToRun = 'true'
 }
-Register-ScheduledTask -TaskName 'TW_Stock_Daily' -Xml $xml.OuterXml -Force
-Write-Host "TW_Stock_Daily updated via XML"
+
+# Save XML and re-create via schtasks (will prompt for password)
+$xmlPath = "$env:TEMP\tw_stock_daily.xml"
+$xml.Save($xmlPath)
+Write-Host "Saved modified XML to $xmlPath"
+Write-Host "Re-creating task with schtasks /create /F ..."
+schtasks /create /tn "TW_Stock_Daily" /XML $xmlPath /F /RU cheng
 
 # Verify
 $s = (Get-ScheduledTask -TaskName 'TW_Stock_Daily').Settings
