@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-27 06:24:40",
+  "generated_at": "2026-03-30 06:52:22",
   "lookback_days": 20,
   "rolling_ic": [
     {
@@ -28,20 +28,29 @@
       "top_10pct_avg_return": -0.0151,
       "bot_10pct_avg_return": -0.013,
       "spread": -0.0021
+    },
+    {
+      "date": "2026-03-26",
+      "ic_spearman": 0.1172,
+      "p_value": 0.0001,
+      "n_stocks": 1096,
+      "top_10pct_avg_return": 0.026,
+      "bot_10pct_avg_return": 0.008,
+      "spread": 0.018
     }
   ],
   "portfolio": {
-    "total_positions": 60,
-    "trading_days": 3,
-    "overall_win_rate": 0.25,
-    "avg_return": -0.028,
-    "median_return": -0.0251,
-    "avg_hit_prob": 0.5965,
-    "hit_3pct_rate": 0.3667,
+    "total_positions": 68,
+    "trading_days": 4,
+    "overall_win_rate": 0.3088,
+    "avg_return": -0.0213,
+    "median_return": -0.0208,
+    "avg_hit_prob": 0.603,
+    "hit_3pct_rate": 0.3971,
     "mdd": -0.0238,
     "max_consecutive_losses": 3,
-    "equity_latest": 0.9176,
-    "latest_rolling_5d_wr": 0.25,
+    "equity_latest": 0.9444,
+    "latest_rolling_5d_wr": 0.375,
     "latest_rolling_10d_wr": null,
     "daily_returns": [
       {
@@ -58,6 +67,11 @@
         "date": "2026-03-25",
         "return": -0.0109,
         "win_rate": 0.25
+      },
+      {
+        "date": "2026-03-26",
+        "return": 0.0292,
+        "win_rate": 0.75
       }
     ],
     "calibration": [
@@ -78,12 +92,28 @@
         "gap": -0.225
       },
       {
-        "bin": "70-75",
+        "bin": "60-65",
         "n": 5,
-        "predicted_prob": 0.715,
-        "actual_win_rate": 0.6,
-        "avg_return": -0.0025,
-        "gap": -0.115
+        "predicted_prob": 0.622,
+        "actual_win_rate": 0.8,
+        "avg_return": 0.0225,
+        "gap": 0.178
+      },
+      {
+        "bin": "65-70",
+        "n": 2,
+        "predicted_prob": 0.686,
+        "actual_win_rate": 0.5,
+        "avg_return": 0.0265,
+        "gap": -0.186
+      },
+      {
+        "bin": "70-75",
+        "n": 6,
+        "predicted_prob": 0.718,
+        "actual_win_rate": 0.667,
+        "avg_return": 0.0093,
+        "gap": -0.051
       },
       {
         "bin": "80+",
@@ -96,30 +126,30 @@
     ],
     "execution_gap": {
       "backtest_expectancy": 0.0084,
-      "actual_avg_return": -0.028,
-      "execution_gap": -0.0364,
-      "gap_pct_of_expected": -433.4
+      "actual_avg_return": -0.0213,
+      "execution_gap": -0.0297,
+      "gap_pct_of_expected": -353.2
     }
   },
   "anomalies": [
     {
       "level": "CRITICAL",
       "type": "IC_DECAY",
-      "message": "近 3 日平均 IC=-0.2893 < 0.02，模型可能失效",
-      "value": -0.2893,
+      "message": "近 4 日平均 IC=-0.1877 < 0.02，模型可能失效",
+      "value": -0.1877,
       "threshold": 0.02
     },
     {
       "level": "WARNING",
       "type": "SPREAD_COLLAPSE",
-      "message": "Top/Bottom 10% 報酬差距消失 (spread=-0.0219)，模型無區分力",
-      "value": -0.0219
+      "message": "Top/Bottom 10% 報酬差距消失 (spread=-0.0119)，模型無區分力",
+      "value": -0.0119
     },
     {
       "level": "WARNING",
       "type": "LOW_WIN_RATE",
-      "message": "整體勝率 25.0% < 45% 警戒線",
-      "value": 0.25,
+      "message": "整體勝率 30.9% < 45% 警戒線",
+      "value": 0.3088,
       "threshold": 0.45
     },
     {
@@ -146,16 +176,23 @@
     {
       "level": "INFO",
       "type": "CALIBRATION_DRIFT",
+      "message": "機率區間 60-65: 預測 62.2% vs 實際 80.0%",
+      "bin": "60-65",
+      "gap": 0.178
+    },
+    {
+      "level": "INFO",
+      "type": "CALIBRATION_DRIFT",
       "message": "機率區間 80+: 預測 83.3% vs 實際 13.3%",
       "bin": "80+",
       "gap": -0.699
     }
   ],
   "summary": {
-    "ic_count": 3,
-    "avg_ic": -0.2893,
-    "avg_spread": -0.0219,
-    "anomaly_count": 7,
+    "ic_count": 4,
+    "avg_ic": -0.1877,
+    "avg_spread": -0.0119,
+    "anomaly_count": 8,
     "critical_count": 1
   }
 }
