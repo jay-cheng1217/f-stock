@@ -185,12 +185,24 @@
         "top30_by_up_prob_avg_return": -4.18,
         "top30_win_rate": 36.7
       }
+    },
+    {
+      "prediction_date": "2026-03-23",
+      "verified_at": "2026-03-31",
+      "days_elapsed": 8,
+      "total_stocks": 1088,
+      "v1": {
+        "n_verified": 1088,
+        "signal_accuracy": {},
+        "top30_by_up_prob_avg_return": 0.94,
+        "top30_win_rate": 40.0
+      }
     }
   ],
   "summary": {
-    "last_updated": "2026-03-30 06:52",
+    "last_updated": "2026-03-31 06:58",
     "v1": {
-      "n_periods_verified": 6
+      "n_periods_verified": 7
     }
   }
 }
