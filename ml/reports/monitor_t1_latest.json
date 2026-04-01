@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-31 06:58:13",
+  "generated_at": "2026-04-01 09:31:33",
   "lookback_days": 20,
   "rolling_ic": [
     {
@@ -46,21 +46,30 @@
       "top_10pct_avg_return": -0.0031,
       "bot_10pct_avg_return": 0.0043,
       "spread": -0.0074
+    },
+    {
+      "date": "2026-03-30",
+      "ic_spearman": -0.0183,
+      "p_value": 0.5457,
+      "n_stocks": 1098,
+      "top_10pct_avg_return": -0.0318,
+      "bot_10pct_avg_return": -0.0209,
+      "spread": -0.0108
     }
   ],
   "portfolio": {
-    "total_positions": 78,
-    "trading_days": 5,
-    "overall_win_rate": 0.3205,
-    "avg_return": -0.0184,
-    "median_return": -0.0199,
-    "avg_hit_prob": 0.5817,
-    "hit_3pct_rate": 0.4231,
-    "mdd": -0.0238,
+    "total_positions": 88,
+    "trading_days": 6,
+    "overall_win_rate": 0.2841,
+    "avg_return": -0.0253,
+    "median_return": -0.0237,
+    "avg_hit_prob": 0.5733,
+    "hit_3pct_rate": 0.375,
+    "mdd": -0.0792,
     "max_consecutive_losses": 3,
-    "equity_latest": 0.9453,
-    "latest_rolling_5d_wr": 0.38,
-    "latest_rolling_10d_wr": 0.38,
+    "equity_latest": 0.8705,
+    "latest_rolling_5d_wr": 0.34,
+    "latest_rolling_10d_wr": 0.3167,
     "daily_returns": [
       {
         "date": "2026-03-23",
@@ -86,24 +95,37 @@
         "date": "2026-03-27",
         "return": 0.001,
         "win_rate": 0.4
+      },
+      {
+        "date": "2026-03-30",
+        "return": -0.0792,
+        "win_rate": 0.0
       }
     ],
     "calibration": [
       {
         "bin": "<50",
-        "n": 28,
-        "predicted_prob": 0.458,
-        "actual_win_rate": 0.286,
-        "avg_return": -0.0183,
-        "gap": -0.172
+        "n": 34,
+        "predicted_prob": 0.461,
+        "actual_win_rate": 0.235,
+        "avg_return": -0.0262,
+        "gap": -0.226
       },
       {
         "bin": "50-55",
-        "n": 22,
-        "predicted_prob": 0.512,
-        "actual_win_rate": 0.273,
-        "avg_return": -0.0427,
-        "gap": -0.239
+        "n": 24,
+        "predicted_prob": 0.514,
+        "actual_win_rate": 0.25,
+        "avg_return": -0.0481,
+        "gap": -0.264
+      },
+      {
+        "bin": "55-60",
+        "n": 2,
+        "predicted_prob": 0.572,
+        "actual_win_rate": 0.0,
+        "avg_return": -0.1,
+        "gap": -0.572
       },
       {
         "bin": "60-65",
@@ -140,30 +162,30 @@
     ],
     "execution_gap": {
       "backtest_expectancy": 0.0084,
-      "actual_avg_return": -0.0184,
-      "execution_gap": -0.0268,
-      "gap_pct_of_expected": -319.2
+      "actual_avg_return": -0.0253,
+      "execution_gap": -0.0337,
+      "gap_pct_of_expected": -401.4
     }
   },
   "anomalies": [
     {
       "level": "CRITICAL",
       "type": "IC_DECAY",
-      "message": "近 5 日平均 IC=-0.1560 < 0.02，模型可能失效",
-      "value": -0.156,
+      "message": "近 5 日平均 IC=-0.0476 < 0.02，模型可能失效",
+      "value": -0.0476,
       "threshold": 0.02
     },
     {
       "level": "WARNING",
       "type": "SPREAD_COLLAPSE",
-      "message": "Top/Bottom 10% 報酬差距消失 (spread=-0.0110)，模型無區分力",
-      "value": -0.011
+      "message": "Top/Bottom 10% 報酬差距消失 (spread=-0.0038)，模型無區分力",
+      "value": -0.0038
     },
     {
       "level": "WARNING",
       "type": "LOW_WIN_RATE",
-      "message": "整體勝率 32.0% < 45% 警戒線",
-      "value": 0.3205,
+      "message": "整體勝率 28.4% < 45% 警戒線",
+      "value": 0.2841,
       "threshold": 0.45
     },
     {
@@ -176,16 +198,16 @@
     {
       "level": "INFO",
       "type": "CALIBRATION_DRIFT",
-      "message": "機率區間 <50: 預測 45.8% vs 實際 28.6%",
+      "message": "機率區間 <50: 預測 46.1% vs 實際 23.5%",
       "bin": "<50",
-      "gap": -0.172
+      "gap": -0.226
     },
     {
       "level": "INFO",
       "type": "CALIBRATION_DRIFT",
-      "message": "機率區間 50-55: 預測 51.2% vs 實際 27.3%",
+      "message": "機率區間 50-55: 預測 51.4% vs 實際 25.0%",
       "bin": "50-55",
-      "gap": -0.239
+      "gap": -0.264
     },
     {
       "level": "INFO",
@@ -203,8 +225,8 @@
     }
   ],
   "summary": {
-    "ic_count": 5,
-    "avg_ic": -0.156,
+    "ic_count": 6,
+    "avg_ic": -0.133,
     "avg_spread": -0.011,
     "anomaly_count": 8,
     "critical_count": 1
