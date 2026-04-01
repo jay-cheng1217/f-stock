@@ -176,7 +176,8 @@ def lock_prediction_run(
         selected = df.copy()
     selected = selected.head(top_n).reset_index(drop=True)
     if selected.empty:
-        raise ValueError(f"No selected trades in {os.path.basename(prediction_path)}.")
+        logging.getLogger(__name__).info("No selected trades in %s — skip (normal when market is weak)", os.path.basename(prediction_path))
+        return None, prediction_date, False
 
     now = _utc_now_str()
     cursor = conn.execute(
