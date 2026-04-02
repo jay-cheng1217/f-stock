@@ -21,7 +21,20 @@ sys.path.insert(0, BASE_DIR)
 
 from ml.config import MODEL_DIR
 from ml.cross_confirm import get_dual_confirmed_tickers
+from ml.features.sector import SECTOR_MAPPING_PATH
 from ml.predict import apply_sector_cap, _sort_prediction_df
+
+
+def _load_name_lookup() -> dict[str, str]:
+    if not os.path.exists(SECTOR_MAPPING_PATH):
+        return {}
+    _df = pd.read_csv(SECTOR_MAPPING_PATH, dtype={"Ticker": str})
+    if "Name" not in _df.columns:
+        return {}
+    return dict(zip(_df["Ticker"], _df["Name"]))
+
+
+_NAME_LOOKUP: dict[str, str] = _load_name_lookup()
 from scripts.update_paper_portfolio import (
     DEFAULT_DB_PATH,
     connect_db,
@@ -340,6 +353,8 @@ def _render_leaderboard_rows(df: pd.DataFrame) -> str:
     for _, row in df.iterrows():
         rank = int(row["selection_rank"])
         ticker = _html_cell(row.get("ticker"))
+        name = _NAME_LOOKUP.get(str(row.get("ticker", "")), "")
+        name_html = f' <span style="color:#999;font-size:12px;">{html.escape(name)}</span>' if name else ""
         sector = _html_cell(row.get("sector") or "-")
         close = _fmt_num(row.get("close"), 1)
         pred_return = _fmt_pct(
@@ -352,7 +367,7 @@ def _render_leaderboard_rows(df: pd.DataFrame) -> str:
             <tr class="main-row">
               <td class="col-rank">#{rank}</td>
               <td class="col-target">
-                <div class="cell-title">{ticker}</div>
+                <div class="cell-title">{ticker}{name_html}</div>
                 <div class="cell-sub">{sector} / 收盤 {close}</div>
                 <div class="cell-badges">
                   <span class="{rec_class}">{recommendation}</span>
@@ -370,6 +385,7 @@ def _render_leaderboard_rows(df: pd.DataFrame) -> str:
             """.format(
                 rank=rank,
                 ticker=ticker,
+                name_html=name_html,
                 sector=sector,
                 close=close,
                 pred_return=pred_return,
@@ -386,6 +402,8 @@ def _render_t1_rows(df: pd.DataFrame) -> str:
     for _, row in df.iterrows():
         rank = int(row.get("selection_rank", 0)) if pd.notna(row.get("selection_rank")) else "-"
         ticker = _html_cell(row.get("ticker"))
+        name = _NAME_LOOKUP.get(str(row.get("ticker", "")), "")
+        name_html = f' <span style="color:#999;font-size:12px;">{html.escape(name)}</span>' if name else ""
         sector = _html_cell(row.get("sector") or "-")
         close = _fmt_num(row.get("close"), 1)
         hit_prob = _fmt_pct(float(row.get("hit_prob_3pct", 0)) * 100) if pd.notna(row.get("hit_prob_3pct")) else "-"
@@ -400,7 +418,7 @@ def _render_t1_rows(df: pd.DataFrame) -> str:
             <tr>
               <td class="col-rank">#{rank}</td>
               <td class="col-target">
-                <div class="cell-title">{ticker}</div>
+                <div class="cell-title">{ticker}{name_html}</div>
                 <div class="cell-sub">{sector} / 收盤 {close}</div>
                 <div class="cell-badges">
                   <span class="{rec_class}">{recommendation}</span>
@@ -416,6 +434,7 @@ def _render_t1_rows(df: pd.DataFrame) -> str:
             """.format(
                 rank=rank,
                 ticker=ticker,
+                name_html=name_html,
                 sector=sector,
                 close=close,
                 hit_prob=hit_prob,
@@ -437,6 +456,7 @@ def _render_portfolio_rows(df: pd.DataFrame) -> str:
         prediction_date = _html_cell(row.get("prediction_date"))
         rank = int(row.get("selection_rank")) if pd.notna(row.get("selection_rank")) else "-"
         ticker = _html_cell(row.get("ticker"))
+        name = _NAME_LOOKUP.get(str(row.get("ticker", "")), "")
         status = _html_cell(row.get("status"))
         recommendation = _html_cell(row.get("recommendation"))
         entry_open = _fmt_num(row.get("entry_open"), 2)
@@ -449,7 +469,7 @@ def _render_portfolio_rows(df: pd.DataFrame) -> str:
             <tr>
               <td class="col-date">
                 <div class="cell-title">{prediction_date}</div>
-                <div class="cell-sub">#{rank} / {ticker}</div>
+                <div class="cell-sub">#{rank} / {ticker}{name_suffix}</div>
               </td>
               <td class="col-target">
                 <div class="cell-badges">
@@ -476,6 +496,7 @@ def _render_portfolio_rows(df: pd.DataFrame) -> str:
                 max_drawdown_pct=max_drawdown_pct,
                 unrealized_class=unrealized_class,
                 ticker=ticker,
+                name_suffix=f" {html.escape(name)}" if name else "",
             )
         )
     return "\n".join(rows)
@@ -487,6 +508,7 @@ def _render_t1_portfolio_rows(df: pd.DataFrame) -> str:
         pred_date = _html_cell(row.get("prediction_date"))
         rank = int(row.get("selection_rank")) if pd.notna(row.get("selection_rank")) else "-"
         ticker = _html_cell(row.get("ticker"))
+        name = _NAME_LOOKUP.get(str(row.get("ticker", "")), "")
         status = _html_cell(row.get("status"))
         setup = _html_cell(row.get("setup_tags") or "-")
         entry = _fmt_num(row.get("entry_open"), 2)
@@ -503,7 +525,7 @@ def _render_t1_portfolio_rows(df: pd.DataFrame) -> str:
             <tr>
               <td class="col-date">
                 <div class="cell-title">{pred_date}</div>
-                <div class="cell-sub">#{rank} / {ticker}</div>
+                <div class="cell-sub">#{rank} / {ticker}{name_suffix}</div>
               </td>
               <td class="col-target">
                 <div class="cell-badges">
@@ -533,6 +555,7 @@ def _render_t1_portfolio_rows(df: pd.DataFrame) -> str:
                 hit_class=hit_class,
                 ret_class=ret_class,
                 setup=setup,
+                name_suffix=f" {html.escape(name)}" if name else "",
             )
         )
     return "\n".join(rows)
@@ -542,6 +565,8 @@ def _render_cross_confirm_rows(items: list[dict]) -> str:
     rows = []
     for i, item in enumerate(items, 1):
         ticker = html.escape(str(item.get("ticker", "")))
+        name = _NAME_LOOKUP.get(str(item.get("ticker", "")), "")
+        name_html = f' <span style="color:#999;font-size:12px;">{html.escape(name)}</span>' if name else ""
         t1_prob = f"{float(item.get('t1_prob', 0)) * 100:.1f}%" if item.get("t1_prob") else "-"
         t1_rank = f"#{item['t1_rank']}" if item.get("t1_rank") else "-"
         d20_ret = _fmt_pct(float(item.get("d20_pred_return", 0)) * 100) if item.get("d20_pred_return") else "-"
@@ -553,7 +578,7 @@ def _render_cross_confirm_rows(items: list[dict]) -> str:
             <tr>
               <td class="col-rank">#{i}</td>
               <td class="col-target">
-                <div class="cell-title">{ticker}</div>
+                <div class="cell-title">{ticker}{name_html}</div>
                 <div class="cell-sub">T+1 排名 {t1_rank} / 機率 {t1_prob}</div>
                 <div class="cell-badges">
                   <span class="{_badge_class(d20_rec, kind='recommendation')}">{d20_rec}</span>
