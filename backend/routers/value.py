@@ -166,9 +166,11 @@ def screen_value_stocks() -> list[dict]:
 
     # 組回傳
     out = []
+    from backend.routers.t1 import _NAME_LOOKUP
     for _, r in result.iterrows():
         out.append({
             "ticker": str(r["ticker"]),
+            "name": _NAME_LOOKUP.get(str(r["ticker"]), ""),
             "close": round(float(r["close"]), 2) if pd.notna(r["close"]) else None,
             "pe": round(float(r["pe"]), 1) if pd.notna(r["pe"]) else None,
             "eps_ttm": round(float(r["eps_ttm"]), 2) if pd.notna(r["eps_ttm"]) else None,

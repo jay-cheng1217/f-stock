@@ -997,7 +997,7 @@ async function loadPortfolio() {
             const returnColor = avgPnL > 0 ? '#ef5350' : avgPnL < 0 ? '#26a69a' : '#8899aa';
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${tickerLink(row.ticker)}</td>
+                <td>${tickerLink(row.ticker)}${row.name ? ' <span style="color:#ccc;font-size:12px;">'+row.name+'</span>' : ''}</td>
                 <td>${row.position_count} 筆</td>
                 <td>${renderSelectionHistory(row.selection_history)}</td>
                 <td>${fmt(row.avg_entry_price)}</td>
@@ -1226,7 +1226,7 @@ async function loadT1Portfolio() {
                 : '<span style="color:#ffd166;font-weight:700;">pending</span>';
             html += `<tr>
                 <td>${row.prediction_date || '-'}</td>
-                <td>${tickerLink(row.ticker)}</td>
+                <td>${tickerLink(row.ticker)}${row.name ? ' <span style="color:#ccc;font-size:12px;">'+row.name+'</span>' : ''}</td>
                 <td>#${row.selection_rank || '-'}<br>${recBadge(row.recommendation)}</td>
                 <td>${fmt(row.entry_close)}</td>
                 <td>${fmt(row.exit_price)}</td>
@@ -1278,7 +1278,7 @@ async function loadCrossConfirm() {
         (resp.data || []).forEach((row) => {
             const d20Color = row.d20_pred_return > 0 ? '#ef5350' : row.d20_pred_return < 0 ? '#26a69a' : '#ccc';
             html += `<tr>
-                <td>${tickerLink(row.ticker)}</td>
+                <td>${tickerLink(row.ticker)}${row.name ? ' <span style="color:#ccc;font-size:12px;">'+row.name+'</span>' : ''}</td>
                 <td>${row.t1_prob != null ? (row.t1_prob * 100).toFixed(1) + '%' : '-'}</td>
                 <td>${row.t1_rank != null ? '#' + row.t1_rank : '-'}</td>
                 <td style="color:${d20Color};font-weight:700;">${row.d20_pred_return != null ? fmtPct(row.d20_pred_return * 100) : '-'}</td>
@@ -1343,7 +1343,7 @@ async function loadValueScreen() {
 
             html += `<tr>
                 <td>${i + 1}</td>
-                <td>${tickerLink(row.ticker)}${sector}</td>
+                <td>${tickerLink(row.ticker)}${row.name ? ' <span style="color:#ccc;font-size:12px;">'+row.name+'</span>' : ''}${sector}</td>
                 <td>${row.close != null ? row.close.toFixed(1) : '-'}</td>
                 <td style="color:#ffb74d;font-weight:700">${row.pe != null ? row.pe.toFixed(1) : '-'}</td>
                 <td style="font-weight:700">${row.eps_ttm != null ? row.eps_ttm.toFixed(2) : '-'}</td>

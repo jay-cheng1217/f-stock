@@ -515,6 +515,8 @@ def download_t1_predictions(top_n: int = 30):
 def get_t1_portfolio():
     try:
         detail_df, summary = _load_t1_portfolio_detail_and_summary()
+        if not detail_df.empty:
+            detail_df["name"] = detail_df["ticker"].map(_NAME_LOOKUP).fillna("")
         detail_records = [] if detail_df.empty else detail_df.astype(object).where(detail_df.notna(), None).to_dict(orient="records")
         return JSONResponse(
             content={"status": "success", "data": detail_records, "summary": summary}
@@ -557,6 +559,7 @@ def get_cross_confirmed(top_n: int = 10):
         for _, row in confirmed.iterrows():
             records.append({
                 "ticker": str(row["ticker"]),
+                "name": _NAME_LOOKUP.get(str(row["ticker"]), ""),
                 "t1_prob": round(float(row.get("t1_prob", 0)), 4) if pd.notna(row.get("t1_prob")) else None,
                 "t1_rank": int(row["t1_rank"]) if pd.notna(row.get("t1_rank")) else None,
                 "d20_pred_return": round(float(row.get("d20_pred_return", 0)), 4) if pd.notna(row.get("d20_pred_return")) else None,
