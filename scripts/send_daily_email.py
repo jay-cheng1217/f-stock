@@ -595,198 +595,14 @@ def _render_cross_confirm_rows(items: list[dict]) -> str:
     return "\n".join(rows)
 
 
-def build_email_html(
-    prediction_date: str,
-    all_pred_df: pd.DataFrame,
-    leaderboard_df: pd.DataFrame,
-    portfolio_summary: dict[str, object],
-    portfolio_df: pd.DataFrame,
-    t1_date: str = "",
-    t1_df: pd.DataFrame | None = None,
-    t1_portfolio_summary: dict[str, object] | None = None,
-    t1_portfolio_df: pd.DataFrame | None = None,
-    cross_confirmed: list[dict] | None = None,
-) -> str:
-    sentiment = _html_cell(all_pred_df["market_sentiment"].iloc[0]) if "market_sentiment" in all_pred_df.columns else "-"
-    q25 = (
-        _fmt_pct(float(all_pred_df["market_return_q25"].iloc[0]) * 100)
-        if "market_return_q25" in all_pred_df.columns else "-"
-    )
-    median = (
-        _fmt_pct(float(all_pred_df["market_return_median"].iloc[0]) * 100)
-        if "market_return_median" in all_pred_df.columns else "-"
-    )
-    q75 = (
-        _fmt_pct(float(all_pred_df["market_return_q75"].iloc[0]) * 100)
-        if "market_return_q75" in all_pred_df.columns else "-"
-    )
-
-    top_count = len(leaderboard_df)
-    summary_cards = [
-        ("總批次", portfolio_summary.get("total_runs")),
-        ("持倉中", portfolio_summary.get("open_positions")),
-        ("待進場", portfolio_summary.get("pending_positions")),
-        ("已平倉", portfolio_summary.get("closed_positions")),
-        ("10% 回撤警示", portfolio_summary.get("breach_10pct_count")),
-        ("已平倉平均報酬", _fmt_pct(
-            float(portfolio_summary["avg_realized_return_pct"]) * 100
-            if portfolio_summary.get("avg_realized_return_pct") is not None else None
-        )),
-    ]
-
-    cards_html = "\n".join(
-        f"""
-        <div class="summary-card">
-          <div class="label">{html.escape(str(label))}</div>
-          <div class="value">{html.escape(str(value if value not in (None, '') else '-'))}</div>
-        </div>
-        """
-        for label, value in summary_cards
-    )
-
-    leaderboard_section = (
-        f"""
-        <table class="data-table leaderboard-table">
-          <thead>
-            <tr>
-              <th class="col-rank">名次</th>
-              <th class="col-target">標的 / 推薦</th>
-              <th class="col-return">預估 20 日報酬</th>
-            </tr>
-          </thead>
-          <tbody>
-            {_render_leaderboard_rows(leaderboard_df)}
-          </tbody>
-        </table>
-        """
-        if not leaderboard_df.empty
-        else "<p class='muted'>目前沒有可顯示的 ML 排行資料。</p>"
-    )
-
-    portfolio_section = (
-        f"""
-        <table class="data-table portfolio-table">
-          <thead>
-            <tr>
-              <th class="col-date">入選日 / 名次 / 代號</th>
-              <th class="col-target">狀態 / 推薦 / 價格</th>
-              <th class="col-return">帳面報酬 / 回撤</th>
-            </tr>
-          </thead>
-          <tbody>
-            {_render_portfolio_rows(portfolio_df)}
-          </tbody>
-        </table>
-        """
-        if not portfolio_df.empty
-        else "<p class='muted'>目前沒有可顯示的帳本部位資料。</p>"
-    )
-
-    _t1_df = t1_df if t1_df is not None else pd.DataFrame()
-    t1_section = ""
-    if not _t1_df.empty:
-        t1_count = len(_t1_df)
-        t1_section = f"""
-    <div class="section" id="sec-t1">
-      <h2>T+1 次日動能排行（{html.escape(t1_date)}）<a href="#" class="back-top">&#8679; 頂部</a></h2>
-      <div class="muted">短線隔日沖 Top {t1_count}。命中率 = 隔日漲幅 &ge; 3% 的機率。</div>
-      <table class="data-table leaderboard-table">
-        <thead>
-          <tr>
-            <th class="col-rank">名次</th>
-            <th class="col-target">標的 / 推薦 / 型態</th>
-            <th class="col-return">命中率 / 停利停損</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_render_t1_rows(_t1_df)}
-        </tbody>
-      </table>
-    </div>
-"""
-    else:
-        t1_section = ""
-
-    # T+1 portfolio section
-    _t1_port_df = t1_portfolio_df if t1_portfolio_df is not None else pd.DataFrame()
-    _t1_port_summary = t1_portfolio_summary or {}
-    if not _t1_port_df.empty or _t1_port_summary:
-        t1_total = _t1_port_summary.get("closed_positions", 0)
-        t1_hit = _t1_port_summary.get("hit_count", 0)
-        t1_hit_rate = _fmt_pct(float(_t1_port_summary["hit_rate"]) * 100, 1) if _t1_port_summary.get("hit_rate") is not None else "-"
-        t1_avg_ret = _fmt_pct(float(_t1_port_summary["avg_realized_return_pct"]) * 100) if _t1_port_summary.get("avg_realized_return_pct") is not None else "-"
-        t1_pending = _t1_port_summary.get("pending_positions", 0)
-
-        t1_cards_html = f"""
-        <div class="summary-card"><div class="label">已結算</div><div class="value">{t1_total}</div></div>
-        <div class="summary-card"><div class="label">待結算</div><div class="value">{t1_pending}</div></div>
-        <div class="summary-card"><div class="label">命中率（盤中 &ge;3%）</div><div class="value">{t1_hit}/{t1_total} = {t1_hit_rate}</div></div>
-        <div class="summary-card"><div class="label">平均開→收報酬</div><div class="value">{t1_avg_ret}</div></div>
-        """
-
-        t1_port_table = (
-            f"""
-            <table class="data-table portfolio-table">
-              <thead>
-                <tr>
-                  <th class="col-date">預測日 / 名次 / 代號</th>
-                  <th class="col-target">狀態 / 型態 / 價格</th>
-                  <th class="col-return">報酬 / 高低 / 命中</th>
-                </tr>
-              </thead>
-              <tbody>
-                {_render_t1_portfolio_rows(_t1_port_df)}
-              </tbody>
-            </table>
-            """
-            if not _t1_port_df.empty
-            else "<p class='muted'>目前沒有 T+1 帳本資料。</p>"
-        )
-
-        t1_portfolio_section = f"""
-    <div class="section" id="sec-t1port">
-      <h2>T+1 實戰帳本<a href="#" class="back-top">&#8679; 頂部</a></h2>
-      <div class="grid">
-        {t1_cards_html}
-      </div>
-      {t1_port_table}
-    </div>
-"""
-    else:
-        t1_portfolio_section = ""
-
-    # Cross-confirmation section
-    _cross = cross_confirmed or []
-    if _cross:
-        cross_count = len(_cross)
-        cross_section = f"""
-    <div class="section" id="sec-cross">
-      <h2>T+1 x 20D 雙重確認<a href="#" class="back-top">&#8679; 頂部</a></h2>
-      <div class="muted">以下 {cross_count} 檔同時被 T+1（次日動能）和 20D（中期趨勢）模型看好，訊號一致性較高。</div>
-      <table class="data-table leaderboard-table">
-        <thead>
-          <tr>
-            <th class="col-rank">名次</th>
-            <th class="col-target">標的 / T+1 排名 / 20D 推薦</th>
-            <th class="col-return">20D 預估報酬 / 綜合分數</th>
-          </tr>
-        </thead>
-        <tbody>
-          {_render_cross_confirm_rows(_cross)}
-        </tbody>
-      </table>
-    </div>
-"""
-    else:
-        cross_section = ""
-
-    generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def _wrap_email_html(title: str, subtitle: str, body_html: str, generated_at: str) -> str:
+    """Wrap section HTML in the shared email shell (head/style/hero/foot)."""
     return f"""<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{html.escape(prediction_date)} 每日 ML 預測</title>
+  <title>{html.escape(title)}</title>
   <style>
     body {{
       margin: 0;
@@ -1034,31 +850,6 @@ def build_email_html(
     .portfolio-rec {{
       margin-top: 0;
     }}
-    .toc {{
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }}
-    .toc a {{
-      display: inline-block;
-      padding: 6px 14px;
-      background: #eef3fb;
-      color: #2f6fed;
-      border: 1px solid #b6d3ff;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      text-decoration: none;
-      white-space: nowrap;
-    }}
-    .back-top {{
-      float: right;
-      font-size: 12px;
-      font-weight: 400;
-      color: #94a3b8;
-      text-decoration: none;
-    }}
     .foot {{
       margin-top: 18px;
       color: #64748b;
@@ -1118,39 +909,12 @@ def build_email_html(
   <div class="wrap">
     <div class="hero">
       <div class="hero-kicker">Stock ML Bot</div>
-      <h1 class="hero-title" style="margin:0 0 12px;color:#183b63 !important;-webkit-text-fill-color:#183b63;">{html.escape(prediction_date)} 每日 ML 預測與帳本觀察</h1>
-      <div class="hero-meta" style="color:#395170 !important;-webkit-text-fill-color:#395170;">
-        市場氣氛：{sentiment} / 25% 分位：{q25} / 中位數：{median} / 75% 分位：{q75}
-      </div>
+      <h1 class="hero-title" style="margin:0 0 12px;color:#183b63 !important;-webkit-text-fill-color:#183b63;">{html.escape(title)}</h1>
+      <div class="hero-meta" style="color:#395170 !important;-webkit-text-fill-color:#395170;">{subtitle}</div>
       <div class="hero-meta" style="color:#395170 !important;-webkit-text-fill-color:#395170;">產出時間：{generated_at}</div>
-      <div class="toc">
-        <a href="#sec-ml">ML 排行</a>
-        <a href="#sec-t1">T+1 動能</a>
-        <a href="#sec-cross">雙重確認</a>
-        <a href="#sec-portfolio">20D 帳本</a>
-        <a href="#sec-t1port">T+1 帳本</a>
-      </div>
     </div>
 
-    <div class="section" id="sec-ml">
-      <h2>今日 ML 排行（20 日）<a href="#" class="back-top">&#8679; 頂部</a></h2>
-      <div class="muted">本封信顯示 Top {top_count}。</div>
-      {leaderboard_section}
-    </div>
-
-    {t1_section}
-
-    {cross_section}
-
-    <div class="section" id="sec-portfolio">
-      <h2>20 日實戰帳本<a href="#" class="back-top">&#8679; 頂部</a></h2>
-      <div class="grid">
-        {cards_html}
-      </div>
-      {portfolio_section}
-    </div>
-
-    {t1_portfolio_section}
+    {body_html}
 
     <div class="foot">
       此信件由 F:\\stock 每日 pipeline 自動產生。
@@ -1159,6 +923,426 @@ def build_email_html(
 </body>
 </html>
 """
+
+
+def build_email_html(
+    prediction_date: str,
+    all_pred_df: pd.DataFrame,
+    leaderboard_df: pd.DataFrame,
+    portfolio_summary: dict[str, object],
+    portfolio_df: pd.DataFrame,
+    t1_date: str = "",
+    t1_df: pd.DataFrame | None = None,
+    t1_portfolio_summary: dict[str, object] | None = None,
+    t1_portfolio_df: pd.DataFrame | None = None,
+    cross_confirmed: list[dict] | None = None,
+) -> str:
+    """Build single combined email (kept for backward compat / preview)."""
+    sentiment = _html_cell(all_pred_df["market_sentiment"].iloc[0]) if "market_sentiment" in all_pred_df.columns else "-"
+    q25 = (
+        _fmt_pct(float(all_pred_df["market_return_q25"].iloc[0]) * 100)
+        if "market_return_q25" in all_pred_df.columns else "-"
+    )
+    median = (
+        _fmt_pct(float(all_pred_df["market_return_median"].iloc[0]) * 100)
+        if "market_return_median" in all_pred_df.columns else "-"
+    )
+    q75 = (
+        _fmt_pct(float(all_pred_df["market_return_q75"].iloc[0]) * 100)
+        if "market_return_q75" in all_pred_df.columns else "-"
+    )
+
+    top_count = len(leaderboard_df)
+    summary_cards = [
+        ("總批次", portfolio_summary.get("total_runs")),
+        ("持倉中", portfolio_summary.get("open_positions")),
+        ("待進場", portfolio_summary.get("pending_positions")),
+        ("已平倉", portfolio_summary.get("closed_positions")),
+        ("10% 回撤警示", portfolio_summary.get("breach_10pct_count")),
+        ("已平倉平均報酬", _fmt_pct(
+            float(portfolio_summary["avg_realized_return_pct"]) * 100
+            if portfolio_summary.get("avg_realized_return_pct") is not None else None
+        )),
+    ]
+
+    cards_html = "\n".join(
+        f"""
+        <div class="summary-card">
+          <div class="label">{html.escape(str(label))}</div>
+          <div class="value">{html.escape(str(value if value not in (None, '') else '-'))}</div>
+        </div>
+        """
+        for label, value in summary_cards
+    )
+
+    leaderboard_section = (
+        f"""
+        <table class="data-table leaderboard-table">
+          <thead>
+            <tr>
+              <th class="col-rank">名次</th>
+              <th class="col-target">標的 / 推薦</th>
+              <th class="col-return">預估 20 日報酬</th>
+            </tr>
+          </thead>
+          <tbody>
+            {_render_leaderboard_rows(leaderboard_df)}
+          </tbody>
+        </table>
+        """
+        if not leaderboard_df.empty
+        else "<p class='muted'>目前沒有可顯示的 ML 排行資料。</p>"
+    )
+
+    portfolio_section = (
+        f"""
+        <table class="data-table portfolio-table">
+          <thead>
+            <tr>
+              <th class="col-date">入選日 / 名次 / 代號</th>
+              <th class="col-target">狀態 / 推薦 / 價格</th>
+              <th class="col-return">帳面報酬 / 回撤</th>
+            </tr>
+          </thead>
+          <tbody>
+            {_render_portfolio_rows(portfolio_df)}
+          </tbody>
+        </table>
+        """
+        if not portfolio_df.empty
+        else "<p class='muted'>目前沒有可顯示的帳本部位資料。</p>"
+    )
+
+    _t1_df = t1_df if t1_df is not None else pd.DataFrame()
+    t1_section = ""
+    if not _t1_df.empty:
+        t1_count = len(_t1_df)
+        t1_section = f"""
+    <div class="section" id="sec-t1">
+      <h2>T+1 次日動能排行（{html.escape(t1_date)}）<a href="#" class="back-top">&#8679; 頂部</a></h2>
+      <div class="muted">短線隔日沖 Top {t1_count}。命中率 = 隔日漲幅 &ge; 3% 的機率。</div>
+      <table class="data-table leaderboard-table">
+        <thead>
+          <tr>
+            <th class="col-rank">名次</th>
+            <th class="col-target">標的 / 推薦 / 型態</th>
+            <th class="col-return">命中率 / 停利停損</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_render_t1_rows(_t1_df)}
+        </tbody>
+      </table>
+    </div>
+"""
+    else:
+        t1_section = ""
+
+    # T+1 portfolio section
+    _t1_port_df = t1_portfolio_df if t1_portfolio_df is not None else pd.DataFrame()
+    _t1_port_summary = t1_portfolio_summary or {}
+    if not _t1_port_df.empty or _t1_port_summary:
+        t1_total = _t1_port_summary.get("closed_positions", 0)
+        t1_hit = _t1_port_summary.get("hit_count", 0)
+        t1_hit_rate = _fmt_pct(float(_t1_port_summary["hit_rate"]) * 100, 1) if _t1_port_summary.get("hit_rate") is not None else "-"
+        t1_avg_ret = _fmt_pct(float(_t1_port_summary["avg_realized_return_pct"]) * 100) if _t1_port_summary.get("avg_realized_return_pct") is not None else "-"
+        t1_pending = _t1_port_summary.get("pending_positions", 0)
+
+        t1_cards_html = f"""
+        <div class="summary-card"><div class="label">已結算</div><div class="value">{t1_total}</div></div>
+        <div class="summary-card"><div class="label">待結算</div><div class="value">{t1_pending}</div></div>
+        <div class="summary-card"><div class="label">命中率（盤中 &ge;3%）</div><div class="value">{t1_hit}/{t1_total} = {t1_hit_rate}</div></div>
+        <div class="summary-card"><div class="label">平均開→收報酬</div><div class="value">{t1_avg_ret}</div></div>
+        """
+
+        t1_port_table = (
+            f"""
+            <table class="data-table portfolio-table">
+              <thead>
+                <tr>
+                  <th class="col-date">預測日 / 名次 / 代號</th>
+                  <th class="col-target">狀態 / 型態 / 價格</th>
+                  <th class="col-return">報酬 / 高低 / 命中</th>
+                </tr>
+              </thead>
+              <tbody>
+                {_render_t1_portfolio_rows(_t1_port_df)}
+              </tbody>
+            </table>
+            """
+            if not _t1_port_df.empty
+            else "<p class='muted'>目前沒有 T+1 帳本資料。</p>"
+        )
+
+        t1_portfolio_section = f"""
+    <div class="section" id="sec-t1port">
+      <h2>T+1 實戰帳本<a href="#" class="back-top">&#8679; 頂部</a></h2>
+      <div class="grid">
+        {t1_cards_html}
+      </div>
+      {t1_port_table}
+    </div>
+"""
+    else:
+        t1_portfolio_section = ""
+
+    # Cross-confirmation section
+    _cross = cross_confirmed or []
+    if _cross:
+        cross_count = len(_cross)
+        cross_section = f"""
+    <div class="section" id="sec-cross">
+      <h2>T+1 x 20D 雙重確認<a href="#" class="back-top">&#8679; 頂部</a></h2>
+      <div class="muted">以下 {cross_count} 檔同時被 T+1（次日動能）和 20D（中期趨勢）模型看好，訊號一致性較高。</div>
+      <table class="data-table leaderboard-table">
+        <thead>
+          <tr>
+            <th class="col-rank">名次</th>
+            <th class="col-target">標的 / T+1 排名 / 20D 推薦</th>
+            <th class="col-return">20D 預估報酬 / 綜合分數</th>
+          </tr>
+        </thead>
+        <tbody>
+          {_render_cross_confirm_rows(_cross)}
+        </tbody>
+      </table>
+    </div>
+"""
+    else:
+        cross_section = ""
+
+    generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    market_subtitle = f"市場氣氛：{sentiment} / 25%：{q25} / 中位：{median} / 75%：{q75}"
+    body_sections = f"""
+    <div class="section">
+      <h2>今日 ML 排行（20 日）</h2>
+      <div class="muted">Top {top_count}。</div>
+      {leaderboard_section}
+    </div>
+
+    {t1_section}
+
+    {cross_section}
+
+    <div class="section">
+      <h2>20 日實戰帳本</h2>
+      <div class="grid">
+        {cards_html}
+      </div>
+      {portfolio_section}
+    </div>
+
+    {t1_portfolio_section}
+"""
+    return _wrap_email_html(
+        title=f"{prediction_date} 每日 ML 預測與帳本觀察",
+        subtitle=market_subtitle,
+        body_html=body_sections,
+        generated_at=generated_at,
+    )
+
+
+# --- Individual email builders for split-send mode ---
+
+
+def _build_market_subtitle(all_pred_df: pd.DataFrame) -> str:
+    sentiment = _html_cell(all_pred_df["market_sentiment"].iloc[0]) if "market_sentiment" in all_pred_df.columns else "-"
+    q25 = _fmt_pct(float(all_pred_df["market_return_q25"].iloc[0]) * 100) if "market_return_q25" in all_pred_df.columns else "-"
+    median = _fmt_pct(float(all_pred_df["market_return_median"].iloc[0]) * 100) if "market_return_median" in all_pred_df.columns else "-"
+    q75 = _fmt_pct(float(all_pred_df["market_return_q75"].iloc[0]) * 100) if "market_return_q75" in all_pred_df.columns else "-"
+    return f"市場氣氛：{sentiment} / 25%：{q25} / 中位：{median} / 75%：{q75}"
+
+
+def build_email_ml(
+    prediction_date: str,
+    all_pred_df: pd.DataFrame,
+    leaderboard_df: pd.DataFrame,
+    cross_confirmed: list[dict] | None = None,
+) -> str:
+    """信1: ML 排行 + 雙重確認"""
+    top_count = len(leaderboard_df)
+
+    leaderboard_section = (
+        f"""
+        <table class="data-table leaderboard-table">
+          <thead><tr>
+            <th class="col-rank">名次</th>
+            <th class="col-target">標的 / 推薦</th>
+            <th class="col-return">預估 20 日報酬</th>
+          </tr></thead>
+          <tbody>{_render_leaderboard_rows(leaderboard_df)}</tbody>
+        </table>
+        """
+        if not leaderboard_df.empty
+        else "<p class='muted'>目前沒有可顯示的 ML 排行資料。</p>"
+    )
+
+    _cross = cross_confirmed or []
+    cross_section = ""
+    if _cross:
+        cross_count = len(_cross)
+        cross_section = f"""
+    <div class="section">
+      <h2>T+1 x 20D 雙重確認</h2>
+      <div class="muted">以下 {cross_count} 檔同時被 T+1 和 20D 模型看好。</div>
+      <table class="data-table leaderboard-table">
+        <thead><tr>
+          <th class="col-rank">名次</th>
+          <th class="col-target">標的 / T+1 排名 / 20D 推薦</th>
+          <th class="col-return">20D 預估報酬 / 綜合分數</th>
+        </tr></thead>
+        <tbody>{_render_cross_confirm_rows(_cross)}</tbody>
+      </table>
+    </div>
+"""
+
+    body = f"""
+    <div class="section">
+      <h2>今日 ML 排行（20 日）</h2>
+      <div class="muted">Top {top_count}。</div>
+      {leaderboard_section}
+    </div>
+    {cross_section}
+"""
+    return _wrap_email_html(
+        title=f"{prediction_date} ML 排行 + 雙重確認",
+        subtitle=_build_market_subtitle(all_pred_df),
+        body_html=body,
+        generated_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
+
+
+def build_email_t1(
+    prediction_date: str,
+    all_pred_df: pd.DataFrame,
+    t1_date: str,
+    t1_df: pd.DataFrame,
+) -> str:
+    """信2: T+1 動能"""
+    t1_count = len(t1_df)
+    body = f"""
+    <div class="section">
+      <h2>T+1 次日動能排行（{html.escape(t1_date)}）</h2>
+      <div class="muted">短線隔日沖 Top {t1_count}。命中率 = 隔日漲幅 &ge; 3% 的機率。</div>
+      <table class="data-table leaderboard-table">
+        <thead><tr>
+          <th class="col-rank">名次</th>
+          <th class="col-target">標的 / 推薦 / 型態</th>
+          <th class="col-return">命中率 / 停利停損</th>
+        </tr></thead>
+        <tbody>{_render_t1_rows(t1_df)}</tbody>
+      </table>
+    </div>
+"""
+    return _wrap_email_html(
+        title=f"{prediction_date} T+1 動能預測",
+        subtitle=_build_market_subtitle(all_pred_df),
+        body_html=body,
+        generated_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
+
+
+def build_email_portfolio(
+    prediction_date: str,
+    all_pred_df: pd.DataFrame,
+    portfolio_summary: dict[str, object],
+    portfolio_df: pd.DataFrame,
+    t1_portfolio_summary: dict[str, object] | None = None,
+    t1_portfolio_df: pd.DataFrame | None = None,
+) -> str:
+    """信3: 帳本總覽（20D + T+1）"""
+    summary_cards = [
+        ("總批次", portfolio_summary.get("total_runs")),
+        ("持倉中", portfolio_summary.get("open_positions")),
+        ("待進場", portfolio_summary.get("pending_positions")),
+        ("已平倉", portfolio_summary.get("closed_positions")),
+        ("10% 回撤警示", portfolio_summary.get("breach_10pct_count")),
+        ("已平倉平均報酬", _fmt_pct(
+            float(portfolio_summary["avg_realized_return_pct"]) * 100
+            if portfolio_summary.get("avg_realized_return_pct") is not None else None
+        )),
+    ]
+    cards_html = "\n".join(
+        f'<div class="summary-card"><div class="label">{html.escape(str(label))}</div>'
+        f'<div class="value">{html.escape(str(value if value not in (None, "") else "-"))}</div></div>'
+        for label, value in summary_cards
+    )
+
+    portfolio_section = (
+        f"""
+        <table class="data-table portfolio-table">
+          <thead><tr>
+            <th class="col-date">入選日 / 名次 / 代號</th>
+            <th class="col-target">狀態 / 推薦 / 價格</th>
+            <th class="col-return">帳面報酬 / 回撤</th>
+          </tr></thead>
+          <tbody>{_render_portfolio_rows(portfolio_df)}</tbody>
+        </table>
+        """
+        if not portfolio_df.empty
+        else "<p class='muted'>目前沒有可顯示的帳本部位資料。</p>"
+    )
+
+    # T+1 portfolio
+    _t1_port_df = t1_portfolio_df if t1_portfolio_df is not None else pd.DataFrame()
+    _t1_port_summary = t1_portfolio_summary or {}
+    t1_portfolio_section = ""
+    if not _t1_port_df.empty or _t1_port_summary:
+        t1_total = _t1_port_summary.get("closed_positions", 0)
+        t1_hit_rate = _fmt_pct(float(_t1_port_summary["hit_rate"]) * 100, 1) if _t1_port_summary.get("hit_rate") is not None else "-"
+        t1_avg_ret = _fmt_pct(float(_t1_port_summary["avg_realized_return_pct"]) * 100) if _t1_port_summary.get("avg_realized_return_pct") is not None else "-"
+        t1_pending = _t1_port_summary.get("pending_positions", 0)
+        t1_hit = _t1_port_summary.get("hit_count", 0)
+
+        t1_cards = f"""
+        <div class="summary-card"><div class="label">已結算</div><div class="value">{t1_total}</div></div>
+        <div class="summary-card"><div class="label">待結算</div><div class="value">{t1_pending}</div></div>
+        <div class="summary-card"><div class="label">命中率（盤中 &ge;3%）</div><div class="value">{t1_hit}/{t1_total} = {t1_hit_rate}</div></div>
+        <div class="summary-card"><div class="label">平均開→收報酬</div><div class="value">{t1_avg_ret}</div></div>
+        """
+
+        t1_port_table = (
+            f"""
+            <table class="data-table portfolio-table">
+              <thead><tr>
+                <th class="col-date">預測日 / 名次 / 代號</th>
+                <th class="col-target">狀態 / 型態 / 價格</th>
+                <th class="col-return">報酬 / 高低 / 命中</th>
+              </tr></thead>
+              <tbody>{_render_t1_portfolio_rows(_t1_port_df)}</tbody>
+            </table>
+            """
+            if not _t1_port_df.empty
+            else "<p class='muted'>目前沒有 T+1 帳本資料。</p>"
+        )
+
+        t1_portfolio_section = f"""
+    <div class="section">
+      <h2>T+1 實戰帳本</h2>
+      <div class="grid">{t1_cards}</div>
+      {t1_port_table}
+    </div>
+"""
+
+    body = f"""
+    <div class="section">
+      <h2>20 日實戰帳本</h2>
+      <div class="grid">{cards_html}</div>
+      {portfolio_section}
+    </div>
+    {t1_portfolio_section}
+"""
+    return _wrap_email_html(
+        title=f"{prediction_date} 帳本總覽",
+        subtitle=_build_market_subtitle(all_pred_df),
+        body_html=body,
+        generated_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
+
+
+# --- (end of old inline template removed) ---
+
 
 
 def send_email(settings: EmailSettings, subject: str, html_body: str) -> None:
@@ -1207,39 +1391,50 @@ def send_latest_email(
     except Exception:
         cross_confirmed = []
 
-    html_body = build_email_html(
-        prediction_date=prediction_date,
-        all_pred_df=all_pred_df,
-        leaderboard_df=leaderboard_df,
-        portfolio_summary=portfolio_summary,
-        portfolio_df=portfolio_df,
-        t1_date=t1_date,
-        t1_df=t1_df,
-        t1_portfolio_summary=t1_portfolio_summary,
-        t1_portfolio_df=t1_portfolio_df,
-        cross_confirmed=cross_confirmed,
+    # Build 3 separate emails
+    prefix = settings.subject_prefix
+    emails: list[tuple[str, str]] = []  # (subject, html)
+
+    # 信1: ML 排行 + 雙重確認
+    html_ml = build_email_ml(prediction_date, all_pred_df, leaderboard_df, cross_confirmed)
+    emails.append((f"{prefix} {prediction_date} [1/3] ML 排行 + 雙重確認", html_ml))
+
+    # 信2: T+1 動能 (skip if empty)
+    _t1_df = t1_df if t1_df is not None else pd.DataFrame()
+    if not _t1_df.empty:
+        html_t1 = build_email_t1(prediction_date, all_pred_df, t1_date, _t1_df)
+        emails.append((f"{prefix} {prediction_date} [2/3] T+1 動能預測", html_t1))
+
+    # 信3: 帳本總覽
+    html_port = build_email_portfolio(
+        prediction_date, all_pred_df,
+        portfolio_summary, portfolio_df,
+        t1_portfolio_summary, t1_portfolio_df,
     )
+    emails.append((f"{prefix} {prediction_date} [3/3] 帳本總覽", html_port))
+
+    # Save combined preview
     preview_target = preview_path or DEFAULT_PREVIEW_PATH
     os.makedirs(os.path.dirname(preview_target), exist_ok=True)
     with open(preview_target, "w", encoding="utf-8") as f:
-        f.write(html_body)
+        f.write("\n<hr style='margin:40px 0;border:3px solid #2f6fed;'>\n".join(h for _, h in emails))
 
-    subject = f"{settings.subject_prefix} {prediction_date} 每日 ML 預測與帳本觀察"
     if dry_run:
         print(f"[email] Dry run 完成：{preview_target}")
         return {
             "status": "preview",
             "preview_path": preview_target,
-            "subject": subject,
+            "subjects": [s for s, _ in emails],
             "prediction_path": prediction_path,
         }
 
-    send_email(settings, subject, html_body)
-    print(f"[email] 已寄出至: {', '.join(settings.to_emails)}")
+    for subject, html_body in emails:
+        send_email(settings, subject, html_body)
+    print(f"[email] 已寄出 {len(emails)} 封至: {', '.join(settings.to_emails)}")
     return {
         "status": "sent",
         "preview_path": preview_target,
-        "subject": subject,
+        "subjects": [s for s, _ in emails],
         "prediction_path": prediction_path,
         "to": settings.to_emails,
     }
