@@ -276,12 +276,79 @@
         "top30_by_up_prob_avg_return": -1.75,
         "top30_win_rate": 40.0
       }
+    },
+    {
+      "prediction_date": "2026-03-25",
+      "verified_at": "2026-04-02",
+      "days_elapsed": 8,
+      "total_stocks": 1091,
+      "v1": {
+        "n_verified": 1091,
+        "signal_accuracy": {
+          "UP": {
+            "count": 174,
+            "correct": 50,
+            "hit_rate": 28.7,
+            "avg_actual_return": -1.4
+          },
+          "FLAT": {
+            "count": 415,
+            "correct": 166,
+            "hit_rate": 40.0,
+            "avg_actual_return": -1.18
+          },
+          "DOWN": {
+            "count": 502,
+            "correct": 330,
+            "hit_rate": 65.7,
+            "avg_actual_return": -2.85
+          }
+        },
+        "top30_by_up_prob_avg_return": 1.8,
+        "top30_win_rate": 50.0
+      }
+    },
+    {
+      "prediction_date": "2026-03-23",
+      "verified_at": "2026-04-02",
+      "days_elapsed": 10,
+      "total_stocks": 1088,
+      "v1": {
+        "n_verified": 1088,
+        "signal_accuracy": {},
+        "top30_by_up_prob_avg_return": 0.94,
+        "top30_win_rate": 40.0
+      }
+    },
+    {
+      "prediction_date": "2026-03-24",
+      "verified_at": "2026-04-02",
+      "days_elapsed": 9,
+      "total_stocks": 1091,
+      "v1": {
+        "n_verified": 1091,
+        "signal_accuracy": {},
+        "top30_by_up_prob_avg_return": -1.75,
+        "top30_win_rate": 40.0
+      }
+    },
+    {
+      "prediction_date": "2026-03-25",
+      "verified_at": "2026-04-02",
+      "days_elapsed": 8,
+      "total_stocks": 1091,
+      "v1": {
+        "n_verified": 1091,
+        "signal_accuracy": {},
+        "top30_by_up_prob_avg_return": -2.6,
+        "top30_win_rate": 26.7
+      }
     }
   ],
   "summary": {
-    "last_updated": "2026-04-01 12:07",
+    "last_updated": "2026-04-02 09:36",
     "v1": {
-      "n_periods_verified": 12
+      "n_periods_verified": 16
     }
   }
 }

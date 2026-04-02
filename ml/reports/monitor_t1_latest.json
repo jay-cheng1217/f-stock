@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-01 12:06:59",
+  "generated_at": "2026-04-02 09:35:44",
   "lookback_days": 20,
   "rolling_ic": [
     {
@@ -55,6 +55,15 @@
       "top_10pct_avg_return": -0.0318,
       "bot_10pct_avg_return": -0.0209,
       "spread": -0.0108
+    },
+    {
+      "date": "2026-03-31",
+      "ic_spearman": -0.0942,
+      "p_value": 0.0018,
+      "n_stocks": 1102,
+      "top_10pct_avg_return": -0.0017,
+      "bot_10pct_avg_return": 0.0006,
+      "spread": -0.0022
     }
   ],
   "portfolio": {
@@ -171,15 +180,15 @@
     {
       "level": "CRITICAL",
       "type": "IC_DECAY",
-      "message": "近 5 日平均 IC=-0.0476 < 0.02，模型可能失效",
-      "value": -0.0476,
+      "message": "近 5 日平均 IC=-0.0032 < 0.02，模型可能失效",
+      "value": -0.0032,
       "threshold": 0.02
     },
     {
       "level": "WARNING",
       "type": "SPREAD_COLLAPSE",
-      "message": "Top/Bottom 10% 報酬差距消失 (spread=-0.0038)，模型無區分力",
-      "value": -0.0038
+      "message": "Top/Bottom 10% 報酬差距消失 (spread=-0.0009)，模型無區分力",
+      "value": -0.0009
     },
     {
       "level": "WARNING",
@@ -225,9 +234,9 @@
     }
   ],
   "summary": {
-    "ic_count": 6,
-    "avg_ic": -0.133,
-    "avg_spread": -0.011,
+    "ic_count": 7,
+    "avg_ic": -0.1275,
+    "avg_spread": -0.0097,
     "anomaly_count": 8,
     "critical_count": 1
   }
