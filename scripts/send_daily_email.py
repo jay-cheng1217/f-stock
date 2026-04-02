@@ -687,8 +687,8 @@ def build_email_html(
     if not _t1_df.empty:
         t1_count = len(_t1_df)
         t1_section = f"""
-    <div class="section">
-      <h2>T+1 次日動能排行（{html.escape(t1_date)}）</h2>
+    <div class="section" id="sec-t1">
+      <h2>T+1 次日動能排行（{html.escape(t1_date)}）<a href="#" class="back-top">&#8679; 頂部</a></h2>
       <div class="muted">短線隔日沖 Top {t1_count}。命中率 = 隔日漲幅 &ge; 3% 的機率。</div>
       <table class="data-table leaderboard-table">
         <thead>
@@ -744,8 +744,8 @@ def build_email_html(
         )
 
         t1_portfolio_section = f"""
-    <div class="section">
-      <h2>T+1 實戰帳本</h2>
+    <div class="section" id="sec-t1port">
+      <h2>T+1 實戰帳本<a href="#" class="back-top">&#8679; 頂部</a></h2>
       <div class="grid">
         {t1_cards_html}
       </div>
@@ -760,8 +760,8 @@ def build_email_html(
     if _cross:
         cross_count = len(_cross)
         cross_section = f"""
-    <div class="section">
-      <h2>T+1 x 20D 雙重確認</h2>
+    <div class="section" id="sec-cross">
+      <h2>T+1 x 20D 雙重確認<a href="#" class="back-top">&#8679; 頂部</a></h2>
       <div class="muted">以下 {cross_count} 檔同時被 T+1（次日動能）和 20D（中期趨勢）模型看好，訊號一致性較高。</div>
       <table class="data-table leaderboard-table">
         <thead>
@@ -1034,6 +1034,31 @@ def build_email_html(
     .portfolio-rec {{
       margin-top: 0;
     }}
+    .toc {{
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }}
+    .toc a {{
+      display: inline-block;
+      padding: 6px 14px;
+      background: #eef3fb;
+      color: #2f6fed;
+      border: 1px solid #b6d3ff;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }}
+    .back-top {{
+      float: right;
+      font-size: 12px;
+      font-weight: 400;
+      color: #94a3b8;
+      text-decoration: none;
+    }}
     .foot {{
       margin-top: 18px;
       color: #64748b;
@@ -1098,11 +1123,18 @@ def build_email_html(
         市場氣氛：{sentiment} / 25% 分位：{q25} / 中位數：{median} / 75% 分位：{q75}
       </div>
       <div class="hero-meta" style="color:#395170 !important;-webkit-text-fill-color:#395170;">產出時間：{generated_at}</div>
+      <div class="toc">
+        <a href="#sec-ml">ML 排行</a>
+        <a href="#sec-t1">T+1 動能</a>
+        <a href="#sec-cross">雙重確認</a>
+        <a href="#sec-portfolio">20D 帳本</a>
+        <a href="#sec-t1port">T+1 帳本</a>
+      </div>
     </div>
 
-    <div class="section">
-      <h2>今日 ML 排行（20 日）</h2>
-      <div class="muted">本封信顯示 Top {top_count}。風險標籤改為每檔下一行整列顯示，避免手機版擠壓跑版。</div>
+    <div class="section" id="sec-ml">
+      <h2>今日 ML 排行（20 日）<a href="#" class="back-top">&#8679; 頂部</a></h2>
+      <div class="muted">本封信顯示 Top {top_count}。</div>
       {leaderboard_section}
     </div>
 
@@ -1110,8 +1142,8 @@ def build_email_html(
 
     {cross_section}
 
-    <div class="section">
-      <h2>20 日實戰帳本</h2>
+    <div class="section" id="sec-portfolio">
+      <h2>20 日實戰帳本<a href="#" class="back-top">&#8679; 頂部</a></h2>
       <div class="grid">
         {cards_html}
       </div>
