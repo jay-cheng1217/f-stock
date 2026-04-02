@@ -1081,7 +1081,7 @@ async function loadPredictions() {
 
             html += `<tr>
                 <td>${i + 1}</td>
-                <td>${tickerLink(row.ticker)}</td>
+                <td>${tickerLink(row.ticker)}${row.name ? ' <span style="color:#ccc;font-size:12px;">'+row.name+'</span>' : ''}</td>
                 <td>${fmt(row.close)}</td>
                 <td style="color:${retColor};font-weight:700">${predRet}</td>
                 <td>${recBadge(row.recommendation)}</td>

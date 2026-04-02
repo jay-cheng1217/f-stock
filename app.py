@@ -28,6 +28,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 
 from backend.routers import stocks, market, charts, rankings, scoring, news, t1, value
+from backend.routers.t1 import _NAME_LOOKUP
 
 # ==============================================================================
 # Logging 設定
@@ -1308,6 +1309,7 @@ def latest_predictions(top_n: int = 30):
     for _, row in top_up.iterrows():
         rec = {
             "ticker": row["ticker"],
+            "name": _NAME_LOOKUP.get(str(row["ticker"]), ""),
             "close": round(float(row["close"]), 2) if pd.notna(row.get("close")) else None,
             "up_prob": round(float(row["up_prob"]), 4),
             "flat_prob": round(float(row["flat_prob"]), 4),
