@@ -1160,7 +1160,7 @@ async function loadT1Predictions() {
                 : '<span style="color:#555">-</span>';
             html += `<tr>
                 <td>${i + 1}</td>
-                <td>${tickerLink(row.ticker)}${sector}${selected}</td>
+                <td>${tickerLink(row.ticker)}${row.name ? ' <span style="color:#ccc;font-size:12px;">'+row.name+'</span>' : ''}${sector}${selected}</td>
                 <td>${routeBadge}</td>
                 <td>${fmt(row.close)}</td>
                 <td>${ma5Text}</td>

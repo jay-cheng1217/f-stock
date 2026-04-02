@@ -11,9 +11,23 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from ml.config import DAILY_K_DIR, MODEL_DIR
+from ml.features.sector import SECTOR_MAPPING_PATH
 
 MONITOR_REPORT_PATH = os.path.join(MODEL_DIR, "..", "reports", "monitor_t1_latest.json")
 from ml.cross_confirm import get_dual_confirmed_tickers, load_cross_confirmed
+
+
+def _load_name_lookup() -> dict[str, str]:
+    """Ticker -> 股票名稱 dict"""
+    if not os.path.exists(SECTOR_MAPPING_PATH):
+        return {}
+    df = pd.read_csv(SECTOR_MAPPING_PATH, dtype={"Ticker": str})
+    if "Name" not in df.columns:
+        return {}
+    return dict(zip(df["Ticker"], df["Name"]))
+
+
+_NAME_LOOKUP: dict[str, str] = _load_name_lookup()
 from ml.predict_t1 import (
     load_latest_t1_model,
     load_latest_t1_predictions_csv,
@@ -406,6 +420,7 @@ def latest_t1_predictions(top_n: int = 30):
         records.append(
             {
                 "ticker": str(row.get("ticker", "")),
+                "name": _NAME_LOOKUP.get(str(row.get("ticker", "")), ""),
                 "close": round(float(pd.to_numeric(row.get("close"), errors="coerce")), 2)
                 if pd.notna(pd.to_numeric(row.get("close"), errors="coerce"))
                 else None,
