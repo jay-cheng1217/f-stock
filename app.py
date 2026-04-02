@@ -1228,6 +1228,7 @@ def get_paper_portfolio():
 
         detail_records = []
         if not detail_df.empty:
+            detail_df["name"] = detail_df["ticker"].map(_NAME_LOOKUP).fillna("")
             detail_records = json.loads(
                 detail_df.to_json(orient="records", force_ascii=False)
             )
