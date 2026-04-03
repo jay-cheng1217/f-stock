@@ -379,12 +379,91 @@
         "top30_by_up_prob_avg_return": -2.6,
         "top30_win_rate": 26.7
       }
+    },
+    {
+      "prediction_date": "2026-03-26",
+      "verified_at": "2026-04-03",
+      "days_elapsed": 8,
+      "total_stocks": 1096,
+      "v1": {
+        "n_verified": 1096,
+        "signal_accuracy": {
+          "UP": {
+            "count": 41,
+            "correct": 16,
+            "hit_rate": 39.0,
+            "avg_actual_return": 0.53
+          },
+          "FLAT": {
+            "count": 157,
+            "correct": 73,
+            "hit_rate": 46.5,
+            "avg_actual_return": -1.47
+          },
+          "DOWN": {
+            "count": 898,
+            "correct": 582,
+            "hit_rate": 64.8,
+            "avg_actual_return": -2.78
+          }
+        },
+        "top30_by_up_prob_avg_return": 1.11,
+        "top30_win_rate": 50.0
+      }
+    },
+    {
+      "prediction_date": "2026-03-23",
+      "verified_at": "2026-04-03",
+      "days_elapsed": 11,
+      "total_stocks": 1088,
+      "v1": {
+        "n_verified": 1088,
+        "signal_accuracy": {},
+        "top30_by_up_prob_avg_return": 0.94,
+        "top30_win_rate": 40.0
+      }
+    },
+    {
+      "prediction_date": "2026-03-24",
+      "verified_at": "2026-04-03",
+      "days_elapsed": 10,
+      "total_stocks": 1091,
+      "v1": {
+        "n_verified": 1091,
+        "signal_accuracy": {},
+        "top30_by_up_prob_avg_return": -1.75,
+        "top30_win_rate": 40.0
+      }
+    },
+    {
+      "prediction_date": "2026-03-25",
+      "verified_at": "2026-04-03",
+      "days_elapsed": 9,
+      "total_stocks": 1091,
+      "v1": {
+        "n_verified": 1091,
+        "signal_accuracy": {},
+        "top30_by_up_prob_avg_return": -2.6,
+        "top30_win_rate": 26.7
+      }
+    },
+    {
+      "prediction_date": "2026-03-26",
+      "verified_at": "2026-04-03",
+      "days_elapsed": 8,
+      "total_stocks": 1096,
+      "v1": {
+        "n_verified": 1096,
+        "signal_accuracy": {},
+        "top30_by_up_prob_avg_return": 2.35,
+        "top30_win_rate": 56.7
+      }
     }
   ],
   "summary": {
-    "last_updated": "2026-04-02 11:29",
+    "last_updated": "2026-04-03 09:35",
     "v1": {
-      "n_periods_verified": 19
+      "n_periods_verified": 24
     }
   }
 }
