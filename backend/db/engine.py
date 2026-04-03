@@ -1,4 +1,7 @@
-"""DuckDB 連線管理 — 用 cursor() 支援多執行緒並發讀取."""
+"""DuckDB 連線管理 — 用 cursor() 支援多執行緒並發讀取.
+
+排程 ingest 前須先呼叫 /api/db/release 釋放連線，完成後呼叫 /api/db/reconnect。
+"""
 
 import threading
 import duckdb
@@ -24,6 +27,12 @@ def close_conn():
         if _conn is not None:
             _conn.close()
             _conn = None
+
+
+def reconnect():
+    """關閉現有連線並重新建立 (ingest 後重新讀取新資料)."""
+    close_conn()
+    get_conn()
 
 
 def query_df(sql: str, params: list | None = None):

@@ -3386,6 +3386,24 @@ def trigger_ingest():
         return {"success": False, "error": str(e)}
 
 
+@app.post("/api/db/release", tags=["pipeline"])
+def release_db():
+    """釋放 DuckDB 連線，讓外部 process 可以寫入。"""
+    from backend.db.engine import close_conn
+    close_conn()
+    pipeline_log.info("DuckDB 連線已釋放 (via /api/db/release)")
+    return {"success": True}
+
+
+@app.post("/api/db/reconnect", tags=["pipeline"])
+def reconnect_db():
+    """重新建立 DuckDB 連線 (ingest 完成後呼叫)。"""
+    from backend.db.engine import reconnect
+    reconnect()
+    pipeline_log.info("DuckDB 連線已重建 (via /api/db/reconnect)")
+    return {"success": True}
+
+
 @app.post("/api/pipeline/retrain", tags=["pipeline"])
 def trigger_retrain():
     """觸發模型重新訓練"""
@@ -3509,7 +3527,6 @@ async def startup():
             from backend.db.ingest import ingest_all
             ingest_all()
         else:
-            # 檢查 CSV 是否比 DB 新，自動 ingest
             db_max = conn.execute("SELECT MAX(date) FROM daily_k").fetchone()[0]
             row_count = conn.execute("SELECT COUNT(*) FROM daily_k").fetchone()[0]
             pipeline_log.info(f"DuckDB 已有 {row_count:,} 筆日K資料 (最新日期: {db_max})")
@@ -3549,8 +3566,9 @@ async def shutdown():
 
 def _build_stock_list_safe(conn=None):
     """建立 stock_list 表 (相容無 Change_Pct 欄位的情況)"""
-    from backend.db.engine import get_conn
-    conn = get_conn()
+    if conn is None:
+        from backend.db.engine import get_conn
+        conn = get_conn()
     conn.execute("DROP TABLE IF EXISTS stock_list")
     conn.execute("""
         CREATE TABLE stock_list AS

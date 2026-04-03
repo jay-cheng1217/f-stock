@@ -357,11 +357,27 @@ def exec_retrain_t1():
     subprocess.run(args, cwd=BASE_DIR, check=True)
 
 
+def _api_post(path: str, timeout: int = 10) -> bool:
+    """POST to local web server API. Returns True on success."""
+    import urllib.request
+    import json as _json
+    try:
+        url = f"http://127.0.0.1:8001{path}"
+        req = urllib.request.Request(url, method="POST", data=b"",
+                                     headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            result = _json.loads(resp.read())
+            return bool(result.get("success"))
+    except Exception:
+        return False
+
+
 def exec_ingest():
-    """嘗試透過 server API 觸發 ingest（避免 DuckDB 鎖衝突），失敗時 fallback 到直接執行."""
+    """嘗透過 server API 觸發 ingest，失敗時先釋放 DB 連線再直接執行."""
     import urllib.request
     import json as _json
 
+    # 方案1: 透過 API 在 server process 內直接 ingest（最快）
     api_url = "http://127.0.0.1:8001/api/pipeline/ingest"
     try:
         req = urllib.request.Request(api_url, method="POST", data=b"",
@@ -373,19 +389,34 @@ def exec_ingest():
                 return
             raise RuntimeError(f"API ingest failed: {result}")
     except Exception as e:
-        print(f"[ingest] API 不可用 ({e})，fallback 到直接執行")
+        print(f"[ingest] API ingest 不可用 ({e})，fallback 到 release + subprocess")
 
-    subprocess.run(
-        [
-            sys.executable,
-            "-c",
-            "from backend.db.ingest import ingest_all; "
-            "from backend.db.engine import close_conn; "
-            "close_conn(); ingest_all()",
-        ],
-        cwd=BASE_DIR,
-        check=True,
-    )
+    # 方案2: 請 web server 釋放 DB → subprocess ingest → 請 web server 重連
+    released = _api_post("/api/db/release")
+    if released:
+        print("[ingest] Web server DB 連線已釋放")
+    else:
+        print("[ingest] Web server 未運行或釋放失敗，直接嘗試 ingest")
+
+    try:
+        subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                "from backend.db.ingest import ingest_all; "
+                "from backend.db.engine import close_conn; "
+                "close_conn(); ingest_all()",
+            ],
+            cwd=BASE_DIR,
+            check=True,
+        )
+    finally:
+        # 無論成功失敗都重建 web server 的 DB 連線
+        if released:
+            if _api_post("/api/db/reconnect"):
+                print("[ingest] Web server DB 連線已重建")
+            else:
+                print("[ingest] 警告: Web server DB 重連失敗，可能需要重啟 web server")
 
 
 def exec_predict():
