@@ -191,8 +191,13 @@ def run_backtest(max_stocks: int = 0, top_n: int = 10):
         "fold_summaries": fold_summaries,
     }
 
+    def _default(o):
+        if hasattr(o, 'item'):
+            return o.item()
+        raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+
     with open(result_path, "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
+        json.dump(result, f, ensure_ascii=False, indent=2, default=_default)
 
     # 也存選股明細 CSV
     detail_path = os.path.join(REPORT_DIR, f"backtest_detail_{timestamp}.csv")
@@ -204,7 +209,7 @@ def run_backtest(max_stocks: int = 0, top_n: int = 10):
     # 同時存一份 latest 供 API 讀取
     latest_path = os.path.join(REPORT_DIR, "backtest_latest.json")
     with open(latest_path, "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
+        json.dump(result, f, ensure_ascii=False, indent=2, default=_default)
     print(f"  Latest:   {latest_path}")
 
     return result
