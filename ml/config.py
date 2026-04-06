@@ -37,7 +37,7 @@ LGBM_PARAMS = {
     "device": "gpu",
     "num_leaves": 63,
     "learning_rate": 0.05,
-    "feature_fraction": 0.8,
+    "feature_fraction": 0.7,  # V2.3: 從 0.8 收緊，強制模型探索更多特徵組合
     "bagging_fraction": 0.8,
     "bagging_freq": 5,
     "verbose": -1,

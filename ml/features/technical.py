@@ -592,8 +592,8 @@ TECHNICAL_FEATURE_COLS = [
     "volatility_5d", "volatility_20d",
     "high_low_range", "gap_pct",
     # 傳統指標
-    "rsi_6", "rsi_14", "macd_hist", "kd_k", "kd_d", "atr_14", "atr_pct",
-    "atr_pct_rank",  # 截面百分位排名（由 dataset.py 後處理產生）
+    "rsi_6", "rsi_14", "macd_hist", "kd_k", "kd_d", "atr_14",
+    "atr_pct_rank",  # 截面百分位排名，取代絕對 atr_pct（由 dataset.py 後處理產生）
     # 均線事件
     "ma5_bounce", "ma20_bounce",
     "ma5_support_test", "ma20_support_test",
