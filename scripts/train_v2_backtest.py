@@ -25,7 +25,7 @@ SELECTED_FEATURES = [
     "momentum_accel", "roc_5", "roc_10", "roc_20",
     # 波動率
     "volatility_5d", "volatility_20d", "bb_width", "bb_position",
-    "atr_14", "atr_pct", "vol_contraction",
+    "atr_14", "atr_pct_rank", "vol_contraction",
     # RSI / 超買超賣
     "rsi_6", "rsi_14", "williams_r_14", "mfi_14", "stoch_rsi_k",
     # 成交量
