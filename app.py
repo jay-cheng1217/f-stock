@@ -2410,6 +2410,15 @@ def prediction_explain(ticker: str):
             if val > 30:   return f"VIX={val:.1f}，市場極度恐慌", "negative"
             if val > 20:   return f"VIX={val:.1f}，市場偏謹慎", "negative"
             return f"VIX={val:.1f}，市場平穩", "positive"
+        if feat_name == "vix_percentile_60d":
+            pct = val * 100
+            if pct > 80:   return f"VIX處近60日{pct:.0f}%高位，恐慌偏高", "negative"
+            if pct < 20:   return f"VIX處近60日{pct:.0f}%低位，市場平穩", "positive"
+            return f"VIX處近60日{pct:.0f}%分位", None
+        if feat_name == "vix_ma20_ratio":
+            if val > 1.2:  return f"VIX高於20日均值{(val-1)*100:.0f}%，恐慌突升", "negative"
+            if val < 0.8:  return f"VIX低於20日均值{(1-val)*100:.0f}%，恐慌偏低", "positive"
+            return None, None
         if feat_name == "vix_change_5d":
             if val > 3:    return f"VIX近5日上升{val:.1f}點，恐慌升溫", "negative"
             if val < -3:   return f"VIX近5日下降{abs(val):.1f}點，恐慌降溫", "positive"
@@ -2928,14 +2937,20 @@ def prediction_explain(ticker: str):
     l2_dir = group_contrib.get(_L2_NAME, 0)
     l2_top = _top_real_items(_L2_NAME, 3)
 
-    _vix = _feat_lookup.get("vix_level")
+    _vix_pct = _feat_lookup.get("vix_percentile_60d")
+    _vix = _feat_lookup.get("vix_level")  # 向後兼容舊模型
     _twii_20d = _feat_lookup.get("twii_return_20d")
     _twii_5d = _feat_lookup.get("twii_return_5d")
     _usdtwd = _feat_lookup.get("usdtwd_change_5d")
 
     if l2_top:
-        vix_high = _vix is not None and _vix > 25
-        vix_low = _vix is not None and _vix < 15
+        # 優先用百分位判斷，退回到絕對值（舊模型）
+        if _vix_pct is not None:
+            vix_high = _vix_pct > 0.80
+            vix_low = _vix_pct < 0.20
+        else:
+            vix_high = _vix is not None and _vix > 25
+            vix_low = _vix is not None and _vix < 15
         twii_bull = _twii_20d is not None and _twii_20d > 0.05
         twd_weak = _usdtwd is not None and _usdtwd > 0.01
 
@@ -2948,7 +2963,10 @@ def prediction_explain(ticker: str):
         elif vix_high or twd_weak:
             alarm = []
             if vix_high:
-                alarm.append(f"VIX指數飆升至{_vix:.1f}")
+                if _vix_pct is not None:
+                    alarm.append(f"VIX處近60日{_vix_pct*100:.0f}%高位")
+                elif _vix is not None:
+                    alarm.append(f"VIX指數飆升至{_vix:.1f}")
             if twd_weak:
                 alarm.append("台幣承壓貶值")
             headline = (
@@ -2958,9 +2976,10 @@ def prediction_explain(ticker: str):
             details = "；".join([it["text"] for it in l2_top])
             narrative_parts.append(f"【{_L2_NAME}】{headline}。{details}。")
         elif twii_bull and vix_low:
+            vix_desc = f"VIX處低位({_vix_pct*100:.0f}%分位)" if _vix_pct is not None else (f"VIX={_vix:.1f}" if _vix is not None else "VIX偏低")
             headline = (
                 f"大盤月線報酬{_twii_20d*100:+.1f}%"
-                f"且VIX={_vix:.1f}穩定偏低。"
+                f"且{vix_desc}穩定偏低。"
                 "系統性風險低，模型給予個股突破更高勝率權重"
             )
             details = "；".join([it["text"] for it in l2_top])

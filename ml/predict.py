@@ -207,7 +207,7 @@ _L3 = "基本面防禦網"
 _DIMENSION_MAP = {
     # === Layer 1: 籌碼與波動引擎 ===
     # 波動率
-    "atr_pct": _L1, "atr_14": _L1,
+    "atr_pct": _L1, "atr_pct_rank": _L1, "atr_14": _L1,
     "bb_width": _L1, "bb_position": _L1,
     "volatility_5d": _L1, "volatility_20d": _L1,
     "vol_contraction": _L1, "vol_contraction_ratio": _L1,
@@ -291,7 +291,7 @@ _DIMENSION_MAP = {
     "price_vs_inst_cost": _L1, "inst_accumulation": _L1, "inst_buy_ratio_20d": _L1,
     # === Layer 2: 總經與大盤環境 ===
     "twii_return_5d": _L2, "twii_return_20d": _L2,
-    "vix_level": _L2, "vix_change_5d": _L2,
+    "vix_percentile_60d": _L2, "vix_change_5d": _L2, "vix_ma20_ratio": _L2,
     "sox_return_5d": _L2, "usdtwd_change_5d": _L2,
     "sector_return_rank": _L2, "sector_avg_return_5d": _L2,
     "sector_avg_return_20d": _L2, "sector_relative_return_5d": _L2,
