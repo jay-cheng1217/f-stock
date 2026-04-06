@@ -45,8 +45,8 @@ _SECTOR_LOOKUP = {}
 if _SECTOR_DF is not None:
     _SECTOR_LOOKUP = dict(zip(_SECTOR_DF["Ticker"], _SECTOR_DF["Sector"]))
 
-# 單一產業佔 Top N 的上限比例
-SECTOR_CAP_RATIO = 0.30
+# 單一產業佔 Top N 的上限比例（從 30% 收緊至 20%，實戰驗證電子類過度集中）
+SECTOR_CAP_RATIO = 0.20
 BUY_PROB_EDGE_MIN = 0.0
 STRONG_BUY_PROB_EDGE_MIN = 0.05
 RECOMMENDATION_OVERHEAT_THRESHOLD = 0.18

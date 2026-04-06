@@ -492,6 +492,8 @@ def refresh_open_positions(
         min_drawdown = float("inf")
         min_drawdown_date = None
         min_drawdown_low = None
+        stopped_out = False        # 強制停損旗標
+        stop_day_number = None
 
         for day_number, mark_row in enumerate(window.itertuples(index=False), start=1):
             mark_date = mark_row.Date.date().isoformat()
@@ -509,7 +511,15 @@ def refresh_open_positions(
             if day_number <= EARLY_CRASH_DAYS and intraday_drawdown_pct <= CRASH_DRAWDOWN_THRESHOLD:
                 breached_10pct_first5d = 1
 
-            is_exit_day = int(day_number == hold_days_target and len(window) >= hold_days_target)
+            # 強制停損：收盤報酬跌破 -10% 時提前平倉
+            if close_return_pct <= CRASH_DRAWDOWN_THRESHOLD:
+                stopped_out = True
+                stop_day_number = day_number
+
+            is_exit_day = int(
+                stopped_out
+                or (day_number == hold_days_target and len(window) >= hold_days_target)
+            )
             _upsert_mark(
                 conn=conn,
                 position_id=position_id,
@@ -525,12 +535,27 @@ def refresh_open_positions(
             )
             stats.marks_upserted += 1
 
-        days_observed = int(len(window))
-        status = "closed" if days_observed >= hold_days_target else "open"
+            # 停損觸發後不再繼續記錄後續交易日
+            if stopped_out:
+                break
+
+        days_observed = int(stop_day_number if stopped_out else len(window))
+        if stopped_out:
+            status = "stopped_out"
+        elif days_observed >= hold_days_target:
+            status = "closed"
+        else:
+            status = "open"
         exit_date = None
         exit_close = None
         realized_return_pct = None
-        if status == "closed":
+        if status == "stopped_out":
+            # 停損以觸發當日收盤價計算實際報酬
+            stop_row = window.iloc[stop_day_number - 1]
+            exit_date = stop_row["Date"].date().isoformat()
+            exit_close = float(stop_row["Close"])
+            realized_return_pct = exit_close / entry_cost - 1.0
+        elif status == "closed":
             exit_row = window.iloc[hold_days_target - 1]
             exit_date = exit_row["Date"].date().isoformat()
             exit_close = float(exit_row["Close"])
@@ -591,7 +616,8 @@ def summarize_ledger(conn: sqlite3.Connection) -> dict[str, object]:
             COUNT(*) AS total_positions,
             SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending_positions,
             SUM(CASE WHEN status = 'open' THEN 1 ELSE 0 END) AS open_positions,
-            SUM(CASE WHEN status = 'closed' THEN 1 ELSE 0 END) AS closed_positions
+            SUM(CASE WHEN status = 'closed' THEN 1 ELSE 0 END) AS closed_positions,
+            SUM(CASE WHEN status = 'stopped_out' THEN 1 ELSE 0 END) AS stopped_out_positions
         FROM portfolio_positions
         WHERE prediction_date >= ?
         """
@@ -627,10 +653,21 @@ def summarize_ledger(conn: sqlite3.Connection) -> dict[str, object]:
             AVG(realized_return_pct) AS avg_realized_return_pct,
             AVG(max_drawdown_pct) AS avg_closed_max_drawdown_pct
         FROM portfolio_positions
-        WHERE status = 'closed'
+        WHERE status IN ('closed', 'stopped_out')
           AND prediction_date >= ?
         """
         ,
+        (PORTFOLIO_START_DATE,),
+    ).fetchone()
+    stopped_row = conn.execute(
+        """
+        SELECT
+            AVG(realized_return_pct) AS avg_stopped_return_pct,
+            COUNT(*) AS stopped_count
+        FROM portfolio_positions
+        WHERE status = 'stopped_out'
+          AND prediction_date >= ?
+        """,
         (PORTFOLIO_START_DATE,),
     ).fetchone()
     return {
@@ -639,6 +676,7 @@ def summarize_ledger(conn: sqlite3.Connection) -> dict[str, object]:
         "pending_positions": int(position_row["pending_positions"] or 0),
         "open_positions": int(position_row["open_positions"] or 0),
         "closed_positions": int(position_row["closed_positions"] or 0),
+        "stopped_out_positions": int(position_row["stopped_out_positions"] or 0),
         "total_marks": int(mark_row["total_marks"] or 0),
         "observed_positions": int(observed_row["observed_positions"] or 0),
         "avg_max_drawdown_pct": _coerce_db_value(observed_row["avg_max_drawdown_pct"]),
@@ -646,6 +684,8 @@ def summarize_ledger(conn: sqlite3.Connection) -> dict[str, object]:
         "breach_10pct_first5d_count": int(observed_row["breach_10pct_first5d_count"] or 0),
         "avg_realized_return_pct": _coerce_db_value(closed_row["avg_realized_return_pct"]),
         "avg_closed_max_drawdown_pct": _coerce_db_value(closed_row["avg_closed_max_drawdown_pct"]),
+        "avg_stopped_return_pct": _coerce_db_value(stopped_row["avg_stopped_return_pct"]),
+        "stopped_out_count": int(stopped_row["stopped_count"] or 0),
     }
 
 
@@ -710,8 +750,9 @@ def _print_result(result: dict[str, object]) -> None:
         f"{summary['total_runs']}/{summary['total_positions']}/{summary['total_marks']}"
     )
     print(
-        "  pending/open/closed: "
-        f"{summary['pending_positions']}/{summary['open_positions']}/{summary['closed_positions']}"
+        "  pending/open/closed/stopped_out: "
+        f"{summary['pending_positions']}/{summary['open_positions']}"
+        f"/{summary['closed_positions']}/{summary['stopped_out_positions']}"
     )
     print(
         "  observed_breaches(10pct/all, first5d): "
@@ -723,6 +764,10 @@ def _print_result(result: dict[str, object]) -> None:
     avg_realized = summary["avg_realized_return_pct"]
     if avg_realized is not None:
         print(f"  avg_closed_return: {avg_realized:+.2%}")
+    stopped_count = summary.get("stopped_out_count", 0)
+    if stopped_count > 0:
+        avg_stopped = summary.get("avg_stopped_return_pct")
+        print(f"  stopped_out: {stopped_count} positions, avg_return: {avg_stopped:+.2%}" if avg_stopped is not None else f"  stopped_out: {stopped_count} positions")
 
 
 def main(argv: list[str] | None = None) -> dict[str, object]:
