@@ -11,9 +11,11 @@ BASE_DIR = r"F:\stock"
 sys.path.insert(0, BASE_DIR)
 
 from scripts import smart_update as smart_update
+from scripts.task_lock import acquire_lock
 
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
+LOCK_PATH = os.path.join(LOG_DIR, "smart_update_auto.lock")
 
 
 def _build_logger() -> logging.Logger:
@@ -148,70 +150,82 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    lock_handle, existing_lock = acquire_lock(LOCK_PATH, "smart_update_auto")
+    if lock_handle is None:
+        pid = (existing_lock or {}).get("pid", "unknown")
+        LOGGER.warning("SKIP  another smart update is already running (pid=%s)", pid)
+        return 0
+
     now = datetime.now()
     LOGGER.info("===== Smart morning update started at %s =====", now.strftime("%Y-%m-%d %H:%M:%S"))
 
-    if not args.force and not is_weekday():
-        LOGGER.info("SKIP  non-trading day")
-        return 0
+    try:
+        if not args.force and not is_weekday():
+            LOGGER.info("SKIP  non-trading day")
+            return 0
 
-    data_steps = [
-        ("Update TW stock base data", smart_update.exec_twstock),
-        ("Update global indices", smart_update.exec_indices),
-        ("Update valuation data", smart_update.exec_valuation),
-        ("Update EPS data", smart_update.exec_eps),
-        ("Update daily news", smart_update.exec_news),
-        ("Update TDCC weekly data", exec_tdcc_if_needed),
-    ]
+        data_steps = [
+            ("Update TW stock base data", smart_update.exec_twstock),
+            ("Update global indices", smart_update.exec_indices),
+            ("Update valuation data", smart_update.exec_valuation),
+            ("Update EPS data", smart_update.exec_eps),
+            ("Update daily news", smart_update.exec_news),
+            ("Update TDCC weekly data", exec_tdcc_if_needed),
+        ]
 
-    step_results: list[tuple[str, bool]] = []
-    for step_name, func in data_steps:
-        step_results.append((step_name, run_step(step_name, func)))
+        step_results: list[tuple[str, bool]] = []
+        for step_name, func in data_steps:
+            step_results.append((step_name, run_step(step_name, func)))
 
-    # --- 資料完整性檢查：前一個交易日的法人/融資券是否到位 ---
-    data_gaps = _check_data_freshness()
-    if data_gaps:
-        LOGGER.warning("DATA GAPS: %s", "; ".join(data_gaps))
-        _send_alert_email(data_gaps)
+        data_gaps = _check_data_freshness()
+        if data_gaps:
+            LOGGER.warning("DATA GAPS: %s", "; ".join(data_gaps))
+            _send_alert_email(data_gaps)
 
-    ingest_ok = run_step("Ingest refreshed data into DuckDB", smart_update.exec_ingest)
-    step_results.append(("Ingest refreshed data into DuckDB", ingest_ok))
+        ingest_ok = run_step("Ingest refreshed data into DuckDB", smart_update.exec_ingest)
+        step_results.append(("Ingest refreshed data into DuckDB", ingest_ok))
 
-    t1_retrain_ok = run_step("Retrain T+1 model for today's open", smart_update.exec_retrain_t1)
-    step_results.append(("Retrain T+1 model for today's open", t1_retrain_ok))
-    if not t1_retrain_ok:
-        LOGGER.warning("FALLBACK continue with the latest saved T+1 model for morning predictions")
+        t1_retrain_ok = run_step("Retrain T+1 model for today's open", smart_update.exec_retrain_t1)
+        step_results.append(("Retrain T+1 model for today's open", t1_retrain_ok))
+        if not t1_retrain_ok:
+            LOGGER.warning("FALLBACK continue with the latest saved T+1 model for morning predictions")
 
-    predict_ok = run_step("Generate latest predictions", smart_update.exec_predict)
-    step_results.append(("Generate latest predictions", predict_ok))
+        predict_ok = run_step("Generate latest predictions", smart_update.exec_predict)
+        step_results.append(("Generate latest predictions", predict_ok))
 
-    if predict_ok:
-        portfolio_ok = run_step("Sync paper portfolio", exec_paper_portfolio)
-        monitor_ok = run_step("Model monitoring", exec_monitor)
-        verify_ok = run_step("Verify historical predictions", smart_update.exec_verify)
-        email_ok = run_step("Send daily email report", exec_email)
-        step_results.extend(
-            [
-                ("Sync paper portfolio", portfolio_ok),
-                ("Model monitoring", monitor_ok),
-                ("Verify historical predictions", verify_ok),
-                ("Send daily email report", email_ok),
-            ]
+        if predict_ok:
+            portfolio_ok = run_step("Sync paper portfolio", exec_paper_portfolio)
+            monitor_ok = run_step("Model monitoring", exec_monitor)
+            verify_ok = run_step("Verify historical predictions", smart_update.exec_verify)
+            email_ok = run_step("Send daily email report", exec_email)
+            step_results.extend(
+                [
+                    ("Sync paper portfolio", portfolio_ok),
+                    ("Model monitoring", monitor_ok),
+                    ("Verify historical predictions", verify_ok),
+                    ("Send daily email report", email_ok),
+                ]
+            )
+        else:
+            LOGGER.warning("SKIP  paper portfolio / verify / email because prediction step failed")
+            step_results.extend(
+                [
+                    ("Sync paper portfolio", False),
+                    ("Verify historical predictions", False),
+                    ("Send daily email report", False),
+                ]
+            )
+
+        all_ok = all(success for _, success in step_results)
+        elapsed = datetime.now() - now
+        LOGGER.info(
+            "===== Smart morning update finished in %.1f min | all_ok=%s =====",
+            elapsed.total_seconds() / 60.0,
+            all_ok,
         )
-    else:
-        LOGGER.warning("SKIP  paper portfolio / verify / email because prediction step failed")
-        step_results.extend(
-            [
-                ("Sync paper portfolio", False),
-                ("Verify historical predictions", False),
-                ("Send daily email report", False),
-            ]
-        )
-
-    all_ok = all(success for _, success in step_results)
-    elapsed = datetime.now() - now
-    LOGGER.info("===== Smart morning update finished in %.1f min | all_ok=%s =====", elapsed.total_seconds() / 60.0, all_ok)
-    return 0 if all_ok else 1
+        return 0 if all_ok else 1
+    finally:
+        lock_handle.release()
 
 
 if __name__ == "__main__":

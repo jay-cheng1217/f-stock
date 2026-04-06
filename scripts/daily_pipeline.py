@@ -18,9 +18,12 @@ from datetime import datetime, date
 BASE_DIR = r"F:\stock"
 sys.path.insert(0, BASE_DIR)
 
+from scripts.task_lock import acquire_lock
+
 # Pipeline log
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
+LOCK_PATH = os.path.join(LOG_DIR, "daily_pipeline.lock")
 _log_handler = logging.FileHandler(
     os.path.join(LOG_DIR, "pipeline.log"), encoding="utf-8", mode="a"
 )
@@ -228,57 +231,65 @@ def main():
     parser.add_argument("--force", action="store_true", help="非交易日也強制執行")
     args = parser.parse_args()
 
-    if not args.force and not is_trading_day():
-        print("今日非交易日，跳過。使用 --force 強制執行。")
+    lock_handle, existing_lock = acquire_lock(LOCK_PATH, "daily_pipeline", stale_after_seconds=24 * 60 * 60)
+    if lock_handle is None:
+        pid = (existing_lock or {}).get("pid", "unknown")
+        pipeline_log.warning(f"SKIP: daily pipeline is already running (pid={pid})")
+        print("另一個 daily pipeline 已在執行，略過本次啟動。")
         return
 
-    start = datetime.now()
-    pipeline_log.info(f"===== 每日 Pipeline 啟動 ({start.strftime('%Y-%m-%d %H:%M')}) =====")
-    print(f"{'='*60}")
-    print(f"  台股每日 Pipeline - {start.strftime('%Y-%m-%d %H:%M')}")
-    print(f"{'='*60}")
+    try:
+        if not args.force and not is_trading_day():
+            print("今日非交易日，跳過。使用 --force 強制執行。")
+            return
 
-    # 追蹤各步驟狀態，供前端顯示資料鮮度
-    step_status = {}
+        start = datetime.now()
+        pipeline_log.info(f"===== 每日 Pipeline 啟動 ({start.strftime('%Y-%m-%d %H:%M')}) =====")
+        print(f"{'='*60}")
+        print(f"  台股每日 Pipeline - {start.strftime('%Y-%m-%d %H:%M')}")
+        print(f"{'='*60}")
 
-    if not args.predict_only:
-        step_status["日K/法人/融資券/營收"] = run_step("更新台股日K/法人/融資券/營收", run_data_update)
-        step_status["估值(PE/PB/殖利率)"] = run_step("更新估值資料 (PE/PB/殖利率)", run_valuation_update)
-        step_status["MOPS重大訊息"] = run_step("更新 MOPS 重大訊息 (消息面)", run_news_update)
-        step_status["處置股名單"] = run_step("更新處置股名單", run_disposition_update)
-        step_status["TDCC集保分散"] = run_step("更新 TDCC 集保分散 (週五)", run_tdcc_update)
-        step_status["DuckDB匯入"] = run_step("匯入資料到 DuckDB", run_ingest)
+        step_status = {}
 
-    if args.retrain:
-        step_status["模型訓練"] = run_step("重新訓練預測模型", run_retrain)
-        step_status["回測"] = run_step("模擬投資回測", run_backtest)
+        if not args.predict_only:
+            step_status["日K/法人/融資券/營收"] = run_step("更新台股日K/法人/融資券/營收", run_data_update)
+            step_status["估值(PE/PB/殖利率)"] = run_step("更新估值資料 (PE/PB/殖利率)", run_valuation_update)
+            step_status["MOPS重大訊息"] = run_step("更新 MOPS 重大訊息 (消息面)", run_news_update)
+            step_status["處置股名單"] = run_step("更新處置股名單", run_disposition_update)
+            step_status["TDCC集保分散"] = run_step("更新 TDCC 集保分散 (週五)", run_tdcc_update)
+            step_status["DuckDB匯入"] = run_step("匯入資料到 DuckDB", run_ingest)
 
-    shadow_enabled = has_shadow_model_slot()
+        if args.retrain:
+            step_status["模型訓練"] = run_step("重新訓練預測模型", run_retrain)
+            step_status["回測"] = run_step("模擬投資回測", run_backtest)
 
-    step_status["預測"] = run_step("產生預測", run_predict)
-    step_status["實戰觀測帳本"] = run_step("更新實戰觀測帳本", run_paper_portfolio)
-    if shadow_enabled:
-        step_status["Shadow預測"] = run_step("產生 Shadow Mode 預測", run_shadow_predict)
-        step_status["Shadow帳本"] = run_step("更新 Shadow Mode 帳本", run_shadow_paper_portfolio)
-        step_status["Shadow監控"] = run_step("產生 Shadow Mode 監控報告", run_shadow_report)
-    step_status["預測驗證"] = run_step("驗證歷史預測表現", run_verify)
-    step_status["Email推播"] = run_step("寄送每日 ML 預測與帳本觀察", run_email_report)
+        shadow_enabled = has_shadow_model_slot()
 
-    elapsed = datetime.now() - start
+        step_status["預測"] = run_step("產生預測", run_predict)
+        step_status["實戰觀測帳本"] = run_step("更新實戰觀測帳本", run_paper_portfolio)
+        if shadow_enabled:
+            step_status["Shadow預測"] = run_step("產生 Shadow Mode 預測", run_shadow_predict)
+            step_status["Shadow帳本"] = run_step("更新 Shadow Mode 帳本", run_shadow_paper_portfolio)
+            step_status["Shadow監控"] = run_step("產生 Shadow Mode 監控報告", run_shadow_report)
+        step_status["預測驗證"] = run_step("驗證歷史預測表現", run_verify)
+        step_status["Email推播"] = run_step("寄送每日 ML 預測與帳本觀察", run_email_report)
 
-    # 寫入 pipeline 狀態檔，供前端讀取資料鮮度
-    freshness_path = os.path.join(BASE_DIR, "ml", "models", "pipeline_status.json")
-    freshness = {
-        "last_run": start.strftime("%Y-%m-%d %H:%M:%S"),
-        "elapsed_min": round(elapsed.total_seconds() / 60, 1),
-        "steps": {k: ("ok" if v else "failed") for k, v in step_status.items()},
-        "all_ok": all(step_status.values()),
-    }
-    with open(freshness_path, "w", encoding="utf-8") as f:
-        json.dump(freshness, f, ensure_ascii=False, indent=2)
+        elapsed = datetime.now() - start
 
-    pipeline_log.info(f"===== Pipeline 完成 (耗時 {elapsed.total_seconds()/60:.1f} 分鐘) =====")
-    print(f"\n全部完成，耗時 {elapsed.total_seconds()/60:.1f} 分鐘")
+        freshness_path = os.path.join(BASE_DIR, "ml", "models", "pipeline_status.json")
+        freshness = {
+            "last_run": start.strftime("%Y-%m-%d %H:%M:%S"),
+            "elapsed_min": round(elapsed.total_seconds() / 60, 1),
+            "steps": {k: ("ok" if v else "failed") for k, v in step_status.items()},
+            "all_ok": all(step_status.values()),
+        }
+        with open(freshness_path, "w", encoding="utf-8") as f:
+            json.dump(freshness, f, ensure_ascii=False, indent=2)
+
+        pipeline_log.info(f"===== Pipeline 完成 (耗時 {elapsed.total_seconds()/60:.1f} 分鐘) =====")
+        print(f"\n全部完成，耗時 {elapsed.total_seconds()/60:.1f} 分鐘")
+    finally:
+        lock_handle.release()
 
 
 if __name__ == "__main__":

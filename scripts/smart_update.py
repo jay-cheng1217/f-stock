@@ -372,31 +372,29 @@ def _api_post(path: str, timeout: int = 10) -> bool:
         return False
 
 
-def exec_ingest():
-    """嘗透過 server API 觸發 ingest，失敗時先釋放 DB 連線再直接執行."""
-    import urllib.request
+def _api_post_json(path: str, timeout: int = 10) -> dict:
+    """POST to local web server API and return the decoded JSON payload."""
     import json as _json
+    import urllib.request
 
-    # 方案1: 透過 API 在 server process 內直接 ingest（最快）
-    api_url = "http://127.0.0.1:8001/api/pipeline/ingest"
-    try:
-        req = urllib.request.Request(api_url, method="POST", data=b"",
-                                     headers={"Content-Type": "application/json"})
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            result = _json.loads(resp.read())
-            if result.get("success"):
-                print(f"[ingest] via API OK: {result.get('results')}")
-                return
-            raise RuntimeError(f"API ingest failed: {result}")
-    except Exception as e:
-        print(f"[ingest] API ingest 不可用 ({e})，fallback 到 release + subprocess")
+    url = f"http://127.0.0.1:8001{path}"
+    req = urllib.request.Request(
+        url,
+        method="POST",
+        data=b"",
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return _json.loads(resp.read())
 
-    # 方案2: 請 web server 釋放 DB → subprocess ingest → 請 web server 重連
-    released = _api_post("/api/db/release")
+
+def exec_ingest():
+    """Refresh DuckDB in a dedicated subprocess after releasing the web connection."""
+    released = _api_post("/api/db/release", timeout=30)
     if released:
-        print("[ingest] Web server DB 連線已釋放")
+        print("[ingest] released web server DuckDB connection")
     else:
-        print("[ingest] Web server 未運行或釋放失敗，直接嘗試 ingest")
+        print("[ingest] web server release unavailable; trying standalone ingest")
 
     try:
         subprocess.run(
@@ -410,13 +408,29 @@ def exec_ingest():
             cwd=BASE_DIR,
             check=True,
         )
+        return
+    except subprocess.CalledProcessError as exc:
+        print(
+            f"[ingest] standalone ingest failed with exit code {exc.returncode}; "
+            "trying server-side ingest fallback"
+        )
+        try:
+            result = _api_post_json("/api/pipeline/ingest", timeout=900)
+        except Exception as api_exc:
+            raise RuntimeError(
+                "standalone ingest failed and API fallback was unavailable"
+            ) from api_exc
+
+        if not result.get("success"):
+            raise RuntimeError(f"API ingest failed: {result}") from exc
+
+        print(f"[ingest] via API OK: {result.get('results')}")
     finally:
-        # 無論成功失敗都重建 web server 的 DB 連線
         if released:
-            if _api_post("/api/db/reconnect"):
-                print("[ingest] Web server DB 連線已重建")
+            if _api_post("/api/db/reconnect", timeout=30):
+                print("[ingest] reconnected web server DuckDB connection")
             else:
-                print("[ingest] 警告: Web server DB 重連失敗，可能需要重啟 web server")
+                print("[ingest] warning: failed to reconnect web server DuckDB connection")
 
 
 def exec_predict():
