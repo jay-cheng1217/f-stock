@@ -15,6 +15,7 @@ import os
 import time
 import glob
 import json
+import re
 import duckdb
 import pandas as pd
 import threading
@@ -98,6 +99,7 @@ STRONG_BUY_MAX_INST_SELL_PCT = 20.0
 TOP30_EXCLUDE_INST_SELL_PCT = 30.0
 PAPER_PORTFOLIO_DB_PATH = os.path.join(os.path.dirname(__file__), "paper_portfolio.db")
 PAPER_PORTFOLIO_START_DATE = "2026-03-18"
+PRODUCTION_PREDICTION_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
 
 
 def _artifact_fingerprint(path: str | None) -> dict | None:
@@ -132,18 +134,24 @@ def _prediction_context_key() -> str | None:
         MODEL_DIR,
         UP_THRESHOLD,
     )
+    from ml.model_selection import MODEL_SELECTION_PATH, resolve_base_meta_path
 
-    meta_files = sorted(glob.glob(os.path.join(MODEL_DIR, "*_meta.json")))
-    if not meta_files:
+    selected_meta_path = resolve_base_meta_path("production")
+    if not selected_meta_path:
         return None
 
-    pred_files = sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
+    pred_files = [
+        path
+        for path in sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
+        if PRODUCTION_PREDICTION_RE.match(os.path.basename(path))
+    ]
     ml_dir = os.path.join(os.path.dirname(__file__), "ml")
     quarter_financial_dir = os.path.join(os.path.dirname(__file__), "季報財務")
     quarter_bs_dir = os.path.join(os.path.dirname(__file__), "資產負債")
     payload = {
-        "cache_schema": 3,
-        "meta": _artifact_fingerprint(meta_files[-1]),
+        "cache_schema": 4,
+        "meta": _artifact_fingerprint(selected_meta_path),
+        "model_selection": _artifact_fingerprint(MODEL_SELECTION_PATH),
         "predictions": _artifact_fingerprint(pred_files[-1]) if pred_files else None,
         "filters": {
             "forward_days": FORWARD_DAYS,
@@ -885,7 +893,11 @@ def _load_predictions_csv_fallback():
     from ml.config import MODEL_DIR
     from ml.predict import load_latest_model, _sort_prediction_df
 
-    pred_files = sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
+    pred_files = [
+        path
+        for path in sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
+        if PRODUCTION_PREDICTION_RE.match(os.path.basename(path))
+    ]
     if not pred_files:
         return None, None
     try:

@@ -30,6 +30,7 @@ EARLY_CRASH_DAYS = 5
 CRASH_DRAWDOWN_THRESHOLD = -0.10
 
 PREDICTION_FILE_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
+PREDICTION_DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})(?=\.csv$)")
 
 
 @dataclass
@@ -174,7 +175,10 @@ def _list_prediction_files() -> list[str]:
 
 def _prediction_date_from_path(path: str) -> str:
     basename = os.path.basename(path)
-    return basename.replace("predictions_", "").replace(".csv", "")
+    match = PREDICTION_DATE_RE.search(basename)
+    if not match:
+        raise ValueError(f"Cannot infer prediction date from filename: {basename}")
+    return match.group(1)
 
 
 def _is_supported_prediction_date(prediction_date: str) -> bool:

@@ -1,0 +1,10 @@
+{
+  "production": {
+    "label": "v2.2-main",
+    "meta_path": "F:\\stock\\ml\\models\\lgbm_20260404_131437_meta.json"
+  },
+  "shadow": {
+    "label": "v2.3-shadow",
+    "meta_path": "F:\\stock\\ml\\models\\lgbm_20260406_165122_meta.json"
+  }
+}

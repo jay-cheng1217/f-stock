@@ -50,6 +50,7 @@ DEFAULT_EMAIL_TOP_N = 30
 DEFAULT_PORTFOLIO_LIMIT = 12
 DEFAULT_SUBJECT_PREFIX = "[Stock ML]"
 DEFAULT_PREVIEW_PATH = os.path.join(BASE_DIR, "logs", "daily_email_preview.html")
+PRODUCTION_PREDICTION_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
 
 
 @dataclass
@@ -147,7 +148,7 @@ def _latest_prediction_path(prediction_file: str | None = None) -> str:
 
     candidates = sorted(
         f for f in glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv"))
-        if "predictions_t1_" not in os.path.basename(f)
+        if PRODUCTION_PREDICTION_RE.match(os.path.basename(f))
     )
     if not candidates:
         raise FileNotFoundError("No predictions_YYYY-MM-DD.csv were found.")

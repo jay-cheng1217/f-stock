@@ -16,6 +16,7 @@ from ml.config import MODEL_DIR, TARGET_CLASSES, FORWARD_DAYS
 from ml.dataset import build_latest_snapshot
 from ml.features.entry import ENTRY_INFO_COLS
 from ml.features.sector import load_sector_mapping
+from ml.model_selection import get_slot_label, resolve_base_meta_path
 
 # === 處置股名單（每日更新）===
 from ml.config import BASE_DIR as _ML_BASE_DIR
@@ -318,22 +319,26 @@ _DIMENSION_MAP = {
 }
 
 
-def load_latest_model():
-    """載入最新的 v1 分類模型和 metadata（排除 v2 迴歸模型）"""
-    meta_files = sorted(
-        f for f in glob.glob(os.path.join(MODEL_DIR, "*_meta.json"))
-        if "lgbm_v2_" not in os.path.basename(f)
-        and "lgbm_t1_" not in os.path.basename(f)
-    )
-    if not meta_files:
-        raise FileNotFoundError("找不到已訓練的模型，請先執行 train.py")
+def load_selected_model(slot: str = "production", meta_path: str | None = None):
+    """載入指定 slot 的 base 分類模型。"""
+    resolved_meta_path = resolve_base_meta_path(slot=slot, explicit_meta_path=meta_path)
+    if not resolved_meta_path:
+        raise FileNotFoundError(f"找不到 slot={slot} 的 base model metadata")
 
-    meta_path = meta_files[-1]
-    with open(meta_path, "r", encoding="utf-8") as f:
+    with open(resolved_meta_path, "r", encoding="utf-8") as f:
         meta = json.load(f)
+
+    meta["meta_path"] = resolved_meta_path
+    meta["model_slot"] = slot
+    meta["model_label"] = get_slot_label(slot)
 
     model = lgb.Booster(model_file=meta["model_file"])
     return model, meta
+
+
+def load_latest_model():
+    """相容舊呼叫點，實際上載入 production slot。"""
+    return load_selected_model(slot="production")
 
 
 def load_v2_model():
@@ -513,24 +518,28 @@ def _apply_recommendation_rules(pred_df: pd.DataFrame, snapshot: pd.DataFrame) -
     return pred_df
 
 
-def predict_all(top_n: int = 30):
-    """對所有股票產生預測，回傳排名"""
-    model, meta = load_latest_model()
+def predict_all(
+    top_n: int = 30,
+    model_slot: str = "production",
+    model_meta_path: str | None = None,
+    save_snapshot: bool = True,
+):
+    """對所有股票產生預測，回傳排名。"""
+    model, meta = load_selected_model(slot=model_slot, meta_path=model_meta_path)
     feature_cols = meta["feature_columns"]
-    is_v2 = meta.get("model_version", "").startswith("v2")
 
-    # 嘗試載入 v2 模型
+    # 嘗試載入 v2 迴歸模型
     v2_model, v2_meta = load_v2_model()
 
     snapshot = build_latest_snapshot(verbose=False)
 
-    # 快取 snapshot
-    tmp_path = SNAPSHOT_CACHE_PATH + ".tmp"
-    snapshot.to_pickle(tmp_path)
-    os.replace(tmp_path, SNAPSHOT_CACHE_PATH)
-    print(f"Snapshot 已快取: {SNAPSHOT_CACHE_PATH} ({len(snapshot):,} 筆)")
+    if save_snapshot:
+        tmp_path = SNAPSHOT_CACHE_PATH + ".tmp"
+        snapshot.to_pickle(tmp_path)
+        os.replace(tmp_path, SNAPSHOT_CACHE_PATH)
+        print(f"Snapshot 已快取: {SNAPSHOT_CACHE_PATH} ({len(snapshot):,} 筆)")
 
-    # --- v1 分類模型預測 ---
+    # --- base 分類模型預測 ---
     X_v1 = pd.DataFrame(
         {
             col: snapshot[col].values if col in snapshot.columns else np.full(len(snapshot), np.nan)
@@ -539,15 +548,20 @@ def predict_all(top_n: int = 30):
     )
     proba = model.predict(X_v1.values)
 
-    # 基本預測欄位
     keep_cols = ["ticker", "Date", "Close"]
-    extra_cols = ENTRY_INFO_COLS + ["entry_score", "phase",
-                                     "dist_to_high_20d", "dist_to_high_60d",
-                                     "price_vs_ma20", "price_vs_ma60",
-                                     "position_52w"]
+    extra_cols = ENTRY_INFO_COLS + [
+        "entry_score",
+        "phase",
+        "dist_to_high_20d",
+        "dist_to_high_60d",
+        "price_vs_ma20",
+        "price_vs_ma60",
+        "position_52w",
+    ]
     for col in extra_cols:
         if col in snapshot.columns:
             keep_cols.append(col)
+
     pred_df = snapshot[keep_cols].copy()
     pred_df["date"] = pred_df["Date"].dt.strftime("%Y-%m-%d")
     pred_df["close"] = pred_df["Close"]
@@ -555,6 +569,10 @@ def predict_all(top_n: int = 30):
     pred_df["flat_prob"] = proba[:, 1]
     pred_df["down_prob"] = proba[:, 0]
     pred_df["signal"] = [TARGET_CLASSES[int(i)] for i in np.argmax(proba, axis=1)]
+    pred_df["model_slot"] = meta.get("model_slot", model_slot)
+    pred_df["model_label"] = meta.get("model_label", get_slot_label(model_slot))
+    pred_df["base_model_file"] = os.path.basename(meta["model_file"])
+    pred_df["base_model_trained_at"] = meta.get("trained_at")
 
     # --- v2 迴歸模型 (如果有) ---
     if v2_model is not None and v2_meta is not None:
@@ -565,17 +583,14 @@ def predict_all(top_n: int = 30):
                 for col in v2_cols
             }
         )
-        pred_return = v2_model.predict(X_v2.values)
-        pred_df["pred_return_20d"] = pred_return
+        pred_df["pred_return_20d"] = v2_model.predict(X_v2.values)
 
-        # 三層次動能拆解
         dim_scores = _compute_dimension_scores(v2_model, X_v2.values, v2_cols)
         for dim_name, scores in dim_scores.items():
             pred_df[f"dim_{dim_name}"] = scores
 
         pred_df = _apply_recommendation_rules(pred_df, snapshot)
 
-        # 讀取歷史驗證資料 — 附上各等級的真實勝率
         _tracking_path = os.path.join(MODEL_DIR, "..", "reports", "prediction_tracking.json")
         try:
             if os.path.exists(_tracking_path):
@@ -592,13 +607,11 @@ def predict_all(top_n: int = 30):
                         lambda r: _rec_hist.get(str(r), {}).get("avg_actual_return")
                     )
         except Exception:
-            pass  # 驗證資料尚不存在，不影響預測
+            pass
 
-        # 全市場絕對報酬統計 — 讓前端判斷大盤多空
         pred_df["market_return_median"] = pred_df["pred_return_20d"].median()
         pred_df["market_return_q25"] = pred_df["pred_return_20d"].quantile(0.25)
         pred_df["market_return_q75"] = pred_df["pred_return_20d"].quantile(0.75)
-        # 市場氣氛標籤
         med = pred_df["pred_return_20d"].median()
         if med < -0.03:
             pred_df["market_sentiment"] = "空頭"
@@ -609,28 +622,38 @@ def predict_all(top_n: int = 30):
         else:
             pred_df["market_sentiment"] = "多頭"
 
-    # === 產業標籤 ===
     pred_df["sector"] = pred_df["ticker"].map(_SECTOR_LOOKUP).fillna("其他")
 
-    # 組合輸出欄位
     out_cols = ["ticker", "date", "close", "up_prob", "flat_prob", "down_prob", "signal"]
     for col in extra_cols:
         if col in pred_df.columns:
             out_cols.append(col)
-    # v2 額外欄位
-    for col in ["pred_return_20d", "prob_edge", "risk_adjusted_return", "leaderboard_score",
-                "recommendation", "risk_tags", "sector",
-                f"dim_{_L1}", f"dim_{_L2}", f"dim_{_L3}",
-                "historical_win_rate", "historical_avg_return",
-                "market_return_median", "market_return_q25", "market_return_q75",
-                "market_sentiment"]:
+    for col in [
+        "model_slot",
+        "model_label",
+        "base_model_file",
+        "base_model_trained_at",
+        "pred_return_20d",
+        "prob_edge",
+        "risk_adjusted_return",
+        "leaderboard_score",
+        "recommendation",
+        "risk_tags",
+        "sector",
+        f"dim_{_L1}",
+        f"dim_{_L2}",
+        f"dim_{_L3}",
+        "historical_win_rate",
+        "historical_avg_return",
+        "market_return_median",
+        "market_return_q25",
+        "market_return_q75",
+        "market_sentiment",
+    ]:
         if col in pred_df.columns:
             out_cols.append(col)
 
     pred_df = pred_df[out_cols]
-
-    # 排序：榜單優先使用 leaderboard_score，否則退回舊分數
-    sort_col = _prediction_sort_column(pred_df)
     pred_df = _sort_prediction_df(pred_df)
     return pred_df, meta
 
@@ -689,15 +712,28 @@ def apply_sector_cap(df: pd.DataFrame, top_n: int = 30,
     return result.reset_index(drop=True)
 
 
-def run_prediction(top_n: int = 30):
-    """執行預測並印出結果"""
+def run_prediction(
+    top_n: int = 30,
+    model_slot: str = "production",
+    model_meta_path: str | None = None,
+    output_prefix: str = "predictions",
+    output_path: str | None = None,
+    save_snapshot: bool = True,
+):
+    """執行預測並印出結果。"""
     print("=" * 60)
     print(f"  台股預測（v1 分類 + v2 迴歸）")
     print("=" * 60)
 
-    pred_df, meta = predict_all(top_n=top_n)
+    pred_df, meta = predict_all(
+        top_n=top_n,
+        model_slot=model_slot,
+        model_meta_path=model_meta_path,
+        save_snapshot=save_snapshot,
+    )
 
-    print(f"\nv1 模型: {os.path.basename(meta['model_file'])}")
+    print(f"\nbase 模型: {os.path.basename(meta['model_file'])}")
+    print(f"slot: {meta.get('model_slot', model_slot)} ({meta.get('model_label', get_slot_label(model_slot))})")
     has_v2 = "pred_return_20d" in pred_df.columns
 
     if has_v2:
@@ -730,16 +766,35 @@ def run_prediction(top_n: int = 30):
         _safe_print(line)
 
     # 儲存
-    out_path = os.path.join(MODEL_DIR, f"predictions_{pred_df['date'].iloc[0]}.csv")
+    if output_path is None:
+        out_path = os.path.join(MODEL_DIR, f"{output_prefix}_{pred_df['date'].iloc[0]}.csv")
+    else:
+        out_path = output_path
     pred_df.to_csv(out_path, index=False, encoding="utf-8-sig")
     print(f"\n完整預測已儲存: {out_path}")
 
-    return pred_df
+    return {
+        "pred_df": pred_df,
+        "meta": meta,
+        "output_path": out_path,
+    }
 
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="台股預測")
     parser.add_argument("--top", type=int, default=30, help="顯示前 N 名")
+    parser.add_argument("--model-slot", default="production", help="production 或 shadow")
+    parser.add_argument("--model-meta", default=None, help="明確指定 base model meta path")
+    parser.add_argument("--output-prefix", default="predictions", help="輸出檔名前綴")
+    parser.add_argument("--output-path", default=None, help="明確指定輸出 CSV 路徑")
+    parser.add_argument("--no-save-snapshot", action="store_true", help="不要覆寫 snapshot_cache.pkl")
     args = parser.parse_args()
-    run_prediction(top_n=args.top)
+    run_prediction(
+        top_n=args.top,
+        model_slot=args.model_slot,
+        model_meta_path=args.model_meta,
+        output_prefix=args.output_prefix,
+        output_path=args.output_path,
+        save_snapshot=not args.no_save_snapshot,
+    )

@@ -10,6 +10,7 @@ import os
 import sys
 import json
 import glob
+import re
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -21,6 +22,7 @@ sys.path.insert(0, BASE_DIR)
 from ml.config import MODEL_DIR, REPORT_DIR, DAILY_K_DIR
 
 TRACKING_PATH = os.path.join(REPORT_DIR, "prediction_tracking.json")
+PRODUCTION_PREDICTION_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
 # v2 預測 20 個交易日，加上緩衝取 25 天曆日
 V2_MIN_CALENDAR_DAYS = 28
 # v1 預測 5 個交易日
@@ -275,7 +277,11 @@ def main():
     already_verified = {v["prediction_date"] for v in tracking["verified"]}
 
     # 找所有預測檔
-    pred_files = sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
+    pred_files = [
+        path
+        for path in sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
+        if PRODUCTION_PREDICTION_RE.match(os.path.basename(path))
+    ]
 
     new_verifications = 0
     for pf in pred_files:

@@ -9,12 +9,15 @@ from __future__ import annotations
 
 import glob
 import os
+import re
 from typing import Any
 
 import numpy as np
 import pandas as pd
 
 from ml.config import MODEL_DIR
+
+PRODUCTION_PREDICTION_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
 
 
 def _latest_csv(pattern: str) -> str | None:
@@ -38,19 +41,15 @@ def load_cross_confirmed(
         t1_df = pd.read_csv(t1_path, dtype={"ticker": str})
 
     if d20_df is None:
-        d20_path = _latest_csv("predictions_*.csv")
+        candidates = [
+            f
+            for f in sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
+            if PRODUCTION_PREDICTION_RE.match(os.path.basename(f))
+        ]
+        d20_path = candidates[-1] if candidates else None
         if d20_path is None:
             return pd.DataFrame()
         d20_df = pd.read_csv(d20_path, dtype={"ticker": str})
-        # Exclude T+1 files
-        if d20_path and "predictions_t1_" in os.path.basename(d20_path):
-            candidates = [
-                f for f in sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
-                if "predictions_t1_" not in os.path.basename(f)
-            ]
-            if not candidates:
-                return pd.DataFrame()
-            d20_df = pd.read_csv(candidates[-1], dtype={"ticker": str})
 
     # Rename columns to avoid collisions
     t1_cols = {

@@ -33,6 +33,10 @@ if not pipeline_log.handlers:
     pipeline_log.addHandler(_log_handler)
     pipeline_log.addHandler(logging.StreamHandler())
 
+SHADOW_DB_PATH = os.path.join(BASE_DIR, "paper_portfolio_shadow_v23.db")
+SHADOW_OUTPUT_PREFIX = "predictions_shadow_v23"
+PIPELINE_STATE: dict[str, str] = {}
+
 
 def is_trading_day():
     """簡單判斷今日是否為交易日（排除週末）"""
@@ -140,13 +144,67 @@ def run_backtest():
 def run_predict():
     """執行預測"""
     from ml.predict import run_prediction
-    run_prediction(top_n=30)
+    result = run_prediction(
+        top_n=30,
+        model_slot="production",
+        output_prefix="predictions",
+        save_snapshot=True,
+    )
+    PIPELINE_STATE["production_prediction_path"] = result["output_path"]
+
+
+def run_shadow_predict():
+    """執行 shadow mode 預測。"""
+    from ml.predict import run_prediction
+    result = run_prediction(
+        top_n=30,
+        model_slot="shadow",
+        output_prefix=SHADOW_OUTPUT_PREFIX,
+        save_snapshot=False,
+    )
+    PIPELINE_STATE["shadow_prediction_path"] = result["output_path"]
 
 
 def run_paper_portfolio():
     """Lock the daily Top 30 into the paper portfolio ledger."""
     from scripts.update_paper_portfolio import sync_paper_portfolio
-    sync_paper_portfolio(top_n=30)
+    prediction_path = PIPELINE_STATE.get("production_prediction_path")
+    if not prediction_path:
+        raise RuntimeError("production prediction file is missing in this pipeline run")
+    sync_paper_portfolio(
+        prediction_file=prediction_path,
+        top_n=30,
+        rule_version="production-main",
+    )
+
+
+def run_shadow_paper_portfolio():
+    """Lock the shadow-mode Top 30 into its own isolated ledger."""
+    from scripts.update_paper_portfolio import sync_paper_portfolio
+    prediction_path = PIPELINE_STATE.get("shadow_prediction_path")
+    if not prediction_path:
+        raise RuntimeError("shadow prediction file is missing in this pipeline run")
+    sync_paper_portfolio(
+        prediction_file=prediction_path,
+        db_path=SHADOW_DB_PATH,
+        top_n=30,
+        rule_version="shadow-v2.3",
+    )
+
+
+def run_shadow_report():
+    """Build the latest production vs shadow monitor report."""
+    from scripts.shadow_mode import build_shadow_mode_report, _print_report
+    if not PIPELINE_STATE.get("production_prediction_path"):
+        raise RuntimeError("production prediction is missing; skip shadow report")
+    if not PIPELINE_STATE.get("shadow_prediction_path"):
+        raise RuntimeError("shadow prediction is missing; skip shadow report")
+
+    report = build_shadow_mode_report(
+        production_db_path=os.path.join(BASE_DIR, "paper_portfolio.db"),
+        shadow_db_path=SHADOW_DB_PATH,
+    )
+    _print_report(report)
 
 
 def run_verify():
@@ -162,6 +220,8 @@ def run_email_report():
 
 
 def main():
+    from ml.model_selection import has_shadow_model_slot
+
     parser = argparse.ArgumentParser(description="每日自動更新 + 預測 Pipeline")
     parser.add_argument("--predict-only", action="store_true", help="只做預測，不更新資料")
     parser.add_argument("--retrain", action="store_true", help="重新訓練模型")
@@ -193,8 +253,14 @@ def main():
         step_status["模型訓練"] = run_step("重新訓練預測模型", run_retrain)
         step_status["回測"] = run_step("模擬投資回測", run_backtest)
 
+    shadow_enabled = has_shadow_model_slot()
+
     step_status["預測"] = run_step("產生預測", run_predict)
     step_status["實戰觀測帳本"] = run_step("更新實戰觀測帳本", run_paper_portfolio)
+    if shadow_enabled:
+        step_status["Shadow預測"] = run_step("產生 Shadow Mode 預測", run_shadow_predict)
+        step_status["Shadow帳本"] = run_step("更新 Shadow Mode 帳本", run_shadow_paper_portfolio)
+        step_status["Shadow監控"] = run_step("產生 Shadow Mode 監控報告", run_shadow_report)
     step_status["預測驗證"] = run_step("驗證歷史預測表現", run_verify)
     step_status["Email推播"] = run_step("寄送每日 ML 預測與帳本觀察", run_email_report)
 
