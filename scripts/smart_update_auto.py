@@ -4,7 +4,11 @@ import argparse
 import glob
 import logging
 import os
+import re
+import signal
+import subprocess
 import sys
+import time
 from datetime import date, datetime, timedelta
 
 BASE_DIR = r"F:\stock"
@@ -73,10 +77,10 @@ def exec_monitor() -> None:
     generate_report(lookback_days=20)
 
 
-def exec_email() -> None:
+def exec_email(remote_url: str | None = None) -> None:
     from scripts.send_daily_email import send_latest_email
 
-    result = send_latest_email()
+    result = send_latest_email(remote_url=remote_url)
     status = str(result.get("status", ""))
     if status not in {"sent", "preview"}:
         raise RuntimeError(f"email status: {status or 'unknown'}")
@@ -139,6 +143,101 @@ def _send_alert_email(gaps: list[str]) -> None:
         LOGGER.exception("寄送資料缺口警報失敗")
 
 
+# ---------------------------------------------------------------------------
+# Web server & Cloudflare tunnel management
+# ---------------------------------------------------------------------------
+
+WEB_PORT = 8001
+_PYTHON_EXE = sys.executable
+
+
+def _kill_by_name(*names: str) -> int:
+    """Kill processes by name. Returns number of processes killed."""
+    killed = 0
+    for name in names:
+        try:
+            result = subprocess.run(
+                ["taskkill", "/F", "/IM", name],
+                capture_output=True, text=True, timeout=10,
+            )
+            if result.returncode == 0:
+                killed += 1
+        except Exception:
+            pass
+    return killed
+
+
+def stop_web_and_tunnel() -> None:
+    """Stop web server and cloudflare tunnel if running."""
+    killed = _kill_by_name("cloudflared.exe")
+    if killed:
+        LOGGER.info("Stopped cloudflared tunnel")
+
+    # Kill python processes running app.py on WEB_PORT
+    try:
+        result = subprocess.run(
+            ["powershell", "-Command",
+             f"Get-NetTCPConnection -LocalPort {WEB_PORT} -ErrorAction SilentlyContinue"
+             " | Select-Object -ExpandProperty OwningProcess -Unique"],
+            capture_output=True, text=True, timeout=10,
+        )
+        for line in result.stdout.strip().splitlines():
+            pid = line.strip()
+            if pid.isdigit() and int(pid) > 0:
+                subprocess.run(
+                    ["taskkill", "/F", "/PID", pid],
+                    capture_output=True, timeout=10,
+                )
+                LOGGER.info("Stopped web server (pid=%s)", pid)
+    except Exception:
+        pass
+
+
+def start_web_and_tunnel() -> str | None:
+    """Start web server + cloudflare tunnel. Returns tunnel URL or None."""
+    # Start web server
+    subprocess.Popen(
+        [_PYTHON_EXE, os.path.join(BASE_DIR, "app.py"),
+         "--host", "0.0.0.0", "--port", str(WEB_PORT)],
+        cwd=BASE_DIR,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
+    LOGGER.info("Web server started on port %d", WEB_PORT)
+
+    # Wait for server to be ready
+    time.sleep(5)
+
+    # Start cloudflared tunnel
+    proc = subprocess.Popen(
+        ["cloudflared", "tunnel", "--url", f"http://localhost:{WEB_PORT}"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
+
+    # Read output until we find the tunnel URL (timeout 30s)
+    url = None
+    deadline = time.time() + 30
+    while time.time() < deadline:
+        line = proc.stdout.readline()
+        if not line:
+            break
+        match = re.search(r"(https://[a-z0-9-]+\.trycloudflare\.com)", line)
+        if match:
+            url = match.group(1)
+            break
+
+    if url:
+        LOGGER.info("Cloudflare tunnel: %s", url)
+    else:
+        LOGGER.warning("Could not obtain cloudflare tunnel URL")
+
+    return url
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Non-interactive scheduled smart update with email delivery."
@@ -163,6 +262,9 @@ def main(argv: list[str] | None = None) -> int:
         if not args.force and not is_weekday():
             LOGGER.info("SKIP  non-trading day")
             return 0
+
+        # Stop web server & tunnel during data update to avoid DuckDB lock conflicts
+        run_step("Stop web server & tunnel", stop_web_and_tunnel)
 
         data_steps = [
             ("Update TW stock base data", smart_update.exec_twstock),
@@ -193,11 +295,20 @@ def main(argv: list[str] | None = None) -> int:
         predict_ok = run_step("Generate latest predictions", smart_update.exec_predict)
         step_results.append(("Generate latest predictions", predict_ok))
 
+        # Start web server & tunnel after predictions are ready
+        remote_url = None
+        try:
+            remote_url = start_web_and_tunnel()
+            LOGGER.info("DONE  Start web server & tunnel")
+        except Exception:
+            LOGGER.exception("FAIL  Start web server & tunnel")
+
         if predict_ok:
             portfolio_ok = run_step("Sync paper portfolio", exec_paper_portfolio)
             monitor_ok = run_step("Model monitoring", exec_monitor)
             verify_ok = run_step("Verify historical predictions", smart_update.exec_verify)
-            email_ok = run_step("Send daily email report", exec_email)
+            email_ok = run_step("Send daily email report",
+                                lambda: exec_email(remote_url=remote_url))
             step_results.extend(
                 [
                     ("Sync paper portfolio", portfolio_ok),

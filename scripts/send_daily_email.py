@@ -1369,6 +1369,7 @@ def send_latest_email(
     prediction_file: str | None = None,
     dry_run: bool = False,
     preview_path: str | None = None,
+    remote_url: str | None = None,
 ) -> dict[str, object]:
     settings = load_email_settings()
     if settings is None:
@@ -1392,12 +1393,24 @@ def send_latest_email(
     except Exception:
         cross_confirmed = []
 
+    # Remote URL banner (injected into first email only)
+    remote_banner = ""
+    if remote_url:
+        remote_banner = (
+            f'\n<div class="section" style="text-align:center;padding:14px 16px;">'
+            f'<a href="{html.escape(remote_url)}" '
+            f'style="color:#2f6fed;font-size:16px;font-weight:700;text-decoration:none;">'
+            f'&#x1F310; 遠端看盤：{html.escape(remote_url)}</a></div>\n'
+        )
+
     # Build 3 separate emails
     prefix = settings.subject_prefix
     emails: list[tuple[str, str]] = []  # (subject, html)
 
     # 信1: ML 排行 + 雙重確認
     html_ml = build_email_ml(prediction_date, all_pred_df, leaderboard_df, cross_confirmed)
+    if remote_banner:
+        html_ml = html_ml.replace("</body>", remote_banner + "</body>", 1)
     emails.append((f"{prefix} {prediction_date} [1/3] ML 排行 + 雙重確認", html_ml))
 
     # 信2: T+1 動能 (skip if empty)
