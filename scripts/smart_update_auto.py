@@ -238,14 +238,120 @@ def start_web_and_tunnel() -> str | None:
     return url
 
 
+def _run_phase1_tw_data() -> list[tuple[str, bool]]:
+    """Phase 1 (23:00)：台股資料更新 + DuckDB 匯入。
+
+    台股收盤後所有資料都已就緒，不需要等美股。
+    """
+    step_results: list[tuple[str, bool]] = []
+
+    # Stop web server & tunnel during data update to avoid DuckDB lock conflicts
+    run_step("Stop web server & tunnel", stop_web_and_tunnel)
+
+    data_steps = [
+        ("Update TW stock base data", smart_update.exec_twstock),
+        ("Update valuation data", smart_update.exec_valuation),
+        ("Update EPS data", smart_update.exec_eps),
+        ("Update daily news", smart_update.exec_news),
+        ("Update TDCC weekly data", exec_tdcc_if_needed),
+    ]
+
+    for step_name, func in data_steps:
+        step_results.append((step_name, run_step(step_name, func)))
+
+    data_gaps = _check_data_freshness()
+    if data_gaps:
+        LOGGER.warning("DATA GAPS: %s", "; ".join(data_gaps))
+        _send_alert_email(data_gaps)
+
+    ingest_ok = run_step("Ingest refreshed data into DuckDB", smart_update.exec_ingest)
+    step_results.append(("Ingest refreshed data into DuckDB", ingest_ok))
+
+    # Restart web server so updated data is available overnight
+    try:
+        start_web_and_tunnel()
+        LOGGER.info("DONE  Restart web server after phase-1")
+    except Exception:
+        LOGGER.exception("FAIL  Restart web server after phase-1")
+
+    return step_results
+
+
+def _run_phase2_predict() -> list[tuple[str, bool]]:
+    """Phase 2 (05:00)：美股收盤指標 + T1 重訓 + 預測 + 帳本 + 寄信。
+
+    等美股收盤（台灣時間 ~04:00-05:00）後才能取得 VIX/費半/S&P500。
+    """
+    step_results: list[tuple[str, bool]] = []
+
+    # Stop web server during prediction to avoid DuckDB lock conflicts
+    run_step("Stop web server & tunnel", stop_web_and_tunnel)
+
+    # 美股/國際指數（需等美股收盤）
+    step_results.append(("Update global indices", run_step("Update global indices", smart_update.exec_indices)))
+
+    # Re-ingest indices into DuckDB
+    ingest_ok = run_step("Ingest indices into DuckDB", smart_update.exec_ingest)
+    step_results.append(("Ingest indices into DuckDB", ingest_ok))
+
+    # T+1 retrain (with fresh US data)
+    t1_retrain_ok = run_step("Retrain T+1 model for today's open", smart_update.exec_retrain_t1)
+    step_results.append(("Retrain T+1 model for today's open", t1_retrain_ok))
+    if not t1_retrain_ok:
+        LOGGER.warning("FALLBACK continue with the latest saved T+1 model for morning predictions")
+
+    predict_ok = run_step("Generate latest predictions", smart_update.exec_predict)
+    step_results.append(("Generate latest predictions", predict_ok))
+
+    # Start web server & tunnel after predictions are ready
+    remote_url = None
+    try:
+        remote_url = start_web_and_tunnel()
+        LOGGER.info("DONE  Start web server & tunnel")
+    except Exception:
+        LOGGER.exception("FAIL  Start web server & tunnel")
+
+    if predict_ok:
+        portfolio_ok = run_step("Sync paper portfolio", exec_paper_portfolio)
+        monitor_ok = run_step("Model monitoring", exec_monitor)
+        verify_ok = run_step("Verify historical predictions", smart_update.exec_verify)
+        email_ok = run_step("Send daily email report",
+                            lambda: exec_email(remote_url=remote_url))
+        step_results.extend(
+            [
+                ("Sync paper portfolio", portfolio_ok),
+                ("Model monitoring", monitor_ok),
+                ("Verify historical predictions", verify_ok),
+                ("Send daily email report", email_ok),
+            ]
+        )
+    else:
+        LOGGER.warning("SKIP  paper portfolio / verify / email because prediction step failed")
+        step_results.extend(
+            [
+                ("Sync paper portfolio", False),
+                ("Verify historical predictions", False),
+                ("Send daily email report", False),
+            ]
+        )
+
+    return step_results
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Non-interactive scheduled smart update with email delivery."
+        description="Non-interactive scheduled smart update with email delivery.",
     )
     parser.add_argument(
         "--force",
         action="store_true",
         help="Run even on weekends/non-trading days.",
+    )
+    parser.add_argument(
+        "--phase",
+        choices=["1", "2", "all"],
+        default="all",
+        help="Phase 1 = 台股資料 (23:00), Phase 2 = 美股+預測+寄信 (05:00), all = 全部",
     )
     args = parser.parse_args(argv)
 
@@ -256,81 +362,27 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     now = datetime.now()
-    LOGGER.info("===== Smart morning update started at %s =====", now.strftime("%Y-%m-%d %H:%M:%S"))
+    phase_label = {"1": "Phase-1 (TW data)", "2": "Phase-2 (predict)", "all": "Full"}[args.phase]
+    LOGGER.info("===== %s started at %s =====", phase_label, now.strftime("%Y-%m-%d %H:%M:%S"))
 
     try:
         if not args.force and not is_weekday():
             LOGGER.info("SKIP  non-trading day")
             return 0
 
-        # Stop web server & tunnel during data update to avoid DuckDB lock conflicts
-        run_step("Stop web server & tunnel", stop_web_and_tunnel)
-
-        data_steps = [
-            ("Update TW stock base data", smart_update.exec_twstock),
-            ("Update global indices", smart_update.exec_indices),
-            ("Update valuation data", smart_update.exec_valuation),
-            ("Update EPS data", smart_update.exec_eps),
-            ("Update daily news", smart_update.exec_news),
-            ("Update TDCC weekly data", exec_tdcc_if_needed),
-        ]
-
         step_results: list[tuple[str, bool]] = []
-        for step_name, func in data_steps:
-            step_results.append((step_name, run_step(step_name, func)))
 
-        data_gaps = _check_data_freshness()
-        if data_gaps:
-            LOGGER.warning("DATA GAPS: %s", "; ".join(data_gaps))
-            _send_alert_email(data_gaps)
+        if args.phase in ("1", "all"):
+            step_results.extend(_run_phase1_tw_data())
 
-        ingest_ok = run_step("Ingest refreshed data into DuckDB", smart_update.exec_ingest)
-        step_results.append(("Ingest refreshed data into DuckDB", ingest_ok))
-
-        t1_retrain_ok = run_step("Retrain T+1 model for today's open", smart_update.exec_retrain_t1)
-        step_results.append(("Retrain T+1 model for today's open", t1_retrain_ok))
-        if not t1_retrain_ok:
-            LOGGER.warning("FALLBACK continue with the latest saved T+1 model for morning predictions")
-
-        predict_ok = run_step("Generate latest predictions", smart_update.exec_predict)
-        step_results.append(("Generate latest predictions", predict_ok))
-
-        # Start web server & tunnel after predictions are ready
-        remote_url = None
-        try:
-            remote_url = start_web_and_tunnel()
-            LOGGER.info("DONE  Start web server & tunnel")
-        except Exception:
-            LOGGER.exception("FAIL  Start web server & tunnel")
-
-        if predict_ok:
-            portfolio_ok = run_step("Sync paper portfolio", exec_paper_portfolio)
-            monitor_ok = run_step("Model monitoring", exec_monitor)
-            verify_ok = run_step("Verify historical predictions", smart_update.exec_verify)
-            email_ok = run_step("Send daily email report",
-                                lambda: exec_email(remote_url=remote_url))
-            step_results.extend(
-                [
-                    ("Sync paper portfolio", portfolio_ok),
-                    ("Model monitoring", monitor_ok),
-                    ("Verify historical predictions", verify_ok),
-                    ("Send daily email report", email_ok),
-                ]
-            )
-        else:
-            LOGGER.warning("SKIP  paper portfolio / verify / email because prediction step failed")
-            step_results.extend(
-                [
-                    ("Sync paper portfolio", False),
-                    ("Verify historical predictions", False),
-                    ("Send daily email report", False),
-                ]
-            )
+        if args.phase in ("2", "all"):
+            step_results.extend(_run_phase2_predict())
 
         all_ok = all(success for _, success in step_results)
         elapsed = datetime.now() - now
         LOGGER.info(
-            "===== Smart morning update finished in %.1f min | all_ok=%s =====",
+            "===== %s finished in %.1f min | all_ok=%s =====",
+            phase_label,
             elapsed.total_seconds() / 60.0,
             all_ok,
         )
