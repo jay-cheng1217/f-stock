@@ -1374,81 +1374,66 @@ def send_latest_email(
     settings = load_email_settings()
     if settings is None:
         print("[email] SMTP 未設定，跳過寄信。")
-        return {"status": "skipped", "reason": "missing_smtp_config"}
+        return {"status": "skipped", "reason": "missing_smtp_settings"}
 
     prediction_path = _latest_prediction_path(prediction_file)
-    prediction_date, all_pred_df, leaderboard_df = _load_leaderboard(
-        prediction_path, settings.top_n
-    )
-    portfolio_summary, portfolio_df = _load_portfolio_snapshot(
-        db_path=DEFAULT_DB_PATH,
-        limit=0,
-    )
-    t1_date, t1_df = _load_t1_leaderboard(top_n=20)
-    t1_portfolio_summary, t1_portfolio_df = _load_t1_portfolio_snapshot()
+    prediction_date, all_pred_df, _ = _load_leaderboard(prediction_path, settings.top_n)
 
-    # Cross-model confirmation (T+1 x 20D)
-    try:
-        cross_confirmed = get_dual_confirmed_tickers(top_n=10)
-    except Exception:
-        cross_confirmed = []
+    # AI 每日投資總結
+    from scripts.ai_summary import generate_daily_summary
+    ai_html = generate_daily_summary()
 
-    # Remote URL banner (injected into first email only)
-    remote_banner = ""
+    # Remote URL
+    remote_section = ""
     if remote_url:
-        remote_banner = (
-            f'\n<div class="section" style="text-align:center;padding:14px 16px;">'
+        remote_section = (
+            f'<div style="text-align:center;margin:20px 0;">'
             f'<a href="{html.escape(remote_url)}" '
-            f'style="color:#2f6fed;font-size:16px;font-weight:700;text-decoration:none;">'
-            f'&#x1F310; 遠端看盤：{html.escape(remote_url)}</a></div>\n'
+            f'style="display:inline-block;background:#2f6fed;color:#fff;'
+            f'padding:14px 32px;border-radius:8px;font-size:16px;'
+            f'font-weight:700;text-decoration:none;">'
+            f'&#x1F310; 開啟遠端看盤</a></div>'
         )
 
-    # Build 3 separate emails
-    prefix = settings.subject_prefix
-    emails: list[tuple[str, str]] = []  # (subject, html)
+    body = f"""
+    {remote_section}
+    <div class="section">
+      <h2>AI 每日投資總結</h2>
+      <div style="font-size:14px;line-height:1.8;color:#1e293b;">
+        {ai_html}
+      </div>
+    </div>
+"""
 
-    # 信1: ML 排行 + 雙重確認
-    html_ml = build_email_ml(prediction_date, all_pred_df, leaderboard_df, cross_confirmed)
-    if remote_banner:
-        html_ml = html_ml.replace("</body>", remote_banner + "</body>", 1)
-    emails.append((f"{prefix} {prediction_date} [1/3] ML 排行 + 雙重確認", html_ml))
-
-    # 信2: T+1 動能 (skip if empty)
-    _t1_df = t1_df if t1_df is not None else pd.DataFrame()
-    if not _t1_df.empty:
-        html_t1 = build_email_t1(prediction_date, all_pred_df, t1_date, _t1_df)
-        emails.append((f"{prefix} {prediction_date} [2/3] T+1 動能預測", html_t1))
-
-    # 信3: 帳本總覽
-    html_port = build_email_portfolio(
-        prediction_date, all_pred_df,
-        portfolio_summary, portfolio_df,
-        t1_portfolio_summary, t1_portfolio_df,
+    subject = f"{settings.subject_prefix} {prediction_date} 每日投資總結"
+    email_html = _wrap_email_html(
+        title=f"{prediction_date} 每日投資總結",
+        subtitle=_build_market_subtitle(all_pred_df),
+        body_html=body,
+        generated_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
-    emails.append((f"{prefix} {prediction_date} [3/3] 帳本總覽", html_port))
 
-    # Save combined preview
+    # Save preview
     preview_target = preview_path or DEFAULT_PREVIEW_PATH
     os.makedirs(os.path.dirname(preview_target), exist_ok=True)
     with open(preview_target, "w", encoding="utf-8") as f:
-        f.write("\n<hr style='margin:40px 0;border:3px solid #2f6fed;'>\n".join(h for _, h in emails))
+        f.write(email_html)
 
     if dry_run:
         print(f"[email] Dry run 完成：{preview_target}")
         return {
             "status": "preview",
             "preview_path": preview_target,
-            "subjects": [s for s, _ in emails],
+            "subjects": [subject],
             "prediction_path": prediction_path,
         }
 
-    for subject, html_body in emails:
-        send_email(settings, subject, html_body)
-    print(f"[email] 已寄出 {len(emails)} 封至: {', '.join(settings.to_emails)}")
+    send_email(settings, subject, email_html)
+    print(f"[email] 已寄出 1 封至: {', '.join(settings.to_emails)}")
     return {
         "status": "sent",
         "preview_path": preview_target,
-        "subjects": [s for s, _ in emails],
+        "subjects": [subject],
         "prediction_path": prediction_path,
         "to": settings.to_emails,
     }
