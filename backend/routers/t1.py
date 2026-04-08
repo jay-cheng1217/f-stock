@@ -154,17 +154,23 @@ def _load_daily_price_frame(ticker: str) -> pd.DataFrame:
 
 
 def _simulate_t1_trade(
-    entry_close: float,
-    next_bar: pd.Series,
+    entry_price: float,
+    exit_bar: pd.Series,
     take_profit: float | None,
     friction: float,
     stop_loss: float | None,
     ambiguous_fill: str,
 ) -> dict[str, Any]:
-    open_ret = float(next_bar["Open"] / entry_close - 1.0)
-    close_ret = float(next_bar["Close"] / entry_close - 1.0)
-    high_ret = float(next_bar["High"] / entry_close - 1.0)
-    low_ret = float(next_bar["Low"] / entry_close - 1.0)
+    """模擬 T+1 交易：當天開盤買進 → 隔天出場。
+
+    Args:
+        entry_price: 買進價（訊號日開盤價）
+        exit_bar: 隔天的 OHLC bar（出場日）
+    """
+    open_ret = float(exit_bar["Open"] / entry_price - 1.0)
+    close_ret = float(exit_bar["Close"] / entry_price - 1.0)
+    high_ret = float(exit_bar["High"] / entry_price - 1.0)
+    low_ret = float(exit_bar["Low"] / entry_price - 1.0)
 
     hit_take_profit = take_profit is not None and high_ret >= take_profit
     hit_stop_loss = stop_loss is not None and low_ret <= -stop_loss
@@ -196,7 +202,7 @@ def _simulate_t1_trade(
         exit_reason = "close"
 
     net_return = gross_return - friction
-    exit_price = entry_close * (1.0 + gross_return)
+    exit_price = entry_price * (1.0 + gross_return)
     return {
         "open_return": open_ret,
         "high_return": high_ret,
@@ -270,62 +276,84 @@ def _load_t1_portfolio_detail_and_summary() -> tuple[pd.DataFrame, dict[str, Any
 
         for _, row in picks.iterrows():
             ticker = str(row["ticker"])
-            entry_close = float(pd.to_numeric(row.get("close"), errors="coerce"))
             price_df = _load_daily_price_frame(ticker)
             next_rows = price_df[price_df["Date"] > prediction_date]
-            if entry_close <= 0 or next_rows.empty:
-                records.append(
-                    {
-                        "prediction_date": prediction_date.strftime("%Y-%m-%d"),
-                        "ticker": ticker,
-                        "selection_rank": _safe_int(row.get("selection_rank")),
-                        "recommendation": str(row.get("recommendation", "")),
-                        "entry_close": round(entry_close, 2) if entry_close > 0 else None,
-                        "hit_prob_3pct": round(float(pd.to_numeric(row.get("hit_prob_3pct"), errors="coerce")) * 100, 2)
-                        if pd.notna(pd.to_numeric(row.get("hit_prob_3pct"), errors="coerce"))
-                        else None,
-                        "exit_date": None,
-                        "exit_price": None,
-                        "net_return_pct": None,
-                        "gross_return_pct": None,
-                        "high_return_pct": None,
-                        "low_return_pct": None,
-                        "close_return_pct": None,
-                        "exit_reason": "待隔日結算",
-                        "status": "pending",
-                    }
-                )
+
+            # 需要至少 2 根 bar：今天(買進日) + 明天(出場日)
+            hit_prob_val = (
+                round(float(pd.to_numeric(row.get("hit_prob_3pct"), errors="coerce")) * 100, 2)
+                if pd.notna(pd.to_numeric(row.get("hit_prob_3pct"), errors="coerce"))
+                else None
+            )
+
+            if len(next_rows) < 1:
+                # 連買進日都還沒到
+                records.append({
+                    "prediction_date": prediction_date.strftime("%Y-%m-%d"),
+                    "ticker": ticker,
+                    "selection_rank": _safe_int(row.get("selection_rank")),
+                    "recommendation": str(row.get("recommendation", "")),
+                    "entry_close": None,
+                    "hit_prob_3pct": hit_prob_val,
+                    "exit_date": None, "exit_price": None,
+                    "net_return_pct": None, "gross_return_pct": None,
+                    "high_return_pct": None, "low_return_pct": None,
+                    "close_return_pct": None,
+                    "exit_reason": "待開盤進場",
+                    "status": "pending",
+                })
                 continue
 
-            next_bar = next_rows.iloc[0]
+            buy_bar = next_rows.iloc[0]  # 訊號日 = 買進日（當天開盤買）
+            entry_price = float(buy_bar["Open"])
+
+            if entry_price <= 0:
+                continue
+
+            if len(next_rows) < 2:
+                # 已買進但隔天還沒收盤
+                records.append({
+                    "prediction_date": prediction_date.strftime("%Y-%m-%d"),
+                    "ticker": ticker,
+                    "selection_rank": _safe_int(row.get("selection_rank")),
+                    "recommendation": str(row.get("recommendation", "")),
+                    "entry_close": round(entry_price, 2),
+                    "hit_prob_3pct": hit_prob_val,
+                    "exit_date": None, "exit_price": None,
+                    "net_return_pct": None, "gross_return_pct": None,
+                    "high_return_pct": None, "low_return_pct": None,
+                    "close_return_pct": None,
+                    "exit_reason": "持有中（待隔日出場）",
+                    "status": "holding",
+                })
+                continue
+
+            exit_bar = next_rows.iloc[1]  # 隔天 = 出場日
             trade = _simulate_t1_trade(
-                entry_close=entry_close,
-                next_bar=next_bar,
+                entry_price=entry_price,
+                exit_bar=exit_bar,
                 take_profit=trade_rules["take_profit"],
                 friction=trade_rules["friction"],
                 stop_loss=trade_rules["stop_loss"],
                 ambiguous_fill=trade_rules["ambiguous_fill"],
             )
-            records.append(
-                    {
-                        "prediction_date": prediction_date.strftime("%Y-%m-%d"),
-                        "ticker": ticker,
-                        "selection_rank": _safe_int(row.get("selection_rank")),
-                        "recommendation": str(row.get("recommendation", "")),
-                    "entry_close": round(entry_close, 2),
-                    "hit_prob_3pct": round(float(pd.to_numeric(row.get("hit_prob_3pct"), errors="coerce")) * 100, 2)
-                    if pd.notna(pd.to_numeric(row.get("hit_prob_3pct"), errors="coerce"))
-                    else None,
-                    "exit_date": pd.Timestamp(next_bar["Date"]).strftime("%Y-%m-%d"),
-                    "exit_price": round(float(trade["exit_price"]), 2),
-                    "net_return_pct": round(float(trade["net_return"]) * 100, 2),
-                    "gross_return_pct": round(float(trade["gross_return"]) * 100, 2),
-                    "high_return_pct": round(float(trade["high_return"]) * 100, 2),
-                    "low_return_pct": round(float(trade["low_return"]) * 100, 2),
-                    "close_return_pct": round(float(trade["close_return"]) * 100, 2),
-                    "exit_reason": str(trade["exit_reason"]),
-                    "status": "closed",
-                }
+            records.append({
+                "prediction_date": prediction_date.strftime("%Y-%m-%d"),
+                "ticker": ticker,
+                "selection_rank": _safe_int(row.get("selection_rank")),
+                "recommendation": str(row.get("recommendation", "")),
+                "entry_close": round(entry_price, 2),
+                "hit_prob_3pct": hit_prob_val,
+                "exit_date": pd.Timestamp(exit_bar["Date"]).strftime("%Y-%m-%d"),
+                "exit_price": round(float(trade["exit_price"]), 2),
+                "net_return_pct": round(float(trade["net_return"]) * 100, 2),
+                "gross_return_pct": round(float(trade["gross_return"]) * 100, 2),
+                "high_return_pct": round(float(trade["high_return"]) * 100, 2),
+                "low_return_pct": round(float(trade["low_return"]) * 100, 2),
+                "close_return_pct": round(float(trade["close_return"]) * 100, 2),
+                "exit_reason": str(trade["exit_reason"]),
+                "status": "closed",
+            }
             )
 
     detail_df = pd.DataFrame(records, columns=columns)
@@ -358,7 +386,7 @@ def _load_t1_portfolio_detail_and_summary() -> tuple[pd.DataFrame, dict[str, Any
     summary = {
         "total_positions": int(len(detail_df)),
         "closed_positions": int(len(closed_df)),
-        "pending_positions": int((detail_df["status"] == "pending").sum()),
+        "pending_positions": int((detail_df["status"].isin(["pending", "holding"])).sum()),
         "avg_net_return_pct": round(float(v), 2) if not closed_df.empty and pd.notna(v := closed_df["net_return_pct"].mean()) else None,
         "win_rate_pct": round(float(v2), 2) if not closed_df.empty and pd.notna(v2 := (closed_df["net_return_pct"].dropna() > 0).mean() * 100) else None,
         "take_profit_hits": take_profit_hits,
@@ -375,7 +403,7 @@ def _prepare_t1_portfolio_export_df(detail_df: pd.DataFrame) -> pd.DataFrame:
         "ticker": "股票代號",
         "selection_rank": "交易順位",
         "recommendation": "推薦等級",
-        "entry_close": "進場收盤",
+        "entry_close": "進場開盤",
         "hit_prob_3pct": "明日觸及3%機率(%)",
         "exit_date": "出場日",
         "exit_price": "出場價",
