@@ -26,6 +26,28 @@ from ml.target_t1 import T1_LABEL_COLUMNS, compute_t1_targets
 FOREIGN_DIR = os.path.join(BASE_DIR, "外資持股")
 TDCC_SUMMARY_PATH = os.path.join(BASE_DIR, "集保分散", "tdcc_summary.csv")
 
+
+def _load_twii_t1() -> pd.DataFrame | None:
+    """Load TWII index for excess return calculation."""
+    twii_path = os.path.join(INDEX_DIR, "index_TWII.csv")
+    if not os.path.exists(twii_path):
+        return None
+    df = pd.read_csv(twii_path, dtype={"Date": str})
+    df["Date"] = pd.to_datetime(df["Date"])
+    df = df.sort_values("Date").reset_index(drop=True)
+    return df[["Date", "Close"]].rename(columns={"Close": "twii_close"})
+
+
+# Module-level TWII cache (loaded once on first use)
+_TWII_CACHE: pd.DataFrame | None = None
+
+
+def _get_twii() -> pd.DataFrame | None:
+    global _TWII_CACHE
+    if _TWII_CACHE is None:
+        _TWII_CACHE = _load_twii_t1()
+    return _TWII_CACHE
+
 T1_CONTEXT_COLUMNS = [
     "ticker",
     "Date",
@@ -38,13 +60,13 @@ T1_CONTEXT_COLUMNS = [
 ]
 
 T1_MARKET_FEATURE_COLUMNS = [
-    # 精簡為 5 個不重複市場特徵，避免大盤特徵宰制模型
-    # （舊版 19 個高度相關的市場特徵導致 87.7% 重要性集中）
-    "twii_return_1d",      # 大盤日報酬（也供大盤熔斷機制使用）
-    "vix_percentile_60d",  # 相對恐慌度（取代絕對 VIX）
+    # V3: Target 已改超額報酬，大盤絕對特徵大幅削減
+    # 移除 twii_return_1d, sox_return_1d — 這些是 beta 信號，
+    # 預測超額報酬時模型不應直接看大盤漲跌。
+    # 只保留體制型（相對/二元）特徵。
+    "vix_percentile_60d",  # 相對恐慌度（百分位，非絕對值）
     "twii_above_ma20",     # 趨勢方向（二元）
-    "twii_volatility_20d", # 波動度體制
-    "sox_return_1d",       # 半導體先行指標（台股特有）
+    "twii_volatility_20d", # 波動度體制（影響截面分散度）
 ]
 
 T1_BASE_FEATURE_COLUMNS = [
@@ -382,7 +404,7 @@ def load_single_stock_t1(ticker: str) -> pd.DataFrame | None:
     if avg_vol < MIN_AVG_VOLUME or last_price < MIN_PRICE:
         return None
 
-    df = compute_t1_targets(df)
+    df = compute_t1_targets(df, twii_df=_get_twii())
     df = compute_technical_features(df)
     df = compute_institutional_features(df)
     df = compute_tdcc_features(df, ticker, TDCC_SUMMARY_PATH)
@@ -391,6 +413,31 @@ def load_single_stock_t1(ticker: str) -> pd.DataFrame | None:
     df = _add_t1_short_features(df)
     df["ticker"] = str(ticker)
     return df
+
+
+# Binary/event features that should NOT be z-scored in T1
+_T1_ZSCORE_SKIP = {
+    "atr_pct_rank", "vix_percentile_60d",
+    "twii_above_ma20", "twii_volatility_20d",
+    "t1_strong_close_flag", "t1_long_upper_shadow_flag",
+    "chip_diverge_bear", "chip_diverge_bull",
+}
+
+
+def _apply_t1_cross_sectional_zscore(dataset: pd.DataFrame) -> pd.DataFrame:
+    """Cross-sectional z-score for T1 continuous features."""
+    cols_to_zscore = [
+        c for c in T1_FEATURE_COLUMNS
+        if c in dataset.columns and c not in _T1_ZSCORE_SKIP
+    ]
+    if not cols_to_zscore:
+        return dataset
+
+    grouped = dataset.groupby("Date")[cols_to_zscore]
+    means = grouped.transform("mean")
+    stds = grouped.transform("std").replace(0, np.nan)
+    dataset[cols_to_zscore] = ((dataset[cols_to_zscore] - means) / stds).astype(np.float32)
+    return dataset
 
 
 def _finalize_frame(df: pd.DataFrame) -> pd.DataFrame:
@@ -426,6 +473,10 @@ def build_t1_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
         dataset["atr_pct_rank"] = dataset.groupby("Date")["atr_pct"].rank(pct=True).astype(np.float32)
     else:
         dataset["atr_pct_rank"] = np.nan
+
+    # Cross-sectional z-score: 連續特徵截面標準化
+    dataset = _apply_t1_cross_sectional_zscore(dataset)
+
     dataset = dataset.dropna(subset=["t1_high_return", "t1_hit_3pct", "t1_close_positive"]).copy()
     dataset["t1_hit_3pct"] = dataset["t1_hit_3pct"].astype(np.int8)
     dataset["t1_close_positive"] = dataset["t1_close_positive"].astype(np.int8)
@@ -465,6 +516,10 @@ def build_latest_t1_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.Da
         snapshot["atr_pct_rank"] = snapshot["atr_pct"].rank(pct=True).astype(np.float32)
     else:
         snapshot["atr_pct_rank"] = np.nan
+
+    # Cross-sectional z-score（snapshot 只有一天）
+    snapshot = _apply_t1_cross_sectional_zscore(snapshot)
+
     snapshot = _finalize_frame(snapshot)
 
     if verbose:

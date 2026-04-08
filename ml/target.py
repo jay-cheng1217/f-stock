@@ -3,6 +3,9 @@ import pandas as pd
 import numpy as np
 from ml.config import FORWARD_DAYS, UP_THRESHOLD, DOWN_THRESHOLD
 
+# V2 模型使用 20 日超額報酬作為迴歸目標
+V2_FORWARD_DAYS = 20
+
 
 def compute_target(df: pd.DataFrame, twii_df: pd.DataFrame = None) -> pd.DataFrame:
     """計算 N 日前瞻超額報酬並分為 UP/FLAT/DOWN 三類
@@ -10,16 +13,20 @@ def compute_target(df: pd.DataFrame, twii_df: pd.DataFrame = None) -> pd.DataFra
     超額報酬 = 個股報酬 - 大盤(TWII)報酬
     可區分真正跑贏大盤的股票，避免大盤齊漲時所有股票都被標為 UP。
 
+    同時計算 V2 用的 20 日超額報酬 (excess_return_20d)。
+
     Args:
         df: 含 Date, Close 的 DataFrame (單支股票)
         twii_df: 含 Date, twii_close 的大盤指數 DataFrame
     Returns:
-        df 加上 forward_return, excess_return, target 欄位
+        df 加上 forward_return, excess_return, target,
+        forward_return_20d, excess_return_20d 欄位
     """
     df = df.copy()
 
-    # 個股前瞻報酬
+    # 個股前瞻報酬（V1: 5日, V2: 20日）
     df["forward_return"] = df["Close"].shift(-FORWARD_DAYS) / df["Close"] - 1
+    df["forward_return_20d"] = df["Close"].shift(-V2_FORWARD_DAYS) / df["Close"] - 1
 
     # 計算大盤前瞻報酬並合併
     if twii_df is not None:
@@ -27,15 +34,23 @@ def compute_target(df: pd.DataFrame, twii_df: pd.DataFrame = None) -> pd.DataFra
         twii["twii_forward_return"] = (
             twii["twii_close"].shift(-FORWARD_DAYS) / twii["twii_close"] - 1
         )
-        df = df.merge(twii[["Date", "twii_forward_return"]], on="Date", how="left")
+        twii["twii_forward_return_20d"] = (
+            twii["twii_close"].shift(-V2_FORWARD_DAYS) / twii["twii_close"] - 1
+        )
+        df = df.merge(
+            twii[["Date", "twii_forward_return", "twii_forward_return_20d"]],
+            on="Date", how="left",
+        )
         # 超額報酬 = 個股報酬 - 大盤報酬
         df["excess_return"] = df["forward_return"] - df["twii_forward_return"]
-        df.drop(columns=["twii_forward_return"], inplace=True)
+        df["excess_return_20d"] = df["forward_return_20d"] - df["twii_forward_return_20d"]
+        df.drop(columns=["twii_forward_return", "twii_forward_return_20d"], inplace=True)
     else:
         # 無大盤資料時退回絕對報酬
         df["excess_return"] = df["forward_return"]
+        df["excess_return_20d"] = df["forward_return_20d"]
 
-    # 以超額報酬分類
+    # 以超額報酬分類（V1 用）
     conditions = [
         df["excess_return"] <= DOWN_THRESHOLD,
         df["excess_return"] >= UP_THRESHOLD,

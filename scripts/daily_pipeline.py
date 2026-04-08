@@ -133,9 +133,12 @@ def run_ingest():
 
 
 def run_retrain():
-    """重新訓練 ML 模型"""
+    """重新訓練 ML 模型（V1 分類 + V2 迴歸）"""
     from ml.train import run_training
     run_training()
+    # V2 迴歸模型（20D 超額報酬）
+    from scripts.train_v2 import train_v2
+    train_v2(device="gpu")
 
 
 def run_backtest():

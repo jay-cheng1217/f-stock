@@ -514,6 +514,62 @@ def _winsorize_features(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+# Binary/event features that should NOT be z-scored
+_ZSCORE_SKIP = {
+    # Binary flags (0/1)
+    "ma5_bounce", "ma20_bounce", "ma5_support_test", "ma20_support_test",
+    "ma_bullish_align", "ma_golden_cross", "ma_death_cross",
+    "macd_turn_positive", "kd_golden_cross", "rsi_oversold_bounce",
+    "bullish_engulf", "bearish_engulf",
+    "doji", "hammer", "hanging_man", "shooting_star",
+    "morning_star", "evening_star",
+    "three_white_soldiers", "three_black_crows",
+    "donchian_breakout_up", "donchian_breakout_dn",
+    "squeeze",
+    "macd_bearish_div", "macd_bullish_div",
+    "rsi_bearish_div", "rsi_bullish_div",
+    "elder_bull", "elder_bear",
+    "price_vol_diverge",
+    # Already percentile-ranked
+    "atr_pct_rank",
+    # Binary market regime
+    "twii_above_ma5", "twii_above_ma20", "twii_above_ma60",
+    "gspc_above_ma20", "sox_above_ma20",
+    # Percentile features
+    "vix_percentile_60d",
+    # Chip divergence scores (already cross-sectionally comparable)
+    "chip_diverge_bear", "chip_diverge_bull",
+}
+
+
+def _apply_cross_sectional_zscore(dataset: pd.DataFrame) -> pd.DataFrame:
+    """對連續特徵做每日截面 z-score 標準化。
+
+    z = (x - 當日均值) / 當日標準差
+
+    讓模型看到「這支股票今天相對全市場的位置」而非絕對數值。
+    好處：
+    - 消除不同時期的絕對水位差異（2024 和 2026 的 PE 不可比）
+    - 強迫模型學截面選股能力，而非時序擇時
+    - LightGBM 分裂點自動適應 z-score 尺度
+    """
+    feature_cols = get_feature_columns()
+    # 只 z-score 連續特徵（排除二元/事件/已排名）
+    cols_to_zscore = [c for c in feature_cols if c in dataset.columns and c not in _ZSCORE_SKIP]
+
+    if not cols_to_zscore:
+        return dataset
+
+    grouped = dataset.groupby("Date")[cols_to_zscore]
+    means = grouped.transform("mean")
+    stds = grouped.transform("std")
+    # 避免除以零（只有一支股票的日子，std=0）
+    stds = stds.replace(0, np.nan)
+    dataset[cols_to_zscore] = ((dataset[cols_to_zscore] - means) / stds).astype(np.float32)
+
+    return dataset
+
+
 def _get_cache_path():
     """快取檔案路徑（當日有效）"""
     from datetime import date
@@ -633,6 +689,12 @@ def build_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
     if verbose:
         print("  後處理: 極端值截斷 (Winsorization)...")
     dataset = _winsorize_features(dataset)
+
+    # 3b. Cross-sectional z-score: 每日截面標準化連續特徵
+    #     讓模型看到的是「相對全市場的排名/位置」而非絕對數值
+    if verbose:
+        print("  後處理: 截面 z-score 標準化...")
+    dataset = _apply_cross_sectional_zscore(dataset)
 
     # 4. 降低記憶體：float64 → float32（ML 訓練不需要 float64 精度）
     float64_cols = dataset.select_dtypes(include=["float64"]).columns

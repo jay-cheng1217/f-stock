@@ -146,21 +146,18 @@ def compute_market_features(
 
 # 本模組產出的特徵欄位名稱
 MARKET_FEATURE_COLS = [
-    "twii_return_5d",
-    "twii_return_20d",
-    "vix_percentile_60d",
-    "vix_change_5d",
-    "sox_return_5d",
-    "usdtwd_change_5d",
-    # Market regime features
-    "twii_above_ma5",
-    "twii_above_ma20",
-    "twii_above_ma60",
-    "twii_ma5_slope",
-    "twii_ma20_slope",
-    "twii_volatility_20d",
-    "vix_ma20_ratio",
-    "gspc_return_5d",
-    "gspc_above_ma20",
-    "sox_above_ma20",
+    # V3: Target 已改超額報酬，移除大盤/國際指數的絕對報酬特徵
+    # 原 twii_return_5d, twii_return_20d, sox_return_5d, gspc_return_5d,
+    # vix_change_5d, usdtwd_change_5d 都是 beta 信號，預測 alpha 時無用
+    # 只保留體制型（二元/相對/百分位）特徵
+    "vix_percentile_60d",   # 相對恐慌度（百分位）
+    "twii_above_ma5",       # 短期趨勢方向（二元）
+    "twii_above_ma20",      # 中期趨勢方向（二元）
+    "twii_above_ma60",      # 長期趨勢方向（二元）
+    "twii_ma5_slope",       # 趨勢斜率（方向性，非報酬）
+    "twii_ma20_slope",      # 趨勢斜率
+    "twii_volatility_20d",  # 波動度體制
+    "vix_ma20_ratio",       # VIX 相對自身均值（比率）
+    "gspc_above_ma20",      # 美股趨勢（二元）
+    "sox_above_ma20",       # 費半趨勢（二元）
 ]
