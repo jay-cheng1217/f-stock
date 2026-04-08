@@ -186,6 +186,7 @@ def train_v2(device: str = "gpu") -> dict | None:
         "n_stocks": dataset["ticker"].nunique(),
         "n_samples": len(dataset),
         "target": "20d_excess_return",
+        "cross_sectional_zscore": True,
         "date_range": [
             str(dataset["Date"].min().date()),
             str(dataset["Date"].max().date()),

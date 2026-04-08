@@ -147,6 +147,7 @@ def run_training(max_stocks: int = 0):
     meta = {
         "model_file": model_path,
         "trained_at": timestamp,
+        "cross_sectional_zscore": True,
         "feature_columns": feature_cols,
         "n_features": len(feature_cols),
         "n_stocks": dataset["ticker"].nunique(),

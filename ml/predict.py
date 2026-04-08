@@ -13,7 +13,7 @@ import pandas as pd
 import lightgbm as lgb
 
 from ml.config import MODEL_DIR, TARGET_CLASSES, FORWARD_DAYS
-from ml.dataset import build_latest_snapshot
+from ml.dataset import build_latest_snapshot, apply_snapshot_zscore
 from ml.features.entry import ENTRY_INFO_COLS
 from ml.features.sector import load_sector_mapping
 from ml.model_selection import get_slot_label, resolve_base_meta_path
@@ -341,6 +341,18 @@ def load_latest_model():
     return load_selected_model(slot="production")
 
 
+def _model_needs_zscore(meta: dict) -> bool:
+    """判斷模型是否需要 z-score 輸入（V3+ 訓練自帶截面標準化）。"""
+    # 明確標記
+    if meta.get("cross_sectional_zscore"):
+        return True
+    # V2 excess return 模型使用 build_dataset() 訓練，自動帶 z-score
+    version = meta.get("model_version", "")
+    if "excess" in version:
+        return True
+    return False
+
+
 def load_v2_model():
     """載入 v2 迴歸模型 (如果存在)"""
     v2_files = sorted(glob.glob(os.path.join(MODEL_DIR, "lgbm_v2_*_meta.json")))
@@ -539,10 +551,20 @@ def predict_all(
         os.replace(tmp_path, SNAPSHOT_CACHE_PATH)
         print(f"Snapshot 已快取: {SNAPSHOT_CACHE_PATH} ({len(snapshot):,} 筆)")
 
+    # V3+ 模型需要 z-score，保留 raw snapshot 給舊模型用
+    snapshot_zs = None  # lazy: 只在需要時計算
+
+    def _get_zscore_snapshot():
+        nonlocal snapshot_zs
+        if snapshot_zs is None:
+            snapshot_zs = apply_snapshot_zscore(snapshot)
+        return snapshot_zs
+
     # --- base 分類模型預測 ---
+    v1_snap = _get_zscore_snapshot() if _model_needs_zscore(meta) else snapshot
     X_v1 = pd.DataFrame(
         {
-            col: snapshot[col].values if col in snapshot.columns else np.full(len(snapshot), np.nan)
+            col: v1_snap[col].values if col in v1_snap.columns else np.full(len(v1_snap), np.nan)
             for col in feature_cols
         }
     )
@@ -577,9 +599,10 @@ def predict_all(
     # --- v2 迴歸模型 (如果有) ---
     if v2_model is not None and v2_meta is not None:
         v2_cols = v2_meta["feature_columns"]
+        v2_snap = _get_zscore_snapshot() if _model_needs_zscore(v2_meta) else snapshot
         X_v2 = pd.DataFrame(
             {
-                col: snapshot[col].values if col in snapshot.columns else np.full(len(snapshot), np.nan)
+                col: v2_snap[col].values if col in v2_snap.columns else np.full(len(v2_snap), np.nan)
                 for col in v2_cols
             }
         )

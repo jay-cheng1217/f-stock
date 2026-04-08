@@ -235,6 +235,7 @@
   "n_stocks": 1103,
   "n_samples": 1600096,
   "target": "20d_excess_return",
+  "cross_sectional_zscore": true,
   "date_range": [
     "2020-01-02",
     "2026-03-05"

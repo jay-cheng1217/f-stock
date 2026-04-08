@@ -19,9 +19,6 @@ from ml.dataset_t1 import build_latest_t1_snapshot
 from ml.features.key_levels import compute_key_levels
 from ml.features.sector import load_sector_mapping
 
-T1_STRONG_BUY_PROB = 0.70
-T1_BUY_PROB = 0.55
-T1_WATCH_PROB = 0.50
 T1_LONG_UPPER_WICK_CUTOFF = 0.04
 T1_BREAKOUT_STRETCH_CUTOFF = 0.08
 T1_VOLUME_BURST_MIN = 1.20
@@ -150,25 +147,7 @@ def _extract_trade_rules(meta: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-# --- 動態門檻：取代寫死的 60% ---
-T1_MIN_PROB_FLOOR = 0.30        # 絕對下限（校準後 30% 已是 P90 水位）
-T1_MIN_PROB_PERCENTILE = 95     # 取全市場 top 5% 的機率值作為門檻
-
-
-def _dynamic_min_prob(hit_probs: pd.Series, static_min: float) -> float:
-    """依據當日全市場機率分布，動態決定進場門檻。
-
-    邏輯：取 static_min 和 percentile 門檻中「較低」的那個，
-    但不低於 T1_MIN_PROB_FLOOR。
-    這樣在模型校準偏低時（如最高只有 52%），仍能選出頂尖標的。
-    """
-    if hit_probs.empty:
-        return static_min
-    pct_threshold = float(np.percentile(hit_probs.dropna(), T1_MIN_PROB_PERCENTILE))
-    # 取 static 和 percentile 中較低者（讓更多頂尖標的入選）
-    effective = min(static_min, pct_threshold)
-    # 但不可低於絕對下限
-    return max(effective, T1_MIN_PROB_FLOOR)
+# V3: 已改用 ranking-based selection，不再需要動態機率門檻
 
 
 def _append_tag(
@@ -344,23 +323,16 @@ def build_live_t1_prediction_df(
     pred_df["t1_score"] = _compute_t1_score(snapshot, pred_df["hit_prob_3pct"])
     pred_df["recommendation"] = "觀望"
 
-    # 推薦等級也用動態門檻，不再寫死 60%
-    dyn_buy_prob = _dynamic_min_prob(pred_df["hit_prob_3pct"], trade_rules["min_prob"])
-    buy_mask = pred_df["hit_prob_3pct"] >= dyn_buy_prob
-    strong_mask = (
-        buy_mask
-        & (pred_df["hit_prob_3pct"] >= float(np.percentile(pred_df["hit_prob_3pct"].dropna(), 99)))
-        & (snapshot.get("t1_volume_burst_5d", pd.Series(0, index=snapshot.index)).fillna(0) >= T1_VOLUME_BURST_MIN)
-        & (snapshot.get("t1_strong_close_flag", pd.Series(0, index=snapshot.index)).fillna(0) >= 1.0)
-        & (snapshot.get("t1_upper_wick_pct", pd.Series(0, index=snapshot.index)).fillna(0) < T1_LONG_UPPER_WICK_CUTOFF)
-    )
-    # 觀望標籤：低於 P75 就是勝率不足（相對市場水位）
-    dyn_watch_prob = float(np.percentile(pred_df["hit_prob_3pct"].dropna(), 75))
-    weak_mask = pred_df["hit_prob_3pct"] < dyn_watch_prob
+    # V3 ranking-based: 推薦等級由截面排名決定，不依賴絕對機率門檻
+    # （miscalibrated 模型的 prob 值無意義，只有相對排序可信）
+    score_rank = pred_df["t1_score"].rank(ascending=False, method="min")
+    total = len(pred_df)
+    # Top 2% = 強力買進, Top 10% = 建議買進, 其餘觀望
+    strong_mask = score_rank <= max(1, int(total * 0.02))
+    buy_mask = (~strong_mask) & (score_rank <= max(5, int(total * 0.10)))
 
     pred_df.loc[buy_mask, "recommendation"] = "建議買進"
     pred_df.loc[strong_mask, "recommendation"] = "強力買進"
-    pred_df.loc[weak_mask, "recommendation"] = "觀望（勝率不足）"
 
     pred_df["setup_tags"] = _build_t1_setup_tags(snapshot)
     pred_df["risk_tags"] = _build_t1_risk_tags(snapshot)
@@ -428,16 +400,9 @@ def build_live_t1_prediction_df(
         # 大盤熔斷：全數不選
         pred_df["veto_reason"] = f"大盤熔斷({twii_ret:.2%}) " + pred_df["veto_reason"]
     else:
-        # 動態門檻：取代寫死的 60%
-        effective_min_prob = _dynamic_min_prob(
-            pred_df["hit_prob_3pct"], trade_rules["min_prob"]
-        )
-        # 篩選：動態機率 + 流動性 + 20D不否決
-        eligible_mask = (
-            (pred_df["hit_prob_3pct"] >= effective_min_prob)
-            & liquidity_ok
-            & (~d20_veto)
-        )
+        # V3 ranking-based selection: 不依賴絕對機率門檻
+        # 只用硬過濾（流動性 + 20D否決），再從過濾後取 Top N
+        eligible_mask = liquidity_ok & (~d20_veto)
         eligible = pred_df[eligible_mask].copy()
         selected = eligible.head(trade_rules["top_n"]).copy()
 
@@ -448,6 +413,7 @@ def build_live_t1_prediction_df(
                 index=selected.index,
                 dtype="Int64",
             )
+            # 被選中但原本是觀望的，升級為建議買進
             selected_watch = selected.index[
                 pred_df.loc[selected.index, "recommendation"].astype(str).str.startswith("觀望")
             ]

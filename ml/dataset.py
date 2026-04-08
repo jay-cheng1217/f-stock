@@ -752,7 +752,23 @@ def build_latest_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.DataF
         print("  後處理: 極端值截斷 (Winsorization)...")
     snapshot = _winsorize_features(snapshot)
 
+    # 保留 raw snapshot（production 用），z-score 版交給呼叫端按需套用
+    snapshot.attrs["zscore_applied"] = False
+
     return snapshot
+
+
+def apply_snapshot_zscore(snapshot: pd.DataFrame) -> pd.DataFrame:
+    """對推論快照套用截面 z-score（V3+ 模型需要）。
+
+    與訓練時 _apply_cross_sectional_zscore 邏輯一致，
+    但快照通常只有一天，直接對全量做即可。
+    """
+    if snapshot.attrs.get("zscore_applied"):
+        return snapshot
+    out = _apply_cross_sectional_zscore(snapshot.copy())
+    out.attrs["zscore_applied"] = True
+    return out
 
 
 def walk_forward_split(dataset: pd.DataFrame):
