@@ -423,13 +423,42 @@ _T1_ZSCORE_SKIP = {
     "chip_diverge_bear", "chip_diverge_bull",
 }
 
+_T1_WINSORIZE_Q_LOW = 0.01
+_T1_WINSORIZE_Q_HIGH = 0.99
+_T1_WINSORIZE_MIN_GROUP_SIZE = 50
 
-def _apply_t1_cross_sectional_zscore(dataset: pd.DataFrame) -> pd.DataFrame:
-    """Cross-sectional z-score for T1 continuous features."""
-    cols_to_zscore = [
+
+def _t1_continuous_feature_columns(dataset: pd.DataFrame) -> list[str]:
+    return [
         c for c in T1_FEATURE_COLUMNS
         if c in dataset.columns and c not in _T1_ZSCORE_SKIP
     ]
+
+
+def _winsorize_t1_cross_section(dataset: pd.DataFrame) -> pd.DataFrame:
+    """Clip per-day cross-sectional outliers before z-score normalization."""
+    cols_to_clip = _t1_continuous_feature_columns(dataset)
+    if not cols_to_clip:
+        return dataset
+
+    def _winsorize_series(series: pd.Series) -> pd.Series:
+        clean = pd.to_numeric(series, errors="coerce").replace([np.inf, -np.inf], np.nan)
+        valid = clean.dropna()
+        if len(valid) < _T1_WINSORIZE_MIN_GROUP_SIZE:
+            return clean
+        lower = valid.quantile(_T1_WINSORIZE_Q_LOW)
+        upper = valid.quantile(_T1_WINSORIZE_Q_HIGH)
+        return clean.clip(lower=lower, upper=upper)
+
+    grouped = dataset.groupby("Date", group_keys=False)
+    for col in cols_to_clip:
+        dataset[col] = grouped[col].transform(_winsorize_series).astype(np.float32)
+    return dataset
+
+
+def _apply_t1_cross_sectional_zscore(dataset: pd.DataFrame) -> pd.DataFrame:
+    """Cross-sectional z-score for T1 continuous features."""
+    cols_to_zscore = _t1_continuous_feature_columns(dataset)
     if not cols_to_zscore:
         return dataset
 
@@ -475,11 +504,12 @@ def build_t1_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
         dataset["atr_pct_rank"] = np.nan
 
     # Cross-sectional z-score: 連續特徵截面標準化
+    dataset = _winsorize_t1_cross_section(dataset)
     dataset = _apply_t1_cross_sectional_zscore(dataset)
 
-    dataset = dataset.dropna(subset=["t1_high_return", "t1_hit_3pct", "t1_close_positive"]).copy()
+    dataset = dataset.dropna(subset=["t1_high_return", "t1_hit_3pct", "t1_excess_positive"]).copy()
     dataset["t1_hit_3pct"] = dataset["t1_hit_3pct"].astype(np.int8)
-    dataset["t1_close_positive"] = dataset["t1_close_positive"].astype(np.int8)
+    dataset["t1_excess_positive"] = dataset["t1_excess_positive"].astype(np.int8)
     dataset = _finalize_frame(dataset)
 
     if verbose:
@@ -518,6 +548,7 @@ def build_latest_t1_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.Da
         snapshot["atr_pct_rank"] = np.nan
 
     # Cross-sectional z-score（snapshot 只有一天）
+    snapshot = _winsorize_t1_cross_section(snapshot)
     snapshot = _apply_t1_cross_sectional_zscore(snapshot)
 
     snapshot = _finalize_frame(snapshot)
@@ -526,4 +557,3 @@ def build_latest_t1_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.Da
         print(f"  rows: {len(snapshot):,}")
         print(f"  tickers: {snapshot['ticker'].nunique():,}")
     return snapshot
-

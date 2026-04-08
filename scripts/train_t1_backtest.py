@@ -1,7 +1,7 @@
-"""T+1 momentum training + friction-aware walk-forward backtest.
+"""T+1 excess-return training + friction-aware walk-forward backtest.
 
 This script trains a binary LightGBM classifier on a configurable target
-(default: ``t1_open_next_close_positive``) and evaluates it with practical
+(default: ``t1_excess_positive``) and evaluates it with practical
 trading rules:
 
 1. Model runs after day D close, using D's features.
@@ -45,7 +45,19 @@ from ml.config import MODEL_DIR, REPORT_DIR
 from ml.dataset_t1 import T1_FEATURE_COLUMNS, build_t1_dataset
 
 
-DEFAULT_TARGET = "t1_close_positive"
+DEFAULT_TARGET = "t1_excess_positive"
+TARGET_ALIASES = {
+    "t1_close_positive": "t1_excess_positive",
+    "t1_open_to_close_positive": "t1_open_to_close_excess_positive",
+    "t1_open_next_close_positive": "t1_open_next_close_excess_positive",
+}
+VALID_TARGET_COLUMNS = [
+    "t1_open_to_close_excess_positive",
+    "t1_open_next_close_excess_positive",
+    "t1_excess_positive",
+    "t1_hit_3pct",
+]
+CLI_TARGET_CHOICES = VALID_TARGET_COLUMNS + list(TARGET_ALIASES)
 DEFAULT_TOP_N = 10
 DEFAULT_MIN_PROB = 0.60
 DEFAULT_TAKE_PROFIT = 0.05  # 5% take-profit
@@ -56,6 +68,10 @@ DEFAULT_VAL_MONTHS = 3
 DEFAULT_TEST_MONTHS = 1
 DEFAULT_NUM_ROUNDS = 800
 DEFAULT_EARLY_STOPPING = 50
+
+
+def resolve_target_name(target: str) -> str:
+    return TARGET_ALIASES.get(target, target)
 
 
 @dataclass
@@ -150,6 +166,7 @@ def train_binary_fold(
     target_col: str = DEFAULT_TARGET,
 ) -> tuple[lgb.Booster, dict]:
     """Train one T+1 binary classifier fold."""
+    target_col = resolve_target_name(target_col)
     X_train = train_df[feature_cols].values
     y_train = train_df[target_col].astype(int).values
     X_val = val_df[feature_cols].values
@@ -343,6 +360,7 @@ def score_fold_predictions(
     target_col: str = DEFAULT_TARGET,
 ) -> pd.DataFrame:
     """Attach predicted hit probabilities to one fold."""
+    target_col = resolve_target_name(target_col)
     base_cols = [
         "ticker", "Date", "Close", "Open",
         "t1_open_return", "t1_close_return", "t1_high_return", "t1_low_return",
@@ -372,6 +390,7 @@ def evaluate_scored_fold(
     entry_mode: str | None = None,
 ) -> tuple[FoldSummary, list[dict], list[dict]]:
     """Replay one scored fold under a given trading rule set."""
+    target_col = resolve_target_name(target_col)
     if entry_mode is None:
         entry_mode = "open" if ("open_next_close" in target_col or "open_to_close" in target_col) else "close"
     y_true = scored[target_col].astype(int).values
@@ -612,6 +631,7 @@ def _train_final_model(
 ) -> tuple[str | None, str | None, str | None]:
     if not save_model:
         return None, None, None
+    target_col = resolve_target_name(target_col)
 
     cutoff = pd.Timestamp(dataset["Date"].max()).replace(day=1) - relativedelta(months=val_months)
     train_df = dataset[dataset["Date"] < cutoff].copy()
@@ -680,8 +700,9 @@ def run_t1_backtest(
     save_reports: bool = True,
 ):
     """Train and backtest the T+1 binary classifier."""
+    target = resolve_target_name(target)
     print("=" * 78)
-    print(f"  T+1 Momentum Backtest (target: {target})")
+    print(f"  T+1 Excess-Return Backtest (target: {target})")
     print("=" * 78)
     print(
         f"  Rules: top={top_n}, min_prob={min_prob:.2f}, "
@@ -849,7 +870,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--target",
         default=DEFAULT_TARGET,
-        choices=["t1_open_to_close_positive", "t1_open_next_close_positive", "t1_close_positive", "t1_hit_3pct"],
+        choices=CLI_TARGET_CHOICES,
         help="Binary target column for the classifier.",
     )
     parser.add_argument("--top", type=int, default=DEFAULT_TOP_N, help="Top N names to trade each day.")

@@ -24,9 +24,11 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from ml.config import REPORT_DIR
 from ml.dataset_t1 import build_t1_dataset
 from scripts.train_t1_backtest import (
+    CLI_TARGET_CHOICES,
     _ensure_feature_columns,
     evaluate_scored_fold,
     iter_t1_walk_forward_splits,
+    resolve_target_name,
     score_fold_predictions,
     summarize_backtest_overall,
     train_binary_fold,
@@ -69,9 +71,10 @@ def prepare_scored_folds(
     val_months: int,
     test_months: int,
     device: str,
-    target: str = "t1_close_positive",
+    target: str = "t1_excess_positive",
 ) -> tuple[pd.DataFrame, list[str], list[dict], str]:
     """Train one walk-forward score cache for later rule replays."""
+    target = resolve_target_name(target)
     dataset = build_t1_dataset(max_stocks=max_stocks, verbose=True)
     dataset["Date"] = pd.to_datetime(dataset["Date"])
     dataset = dataset.sort_values(["Date", "ticker"]).reset_index(drop=True)
@@ -113,7 +116,7 @@ def prepare_scored_folds(
 
 def run_t1_param_sweep(
     max_stocks: int = 0,
-    target: str = "t1_close_positive",
+    target: str = "t1_excess_positive",
     take_profits: list[float] | None = None,
     stop_losses: list[float | None] | None = None,
     min_probs: list[float] | None = None,
@@ -128,6 +131,7 @@ def run_t1_param_sweep(
     top_results: int = 15,
 ) -> pd.DataFrame:
     """Sweep trading-rule parameters on top of one scored fold cache."""
+    target = resolve_target_name(target)
     take_profits = take_profits or DEFAULT_TAKE_PROFITS
     stop_losses = stop_losses or DEFAULT_STOP_LOSSES
     min_probs = min_probs or DEFAULT_MIN_PROBS
@@ -296,8 +300,8 @@ if __name__ == "__main__":
     parser.add_argument("--max-stocks", type=int, default=0, help="Limit the universe size for quick tests.")
     parser.add_argument(
         "--target",
-        default="t1_close_positive",
-        choices=["t1_open_to_close_positive", "t1_open_next_close_positive", "t1_close_positive", "t1_hit_3pct"],
+        default="t1_excess_positive",
+        choices=CLI_TARGET_CHOICES,
         help="Binary target column for the classifier.",
     )
     parser.add_argument(

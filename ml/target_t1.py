@@ -17,13 +17,13 @@ T1_LABEL_COLUMNS = [
     "t1_high_return",
     "t1_low_return",
     "t1_hit_3pct",
-    "t1_close_positive",
+    "t1_excess_positive",
     "t1_open_to_close_return",
-    "t1_open_to_close_positive",
+    "t1_open_to_close_excess_positive",
     "t1_high_from_open",
     "t1_low_from_open",
     "t1_open_next_close_return",
-    "t1_open_next_close_positive",
+    "t1_open_next_close_excess_positive",
 ]
 
 
@@ -85,7 +85,7 @@ def compute_t1_targets(
 
     # close-to-close positive: did next day's close beat market?
     close_mask = out["t1_close_return"].notna()
-    out["t1_close_positive"] = np.where(
+    out["t1_excess_positive"] = np.where(
         close_mask,
         (out["t1_close_return"] > 0).astype(np.int8),
         np.nan,
@@ -98,7 +98,7 @@ def compute_t1_targets(
     ).astype(np.float32)
 
     otc_mask = out["t1_open_to_close_return"].notna()
-    out["t1_open_to_close_positive"] = np.where(
+    out["t1_open_to_close_excess_positive"] = np.where(
         otc_mask,
         (out["t1_open_to_close_return"] > 0).astype(np.int8),
         np.nan,
@@ -119,7 +119,7 @@ def compute_t1_targets(
     ).astype(np.float32)
 
     onc_mask = out["t1_open_next_close_return"].notna()
-    out["t1_open_next_close_positive"] = np.where(
+    out["t1_open_next_close_excess_positive"] = np.where(
         onc_mask,
         (out["t1_open_next_close_return"] > 0).astype(np.int8),
         np.nan,
