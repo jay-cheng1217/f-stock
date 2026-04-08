@@ -672,6 +672,7 @@ def _train_final_model(
             str(pd.Timestamp(dataset["Date"].max()).date()),
         ],
         "target": target_col,
+        "cross_sectional_zscore": True,
         "trade_rules": backtest_meta["trade_rules"],
         "walk_forward": backtest_meta["walk_forward"],
         "backtest_summary": backtest_meta["overall"],
