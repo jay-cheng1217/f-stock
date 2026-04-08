@@ -352,6 +352,7 @@
     <div class="tab" data-section="rankings" onclick="switchTab('rankings')">排行榜</div>
     <div class="tab" data-section="stock-detail" onclick="switchTab('stock-detail')">個股分析</div>
     <div class="tab" data-section="backtest" onclick="switchTab('backtest')">回測績效</div>
+    <div class="tab" data-section="shadow" onclick="switchTab('shadow')">Shadow 對照</div>
     <div class="tab" data-section="monitor" onclick="switchTab('monitor')">模型監控</div>
 </div>
 
@@ -644,6 +645,36 @@
     </div>
 
     <!-- ===== Model Monitor ===== -->
+    <div id="section-shadow" class="section">
+        <h2 style="margin-bottom:12px;">Shadow vs Production 對照</h2>
+        <div id="shadowStatus" style="margin-bottom:12px;"></div>
+        <div class="grid-4" id="shadowKpiCards" style="margin-bottom:16px;"></div>
+        <div class="grid-2" style="gap:16px;margin-bottom:16px;">
+            <div class="card">
+                <h3 style="margin-bottom:10px;">Production (V2.2)</h3>
+                <div id="shadowProdSummary"></div>
+                <h4 style="margin:12px 0 8px;color:#8899aa;font-size:13px;">最新 Top 30</h4>
+                <table class="data-table">
+                    <thead><tr><th>#</th><th>股票</th><th>產業</th><th>推薦</th></tr></thead>
+                    <tbody id="shadowProdPositions"></tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom:10px;">Shadow (V3.0)</h3>
+                <div id="shadowShadowSummary"></div>
+                <h4 style="margin:12px 0 8px;color:#8899aa;font-size:13px;">最新 Top 30</h4>
+                <table class="data-table">
+                    <thead><tr><th>#</th><th>股票</th><th>產業</th><th>推薦</th></tr></thead>
+                    <tbody id="shadowShadowPositions"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <h3 style="margin-bottom:10px;">選股重疊分析</h3>
+            <div id="shadowOverlap"></div>
+        </div>
+    </div>
+
     <div id="section-monitor" class="section">
         <h2 style="margin-bottom:12px;">T+1 模型監控儀表板</h2>
         <div id="monitorAlerts" style="margin-bottom:12px;"></div>
@@ -725,6 +756,7 @@ function switchTab(name) {
     if (name === 'value-screen') loadValueScreen();
     if (name === 'rankings') loadRanking('foreign_buy');
     if (name === 'backtest') loadBacktest();
+    if (name === 'shadow') loadShadow();
     if (name === 'monitor') loadMonitor();
 }
 
@@ -1965,6 +1997,128 @@ function renderInstitutionalChart(data) {
 }
 
 // ===== Monitor =====
+// ===== Shadow Mode =====
+async function loadShadow() {
+    try {
+        const res = await fetch(API + '/api/shadow/report');
+        const data = await res.json();
+        if (data.status === 'not_ready' || data.status === 'error') {
+            document.getElementById('shadowStatus').innerHTML =
+                `<div class="card" style="color:#ffaa00;">Shadow Mode 尚未產生報告。請先執行每日 pipeline 一次。</div>`;
+            document.getElementById('shadowKpiCards').innerHTML = '';
+            return;
+        }
+
+        const prod = data.production || {};
+        const shad = data.shadow || {};
+        const comp = data.comparison || {};
+        const overlap = data.selection_overlap || {};
+        const ps = prod.summary || {};
+        const ss = shad.summary || {};
+        const pm = prod.monitor || {};
+        const sm = shad.monitor || {};
+
+        // Status banner
+        document.getElementById('shadowStatus').innerHTML =
+            `<div style="font-size:12px;color:#8899aa;">報告產生時間: ${data.generated_at || '-'} &nbsp;|&nbsp; Production: <strong style="color:#4a9eff;">${prod.label || '-'}</strong> &nbsp;|&nbsp; Shadow: <strong style="color:#e9a23b;">${shad.label || '-'}</strong></div>`;
+
+        // KPI delta cards
+        function deltaCard(label, delta, unit, invertColor) {
+            if (delta == null) return `<div class="card"><div style="color:#88aacc;font-size:12px;">${label}</div><div style="font-size:18px;font-weight:bold;color:#667;">-</div></div>`;
+            const val = (delta * 100).toFixed(2);
+            const positive = invertColor ? delta < 0 : delta > 0;
+            const color = delta === 0 ? '#8899aa' : positive ? '#44cc88' : '#ff4444';
+            const sign = delta > 0 ? '+' : '';
+            return `<div class="card"><div style="color:#88aacc;font-size:12px;">${label}</div><div style="font-size:18px;font-weight:bold;color:${color};">${sign}${val}${unit}</div><div style="color:#667;font-size:11px;">Shadow - Prod</div></div>`;
+        }
+
+        document.getElementById('shadowKpiCards').innerHTML = [
+            deltaCard('Avg 實現報酬 Delta', comp.avg_realized_return_pct_delta, '%', false),
+            deltaCard('Avg MDD Delta', comp.avg_max_drawdown_pct_delta, '%', true),
+            deltaCard('停損率 Delta', comp.stop_loss_rate_delta, '%', true),
+            deltaCard('Book MDD Delta', comp.book_mdd_pct_delta, '%', true),
+        ].join('');
+
+        // Slot summary helper
+        function renderSlotSummary(slot, elId) {
+            const s = slot.summary || {};
+            const m = slot.monitor || {};
+            if (!slot.exists) {
+                document.getElementById(elId).innerHTML = '<div style="color:#ff4444;">帳本尚未建立</div>';
+                return;
+            }
+            const rows = [
+                ['總 Runs', s.total_runs || 0],
+                ['總部位', s.total_positions || 0],
+                ['Open', s.open_positions || 0],
+                ['Closed', s.closed_positions || 0],
+                ['Stopped Out', s.stopped_out_positions || 0],
+                ['停損率', s.stop_loss_rate != null ? (s.stop_loss_rate * 100).toFixed(1) + '%' : '-'],
+                ['Avg 實現報酬', s.avg_realized_return_pct != null ? s.avg_realized_return_pct.toFixed(2) + '%' : '-'],
+                ['Avg MDD', s.avg_max_drawdown_pct != null ? s.avg_max_drawdown_pct.toFixed(2) + '%' : '-'],
+                ['Book MDD', m.book_mdd_pct != null ? (m.book_mdd_pct * 100).toFixed(2) + '%' : '-'],
+                ['最新 Mark 日', m.latest_mark_date || '-'],
+            ];
+            document.getElementById(elId).innerHTML = `<table style="font-size:13px;width:100%;"><tbody>${rows.map(([k,v]) =>
+                `<tr><td style="color:#8899aa;padding:3px 8px 3px 0;">${k}</td><td style="font-weight:600;">${v}</td></tr>`
+            ).join('')}</tbody></table>`;
+        }
+
+        renderSlotSummary(prod, 'shadowProdSummary');
+        renderSlotSummary(shad, 'shadowShadowSummary');
+
+        // Positions tables
+        function renderPositions(positions, elId) {
+            if (!positions || !positions.length) {
+                document.getElementById(elId).innerHTML = '<tr><td colspan="4" style="text-align:center;color:#8899aa;">尚無持倉</td></tr>';
+                return;
+            }
+            document.getElementById(elId).innerHTML = positions.map(p =>
+                `<tr><td>${p.selection_rank}</td><td>${tickerLink(p.ticker)}</td><td>${p.sector || '-'}</td><td>${recBadge(p.recommendation)}</td></tr>`
+            ).join('');
+        }
+
+        const prodRun = prod.latest_run || {};
+        const shadRun = shad.latest_run || {};
+        renderPositions(prodRun.positions, 'shadowProdPositions');
+        renderPositions(shadRun.positions, 'shadowShadowPositions');
+
+        // Overlap analysis
+        const olHtml = `
+            <div class="grid-3" style="gap:12px;margin-bottom:12px;">
+                <div style="text-align:center;">
+                    <div style="color:#88aacc;font-size:12px;">重疊股數</div>
+                    <div style="font-size:28px;font-weight:bold;">${overlap.overlap_count ?? '-'}</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="color:#88aacc;font-size:12px;">重疊率 (vs Prod)</div>
+                    <div style="font-size:28px;font-weight:bold;">${overlap.overlap_ratio_vs_prod != null ? (overlap.overlap_ratio_vs_prod * 100).toFixed(1) + '%' : '-'}</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="color:#88aacc;font-size:12px;">聯集股數</div>
+                    <div style="font-size:28px;font-weight:bold;">${overlap.union_count ?? '-'}</div>
+                </div>
+            </div>
+            ${overlap.overlap_tickers && overlap.overlap_tickers.length
+                ? `<div style="font-size:13px;margin-bottom:8px;"><span style="color:#88aacc;">共同持股：</span>${overlap.overlap_tickers.map(t => tickerLink(t)).join('、')}</div>`
+                : ''}
+            <div style="display:flex;gap:24px;margin-top:12px;">
+                <div style="flex:1;">
+                    <div style="color:#4a9eff;font-size:12px;margin-bottom:6px;">僅 Production (${(overlap.production_only||[]).length})</div>
+                    <div style="font-size:12px;line-height:1.8;">${(overlap.production_only||[]).map(t => tickerLink(t)).join('、') || '-'}</div>
+                </div>
+                <div style="flex:1;">
+                    <div style="color:#e9a23b;font-size:12px;margin-bottom:6px;">僅 Shadow (${(overlap.shadow_only||[]).length})</div>
+                    <div style="font-size:12px;line-height:1.8;">${(overlap.shadow_only||[]).map(t => tickerLink(t)).join('、') || '-'}</div>
+                </div>
+            </div>`;
+        document.getElementById('shadowOverlap').innerHTML = olHtml;
+
+    } catch(e) {
+        document.getElementById('shadowStatus').innerHTML = `<div class="card" style="color:#ff4444;">載入失敗: ${e.message}</div>`;
+    }
+}
+
 async function loadMonitor() {
     try {
         const res = await fetch(API + '/api/monitor/t1');

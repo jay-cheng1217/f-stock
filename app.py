@@ -28,7 +28,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 
-from backend.routers import stocks, market, charts, rankings, scoring, news, t1, value
+from backend.routers import stocks, market, charts, rankings, scoring, news, t1, value, shadow
 from backend.routers.t1 import _NAME_LOOKUP
 
 # ==============================================================================
@@ -1054,6 +1054,7 @@ app.include_router(scoring.router)
 app.include_router(news.router)
 app.include_router(t1.router)
 app.include_router(value.router)
+app.include_router(shadow.router)
 
 
 # ==============================================================================
