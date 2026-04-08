@@ -267,13 +267,7 @@ def _run_phase1_tw_data() -> list[tuple[str, bool]]:
     ingest_ok = run_step("Ingest refreshed data into DuckDB", smart_update.exec_ingest)
     step_results.append(("Ingest refreshed data into DuckDB", ingest_ok))
 
-    # Restart web server so updated data is available overnight
-    try:
-        start_web_and_tunnel()
-        LOGGER.info("DONE  Restart web server after phase-1")
-    except Exception:
-        LOGGER.exception("FAIL  Restart web server after phase-1")
-
+    # Web server 保持關閉，Phase 2 完成後再開
     return step_results
 
 
