@@ -28,15 +28,17 @@ def _collect_context() -> str:
 
     sections: list[str] = []
 
-    # 1. 20D 預測 Top 10
+    # 1. 20D 預測 Top 10（只看最終推薦的，非 raw predictions）
     pred_files = sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
     pred_files = [f for f in pred_files if "shadow" not in f and "t1" not in f]
     if pred_files:
         df = pd.read_csv(pred_files[-1], dtype={"ticker": str})
         pred_date = df["date"].iloc[0] if "date" in df.columns else "unknown"
-        top10 = df.head(10)
-        lines = [f"預測日期: {pred_date}", "20D 模型 Top 10:"]
-        for _, r in top10.iterrows():
+        buys = df[df["recommendation"].isin(["強力買進", "建議買進"])].head(10)
+        total_buys = len(df[df["recommendation"].isin(["強力買進", "建議買進"])])
+        watch = len(df[df["recommendation"] == "觀望"])
+        lines = [f"預測日期: {pred_date}", f"20D 模型推薦: {total_buys} 檔買進, {watch} 檔觀望", "Top 10 推薦:"]
+        for _, r in buys.iterrows():
             rec = r.get("recommendation", "")
             ret = r.get("pred_return_20d", None)
             ret_str = f"{float(ret)*100:.1f}%" if pd.notna(ret) else "-"
@@ -149,6 +151,12 @@ def generate_daily_summary() -> str:
                 "role": "user",
                 "content": f"""你是台股投資分析助理。根據以下今日系統數據，用繁體中文撰寫一份精簡的每日投資總結。
 
+重要背景：
+- 「20D 模型」是中期（20 個交易日）波段持股，看的是 pred_return_20d
+- 「T+1 模型」是隔日沖（今天買、明天賣），看的是 hit_prob_3pct 和 selected_for_trade
+- 兩個模型完全獨立，推薦的股票通常不同
+- 只有 selected_for_trade=True 的才是 T+1 實際選入交易的標的
+
 要求：
 1. 用 HTML 格式輸出（不要包含 <html>/<body> 標籤，只要內容）
 2. 分成 3 段：【今日盤勢】【模型觀點】【風險提示】
@@ -156,6 +164,7 @@ def generate_daily_summary() -> str:
 4. 如果有大盤熔斷或異常狀況，優先強調
 5. 提到具體股票代號時用粗體
 6. 不要編造數據中沒有的資訊
+7. 模型觀點段必須分開講 20D 和 T+1，不要混在一起
 
 今日數據：
 {context}""",
