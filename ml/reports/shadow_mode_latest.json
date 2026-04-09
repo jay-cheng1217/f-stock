@@ -1,0 +1,312 @@
+{
+  "generated_at": "2026-04-09 13:42:53",
+  "production": {
+    "slot": "production",
+    "label": "v2.2-main",
+    "db_path": "F:\\stock\\paper_portfolio.db",
+    "exists": true,
+    "summary": {
+      "total_runs": 14,
+      "total_positions": 420,
+      "pending_positions": 30,
+      "open_positions": 255,
+      "closed_positions": 0,
+      "stopped_out_positions": 135,
+      "total_marks": 2468,
+      "observed_positions": 390,
+      "avg_max_drawdown_pct": -0.09048004773695531,
+      "breach_10pct_count": 169,
+      "breach_10pct_first5d_count": 153,
+      "avg_realized_return_pct": -0.12200172093027022,
+      "avg_closed_max_drawdown_pct": -0.13253814687967172,
+      "avg_stopped_return_pct": -0.12200172093027022,
+      "stopped_out_count": 135,
+      "stop_loss_rate": 0.32142857142857145,
+      "breach_10pct_rate": 0.43333333333333335
+    },
+    "latest_run": {
+      "run_id": 17,
+      "prediction_date": "2026-04-08",
+      "prediction_path": "F:\\stock\\ml\\models\\predictions_2026-04-08.csv",
+      "rule_version": "v2.1-balanced",
+      "top_n": 30,
+      "tickers": [
+        "2243",
+        "2344",
+        "4989",
+        "3081",
+        "3131",
+        "3049",
+        "5351",
+        "4927",
+        "2360",
+        "3533",
+        "5475",
+        "3017",
+        "6223",
+        "3529",
+        "8046",
+        "2485",
+        "3491",
+        "6770",
+        "8299",
+        "3563",
+        "2345",
+        "1802",
+        "3653",
+        "3054",
+        "6442",
+        "8021",
+        "3498",
+        "6944",
+        "3535",
+        "4760"
+      ],
+      "positions": [
+        {
+          "selection_rank": 1,
+          "ticker": "2243",
+          "sector": "汽車工業",
+          "recommendation": "強力買進"
+        },
+        {
+          "selection_rank": 2,
+          "ticker": "2344",
+          "sector": "半導體業",
+          "recommendation": "強力買進"
+        },
+        {
+          "selection_rank": 3,
+          "ticker": "4989",
+          "sector": "電子零組件業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 4,
+          "ticker": "3081",
+          "sector": "通信網路業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 5,
+          "ticker": "3131",
+          "sector": "其他電子業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 6,
+          "ticker": "3049",
+          "sector": "光電業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 7,
+          "ticker": "5351",
+          "sector": "半導體業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 8,
+          "ticker": "4927",
+          "sector": "電子零組件業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 9,
+          "ticker": "2360",
+          "sector": "其他電子業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 10,
+          "ticker": "3533",
+          "sector": "電子零組件業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 11,
+          "ticker": "5475",
+          "sector": "電子零組件業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 12,
+          "ticker": "3017",
+          "sector": "電腦及週邊設備業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 13,
+          "ticker": "6223",
+          "sector": "半導體業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 14,
+          "ticker": "3529",
+          "sector": "半導體業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 15,
+          "ticker": "8046",
+          "sector": "電子零組件業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 16,
+          "ticker": "2485",
+          "sector": "通信網路業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 17,
+          "ticker": "3491",
+          "sector": "通信網路業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 18,
+          "ticker": "6770",
+          "sector": "半導體業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 19,
+          "ticker": "8299",
+          "sector": "半導體業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 20,
+          "ticker": "3563",
+          "sector": "光電業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 21,
+          "ticker": "2345",
+          "sector": "通信網路業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 22,
+          "ticker": "1802",
+          "sector": "玻璃陶瓷",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 23,
+          "ticker": "3653",
+          "sector": "電子零組件業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 24,
+          "ticker": "3054",
+          "sector": "食品工業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 25,
+          "ticker": "6442",
+          "sector": "通信網路業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 26,
+          "ticker": "8021",
+          "sector": "其他電子業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 27,
+          "ticker": "3498",
+          "sector": "其他電子業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 28,
+          "ticker": "6944",
+          "sector": "綠能環保",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 29,
+          "ticker": "3535",
+          "sector": "光電業",
+          "recommendation": "建議買進"
+        },
+        {
+          "selection_rank": 30,
+          "ticker": "4760",
+          "sector": "其他電子業",
+          "recommendation": "建議買進"
+        }
+      ]
+    },
+    "monitor": {
+      "latest_mark_date": "2026-04-08",
+      "latest_book_value": 1.0421560602483328,
+      "book_mdd_pct": -0.06493512899584741
+    }
+  },
+  "shadow": {
+    "slot": "shadow",
+    "label": "v3.1-industry-tdcc",
+    "db_path": "F:\\stock\\paper_portfolio_shadow_v23.db",
+    "exists": false,
+    "summary": {},
+    "latest_run": {},
+    "monitor": {}
+  },
+  "selection_overlap": {
+    "production_date": "2026-04-08",
+    "shadow_date": null,
+    "same_prediction_date": false,
+    "overlap_count": 0,
+    "overlap_ratio_vs_prod": 0.0,
+    "overlap_ratio_vs_shadow": null,
+    "union_count": 30,
+    "production_only": [
+      "1802",
+      "2243",
+      "2344",
+      "2345",
+      "2360",
+      "2485",
+      "3017",
+      "3049",
+      "3054",
+      "3081",
+      "3131",
+      "3491",
+      "3498",
+      "3529",
+      "3533",
+      "3535",
+      "3563",
+      "3653",
+      "4760",
+      "4927",
+      "4989",
+      "5351",
+      "5475",
+      "6223",
+      "6442",
+      "6770",
+      "6944",
+      "8021",
+      "8046",
+      "8299"
+    ],
+    "shadow_only": [],
+    "overlap_tickers": []
+  },
+  "comparison": {
+    "avg_realized_return_pct_delta": null,
+    "avg_max_drawdown_pct_delta": null,
+    "stop_loss_rate_delta": null,
+    "book_mdd_pct_delta": null
+  }
+}
