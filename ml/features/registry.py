@@ -27,6 +27,7 @@ from ml.features.tdcc import TDCC_FEATURE_COLS
 from ml.features.news import NEWS_FEATURE_COLS
 from ml.features.balance_sheet import BALANCE_SHEET_FEATURE_COLS
 from ml.features.entry import ENTRY_FEATURE_COLS
+from ml.features.industry import INDUSTRY_FEATURE_COLS
 
 
 # --- 特徵群組定義 ---
@@ -108,6 +109,12 @@ FEATURE_REGISTRY: Dict[str, dict] = {
         "group": "entry",
         "requires": [DAILY_K_DIR],
         "description": "進場信號特徵：法人成本、量能密集帶、階段辨識、共振評分",
+    },
+    "industry": {
+        "columns": INDUSTRY_FEATURE_COLS,
+        "group": "industry",
+        "requires": [DAILY_K_DIR],
+        "description": "產業聚合先行特徵：產業資金流、營收動能、領頭羊效應、大戶群體動態",
     },
 }
 

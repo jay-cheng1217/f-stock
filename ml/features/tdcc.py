@@ -95,6 +95,40 @@ def compute_tdcc_features(
         ).astype(np.float32)
     )
 
+    # --- 大戶連續增持週數 (先行訊號：靜默吸籌偵測) ---
+    # whale_pct_chg > 0 的連續週數；遇到下降就歸零
+    chg = tk["whale_pct_chg"].fillna(0)
+    streak = pd.Series(0, index=tk.index, dtype=np.int8)
+    for i in range(1, len(streak)):
+        streak.iloc[i] = streak.iloc[i - 1] + 1 if chg.iloc[i] > 0 else 0
+    tk["whale_acc_weeks"] = streak.astype(np.float32)
+
+    # --- 大戶 8 週趨勢 (中期佈局方向) ---
+    tk["whale_trend_8w"] = (
+        tk["whale_pct"].rolling(8, min_periods=4).apply(
+            lambda x: np.polyfit(range(len(x)), x, 1)[0] if len(x) >= 4 else np.nan,
+            raw=False,
+        ).astype(np.float32)
+    )
+
+    # --- 大戶吸籌加速度 (trend 斜率的斜率) ---
+    # 正值 = 增持在加速（二階導數）
+    tk["whale_acc_momentum"] = tk["whale_trend_4w"].diff().astype(np.float32)
+
+    # --- 大戶持股 12 週百分位 (歷史相對位置) ---
+    tk["whale_pct_rank_12w"] = (
+        tk["whale_pct"]
+        .rolling(12, min_periods=4)
+        .rank(pct=True)
+        .astype(np.float32)
+    )
+
+    # --- 散戶大戶背離 (散戶賣+大戶買=籌碼洗清完成) ---
+    # 正值越大 = 散戶出、大戶進的力道越強
+    tk["whale_retail_diverge"] = (
+        tk["whale_pct_chg"].fillna(0) - tk["retail_pct_chg"].fillna(0)
+    ).astype(np.float32)
+
     # --- 散戶出場指標：散戶持股比例的 12 週百分位排名 ---
     # 值越低 (趨近 0) 代表散戶持股創 12 週新低（籌碼洗清訊號）
     # 結合股價下跌可視為強力底部訊號
@@ -111,6 +145,9 @@ def compute_tdcc_features(
         "whale_pct_chg", "retail_pct_chg",
         "holders_chg_pct", "whale_retail_ratio", "whale_trend_4w",
         "retail_capitulation",
+        # 新增先行訊號
+        "whale_acc_weeks", "whale_trend_8w", "whale_acc_momentum",
+        "whale_pct_rank_12w", "whale_retail_diverge",
     ]
     tdcc_features = tk[feature_cols].copy()
 
@@ -207,4 +244,10 @@ TDCC_FEATURE_COLS = [
     "whale_retail_ratio",
     "whale_trend_4w",
     "retail_capitulation",   # 散戶持股 12 週百分位排名（低=籌碼洗清）
+    # 先行訊號特徵
+    "whale_acc_weeks",       # 大戶連續增持週數（靜默吸籌偵測）
+    "whale_trend_8w",        # 大戶 8 週中期趨勢
+    "whale_acc_momentum",    # 大戶吸籌加速度（二階導數）
+    "whale_pct_rank_12w",    # 大戶持股 12 週百分位
+    "whale_retail_diverge",  # 散戶大戶背離（正=籌碼集中）
 ]

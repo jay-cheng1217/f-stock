@@ -27,6 +27,7 @@ from ml.features.tdcc import compute_tdcc_features
 from ml.features.news import compute_news_features
 from ml.features.balance_sheet import compute_balance_sheet_features
 from ml.features.entry import compute_entry_features
+from ml.features.industry import compute_industry_features
 from ml.features.registry import get_available_features, get_feature_columns
 
 
@@ -673,6 +674,11 @@ def build_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
                 print("  後處理: 產業類股特徵...")
             dataset = compute_sector_features(dataset)
 
+        # 2a. 產業聚合先行特徵（需在 sector merge 後、有法人+營收+TDCC 後）
+        if verbose:
+            print("  後處理: 產業聚合先行特徵...")
+        dataset = compute_industry_features(dataset)
+
         # 2b. atr_pct 截面百分位排名（同一天跨股票排序，削弱波動度絕對值的宰制力）
         if "atr_pct" in dataset.columns:
             if verbose:
@@ -741,6 +747,11 @@ def build_latest_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.DataF
         if verbose:
             print("  後處理: 產業類股特徵...")
         snapshot = compute_sector_features(snapshot)
+
+    # 產業聚合先行特徵
+    if verbose:
+        print("  後處理: 產業聚合先行特徵...")
+    snapshot = compute_industry_features(snapshot)
 
     # atr_pct 截面百分位（snapshot 只有一天，直接 rank）
     if "atr_pct" in snapshot.columns:
