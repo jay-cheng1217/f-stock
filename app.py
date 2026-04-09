@@ -921,14 +921,20 @@ def _get_live_prediction_df():
         ):
             return _PREDICTION_CACHE["pred_df"].copy(), _PREDICTION_CACHE["meta"]
 
+    # 優先讀 pipeline 產出的 CSV — 確保 web、CSV、email 三端一致
+    csv_df, csv_meta = _load_predictions_csv_fallback()
+    if csv_df is not None:
+        with _PREDICTION_CACHE_LOCK:
+            if _PREDICTION_CACHE["context_key"] == context_key:
+                _PREDICTION_CACHE["pred_df"] = csv_df.copy()
+                _PREDICTION_CACHE["meta"] = csv_meta
+        return csv_df, csv_meta
+
+    # CSV 不存在時才即時重算
     try:
         snapshot, model, meta = _get_prediction_context()
     except RuntimeError:
-        # 快取建置中 → 用 CSV fallback
-        df, meta = _load_predictions_csv_fallback()
-        if df is not None:
-            return df, meta
-        raise  # 連 CSV 都沒有才報錯
+        raise
 
     pred_df = _build_live_prediction_df(snapshot, model, meta)
 
