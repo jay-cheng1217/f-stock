@@ -157,3 +157,9 @@
    未含在本批)。
 3. **T+1 目標名稱與校準口徑修正**:T+1 research-only 資產的目標命名與校準口徑
    需修正(SA 2026-09-23 指出,未含在本批)。
+
+4. **lineage 快速簽章對 git 操作過敏(SA 設計題,2026-09-30)**:`ml/snapshot_lineage.source_state`
+   的 `signature` 含 mtime_ns,git checkout/merge 重寫追蹤檔(內容不變)即擊落全部當日憑證,
+   名單 API 503 直到 Phase-2 重跑。方案候選:(a) fast signature 改用 (path,bytes,sha256)
+   並快取 sha 以 mtime 為快取鍵(mtime 變→重算 sha→相同則簽章不變);(b) 保留現狀但在
+   smart_update_auto 加「憑證健康檢查」告警。需 SA 評估 (a) 的效能成本(來源集含全市場日K)。

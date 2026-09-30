@@ -107,6 +107,13 @@
 - If the precheck aborts, stop and escalate. Model retirement requires explicit PM/SA approval, replacement pins or `model_selection.json` updates, registry validation, and required A/B evidence when production behavior can change.
 
 ## Git Commit Policy
+- **Git 分支操作會擊落 lineage 憑證(2026-09-30 事故)**:entry/prediction/snapshot 憑證的快速簽章
+  含來源檔 `mtime_ns`;`git checkout` 到舊 commit 再 merge 回來會把幾百個追蹤檔以相同內容重寫
+  (sha 不變、mtime 全變)→ 當日所有憑證失效 → 名單 API 503、canonical 產生器拒絕生成。
+  **鐵律**:(1) 在 live worktree 做任何會重寫追蹤檔的 git 操作(checkout 舊 commit/merge/reset/
+  rebase)後,必須立即重跑 Phase-2 重新認證,不可等排程;(2) 分支實驗一律用獨立 worktree;
+  (3) 不得以還原 mtime 的方式「修復」憑證(等同繞過完整性檢查,已被權限層擋下,正確路徑=重建)。
+  SA 待決:快速簽章是否改為「sha 相同即視為未變」以免 git 操作誤傷(見 TICKETS_post_review)。
 - **2026-09-30 快照重接**:遠端 main 曾因歷史含 4 顆 >100MB 快取 blob(GitHub 硬限)
   斷推數月,PM 裁示以當前狀態樹單 commit 重接遠端;**4 月~9/30 的完整逐筆歷史封存於
   本地 tag `archive/main-full-history-20260930`**(commit hash 全數保全,稽核文件引用的
