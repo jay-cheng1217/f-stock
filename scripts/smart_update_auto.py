@@ -1999,6 +1999,13 @@ def exec_commit_daily_products() -> None:
     r = _git("commit", "-m", msg)
     if r.returncode == 0:
         LOGGER.info("daily products commit: %d files", len(staged))
+        # best-effort 推遠端(2026-09-30 快照重接後防再漂移;離線/失敗只警告)
+        p = _git("push", "origin", "main")
+        if p.returncode == 0:
+            LOGGER.info("daily products pushed to origin/main")
+        else:
+            LOGGER.warning("daily products push failed (will retry next day): %s",
+                           (p.stderr or p.stdout or "")[-200:])
     else:
         _git("reset")  # 提交失敗時還原 staging,不留半套狀態
         LOGGER.warning("daily products commit failed: %s", (r.stderr or r.stdout or "")[-300:])
