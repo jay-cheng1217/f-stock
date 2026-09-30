@@ -107,6 +107,11 @@
 - If the precheck aborts, stop and escalate. Model retirement requires explicit PM/SA approval, replacement pins or `model_selection.json` updates, registry validation, and required A/B evidence when production behavior can change.
 
 ## Git Commit Policy
+- **2026-09-30 快照重接**:遠端 main 曾因歷史含 4 顆 >100MB 快取 blob(GitHub 硬限)
+  斷推數月,PM 裁示以當前狀態樹單 commit 重接遠端;**4 月~9/30 的完整逐筆歷史封存於
+  本地 tag `archive/main-full-history-20260930`**(commit hash 全數保全,稽核文件引用的
+  舊 hash 到該 tag 下查;此 tag 含大檔不可推遠端)。`ml/reports/cache/`、
+  `ml/models/_quarantine_dirty_cache/` 已 gitignore,>100MB 產物永不入版控。
 - **main 是唯一長駐分支(2026-09-30 定調,線上/排程皆以 main 為準)**:戰役/研究分支
   結束時必須 fast-forward 或 merge 回 main 並刪除,不得留著繼續長工作——排程自動收檔
   提交在「當前 checked-out 分支」,漂移案例:codex/strategy-integrity-20260906 於 9/6
