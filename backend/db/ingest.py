@@ -520,7 +520,13 @@ def ingest_all():
             except Exception:
                 pass
             errors[key] = f"{type(exc).__name__}: {exc}"
-            print(f"[ingest] ⚠️ {key} 失敗,已隔離不連累其他表: {errors[key]}")
+            # 2026-09-30:cp950 主控台印 emoji 會 UnicodeEncodeError 炸掉整個 ingest 子程序、
+            # 吞掉真正的錯誤訊息;警告只用 ASCII 標記,訊息本身以 errors= 'replace' 保底輸出
+            msg = f"[ingest] [WARN] {key} failed, isolated from other tables: {errors[key]}"
+            try:
+                print(msg)
+            except UnicodeEncodeError:
+                print(msg.encode("ascii", "replace").decode("ascii"))
 
     # stock_list 依賴 daily_k(+financials);daily_k 成功才重建,避免用舊資料覆蓋
     if "daily_k" in results:
