@@ -338,3 +338,16 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
   接線遲至 2026-08-29 才補上(generate_entry_candidates.py 雷達 overlay,純標註
   不動排序;>4 天過期不標)——此前產出無消費者。
   報告:ml/reports/backtest_disposition_release_20260708.md
+6. BT-rere-pre-trust-accumulation(2026-09-30,「外資未倒貨月線盤整」型第 3 例達標開票;
+   台表科/瑞耘/鈦昇同型)。條件=貼MA20±5%+量縮<1.2+>MA60+外資20日&5日淨買>0+投信20日≤0,
+   20 日 cooldown,對照組 CONTROL=同樣貼線量縮但不管法人,BASE=現行蹲點型(補同 cooldown)。
+   **判決:❌ 不開新子型態**——PRE_TRUST +4.27%/38.5%/左尾3.4% vs CONTROL +3.76%/38.3%/
+   左尾3.6%,「外資淨買+投信未進」條件邊際貢獻僅 +0.5pp、勝率與尾部無差,她三役的 edge
+   在選股(情報+籌碼K)不在此流量條件(與三味補驗/liquidity-floor 同結論)。
+   **⚠️ 附帶重大發現(列入下次策略審查議程,現階段不動 gate)**:現行蹲點型的核心過濾
+   (深洗盤≥10%+外資由賣轉買拐點)**跑輸同類盤整 base rate**:BASE +3.20%/33.8%/左尾9.9%
+   vs CONTROL +3.76%/38.3%/左尾3.6%,2021-2024 每年皆輸、僅 2020/2026 大多頭略勝,
+   尾部風險 2.7 倍——「深洗盤+拐點」在集中尾部風險而非增加報酬。此發現與 9/6 審查
+   「rere 邊際在裁量非機械」一致;forward 驗證進行中不改條件,待完整 60 日 cohort 與
+   PM 審查後決定 lane 條件是否重構(候選方向:去拐點要求、以盤整 base + 產業/大戶排序取代)。
+   明細 ml/reports/bt_rere_pre_trust_accumulation.csv。

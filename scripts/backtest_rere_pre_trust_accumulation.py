@@ -99,6 +99,17 @@ def run_one(tk: str, k: pd.DataFrame, rows: list) -> None:
             continue
         rows.append({"ticker": tk, "signal_date": k["Date"].iloc[t], "year": k["Date"].iloc[t][:4],
                      "grp": "BASE", "wash_bucket": "w>=10%", "ret": r})
+    # CONTROL:同樣貼MA20+量縮+>MA60(不管外資/投信),同 cooldown——隔離「外資淨買+投信未進」的貢獻
+    last_t = -10_000
+    for t in np.where(common.fillna(False).values)[0]:
+        if t - last_t < COOLDOWN:
+            continue
+        r = _ret(k, c, ma60, events, t, n)
+        if r is None:
+            continue
+        last_t = t
+        rows.append({"ticker": tk, "signal_date": k["Date"].iloc[t], "year": k["Date"].iloc[t][:4],
+                     "grp": "CONTROL", "wash_bucket": "", "ret": r})
 
 
 rows: list[dict] = []
@@ -132,6 +143,7 @@ def _line(name, v):
 
 print(f"\n=== BT-rere-pre-trust-accumulation(adj 模式,訊號 {len(df)} 筆)===")
 print(_line("BASE(蹲點型現行)", df[df.grp == "BASE"]["ret"].dropna()))
+print(_line("CONTROL(貼線量縮,不管法人)", df[df.grp == "CONTROL"]["ret"].dropna()))
 pt = df[df.grp == "PRE_TRUST"]
 print(_line("PRE_TRUST(全部)", pt["ret"].dropna()))
 for b in ("w<4%", "w4-8%", "w8-10%", "w>=10%"):
