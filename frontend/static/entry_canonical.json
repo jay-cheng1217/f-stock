@@ -1,7 +1,7 @@
 {
   "trade_date": "2026-09-30",
   "as_of_date": "2026-09-29",
-  "generated_at": "2026-09-30T08:50:14",
+  "generated_at": "2026-09-30T13:39:49",
   "data_status": "OK",
   "data_warnings": [],
   "special_status": {
@@ -415,10 +415,30 @@
       "stale": "",
       "reason": "貼MA20+11% 量2.5x RSI72 外資20d+2256張",
       "source_date": "2026-09-29"
+    },
+    {
+      "priority": "19",
+      "stock": "3227 原相",
+      "sector": "半導體業",
+      "lane": "watch",
+      "ptype": null,
+      "status": "觀察·等回檔",
+      "data_status": "OK",
+      "data_warnings": [],
+      "model_source_date": null,
+      "intraday_verified": false,
+      "kind": "watch",
+      "zone": "188.0-193.0",
+      "stop": "184.0",
+      "no_chase": ">193.0",
+      "ret20d": "n/a",
+      "stale": "",
+      "reason": "【watchlist】回踩進區間才觸發,照 5 步紀律執行",
+      "source_date": "2026-09-29"
     }
   ],
   "discipline": [
-    "【夜盤】無最新夜盤/即時大盤資料(盤前),開盤先看 gap 再執行",
+    "【夜盤】大盤 47940 vs 昨收 47632(+0.6%)→ 溫和,照計畫執行",
     "盤中進區間守15-30分才算;跌破停損=型態失敗就砍,別凹。",
     "出場:賣壓力減碼、砍型態失敗(非當日紅)、龍頭留基本倉、波段來回。",
     "rere 系統掃描為方法代理；主力成本與盤中守穩仍需人工確認，不能視為 KOL 本人薦股。"
@@ -426,10 +446,10 @@
   "artifact_lineage": {
     "schema": 1,
     "scope": "successful_live_entry_generation",
-    "run_id": "038807a1bc76456eaa83aba05751f1ae",
+    "run_id": "48089ba6e0ca412c9ea44863aa1ac0cb",
     "as_of_date": "2026-09-29",
     "trade_date": "2026-09-30",
-    "result_sha256": "67066b74de9b73ccc9dd7177c7fadcb21bc60fafaf2c08611930911b96cfaf24",
-    "payload_sha256": "3eeef2ba79e1f8ec622caa10895f59e9e8dc163ec93b73d633eda45250b67421"
+    "result_sha256": "0c3404cf072f82ae10baea3cd71d049559e7a2c924fb3b338402773e07cf0db9",
+    "payload_sha256": "a67dfb2c4e131f73e1f8c8a52cff4cb8f2890d00bc20e6978bd33f687354a221"
   }
 }
