@@ -1,0 +1,444 @@
+{
+  "generated_at": "2026-09-06T13:10:43.4820882+08:00",
+  "timezone": "Asia/Taipei",
+  "scope": "Runtime configuration and existing local HTTP service, read-only assessment",
+  "overall_status": "PARTIAL_RUNTIME_EVIDENCE",
+  "scheduled_tasks": [
+    {
+      "task_name": "TW_Stock_Nightly",
+      "task_path": "\\",
+      "inspection_status": "VERIFIED_READ_ONLY",
+      "state": "Ready",
+      "enabled": true,
+      "actions": [
+        {
+          "execute": "F:\\stock\\scripts\\run_phase1_night.bat",
+          "arguments": "",
+          "working_directory": null,
+          "execute_exists": true
+        }
+      ],
+      "triggers": [
+        {
+          "kind": "CalendarTrigger",
+          "start_boundary": "2026-04-08T19:30:00",
+          "weeks_interval": "1",
+          "weekdays": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "definition_xml": "<CalendarTrigger xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\"><StartBoundary>2026-04-08T19:30:00</StartBoundary><ScheduleByWeek><WeeksInterval>1</WeeksInterval><DaysOfWeek><Monday /><Tuesday /><Wednesday /><Thursday /><Friday /></DaysOfWeek></ScheduleByWeek></CalendarTrigger>"
+        }
+      ],
+      "last_run": "2026-09-04T19:30:00.0000000+08:00",
+      "last_result": 0,
+      "last_result_hex": "0x00000000",
+      "next_run": "2026-09-07T19:30:00.0000000+08:00",
+      "missed_runs": 0
+    },
+    {
+      "task_name": "TW_Stock_Daily",
+      "task_path": "\\",
+      "inspection_status": "VERIFIED_READ_ONLY",
+      "state": "Ready",
+      "enabled": true,
+      "actions": [
+        {
+          "execute": "F:\\stock\\scripts\\run_phase2_morning.bat",
+          "arguments": "",
+          "working_directory": null,
+          "execute_exists": true
+        }
+      ],
+      "triggers": [
+        {
+          "kind": "CalendarTrigger",
+          "start_boundary": "2026-03-24T07:00:00",
+          "weeks_interval": "1",
+          "weekdays": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "definition_xml": "<CalendarTrigger xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\"><StartBoundary>2026-03-24T07:00:00</StartBoundary><ScheduleByWeek><WeeksInterval>1</WeeksInterval><DaysOfWeek><Monday /><Tuesday /><Wednesday /><Thursday /><Friday /></DaysOfWeek></ScheduleByWeek></CalendarTrigger>"
+        }
+      ],
+      "last_run": "2026-09-04T07:00:00.0000000+08:00",
+      "last_result": 0,
+      "last_result_hex": "0x00000000",
+      "next_run": "2026-09-07T07:00:00.0000000+08:00",
+      "missed_runs": 0
+    },
+    {
+      "task_name": "TW_Stock_Daily_Backup",
+      "task_path": "\\",
+      "inspection_status": "VERIFIED_READ_ONLY",
+      "state": "Ready",
+      "enabled": true,
+      "actions": [
+        {
+          "execute": "F:\\stock\\scripts\\run_daily.bat",
+          "arguments": "",
+          "working_directory": null,
+          "execute_exists": true
+        }
+      ],
+      "triggers": [
+        {
+          "kind": "CalendarTrigger",
+          "start_boundary": "2026-05-17T07:02:00+08:00",
+          "weeks_interval": "1",
+          "weekdays": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "definition_xml": "<CalendarTrigger xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\"><StartBoundary>2026-05-17T07:02:00+08:00</StartBoundary><ScheduleByWeek><WeeksInterval>1</WeeksInterval><DaysOfWeek><Monday /><Tuesday /><Wednesday /><Thursday /><Friday /></DaysOfWeek></ScheduleByWeek></CalendarTrigger>"
+        }
+      ],
+      "last_run": "2026-09-04T07:02:00.0000000+08:00",
+      "last_result": 0,
+      "last_result_hex": "0x00000000",
+      "next_run": "2026-09-07T07:02:00.0000000+08:00",
+      "missed_runs": 0
+    },
+    {
+      "task_name": "TW_Stock_Weekly_Retrain",
+      "task_path": "\\",
+      "inspection_status": "VERIFIED_READ_ONLY",
+      "state": "Ready",
+      "enabled": true,
+      "actions": [
+        {
+          "execute": "F:\\stock\\scripts\\run_weekly_retrain.bat",
+          "arguments": "",
+          "working_directory": null,
+          "execute_exists": true
+        }
+      ],
+      "triggers": [
+        {
+          "kind": "CalendarTrigger",
+          "start_boundary": "2026-03-16T10:00:00",
+          "weeks_interval": "1",
+          "weekdays": [
+            "Saturday"
+          ],
+          "definition_xml": "<CalendarTrigger xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\"><StartBoundary>2026-03-16T10:00:00</StartBoundary><ScheduleByWeek><WeeksInterval>1</WeeksInterval><DaysOfWeek><Saturday /></DaysOfWeek></ScheduleByWeek></CalendarTrigger>"
+        }
+      ],
+      "last_run": "2026-09-05T10:00:00.0000000+08:00",
+      "last_result": 0,
+      "last_result_hex": "0x00000000",
+      "next_run": "2026-09-12T10:00:00.0000000+08:00",
+      "missed_runs": 0
+    },
+    {
+      "task_name": "TW_Stock_Weekly_Retrain_Backup",
+      "task_path": "\\",
+      "inspection_status": "VERIFIED_READ_ONLY",
+      "state": "Ready",
+      "enabled": true,
+      "actions": [
+        {
+          "execute": "F:\\stock\\scripts\\run_weekly_retrain.bat",
+          "arguments": "",
+          "working_directory": null,
+          "execute_exists": true
+        }
+      ],
+      "triggers": [
+        {
+          "kind": "CalendarTrigger",
+          "start_boundary": "2026-05-17T10:05:00+08:00",
+          "weeks_interval": "1",
+          "weekdays": [
+            "Saturday"
+          ],
+          "definition_xml": "<CalendarTrigger xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\"><StartBoundary>2026-05-17T10:05:00+08:00</StartBoundary><ScheduleByWeek><WeeksInterval>1</WeeksInterval><DaysOfWeek><Saturday /></DaysOfWeek></ScheduleByWeek></CalendarTrigger>"
+        }
+      ],
+      "last_run": "2026-09-05T10:05:00.0000000+08:00",
+      "last_result": 0,
+      "last_result_hex": "0x00000000",
+      "next_run": "2026-09-12T10:05:00.0000000+08:00",
+      "missed_runs": 0
+    }
+  ],
+  "web_checks": [
+    {
+      "url": "http://127.0.0.1:8001/api/pipeline/status",
+      "method": "GET",
+      "http_status": 401,
+      "status": "NOT_VERIFIED_AUTH",
+      "error": "Response status code does not indicate success: 401 (Unauthorized).",
+      "interpretation": "Initial anonymous request returned 401; later requests used the existing authorized helper. No authentication setting was changed."
+    },
+    {
+      "url": "http://127.0.0.1:8001/api/health_check",
+      "method": "GET",
+      "http_status": 200,
+      "status": "VERIFIED_READ_ONLY",
+      "content_type": [
+        "application/json"
+      ],
+      "response_sha256_utf8": "83f06e06a7be469fdac5db9d33310d014f638f3b5c4320b1f44f318b76e7caa3",
+      "reported_status": "ok",
+      "report_generated_at": "2026-09-05 12:34:56",
+      "latest_prediction_date": "2026-09-04",
+      "interpretation": "HTTP 200 proves serving an existing replay report; it does not prove live data freshness, full pipeline health, or mature strategy performance."
+    },
+    {
+      "url": "http://127.0.0.1:8001/api/pipeline/status",
+      "method": "GET",
+      "auth_method": "existing scripts.smart_update._admin_api_headers helper; no secret/header recorded",
+      "checked_at": "2026-09-06T13:12:15.439664+08:00",
+      "http_status": 200,
+      "status": "VERIFIED_READ_ONLY",
+      "response_sha256": "83b8a7090319858a1dcd2a136d693ea2b6e122e7749ea259a7d5c2f5792fd71d",
+      "reported_health": {
+        "scope": "daily_production_health",
+        "status": "fail",
+        "all_ok": false,
+        "stale": true
+      },
+      "daily_health": {
+        "checked_at": "2026-09-06 13:12:15",
+        "expected_latest_trading_date": "2026-09-04",
+        "expected_latest_prediction_date": "2026-09-04",
+        "status": "fail",
+        "ok": false,
+        "stale": true
+      },
+      "duckdb": {
+        "exists": true,
+        "error_category": "DUCKDB_CONNECTION_CONFIGURATION_MISMATCH",
+        "error_sanitized": "Connection Error: Can't open a connection to same database file with a different configuration than existing connections"
+      },
+      "predictions": {
+        "twenty_day": {
+          "name": "predictions_2026-09-04.csv",
+          "exists": true,
+          "date": "2026-09-04",
+          "rows": 1080,
+          "mtime": "2026-09-05 12:06:24"
+        },
+        "unified_signals": {
+          "name": "unified_signals_2026-09-04.csv",
+          "exists": true,
+          "date": "2026-09-04",
+          "rows": 1,
+          "mtime": "2026-09-05 12:14:26"
+        }
+      },
+      "automation": {
+        "phase1": {
+          "log": "smart_update_auto_20260904.log",
+          "finished_at": "2026-09-04 20:34:29",
+          "elapsed_min": 64.5,
+          "all_ok": true
+        },
+        "phase2": {
+          "log": "smart_update_auto_20260904.log",
+          "finished_at": "2026-09-04 07:25:52",
+          "elapsed_min": 25.9,
+          "all_ok": true
+        }
+      },
+      "checks": [
+        {
+          "name": "duckdb_exists",
+          "status": "ok"
+        },
+        {
+          "name": "daily_k_fresh",
+          "status": "error"
+        },
+        {
+          "name": "daily_k_snapshot_size",
+          "status": "error"
+        },
+        {
+          "name": "daily_k_required_values",
+          "status": "ok"
+        },
+        {
+          "name": "twenty_day_prediction_fresh",
+          "status": "ok"
+        },
+        {
+          "name": "unified_signals_prediction_fresh",
+          "status": "ok"
+        },
+        {
+          "name": "phase1_latest_success",
+          "status": "ok"
+        },
+        {
+          "name": "phase2_latest_success",
+          "status": "ok"
+        }
+      ],
+      "weekly_retrain": {
+        "scope": "weekly_retrain",
+        "exists": true,
+        "last_run": "2026-09-05 10:00:02",
+        "all_ok": false,
+        "hours_since_update": 27.2,
+        "stale": false
+      },
+      "interpretation": "Current endpoint was read with existing authorized credentials. Health warnings/errors are retained; this is not a new pipeline execution."
+    },
+    {
+      "url": "http://127.0.0.1:8001/api/stocks/2330/daily?days=3",
+      "method": "GET",
+      "checked_at": "2026-09-06T13:14:32.858911+08:00",
+      "http_status": 200,
+      "status": "VERIFIED_READ_ONLY",
+      "response_sha256": "50f9f1d2b6e0c44b521b5833267b5cbd23e296683ef8487a2b63feb18ccc6764",
+      "ticker": "2330",
+      "count": 3,
+      "data": [
+        {
+          "Date": "2026-09-02T00:00:00",
+          "Close": 2385.0,
+          "Volume": 25151394.0
+        },
+        {
+          "Date": "2026-09-03T00:00:00",
+          "Close": 2390.0,
+          "Volume": 14252351.0
+        },
+        {
+          "Date": "2026-09-04T00:00:00",
+          "Close": 2410.0,
+          "Volume": 14026022.0
+        }
+      ],
+      "interpretation": "Normal daily-data query serves recent rows; this single-ticker check does not certify full-market coverage."
+    }
+  ],
+  "boundaries": {
+    "windows_trigger_execution": "NOT_RUN",
+    "web_restart": "NOT_RUN",
+    "tunnel_restart": "NOT_RUN",
+    "training": "NOT_RUN",
+    "ledger_write": "NOT_RUN",
+    "email_delivery": "NOT_RUN",
+    "publish_or_push": "NOT_RUN",
+    "authenticated_daily_health": "VERIFIED_READ_ONLY",
+    "running_process_code_revision": "NOT_VERIFIED",
+    "health_fix_live_load": "NOT_VERIFIED"
+  },
+  "observations": [
+    "All five selected Windows tasks were Enabled/Ready; LastTaskResult=0 is a scheduler-reported action result, not a proof that every pipeline stage succeeded.",
+    "Actual Phase-1 runs Monday-Friday 19:30; Phase-2 Monday-Friday 07:00; morning backup 07:02. Batch comments mentioning 23:00/05:00 are stale.",
+    "Both weekly retrain tasks remain enabled, Saturday 10:00 and 10:05, next run 2026-09-12. This pre-existing configuration is not new training authorization. No task was changed or triggered.",
+    "The weekly action invokes run_weekly_retrain_guard.py, which can release DB connections or stop/restart Web and execute daily_pipeline --retrain --force --retrain-v2-only. Those paths were not exercised.",
+    "A missing Task Scheduler working directory is compensated by the inspected batch files cd /d F:\\stock.",
+    "The two health GET handlers were inspected in app.py before use. /api/pipeline/status reads DB/report health but the /api/pipeline/ prefix requires authentication; HTTP 401 is not evidence that the Web service is down.",
+    "The public /api/health_check route serves daily_replay_monitor_latest.json. Its reported status=ok only confirms the existing report was returned; partial-observation statistics are not mature backtest proof.",
+    "After an initial anonymous GET returned 401, the existing repository authentication helper was used for authorized GET requests; no header, credential value, or environment was printed or stored, and no POST was called.",
+    "The running Web revision was not identified or restarted; endpoint observations describe the already running service, not proof that the latest checkout was loaded.",
+    "The authenticated health endpoint could not read DuckDB: DUCKDB_CONNECTION_CONFIGURATION_MISMATCH. Missing latest-date/row-count fields do not prove the underlying market data is actually stale or empty. No connection release/reconnect or service restart was attempted.",
+    "GET /api/stocks/2330/daily?days=3 returned 200 with max Date=2026-09-04T00:00:00. Together with the explicit health-query connection-configuration error, this isolates an unreliable health probe, not proof of actual market-data staleness.",
+    "Source health-reader fix passed three focused real-DuckDB regressions; these results do not claim the already-running Web process has loaded the fix."
+  ],
+  "source_references": [
+    "app.py:204",
+    "app.py:1325",
+    "app.py:2389",
+    "app.py:3561",
+    "scripts/run_phase1_night.bat",
+    "scripts/run_phase2_morning.bat",
+    "scripts/run_daily.bat",
+    "scripts/run_weekly_retrain.bat",
+    "scripts/run_weekly_retrain_guard.py"
+  ],
+  "mutations": {
+    "scheduled_tasks": [],
+    "services": [],
+    "production_outputs": [],
+    "report_files": [
+      "runtime_readiness.json",
+      "runtime_readiness.md"
+    ],
+    "source_files": [
+      "app.py",
+      "tests/test_pipeline_health_connection.py"
+    ]
+  },
+  "updated_at": "2026-09-06T13:19:42.190693+08:00",
+  "web_process": {
+    "observed_listener_pid": 21164,
+    "observed_parent_pid": 37252,
+    "executable_name": "python.exe",
+    "listener_has_reload_flag": false,
+    "listener_mentions_app_py": false,
+    "listener_mentions_uvicorn": false,
+    "parent_process_available": false,
+    "reload_inference": "Listener command line has no --reload; absent parent prevents reconstructing the original launch arguments. No full command line was recorded.",
+    "process_control": "NOT_RUN"
+  },
+  "weekly_diagnosis": {
+    "classification": "FINALIZED_WITH_STAGE_FAILURE",
+    "status_file": "ml/models/pipeline_status.json",
+    "status_file_mtime": "2026-09-05T12:35:00.344171+08:00",
+    "last_run": "2026-09-05 10:00:02",
+    "elapsed_min": 155.0,
+    "all_ok": false,
+    "failed_steps": {
+      "AgentArena": "failed"
+    },
+    "log_file": "logs/retrain_20260905.log",
+    "log_mtime": "2026-09-05T12:35:01.862057+08:00",
+    "failure_message": "DuckDB is locked by the web process; release the web DB connection before running Agent Arena standalone.",
+    "root_cause": "AgentArena readonly connection fallback attempted a DB snapshot copy; PermissionError is translated into the recorded locked-by-web message. No retry or training was run in this assessment.",
+    "scheduler_exit_explanation": "daily_pipeline.run_step catches exceptions and returns False. main writes all_ok=false but ends normally without a failure exit code, so the wrapper can return 0 to Windows.",
+    "references": [
+      "scripts/agent_arena.py:202",
+      "scripts/daily_pipeline.py:116",
+      "scripts/daily_pipeline.py:515",
+      "scripts/daily_pipeline.py:538",
+      "logs/retrain_20260905.log:228",
+      "logs/retrain_20260905.log:364"
+    ]
+  },
+  "health_reader_fix": {
+    "classification": "SOURCE_FIXED_AND_FIXTURE_VERIFIED_NOT_DEPLOYMENT_VERIFIED",
+    "root_cause": "The old health reader independently opened read_only=True against a DB already opened RW by the same process; DuckDB rejects mixed connection configurations. Normal stock reads reuse the existing engine connection.",
+    "change": "app.py health reader obtains get_conn(read_only=True).cursor(); finally closes the request cursor only. No DB-engine lifecycle change.",
+    "files": [
+      "app.py",
+      "tests/test_pipeline_health_connection.py"
+    ],
+    "source_app_sha256": "af353b428d3b986f70af866956f151a425b1382d21d1098fcbe771c1a857c975",
+    "test_command": "python -B -X utf8 -m pytest tests/test_pipeline_health_connection.py -q",
+    "test_result": "3 passed in 0.86s",
+    "test_cases": [
+      "real temp DuckDB: old RO open conflicts with existing RW; corrected health succeeds",
+      "actually stale market data remains fail",
+      "query exception leaves shared connection usable"
+    ],
+    "fixture_scope": "Exact health functions are compiled from app.py to avoid full app import side effects; tests use real DuckDB and the real backend DB engine with temp paths.",
+    "existing_service_after_change": "NOT_VERIFIED; no restart or runtime mutation attempted"
+  },
+  "root_integration": {
+    "deployment": "PASS_LIVE_WEB_VERIFIED",
+    "live_web_pid": 13804,
+    "health_and_exit_fix": "61db15ca",
+    "arena_reader_fix": "19a92fe4",
+    "isolated_health": "PASS: real ASGI auth/route and shared RW database",
+    "weekly_retrain_executed": false,
+    "evidence": "web_live_deployment.json",
+    "live_health": "ok: 8/8 checks",
+    "checked_at": "2026-09-06T14:15:27.918572+08:00"
+  }
+}

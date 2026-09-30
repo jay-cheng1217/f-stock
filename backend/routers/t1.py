@@ -14,7 +14,7 @@ from ml.config import DAILY_K_DIR, MODEL_DIR
 from ml.features.sector import SECTOR_MAPPING_PATH
 
 MONITOR_REPORT_PATH = os.path.join(MODEL_DIR, "..", "reports", "monitor_t1_latest.json")
-from ml.cross_confirm import get_dual_confirmed_tickers, load_cross_confirmed
+from ml.cross_confirm import load_cross_confirmed
 
 
 def _load_name_lookup() -> dict[str, str]:
@@ -28,12 +28,26 @@ def _load_name_lookup() -> dict[str, str]:
 
 
 _NAME_LOOKUP: dict[str, str] = _load_name_lookup()
+
+
+def _load_sector_lookup() -> dict[str, str]:
+    """Ticker -> 產業 dict"""
+    if not os.path.exists(SECTOR_MAPPING_PATH):
+        return {}
+    df = pd.read_csv(SECTOR_MAPPING_PATH, dtype={"Ticker": str})
+    if "Sector" not in df.columns:
+        return {}
+    return dict(zip(df["Ticker"], df["Sector"]))
+
+
+_SECTOR_LOOKUP: dict[str, str] = _load_sector_lookup()
 from ml.predict_t1 import (
     load_latest_t1_model,
     load_latest_t1_predictions_csv,
     predict_t1_all,
     sort_t1_prediction_df,
 )
+from ml.t1_production_gate import evaluate_t1_production_gate
 
 router = APIRouter(tags=["t1"])
 
@@ -155,33 +169,27 @@ def _load_daily_price_frame(ticker: str) -> pd.DataFrame:
 
 def _simulate_t1_trade(
     entry_price: float,
-    exit_bar: pd.Series,
+    hold_bars: pd.DataFrame,
     take_profit: float | None,
     friction: float,
     stop_loss: float | None,
     ambiguous_fill: str,
 ) -> dict[str, Any]:
-    """模擬 T+1 交易：當天開盤買進 → 隔天出場。
+    """模擬 T+1 交易：當天開盤買進 → 當日收盤出場。
 
     Args:
         entry_price: 買進價（訊號日開盤價）
-        exit_bar: 隔天的 OHLC bar（出場日）
+        hold_bars: 持有期間的 OHLC bars（1 天）
     """
-    open_ret = float(exit_bar["Open"] / entry_price - 1.0)
+    exit_bar = hold_bars.iloc[-1]
     close_ret = float(exit_bar["Close"] / entry_price - 1.0)
-    high_ret = float(exit_bar["High"] / entry_price - 1.0)
-    low_ret = float(exit_bar["Low"] / entry_price - 1.0)
+    high_ret = float(hold_bars["High"].max() / entry_price - 1.0)
+    low_ret = float(hold_bars["Low"].min() / entry_price - 1.0)
 
     hit_take_profit = take_profit is not None and high_ret >= take_profit
     hit_stop_loss = stop_loss is not None and low_ret <= -stop_loss
 
-    if stop_loss is not None and open_ret <= -stop_loss:
-        gross_return = open_ret
-        exit_reason = "gap_stop"
-    elif take_profit is not None and open_ret >= take_profit:
-        gross_return = take_profit
-        exit_reason = "gap_take_profit"
-    elif hit_take_profit and hit_stop_loss:
+    if hit_take_profit and hit_stop_loss:
         if ambiguous_fill == "target_first":
             gross_return = take_profit
             exit_reason = "ambiguous_take_profit"
@@ -204,7 +212,6 @@ def _simulate_t1_trade(
     net_return = gross_return - friction
     exit_price = entry_price * (1.0 + gross_return)
     return {
-        "open_return": open_ret,
         "high_return": high_ret,
         "low_return": low_ret,
         "close_return": close_ret,
@@ -279,7 +286,6 @@ def _load_t1_portfolio_detail_and_summary() -> tuple[pd.DataFrame, dict[str, Any
             price_df = _load_daily_price_frame(ticker)
             next_rows = price_df[price_df["Date"] > prediction_date]
 
-            # 需要至少 2 根 bar：今天(買進日) + 明天(出場日)
             hit_prob_val = (
                 round(float(pd.to_numeric(row.get("hit_prob_3pct"), errors="coerce")) * 100, 2)
                 if pd.notna(pd.to_numeric(row.get("hit_prob_3pct"), errors="coerce"))
@@ -310,28 +316,12 @@ def _load_t1_portfolio_detail_and_summary() -> tuple[pd.DataFrame, dict[str, Any
             if entry_price <= 0:
                 continue
 
-            if len(next_rows) < 2:
-                # 已買進但隔天還沒收盤
-                records.append({
-                    "prediction_date": prediction_date.strftime("%Y-%m-%d"),
-                    "ticker": ticker,
-                    "selection_rank": _safe_int(row.get("selection_rank")),
-                    "recommendation": str(row.get("recommendation", "")),
-                    "entry_close": round(entry_price, 2),
-                    "hit_prob_3pct": hit_prob_val,
-                    "exit_date": None, "exit_price": None,
-                    "net_return_pct": None, "gross_return_pct": None,
-                    "high_return_pct": None, "low_return_pct": None,
-                    "close_return_pct": None,
-                    "exit_reason": "持有中（待隔日出場）",
-                    "status": "holding",
-                })
-                continue
-
-            exit_bar = next_rows.iloc[1]  # 隔天 = 出場日
+            # T+1: entry Open, exit Close (same day)
+            hold_bars = next_rows.iloc[0:1]
+            exit_bar = hold_bars.iloc[-1]
             trade = _simulate_t1_trade(
                 entry_price=entry_price,
-                exit_bar=exit_bar,
+                hold_bars=hold_bars,
                 take_profit=trade_rules["take_profit"],
                 friction=trade_rules["friction"],
                 stop_loss=trade_rules["stop_loss"],
@@ -386,7 +376,7 @@ def _load_t1_portfolio_detail_and_summary() -> tuple[pd.DataFrame, dict[str, Any
     summary = {
         "total_positions": int(len(detail_df)),
         "closed_positions": int(len(closed_df)),
-        "pending_positions": int((detail_df["status"].isin(["pending", "holding"])).sum()),
+        "pending_positions": int((detail_df["status"] == "pending").sum()),
         "avg_net_return_pct": round(float(v), 2) if not closed_df.empty and pd.notna(v := closed_df["net_return_pct"].mean()) else None,
         "win_rate_pct": round(float(v2), 2) if not closed_df.empty and pd.notna(v2 := (closed_df["net_return_pct"].dropna() > 0).mean() * 100) else None,
         "take_profit_hits": take_profit_hits,
@@ -404,7 +394,7 @@ def _prepare_t1_portfolio_export_df(detail_df: pd.DataFrame) -> pd.DataFrame:
         "selection_rank": "交易順位",
         "recommendation": "推薦等級",
         "entry_close": "進場開盤",
-        "hit_prob_3pct": "明日觸及3%機率(%)",
+        "hit_prob_3pct": "隔日觸及3%機率(%)",
         "exit_date": "出場日",
         "exit_price": "出場價",
         "net_return_pct": "淨報酬(%)",
@@ -514,6 +504,7 @@ def latest_t1_predictions(top_n: int = 30):
         "total_stocks": int(len(df)),
         "selected_count": int(df["selected_for_trade"].fillna(False).sum()) if "selected_for_trade" in df.columns else 0,
         "avg_hit_prob_top": round(float(top_df["hit_prob_3pct"].mean()) * 100, 2) if not top_df.empty else None,
+        "production_gate": evaluate_t1_production_gate(),
         "trade_rules": trade_rules,
         "rec_dist": rec_dist,
         "data": records,
@@ -588,6 +579,8 @@ def get_cross_confirmed(top_n: int = 10):
             records.append({
                 "ticker": str(row["ticker"]),
                 "name": _NAME_LOOKUP.get(str(row["ticker"]), ""),
+                "sector": _SECTOR_LOOKUP.get(str(row["ticker"]), ""),
+                "close_ref": round(float(row.get("close_ref", 0)), 2) if pd.notna(row.get("close_ref")) else None,
                 "t1_prob": round(float(row.get("t1_prob", 0)), 4) if pd.notna(row.get("t1_prob")) else None,
                 "t1_rank": int(row["t1_rank"]) if pd.notna(row.get("t1_rank")) else None,
                 "d20_pred_return": round(float(row.get("d20_pred_return", 0)), 4) if pd.notna(row.get("d20_pred_return")) else None,

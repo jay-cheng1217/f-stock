@@ -1,0 +1,57 @@
+{
+  "collected_at": "2026-09-06T14:02:08.334926",
+  "workspace": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+  "input_manifest_sha256": "533b299f91effa0970a736ef227ac8d1aa363cda6f5187ca946cd742b86dc72f",
+  "artifacts": [
+    {
+      "path": "stock.duckdb",
+      "bytes": 497823744,
+      "sha256": "f2f506d925950f16c3540ec0bc250dfe29d4de10ce3bd6f30cb8c31bece30eda"
+    },
+    {
+      "path": "ml/models/snapshot_cache.pkl",
+      "bytes": 1602477,
+      "sha256": "16191af0df7fc6a9cd2dbab60540bfd33b2fa0c14541b547c520427400517615"
+    },
+    {
+      "path": "ml/models/predictions_2026-09-04.csv",
+      "bytes": 3344998,
+      "sha256": "16d6592232f1909f651775842642949eef6cd4e7a0e20a18ba0fb7addc8dec97"
+    },
+    {
+      "path": "ml/models/dataA_predictions_2026-09-04.csv",
+      "bytes": 49013,
+      "sha256": "be46fc402800c9f74bf1f23fd7b83c941aa9cfac1b95f91ac6062806c43534d2"
+    },
+    {
+      "path": "ml/models/unified_signals_2026-09-04.csv",
+      "bytes": 17942,
+      "sha256": "e28998b8efc76973fb677e5ab7abd63c7ded7b6db1e61d198f40b802557c5d50"
+    },
+    {
+      "path": "logs/entry_list_20260907.json",
+      "bytes": 12901,
+      "sha256": "72a70b0716471505bc70427c7b99d8236eb052e2692b8c31c62165672ab52147"
+    },
+    {
+      "path": "ml/reports/entry_dashboard_latest.html",
+      "bytes": 9363885,
+      "sha256": "60719d3441c4c980849e313e6ddf5e52a74e583b55db400677f09bd079a37d4e"
+    },
+    {
+      "path": "logs/acceptance_email.html",
+      "bytes": 22352,
+      "sha256": "4157930ff71c158279be29f2b144825d65330d8b334d6f9acbe485f2f53d2c00"
+    },
+    {
+      "path": "ml/reports/rere_lane_ledger.csv",
+      "bytes": 28196,
+      "sha256": "6bcd10c56c2fecb86dc6e86aab9eb798b4f591e2a9759e162fef05ea33cb41fd"
+    },
+    {
+      "path": "ml/reports/shadow_dataA_ledger.csv",
+      "bytes": 97486,
+      "sha256": "c0dd41b805f1080ba0caca9a9fba285e9f2bfd5146614eb3087f5bfae2c70992"
+    }
+  ]
+}

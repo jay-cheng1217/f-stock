@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-05-08T20:59:17",
+  "backtest_csv": "ml\\reports\\v2_backtest_20260508_200128.csv",
+  "fold_top30_csv": "ml\\reports\\v2_fold_top30_20260508_200128.csv",
+  "monthly_ic_csv": "F:\\stock\\ml\\reports\\v2_rank_ic_diagnostics_20260508_monthly_ic.csv",
+  "calibration_deciles_csv": "F:\\stock\\ml\\reports\\v2_rank_ic_diagnostics_20260508_calibration_deciles.csv",
+  "top30_internal_ic_csv": "F:\\stock\\ml\\reports\\v2_rank_ic_diagnostics_20260508_top30_internal_ic.csv",
+  "report": "F:\\stock\\ml\\reports\\v2_rank_ic_diagnostics_20260508.md",
+  "charts": {
+    "monthly_ic": "F:\\stock\\ml\\reports\\v2_rank_ic_diagnostics_20260508_rank_ic_by_month.svg",
+    "calibration": "F:\\stock\\ml\\reports\\v2_rank_ic_diagnostics_20260508_calibration_deciles.svg",
+    "stability": "F:\\stock\\ml\\reports\\v2_rank_ic_diagnostics_20260508_ic_stability.svg"
+  },
+  "ic_summary": {
+    "months": 28,
+    "mean_ic": 0.04312090339404594,
+    "std_ic": 0.09401189288125698,
+    "t_stat": 2.4270798766531803,
+    "ic_sharpe": 0.45867498326525974,
+    "positive_months": 19,
+    "positive_month_pct": 0.6785714285714286,
+    "significant_months": 14,
+    "significant_month_pct": 0.5,
+    "pass_mean_ic_005": false,
+    "pass_t_stat_2": true
+  },
+  "top30_internal_ic_summary": {
+    "months": 26,
+    "mean_ic": -0.03505174107251766,
+    "std_ic": 0.2542976817536405,
+    "t_stat": -0.7028357886774584,
+    "ic_sharpe": -0.1378374385122206,
+    "positive_months": 11,
+    "positive_month_pct": 0.4230769230769231,
+    "significant_months": 0,
+    "significant_month_pct": 0.0,
+    "pass_mean_ic_005": false,
+    "pass_t_stat_2": false
+  }
+}

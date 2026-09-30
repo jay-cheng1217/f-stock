@@ -1,0 +1,73 @@
+labels:
+  WAR_PROXY:
+    definition: "Geopolitical conflict that can move commodity, freight, or defense-linked equities."
+    keywords: ["戰爭", "衝突", "封鎖", "軍事", "中東", "兩岸", "紅海", "地緣", "升溫"]
+    sectors: ["塑膠工業", "航運業", "鋼鐵工業", "油電燃氣業"]
+    half_life_days: 14
+    polarity: mixed
+  COMMODITY_PRICE:
+    definition: "Raw material or freight price narrative not necessarily caused by war."
+    keywords: ["油價", "銅價", "鋼價", "塑化", "PVC", "ABS", "報價", "運價", "原物料"]
+    sectors: ["塑膠工業", "化學工業", "鋼鐵工業", "航運業"]
+    half_life_days: 21
+    polarity: mixed
+  SUPPLY_SHORTAGE:
+    definition: "Shortage, tight capacity, or extended lead time."
+    keywords: ["缺貨", "缺料", "供不應求", "交期拉長", "產能吃緊", "排隊"]
+    sectors: ["半導體業", "電子零組件業", "其他電子業"]
+    half_life_days: 45
+    polarity: positive
+  PRICE_HIKE:
+    definition: "Product quote or selling price increases."
+    keywords: ["漲價", "調漲", "喊漲", "報價走升", "售價上調", "價格上揚"]
+    sectors: ["塑膠工業", "鋼鐵工業", "電子零組件業", "半導體業"]
+    half_life_days: 14
+    polarity: positive
+  POLICY_BENEFIT:
+    definition: "Government policy, subsidies, incentives, or regulatory easing."
+    keywords: ["補助", "政策", "獎勵", "法規鬆綁", "國發會", "經濟部", "能源政策"]
+    sectors: ["生技醫療業", "光電業", "電機機械", "綠能環保"]
+    half_life_days: 90
+    polarity: positive
+  AI_THEME:
+    definition: "AI infrastructure, server, HBM, or advanced packaging theme."
+    keywords: ["AI", "人工智慧", "HBM", "CoWoS", "伺服器", "算力", "GPU", "輝達", "NVIDIA"]
+    sectors: ["半導體業", "電腦及週邊設備業", "其他電子業", "電子零組件業"]
+    half_life_days: 45
+    polarity: positive
+  ORDER_VISIBILITY:
+    definition: "Order visibility, backlog, or high utilization."
+    keywords: ["訂單滿載", "訂單能見度", "能見度", "產能滿載", "接單", "長約", "客戶拉貨"]
+    sectors: ["ALL"]
+    half_life_days: 45
+    polarity: positive
+  GOVERNANCE_RISK:
+    definition: "Investigation, litigation, fraud, internal control, or governance risk."
+    keywords: ["檢調", "搜索", "調查", "弊案", "訴訟", "內控", "掏空", "撤銷", "違法", "裁罰"]
+    sectors: ["ALL"]
+    half_life_days: 30
+    polarity: negative
+  EARNINGS_REVISION:
+    definition: "Forecast, EPS, revenue, or outlook revision."
+    keywords: ["上修", "下修", "優於預期", "低於預期", "展望", "財測", "EPS", "營收預估"]
+    sectors: ["ALL"]
+    half_life_days: 45
+    polarity: mixed
+  INVENTORY_CYCLE:
+    definition: "Inventory correction, restocking, or destocking cycle."
+    keywords: ["庫存", "去化", "去庫存", "補庫存", "拉貨", "庫存調整", "庫存水位"]
+    sectors: ["半導體業", "電子零組件業", "光電業", "電腦及週邊設備業"]
+    half_life_days: 75
+    polarity: mixed
+  TRADE_POLICY:
+    definition: "Tariff, export control, sanctions, or trade restriction."
+    keywords: ["關稅", "出口管制", "制裁", "禁令", "貿易戰", "反傾銷", "美中"]
+    sectors: ["半導體業", "電機機械", "電子零組件業", "鋼鐵工業"]
+    half_life_days: 60
+    polarity: mixed
+  CAPEX_EXPANSION:
+    definition: "Capacity expansion, new plant, or equipment capex."
+    keywords: ["擴產", "新廠", "建廠", "資本支出", "設備採購", "量產", "投產"]
+    sectors: ["半導體業", "其他電子業", "電子零組件業", "生技醫療業"]
+    half_life_days: 90
+    polarity: positive

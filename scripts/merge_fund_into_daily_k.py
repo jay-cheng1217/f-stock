@@ -11,7 +11,10 @@ from tqdm import tqdm
 
 
 def load_market_lookup():
-    db_path = r'F:\stock\stock.duckdb'
+    base_dir = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))
+    )
+    db_path = os.path.join(base_dir, "stock.duckdb")
     if not os.path.exists(db_path):
         return {}
     try:

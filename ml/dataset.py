@@ -12,6 +12,7 @@ from ml.config import (
     MIN_AVG_VOLUME, MIN_PRICE, MIN_HISTORY_DAYS,
     WALK_FORWARD_TRAIN_MONTHS, WALK_FORWARD_VAL_MONTHS,
     WALK_FORWARD_TEST_MONTHS,
+    REGIME_FEATURE_COLS,
 )
 from ml.target import compute_target
 from ml.features.technical import compute_technical_features
@@ -29,21 +30,32 @@ from ml.features.balance_sheet import compute_balance_sheet_features
 from ml.features.entry import compute_entry_features
 from ml.features.industry import compute_industry_features
 from ml.features.registry import get_available_features, get_feature_columns
+from ml.universe import (
+    filter_out_etfs_df,
+    filter_stock_universe,
+    is_etf_ticker,
+    is_retired_ticker,
+)
+from backend.features.market_regime import add_market_regime_features
+
+
+_LIQUIDITY_LOOKBACK_DAYS = 60
+_DATASET_CACHE_VERSION = "asof_universe_v3_exdiv_labels"
 
 
 def _list_daily_tickers() -> list[str]:
     """列出本地日K資料中的股票代碼。"""
-    return sorted(
-        [
-            os.path.splitext(f)[0]
-            for f in os.listdir(DAILY_K_DIR)
-            if f.endswith(".csv") and os.path.splitext(f)[0].isdigit()
-        ]
-    )
+    tickers = [
+        os.path.splitext(f)[0]
+        for f in os.listdir(DAILY_K_DIR)
+        if f.endswith(".csv") and os.path.splitext(f)[0].isdigit()
+    ]
+    return sorted(filter_stock_universe(tickers))
 
 
 def diagnose_stock_eligibility(ticker: str) -> dict:
     """回傳單一股票是否納入 ML 預測 universe，以及排除原因。"""
+    ticker = str(ticker).strip().upper()
     info = {
         "ticker": ticker,
         "eligible": False,
@@ -57,6 +69,16 @@ def diagnose_stock_eligibility(ticker: str) -> dict:
         "min_price": float(MIN_PRICE),
         "last_date": None,
     }
+
+    if is_etf_ticker(ticker):
+        info["reason_code"] = "etf_v2_alpha_model_unsupported"
+        info["message"] = f"{ticker} 是 ETF，MVP 不納入 V2 alpha 預測 universe。"
+        return info
+
+    if is_retired_ticker(ticker):
+        info["reason_code"] = "retired_or_delisted"
+        info["message"] = f"{ticker} is retired from the active stock universe."
+        return info
 
     kline_path = os.path.join(DAILY_K_DIR, f"{ticker}.csv")
     if not os.path.exists(kline_path):
@@ -322,8 +344,36 @@ def _get_issued_shares() -> dict[str, float]:
     return _ISSUED_SHARES_CACHE
 
 
-def load_single_stock(ticker: str, twii_df: pd.DataFrame = None) -> pd.DataFrame | None:
-    """載入單支股票並計算所有可用特徵"""
+def _asof_eligibility_mask(df: pd.DataFrame) -> pd.Series:
+    """Return point-in-time universe eligibility without using future rows."""
+    volume = pd.to_numeric(df["Volume"], errors="coerce")
+    close = pd.to_numeric(df["Close"], errors="coerce")
+    avg_volume = volume.rolling(
+        _LIQUIDITY_LOOKBACK_DAYS,
+        min_periods=_LIQUIDITY_LOOKBACK_DAYS,
+    ).mean()
+    enough_history = pd.Series(
+        np.arange(1, len(df) + 1) >= MIN_HISTORY_DAYS,
+        index=df.index,
+    )
+    return enough_history & avg_volume.ge(MIN_AVG_VOLUME) & close.ge(MIN_PRICE)
+
+
+def load_single_stock(
+    ticker: str,
+    twii_df: pd.DataFrame = None,
+    *,
+    eligibility_mode: str = "asof",
+) -> pd.DataFrame | None:
+    """載入單支股票並計算所有可用特徵。
+
+    Historical training/backtests use point-in-time eligibility. Latest inference
+    explicitly uses ``eligibility_mode="latest"`` so the current universe remains
+    governed by the most recent 60-day liquidity and closing price.
+    """
+    if eligibility_mode not in {"asof", "latest"}:
+        raise ValueError(f"unsupported eligibility_mode: {eligibility_mode}")
+
     kline_path = os.path.join(DAILY_K_DIR, f"{ticker}.csv")
     if not os.path.exists(kline_path):
         return None
@@ -335,20 +385,20 @@ def load_single_stock(ticker: str, twii_df: pd.DataFrame = None) -> pd.DataFrame
     if len(df) < MIN_HISTORY_DAYS:
         return None
 
-    # 流動性過濾
-    avg_vol = df["Volume"].tail(60).mean()
-    last_price = df["Close"].iloc[-1]
-    if avg_vol < MIN_AVG_VOLUME or last_price < MIN_PRICE:
-        return None
+    if eligibility_mode == "latest":
+        avg_vol = df["Volume"].tail(_LIQUIDITY_LOOKBACK_DAYS).mean()
+        last_price = df["Close"].iloc[-1]
+        if avg_vol < MIN_AVG_VOLUME or last_price < MIN_PRICE:
+            return None
 
     # 計算目標（超額報酬）
-    df = compute_target(df, twii_df=twii_df)
+    df = compute_target(df, twii_df=twii_df, ticker=ticker)
 
     # 計算特徵（依可用資料）
     available = get_available_features()
 
     if "technical" in available:
-        df = compute_technical_features(df)
+        df = compute_technical_features(df, ticker=ticker)
     if "institutional" in available:
         df = compute_institutional_features(df)
 
@@ -363,6 +413,8 @@ def load_single_stock(ticker: str, twii_df: pd.DataFrame = None) -> pd.DataFrame
 
     if "market" in available:
         df = compute_market_features(df, INDEX_DIR)
+    if "market_regime" in available:
+        df = add_market_regime_features(df)
 
     if "valuation" in available:
         df = compute_valuation_features(df, ticker, VALUATION_DIR)
@@ -402,19 +454,60 @@ def load_single_stock(ticker: str, twii_df: pd.DataFrame = None) -> pd.DataFrame
     else:
         df["turnover_rate"] = np.nan
 
+    if eligibility_mode == "asof":
+        df = df.loc[_asof_eligibility_mask(df)].copy()
+        if df.empty:
+            return None
+
     df["ticker"] = ticker
     return df
 
 
-def _load_twii() -> pd.DataFrame:
-    """載入加權指數資料供超額報酬計算"""
+def _load_twii(*, require_total_return: bool = False) -> pd.DataFrame:
+    """載入價格指數與官方報酬指數，供雙邊同口徑超額報酬計算。"""
     twii_path = os.path.join(INDEX_DIR, "index_TWII.csv")
     if not os.path.exists(twii_path):
         return None
     df = pd.read_csv(twii_path, dtype={"Date": str})
     df["Date"] = pd.to_datetime(df["Date"])
     df = df.sort_values("Date").reset_index(drop=True)
-    return df[["Date", "Close"]].rename(columns={"Close": "twii_close"})
+    df = df[["Date", "Close"]].rename(columns={"Close": "twii_close"})
+
+    total_return_path = os.path.join(INDEX_DIR, "index_TWII_total_return.csv")
+    if os.path.exists(total_return_path):
+        total = pd.read_csv(total_return_path, dtype={"Date": str})
+        required = {"Date", "Close"}
+        if not required.issubset(total.columns):
+            raise ValueError(
+                "TAIEX total-return index missing required columns: "
+                f"{sorted(required - set(total.columns))}"
+            )
+        total["Date"] = pd.to_datetime(total["Date"], errors="coerce")
+        total["Close"] = pd.to_numeric(total["Close"], errors="coerce")
+        total = total.dropna(subset=["Date", "Close"]).drop_duplicates("Date", keep="last")
+        df = df.merge(
+            total[["Date", "Close"]].rename(
+                columns={"Close": "twii_total_return_close"}
+            ),
+            on="Date",
+            how="left",
+            validate="one_to_one",
+        )
+
+    if require_total_return:
+        if "twii_total_return_close" not in df.columns:
+            raise RuntimeError(
+                "TAIEX total-return index is required for training labels; run "
+                "scripts/update_taiex_total_return_index.py --backfill first"
+            )
+        missing = df.loc[df["twii_total_return_close"].isna(), "Date"]
+        if not missing.empty:
+            sample = ", ".join(missing.dt.strftime("%Y-%m-%d").head(5))
+            raise RuntimeError(
+                f"TAIEX total-return index has {len(missing)} missing trading dates "
+                f"(sample: {sample})"
+            )
+    return df
 
 
 def _apply_percentile_ranking(dataset: pd.DataFrame) -> pd.DataFrame:
@@ -538,6 +631,7 @@ _ZSCORE_SKIP = {
     "gspc_above_ma20", "sox_above_ma20",
     # Percentile features
     "vix_percentile_60d",
+    "taiex_20d_return_pct", "taiex_vs_ma60_pct", "market_breadth_20d_pct",
     # Chip divergence scores (already cross-sectionally comparable)
     "chip_diverge_bear", "chip_diverge_bull",
 }
@@ -575,7 +669,7 @@ def _get_cache_path():
     """快取檔案路徑（當日有效）"""
     from datetime import date
     today = date.today().strftime("%Y%m%d")
-    return os.path.join(MODEL_DIR, f"dataset_cache_{today}.parquet")
+    return os.path.join(MODEL_DIR, f"dataset_cache_{_DATASET_CACHE_VERSION}_{today}.parquet")
 
 
 def _save_raw_cache(dataset: pd.DataFrame, verbose: bool = True):
@@ -592,6 +686,34 @@ def _save_raw_cache(dataset: pd.DataFrame, verbose: bool = True):
         print(f"  快取已儲存: {cache_path} ({size_mb:.0f} MB)")
 
 
+def _raw_cache_source_patterns() -> list[str]:
+    base_dir = os.path.dirname(DAILY_K_DIR)
+    return [
+        os.path.join(DAILY_K_DIR, "*.csv"),
+        os.path.join(REVENUE_DIR, "*.csv"),
+        os.path.join(FINANCIAL_DIR, "*.csv"),
+        os.path.join(INDEX_DIR, "*.csv"),
+        os.path.join(base_dir, "ml", "data", "ex_dividend_calendar.csv"),
+        os.path.join(VALUATION_DIR, "*.csv"),
+        os.path.join(base_dir, "集保分散", "tdcc_summary.csv"),
+        os.path.join(base_dir, "資產負債", "bs_*.csv"),
+        os.path.join(base_dir, "新聞資料", "*.csv"),
+        os.path.join(base_dir, "外資持股", "*.csv"),
+    ]
+
+
+def _newer_cache_source(cache_mtime: float) -> str | None:
+    """Return the first feature source newer than the raw dataset cache."""
+    for pattern in _raw_cache_source_patterns():
+        for source_path in glob.iglob(pattern):
+            try:
+                if os.path.getmtime(source_path) > cache_mtime:
+                    return source_path
+            except FileNotFoundError:
+                continue
+    return None
+
+
 def load_raw_cache(verbose: bool = True):
     """載入當日快取（percentile ranking + sector 後、winsorize 前）。
 
@@ -603,17 +725,15 @@ def load_raw_cache(verbose: bool = True):
 
     cache_mtime = os.path.getmtime(cache_path)
 
-    # 檢查估值資料是否比 cache 更新（防止 cache 用舊的錯誤資料）
-    val_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "估值資料")
-    if os.path.isdir(val_dir):
-        val_files = glob.glob(os.path.join(val_dir, "valuation_*.csv"))
-        if val_files:
-            latest_val_mtime = max(os.path.getmtime(f) for f in val_files)
-            if latest_val_mtime > cache_mtime:
-                if verbose:
-                    print("  快取已過期（估值資料已更新），將重新建構...")
-                os.remove(cache_path)
-                return None
+    newer_source = _newer_cache_source(cache_mtime)
+    if newer_source:
+        if verbose:
+            print(
+                "  快取已過期（特徵來源已更新），將重新建構: "
+                f"{newer_source}"
+            )
+        os.remove(cache_path)
+        return None
 
     if verbose:
         size_mb = os.path.getsize(cache_path) / 1024 / 1024
@@ -634,7 +754,12 @@ def build_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
     # 嘗試載入快取（跳過逐檔載入 + 特徵計算）
     cached = load_raw_cache(verbose=verbose) if max_stocks == 0 else None
     if cached is not None:
-        dataset = cached
+        dataset = filter_out_etfs_df(cached, "ticker")
+        available = get_available_features()
+        if "market_regime" in available and not set(REGIME_FEATURE_COLS).issubset(dataset.columns):
+            if verbose:
+                print("  快取補齊: 市場體制百分位特徵...")
+            dataset = add_market_regime_features(dataset)
         if verbose:
             print(f"  從快取載入: {len(dataset):,} 行, {dataset['ticker'].nunique()} 支股票")
     else:
@@ -643,7 +768,7 @@ def build_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
             tickers = tickers[:max_stocks]
 
         # 載入 TWII 供超額報酬計算
-        twii_df = _load_twii()
+        twii_df = _load_twii(require_total_return=True)
 
         frames = []
         iterator = tqdm(tickers, desc="組裝資料集") if verbose else tickers
@@ -727,7 +852,7 @@ def build_latest_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.DataF
     rows = []
     iterator = tqdm(tickers, desc="建立最新快照") if verbose else tickers
     for ticker in iterator:
-        df = load_single_stock(ticker, twii_df=twii_df)
+        df = load_single_stock(ticker, twii_df=twii_df, eligibility_mode="latest")
         if df is None or len(df) == 0:
             continue
         rows.append(df.iloc[[-1]].copy())
@@ -758,6 +883,11 @@ def build_latest_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.DataF
         snapshot["atr_pct_rank"] = snapshot["atr_pct"].rank(pct=True).astype(np.float32)
     else:
         snapshot["atr_pct_rank"] = np.nan
+
+    if "market_regime" in available:
+        if verbose:
+            print("  後處理: 市場體制百分位特徵...")
+        snapshot = add_market_regime_features(snapshot)
 
     if verbose:
         print("  後處理: 極端值截斷 (Winsorization)...")

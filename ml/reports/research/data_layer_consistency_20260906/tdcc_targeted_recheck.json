@@ -1,0 +1,149 @@
+{
+  "status": "BOUNDED_TARGETED_RECHECK_COMPLETE",
+  "time": "2026-09-06T21:38:14.964008",
+  "checkpoint_before_sha256": "51a600ab70ae527f5a10b1d4d250c430f89b129b6f688010e7226ae061ce4658",
+  "checkpoint_after_sha256": "c9f8bb836e2bc52d0155b86422bdbc43eaa7a9c23c8c9f13e84b0037bd0eb81f",
+  "plan_sha256": "c5df9a6d723986b141dd60ded68c2ee2fbff4e369797aa55f0fc38e38a41a878",
+  "outcomes": [
+    {
+      "date": "20251023",
+      "ticker": "YFK2",
+      "status": "VALIDATED",
+      "queried_at": "2026-09-06T21:38:11.109260",
+      "review_reason": "Prior request failure or contradictory official date",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YFK2_attempt2.html",
+      "raw_sha256": "219b36140d418dc6971f1ac1f00c6bd475d0a3850fc9a35c0df2ab7db8106c66",
+      "validation": {
+        "actual_date": "20251023",
+        "ticker": "YFK2",
+        "levels": 15,
+        "total_shares": 9500000,
+        "adjustment_shares": 0,
+        "whale_pct": 100.0
+      },
+      "table_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\tables\\YFK2_review2.csv",
+      "table_sha256": "666b897bb332711a79aa064859b1e9da826c1a76a9f92e97a26d6748fa22b867",
+      "before_status": "UNRESOLVED",
+      "prior_raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YFK2_attempt1.html",
+      "prior_raw_sha256": "0a7a77c257676ae3b7db5e429439bb3f3180a49a597bff5850b473f751a618bf"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YGM3",
+      "status": "VALIDATED",
+      "queried_at": "2026-09-06T21:38:11.623872",
+      "review_reason": "Prior request failure or contradictory official date",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YGM3_attempt2.html",
+      "raw_sha256": "b66b8dfc4acfff903b4acd6c8c8844b55d3089c4cd49fbaf7e7bc4befe65c92b",
+      "validation": {
+        "actual_date": "20251023",
+        "ticker": "YGM3",
+        "levels": 15,
+        "total_shares": 77623750,
+        "adjustment_shares": 0,
+        "whale_pct": 100.0
+      },
+      "table_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\tables\\YGM3_review2.csv",
+      "table_sha256": "b967cdb6c14a15d2d6d6f07b20434a09f76932299a26a544a639328309aee80e",
+      "before_status": "UNRESOLVED",
+      "prior_raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YGM3_attempt1.html",
+      "prior_raw_sha256": "9c034fe94052dc0aefaf10f868ee83dee9ccbe4a4747a46c66f988440808be13"
+    },
+    {
+      "date": "20260226",
+      "ticker": "2616",
+      "status": "VALIDATED",
+      "queried_at": "2026-09-06T21:38:11.978463",
+      "review_reason": "Prior request failure or contradictory official date",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\2616_attempt2.html",
+      "raw_sha256": "3b390e63e9e166201894ba612df1e6374d5284a3cf946180ba5ba8dd92917b07",
+      "validation": {
+        "actual_date": "20260226",
+        "ticker": "2616",
+        "levels": 15,
+        "total_shares": 137281827,
+        "adjustment_shares": 0,
+        "whale_pct": 44.12
+      },
+      "table_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\tables\\2616_review2.csv",
+      "table_sha256": "961f0e5b5cd94698ee8a3b0d54a2b920fbc01f15c2e1b0e721c659ce7738625b",
+      "before_status": "UNRESOLVED",
+      "prior_raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\2616_attempt1.html",
+      "prior_raw_sha256": "9c034fe94052dc0aefaf10f868ee83dee9ccbe4a4747a46c66f988440808be13"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YGB3",
+      "status": "VALIDATED",
+      "queried_at": "2026-09-06T21:38:12.370066",
+      "review_reason": "Prior request failure or contradictory official date",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YGB3_attempt2.html",
+      "raw_sha256": "3651077c5011026b5e092e09b7aff199b662b99dc2b9832419b9454dd8c8207a",
+      "validation": {
+        "actual_date": "20260226",
+        "ticker": "YGB3",
+        "levels": 15,
+        "total_shares": 44401997,
+        "adjustment_shares": 0,
+        "whale_pct": 100.0
+      },
+      "table_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\tables\\YGB3_review2.csv",
+      "table_sha256": "b64fee4ceff916145f16b20bea13251483002e013f3379aef2991e25bdf23420",
+      "before_status": "UNRESOLVED",
+      "prior_raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YGB3_attempt1.html",
+      "prior_raw_sha256": "136d2ab354d9f7bc636a5113363c5dc9f88a12ed94eacb2e1c85c33627ae6f87"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2347",
+      "status": "VALIDATED",
+      "queried_at": "2026-09-06T21:38:12.864501",
+      "review_reason": "Exact no-data despite presence in both frozen adjacent raw weeks; one independent confirmation authorized",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2347_attempt2.html",
+      "raw_sha256": "0734693674dc4eb6ca5634022ba01b8844b5f2848d1667f22e33e1b7144125bd",
+      "validation": {
+        "actual_date": "20251009",
+        "ticker": "2347",
+        "levels": 15,
+        "total_shares": 1667946968,
+        "adjustment_shares": 0,
+        "whale_pct": 81.47
+      },
+      "table_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\tables\\2347_review2.csv",
+      "table_sha256": "45135d32ed012a23ee42b6bc25ab577a6f79ae81ce7206438c4e546981a249d4",
+      "before_status": "SOURCE_NO_DATA",
+      "prior_raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2347_attempt1.html",
+      "prior_raw_sha256": "7fa047db77c30e6f1c92e16087ab47185e42e38a410dbb5b127684098401409a"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLB2",
+      "status": "SOURCE_NO_DATA",
+      "queried_at": "2026-09-06T21:38:14.015417",
+      "review_reason": "Exact no-data despite presence in both frozen adjacent raw weeks; one independent confirmation authorized",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLB2_attempt2.html",
+      "raw_sha256": "c7ce91c4a0c976d4343c77770e8098bacfd7a11f891c33594da0c1c41388cf3c",
+      "classification": "Official no-data confirmed independently; not fabricated as zero and not repeatedly retried",
+      "before_status": "SOURCE_NO_DATA",
+      "prior_raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLB2_attempt1.html",
+      "prior_raw_sha256": "f7d0981a00bfe7fbb7eeca14a64781bcf1ddac0562dfad4528b0eb3890e0323c"
+    }
+  ],
+  "session_events": [
+    {
+      "method": "GET",
+      "start_monotonic": 251472.750857,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.305
+    }
+  ],
+  "limits": "Six targeted queries only. Official date anomalies remaining after recheck stay unresolved; complete raw normalization and2031latest feature A/B remain required."
+}

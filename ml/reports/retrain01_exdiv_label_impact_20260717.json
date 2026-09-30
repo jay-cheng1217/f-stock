@@ -1,0 +1,30 @@
+{
+  "summary": {
+    "status": "PASS",
+    "scope_start": "2020-01-01",
+    "scope_end": "2026-07-16",
+    "tickers": 1893,
+    "samples_20d": 1476629,
+    "affected_20d_samples": 111023,
+    "affected_20d_pct": 7.518679370376716,
+    "affected_20d_mean_delta_pp": 4.489736565967549,
+    "affected_20d_median_delta_pp": 3.485593518539365,
+    "affected_20d_gt_3pp_pct": 57.143114489790406,
+    "affected_20d_gt_5pp_pct": 30.50449006061807,
+    "v1_samples": 1494670,
+    "v1_any_class_flip_pct": 2.0000401426401813,
+    "v1_up_down_direct_flip_pct": 0.17615928599623998,
+    "zero_event_max_abs_delta": 0.0,
+    "prior_affected_pct": 9.51,
+    "prior_mean_delta_pp": 3.37
+  },
+  "comparison_ratios": {
+    "affected_sample_ratio_vs_prior": 0.7906077150764159,
+    "mean_delta_ratio_vs_prior": 1.3322660433138127
+  },
+  "interpretation": {
+    "absolute_20d": "stock action-factor change only",
+    "v1_excess": "stock action factor plus official TAIEX total-return benchmark",
+    "zero_event_contract": "applies to absolute stock labels; excess labels can change when the official total-return benchmark differs from the price index"
+  }
+}

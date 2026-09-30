@@ -1,0 +1,186 @@
+{
+  "status": "code_and_isolated_acceptance_pass_production_not_run",
+  "classification": "L1 quarterly source refresh prevention; no model calculation changes",
+  "tests": {
+    "passed": 59,
+    "command": "python -B -m pytest tests/test_quarterly_source_refresh.py tests/test_balance_sheet_named_headers.py tests/test_balance_sheet_source_errors.py tests/test_quarterly_fundamental_completeness.py tests/test_backfill_eps_completeness.py tests/test_fundamentals_audit_content.py -q"
+  },
+  "real_official_anchor_acceptance": {
+    "path": "F:\\stock\\output\\quarterly_refresh_contract_20260906\\real_source_anchor_acceptance.json",
+    "sha256": "748090154a6e30c740e02d7f658acb00e7811b11f64f044a517e9f60e251b441",
+    "results": [
+      {
+        "kind": "eps",
+        "market": "TWSE",
+        "status": "PASS",
+        "html_sha256": "42949c701425557861c40b2eeaa3b4fd28b95fe35d8381df62fdc9a6a9b1f491",
+        "anchor_sha256": "0642dfa4be8b88c0256db44963352bc8db7e13c8fb37160bb2f6787d752ba8af",
+        "proof": {
+          "title": "上市公司第二季資料",
+          "request_year": 2026,
+          "request_roc_year": 115,
+          "request_quarter": 2,
+          "market": "TWSE",
+          "response_year_explicit": false,
+          "kind": "eps",
+          "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb04",
+          "year_evidence": "request_plus_same_run_official_period_value_anchor",
+          "anchor": {
+            "market": "TWSE",
+            "year": 2026,
+            "quarter": 2,
+            "sample_tickers": [
+              "1101",
+              "1102",
+              "1103",
+              "1104",
+              "1108"
+            ],
+            "compared_fields": [
+              "EPS_Basic"
+            ],
+            "source_rows": 1048
+          },
+          "anchor_url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci"
+        }
+      },
+      {
+        "kind": "eps",
+        "market": "OTC",
+        "status": "PASS",
+        "html_sha256": "10fcee2bfc5f97dc4caeb07508f7db627f2d5eba3d5d7d68287f7641f14f9e99",
+        "anchor_sha256": "a8c2d1e3c695965e61a0bc18bf67542432bcf91c34163c4603a836f98bf5d1e8",
+        "proof": {
+          "title": "上櫃公司第二季資料",
+          "request_year": 2026,
+          "request_roc_year": 115,
+          "request_quarter": 2,
+          "market": "OTC",
+          "response_year_explicit": false,
+          "kind": "eps",
+          "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb04",
+          "year_evidence": "request_plus_same_run_official_period_value_anchor",
+          "anchor": {
+            "market": "OTC",
+            "year": 2026,
+            "quarter": 2,
+            "sample_tickers": [
+              "1240",
+              "1259",
+              "1264",
+              "1268",
+              "1294"
+            ],
+            "compared_fields": [
+              "EPS_Basic"
+            ],
+            "source_rows": 882
+          },
+          "anchor_url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap06_O_ci"
+        }
+      },
+      {
+        "kind": "bs",
+        "market": "TWSE",
+        "status": "PASS",
+        "html_sha256": "a7c4623408bc8450fcd944a5364dca82b607432de96db7578227a161572b9374",
+        "anchor_sha256": "ad562133fa7a6daa220c6fc301a1a6055513885ac69e4b0382bbd2d76bb2e425",
+        "proof": {
+          "title": "上市公司第二季資料",
+          "request_year": 2026,
+          "request_roc_year": 115,
+          "request_quarter": 2,
+          "market": "TWSE",
+          "response_year_explicit": false,
+          "kind": "bs",
+          "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+          "year_evidence": "request_plus_same_run_official_period_value_anchor",
+          "anchor": {
+            "market": "TWSE",
+            "year": 2026,
+            "quarter": 2,
+            "sample_tickers": [
+              "1101",
+              "1102",
+              "1103",
+              "1104",
+              "1108"
+            ],
+            "compared_fields": [
+              "Total_Assets",
+              "Total_Liabilities",
+              "Total_Equity",
+              "Book_Value_Per_Share"
+            ],
+            "source_rows": 1048
+          },
+          "anchor_url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci"
+        }
+      },
+      {
+        "kind": "bs",
+        "market": "OTC",
+        "status": "PASS",
+        "html_sha256": "d9295c46c6dff88acd920240b734e2cfdbd0dabd1bad85163e5c7ae78eed0030",
+        "anchor_sha256": "b59609f05a1d65129ab9c5fa3a86fee932951409ec2b8803c69d5698ec9de8b6",
+        "proof": {
+          "title": "上櫃公司第二季資料",
+          "request_year": 2026,
+          "request_roc_year": 115,
+          "request_quarter": 2,
+          "market": "OTC",
+          "response_year_explicit": false,
+          "kind": "bs",
+          "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+          "year_evidence": "request_plus_same_run_official_period_value_anchor",
+          "anchor": {
+            "market": "OTC",
+            "year": 2026,
+            "quarter": 2,
+            "sample_tickers": [
+              "1240",
+              "1259",
+              "1264",
+              "1268",
+              "1294"
+            ],
+            "compared_fields": [
+              "Total_Assets",
+              "Total_Liabilities",
+              "Total_Equity",
+              "Book_Value_Per_Share"
+            ],
+            "source_rows": 882
+          },
+          "anchor_url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap07_O_ci"
+        }
+      }
+    ]
+  },
+  "behavior": [
+    "Every producer invocation refreshes latest due quarter irrespective of existing coverage",
+    "Latest EPS/BS use exact market/quarter heading plus same-run official explicit-year period/value anchors (five common companies per market)",
+    "Atomic ticker-key merge retains previously filed companies omitted from current source and keeps official NaN",
+    "Raw source evidence and receipts retain hashes and knowledge timestamp",
+    "heal=True always invokes all three quarterly producers and propagates nonzero/timeout as gaps",
+    "heal=False runs no producer/network; EPS main returns nonzero on incomplete refresh",
+    "Old source numeric/schema defects can be repaired by complete official replacement; unverifiable omitted old filings block rather than silently delete",
+    "BS known accounting identity must hold within 2 source units; unknown accounts are not classified as false",
+    "Audit failed subprocess stdout/stderr tails persist to bounded diagnostic JSON"
+  ],
+  "limitations": [
+    "Historical EPS/BS response heading lacks year; historical proof is request-year only and must not be described as independently verified year",
+    "Financial may query twice in nightly Step8 and audit; correctness-first accepted by root",
+    "Four official OpenAPI anchors are required for latest EPS/BS; unavailable/mismatched anchor fails closed preserving old CSV",
+    "No real production pipeline, retraining, DB, model, ledger or frozen C candidate writes"
+  ],
+  "files": [
+    "twstock.py (Step8/import only)",
+    "scripts/backfill_eps.py",
+    "scripts/backfill_balance_sheet.py (named-header parser plus refresh)",
+    "scripts/fundamentals_completeness_audit.py",
+    "scripts/quarterly_source_contract.py",
+    "tests/test_quarterly_source_refresh.py",
+    "docs/METHOD_quarterly_source_refresh_20260906.md"
+  ]
+}

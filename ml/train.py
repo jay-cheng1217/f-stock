@@ -13,8 +13,9 @@ from sklearn.metrics import classification_report, f1_score
 from tqdm import tqdm
 
 from ml.config import (
-    LGBM_PARAMS, LGBM_NUM_ROUNDS, LGBM_EARLY_STOPPING,
+    LGBM_PARAMS, LGBM_NUM_ROUNDS, LGBM_EARLY_STOPPING, LGBM_NUM_THREADS,
     MODEL_DIR, REPORT_DIR, TARGET_CLASSES,
+    REGIME_FEATURE_COLS, REGIME_FEATURE_FRACTION_CAP,
 )
 from ml.features.registry import get_feature_columns
 from ml.dataset import build_dataset, walk_forward_split
@@ -73,6 +74,21 @@ def evaluate_fold(model, test_df, feature_cols):
     }
 
 
+def regime_feature_importance_share(model, feature_cols) -> float:
+    """Return gain-importance share from market-regime feature columns."""
+    importance = model.feature_importance(importance_type="gain")
+    total = float(np.sum(importance))
+    if total <= 0:
+        return 0.0
+    regime_set = set(REGIME_FEATURE_COLS)
+    regime_gain = sum(
+        float(gain)
+        for col, gain in zip(feature_cols, importance)
+        if col in regime_set
+    )
+    return regime_gain / total
+
+
 def run_training(max_stocks: int = 0):
     """完整訓練流程：組裝資料 → Walk-Forward 訓練 → 儲存最佳模型
 
@@ -82,6 +98,10 @@ def run_training(max_stocks: int = 0):
     print("=" * 60)
     print("  台股 ML 預測模型訓練")
     print("=" * 60)
+    print(
+        f"  LightGBM device={LGBM_PARAMS.get('device', 'cpu')} "
+        f"cpu_threads={LGBM_NUM_THREADS}"
+    )
 
     # 組裝資料集
     dataset = build_dataset(max_stocks=max_stocks)
@@ -108,14 +128,22 @@ def run_training(max_stocks: int = 0):
 
         model = train_fold(train_df, val_df, feature_cols)
         metrics = evaluate_fold(model, test_df, feature_cols)
+        regime_share = regime_feature_importance_share(model, feature_cols)
         metrics["fold"] = fold_idx
         metrics["test_end"] = str(test_end.date())
+        metrics["regime_feature_importance_share"] = regime_share
         fold_results.append(metrics)
 
         print(f" F1={metrics['f1_weighted']:.3f}, "
               f"UP精確率={metrics['precision_up']:.3f}, "
               f"UP召回率={metrics['recall_up']:.3f}, "
+              f"RegimeImp={regime_share:.1%}, "
               f"測試樣本={metrics['n_test']}")
+        if regime_share > REGIME_FEATURE_FRACTION_CAP:
+            print(
+                f"    WARNING: regime feature importance {regime_share:.1%} "
+                f"> cap {REGIME_FEATURE_FRACTION_CAP:.0%}"
+            )
 
         if metrics["f1_weighted"] > best_f1:
             best_f1 = metrics["f1_weighted"]
@@ -135,6 +163,12 @@ def run_training(max_stocks: int = 0):
     final_train = dataset[dataset["Date"] < cutoff]
     final_val = dataset[dataset["Date"] >= cutoff]
     production_model = train_fold(final_train, final_val, feature_cols)
+    production_regime_share = regime_feature_importance_share(production_model, feature_cols)
+    if production_regime_share > REGIME_FEATURE_FRACTION_CAP:
+        print(
+            f"WARNING: production regime feature importance {production_regime_share:.1%} "
+            f"> cap {REGIME_FEATURE_FRACTION_CAP:.0%}"
+        )
 
     # 儲存
     os.makedirs(MODEL_DIR, exist_ok=True)
@@ -147,6 +181,8 @@ def run_training(max_stocks: int = 0):
     meta = {
         "model_file": model_path,
         "trained_at": timestamp,
+        "device": LGBM_PARAMS.get("device", "cpu"),
+        "lgbm_params": LGBM_PARAMS,
         "cross_sectional_zscore": True,
         "feature_columns": feature_cols,
         "n_features": len(feature_cols),
@@ -157,6 +193,10 @@ def run_training(max_stocks: int = 0):
         "avg_f1_weighted": np.mean([r["f1_weighted"] for r in fold_results]),
         "avg_precision_up": np.mean([r["precision_up"] for r in fold_results]),
         "fold_results": fold_results,
+        "regime_feature_cols": REGIME_FEATURE_COLS,
+        "regime_feature_fraction_cap": REGIME_FEATURE_FRACTION_CAP,
+        "production_regime_feature_importance_share": production_regime_share,
+        "production_regime_feature_importance_pass": production_regime_share <= REGIME_FEATURE_FRACTION_CAP,
     }
     meta_path = os.path.join(MODEL_DIR, f"lgbm_{timestamp}_meta.json")
     with open(meta_path, "w", encoding="utf-8") as f:

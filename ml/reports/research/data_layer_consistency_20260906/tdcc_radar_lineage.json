@@ -1,0 +1,365 @@
+{
+  "status": "PASS_STAGING",
+  "generated_at": "2026-09-06T14:57:43.608401+08:00",
+  "classification": "L1 derivative/acquisition/scheduling repair, L0 evidence; formulas/gates/weights unchanged",
+  "method_contract": "docs/METHOD_data_layer_consistency_20260906.md",
+  "baseline_revision": "d9d2685c2f80d172011a99c6090cde64a09921d1",
+  "root_cause": [
+    "tdcc_whale_weekly_scan had no executable Phase-1/Phase-2 scheduler call; docs-only weekly expectation.",
+    "Dashboard independently used rolling snapshot 20260703 despite raw/summary 20260904.",
+    "Old producer could subtract any older rolling snapshot as if adjacent week; missing-week catchup was unsafe.",
+    "Raw fetch skipped any existing same-date file without partial-content validation."
+  ],
+  "before": {
+    "consumer_asof": "2026-07-03",
+    "consumer_tickers": 2951,
+    "unfiltered_radar_rows": 19
+  },
+  "after": {
+    "consumer_asof": "2026-09-04",
+    "consumer_tickers": 2960,
+    "unfiltered_radar_rows": 18,
+    "named_radar_rows": 14,
+    "sources": {
+      "previous": {
+        "path": "F:\\stock\\集保分散\\tdcc_20260828.csv",
+        "sha256": "5db187485869472084aff302949189c6fdcf4c12f54a9c8a5f7eb58e284b65ca",
+        "date": "20260828",
+        "raw_rows": 68799,
+        "raw_tickers": 4047,
+        "four_digit_rows": 50354,
+        "four_digit_tickers": 2962,
+        "required_levels_per_ticker": 15
+      },
+      "current": {
+        "path": "F:\\stock\\集保分散\\tdcc_20260904.csv",
+        "sha256": "2e16ed91d1cca9565c9419d2c365a270ecca6c1aaf4f4886d022b028209d7cc1",
+        "date": "20260904",
+        "raw_rows": 68867,
+        "raw_tickers": 4051,
+        "four_digit_rows": 50354,
+        "four_digit_tickers": 2962,
+        "required_levels_per_ticker": 15
+      },
+      "paired_tickers": 2960,
+      "pair_coverage": 0.9993247805536799,
+      "current_only_tickers": [
+        "3718",
+        "8491"
+      ],
+      "previous_only_tickers": [
+        "5286",
+        "6461"
+      ]
+    }
+  },
+  "same_pair_equivalence": {
+    "same_raw_pair": [
+      "F:\\stock\\集保分散\\tdcc_20260828.csv",
+      "F:\\stock\\集保分散\\tdcc_20260904.csv"
+    ],
+    "paired_tickers": 2960,
+    "compared_numeric_columns": [
+      "whale1000",
+      "retail100",
+      "whale1000_prev",
+      "retail100_prev",
+      "whale_delta",
+      "retail_delta"
+    ],
+    "different_values": 0,
+    "max_absolute_delta": 0,
+    "all_cur_snapshot_columns_equal": true,
+    "hit_membership_equal": true
+  },
+  "raw_level_reconciliation": [
+    {
+      "date": "20260828",
+      "ticker": "2330",
+      "level_1_to_9": {
+        "1": 1.12,
+        "2": 3.32,
+        "3": 1.45,
+        "4": 0.82,
+        "5": 0.54,
+        "6": 0.73,
+        "7": 0.49,
+        "8": 0.35,
+        "9": 1.1
+      },
+      "level_15": 84.75,
+      "derived_whale1000": 84.75,
+      "derived_retail100": 9.92
+    },
+    {
+      "date": "20260904",
+      "ticker": "2330",
+      "level_1_to_9": {
+        "1": 1.12,
+        "2": 3.33,
+        "3": 1.45,
+        "4": 0.82,
+        "5": 0.54,
+        "6": 0.73,
+        "7": 0.49,
+        "8": 0.35,
+        "9": 1.09
+      },
+      "level_15": 84.74,
+      "derived_whale1000": 84.74,
+      "derived_retail100": 9.92
+    }
+  ],
+  "rere_observation_display_impact": [
+    {
+      "ticker": "3605",
+      "weekly_values": [
+        55.86,
+        -2.87,
+        29.22,
+        0.98
+      ],
+      "before": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單；大戶雷達非當期或未確認，需人工補充"
+      ],
+      "after": [
+        "skip",
+        "🔴 跳過:籌碼發散(大戶-2.9pp/散戶+1.0pp)"
+      ],
+      "state_changed": true,
+      "canonical_kind_unchanged": "small"
+    },
+    {
+      "ticker": "3189",
+      "weekly_values": [
+        65.91,
+        -2.7,
+        22.08,
+        2.42
+      ],
+      "before": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單；大戶雷達非當期或未確認，需人工補充"
+      ],
+      "after": [
+        "skip",
+        "🔴 跳過:籌碼發散(大戶-2.7pp/散戶+2.4pp)"
+      ],
+      "state_changed": true,
+      "canonical_kind_unchanged": "small"
+    },
+    {
+      "ticker": "3066",
+      "weekly_values": [
+        68.89,
+        1.22,
+        20.19,
+        0.97
+      ],
+      "before": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單；大戶雷達非當期或未確認，需人工補充"
+      ],
+      "after": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單"
+      ],
+      "state_changed": false,
+      "canonical_kind_unchanged": "small"
+    },
+    {
+      "ticker": "2364",
+      "weekly_values": [
+        51.35,
+        0.0,
+        36.15,
+        2.32
+      ],
+      "before": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單；大戶雷達非當期或未確認，需人工補充"
+      ],
+      "after": [
+        "skip",
+        "🔴 跳過:籌碼發散(大戶+0.0pp/散戶+2.3pp)"
+      ],
+      "state_changed": true,
+      "canonical_kind_unchanged": "small"
+    },
+    {
+      "ticker": "3176",
+      "weekly_values": [
+        27.83,
+        -0.35,
+        48.57,
+        -0.1
+      ],
+      "before": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單；大戶雷達非當期或未確認，需人工補充"
+      ],
+      "after": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單"
+      ],
+      "state_changed": false,
+      "canonical_kind_unchanged": "small"
+    },
+    {
+      "ticker": "6472",
+      "weekly_values": [
+        45.76,
+        0.04,
+        36.88,
+        0.51
+      ],
+      "before": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單；大戶雷達非當期或未確認，需人工補充"
+      ],
+      "after": [
+        "check",
+        "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單"
+      ],
+      "state_changed": false,
+      "canonical_kind_unchanged": "small"
+    }
+  ],
+  "canonical": {
+    "path": "F:\\stock\\logs\\entry_list_20260907.json",
+    "sha256": "02f657a10432073ac411c75039accd423f776e4289f0970f65774e2a06fdf65e",
+    "written": false,
+    "candidate_count": 18
+  },
+  "live_official_fetch": {
+    "started": "2026-09-06T14:53:43.615052+08:00",
+    "url": "https://openapi.tdcc.com.tw/v1/opendata/1-5",
+    "production_writes": false,
+    "command": "python -B -X utf8 output/tdcc_lineage_20260906/live_fetch_smoke.py",
+    "http_status": 200,
+    "official_headers": [
+      "證券代號",
+      "占集保庫存數比例%",
+      "人數",
+      "資料日期",
+      "股數",
+      "持股分級"
+    ],
+    "status": "PASS",
+    "seconds": 6.5,
+    "source": {
+      "path": "F:\\stock\\output\\tdcc_lineage_20260906\\live_fetch\\tdcc_20260904.csv",
+      "sha256": "7fa8013d235ae5993d83f7cee962291ec09f9e2e572980f141b7e23711630fdf",
+      "date": "20260904",
+      "raw_rows": 68867,
+      "raw_tickers": 4051,
+      "four_digit_rows": 50354,
+      "four_digit_tickers": 2962,
+      "required_levels_per_ticker": 15
+    },
+    "level_counts": {
+      "1": 2962,
+      "2": 2962,
+      "3": 2962,
+      "4": 2962,
+      "5": 2962,
+      "6": 2962,
+      "7": 2962,
+      "8": 2962,
+      "9": 2962,
+      "10": 2962,
+      "11": 2962,
+      "12": 2962,
+      "13": 2962,
+      "14": 2962,
+      "15": 2962,
+      "16": 2962,
+      "17": 2962
+    },
+    "tsmc": [
+      {
+        "ticker": "2330",
+        "date": "20260904",
+        "whale1000": 84.74,
+        "retail100": 9.92
+      }
+    ],
+    "local_latest_raw_sha256": "2e16ed91d1cca9565c9419d2c365a270ecca6c1aaf4f4886d022b028209d7cc1",
+    "same_exact_bytes_as_local_latest": false,
+    "same_full_raw_values_as_local_latest": true,
+    "value_comparison_rows": 68867
+  },
+  "derived_manifest": {
+    "status": "OK",
+    "as_of_date": "20260904",
+    "previous_date": "20260828",
+    "generated_at": "2026-09-06T14:46:45.049595+08:00",
+    "sources": {
+      "previous": {
+        "path": "F:\\stock\\集保分散\\tdcc_20260828.csv",
+        "sha256": "5db187485869472084aff302949189c6fdcf4c12f54a9c8a5f7eb58e284b65ca",
+        "date": "20260828",
+        "raw_rows": 68799,
+        "raw_tickers": 4047,
+        "four_digit_rows": 50354,
+        "four_digit_tickers": 2962,
+        "required_levels_per_ticker": 15
+      },
+      "current": {
+        "path": "F:\\stock\\集保分散\\tdcc_20260904.csv",
+        "sha256": "2e16ed91d1cca9565c9419d2c365a270ecca6c1aaf4f4886d022b028209d7cc1",
+        "date": "20260904",
+        "raw_rows": 68867,
+        "raw_tickers": 4051,
+        "four_digit_rows": 50354,
+        "four_digit_tickers": 2962,
+        "required_levels_per_ticker": 15
+      },
+      "paired_tickers": 2960,
+      "pair_coverage": 0.9993247805536799,
+      "current_only_tickers": [
+        "3718",
+        "8491"
+      ],
+      "previous_only_tickers": [
+        "5286",
+        "6461"
+      ]
+    },
+    "definition": {
+      "whale_levels": [
+        15
+      ],
+      "retail_levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "min_whale_delta_pp": 3.0,
+      "retail_delta_less_than": 0
+    },
+    "named_radar_rows": 14,
+    "outputs": {
+      "ml/data/tdcc_whale_snapshot.csv": "14e8ec0467fef15ac1a2c32a2ba8585ac9d1a11c16c59be699cb0f2f05ff2b07",
+      "ml/data/tdcc_whale_deltas.csv": "2f53b00dbf98ff28d19a36ac53ebee411e77472c4644940d34b192d1ca74669c",
+      "logs/tdcc_whale_delta_20260904.csv": "d7510072439703275a69af926506b55b4d5dc6103ecd21aacfbd3a2e52e0e827"
+    }
+  },
+  "tests": "57 passed in 1.81s: test_tdcc_radar_lineage, test_entry_dashboard_cards, test_smart_update_auto, test_backfill_tdcc_summary",
+  "formal_refresh": "NOT_RUN; root must run the producer with default production output before rebuilding formal UI.",
+  "not_run": [
+    "Windows scheduler trigger",
+    "formal raw/summary refresh",
+    "formal HTML write/publish",
+    "email",
+    "model/ledger mutation",
+    "independent git commit"
+  ]
+}

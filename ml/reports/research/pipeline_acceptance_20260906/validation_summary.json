@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-06",
+  "final_targeted_integration": {
+    "status": "PASS",
+    "passed": 71,
+    "seconds": 2.46,
+    "files": [
+      "tests/test_pipeline_health_connection.py",
+      "tests/test_daily_pipeline_exit_status.py",
+      "tests/test_agent_arena_shared_reader.py",
+      "tests/test_agent_arena.py",
+      "tests/test_ai_summary_context.py",
+      "tests/test_send_daily_email_encoding.py",
+      "tests/test_email_observation_semantics.py",
+      "tests/test_entry_dashboard_cards.py"
+    ],
+    "scope": "Focused integration regression, not the full repository test suite"
+  },
+  "actual_pipeline_leaves": "stage_receipts.json plus acceptance_* semantic receipts",
+  "historical_training_reexecuted": false,
+  "allocation_policy_modified": false,
+  "live_web_reload": "PASS_LIVE_WEB_VERIFIED",
+  "live_web_evidence": "web_live_deployment.json"
+}

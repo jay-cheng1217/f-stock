@@ -1,0 +1,233 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-09T15:24:44.464439+00:00",
+    "fold_artifact": "F:\\stock\\ml\\reports\\audit002_step5_grid_search_20260509_N75_bins5_fold_top30.csv",
+    "actual_start": "2024-01",
+    "actual_end": "2026-04",
+    "twii_source": "csv:F:\\stock\\大盤指數\\index_TWII.csv",
+    "entries": 840,
+    "simulated_trades": 4200,
+    "skipped_entries": 0,
+    "trades_csv": "F:\\stock\\ml\\reports\\regime_exit_overlay_cl3_20260509_trades.csv",
+    "monthly_csv": "F:\\stock\\ml\\reports\\regime_exit_overlay_cl3_20260509_monthly.csv",
+    "summary_csv": "F:\\stock\\ml\\reports\\regime_exit_overlay_cl3_20260509_summary.csv",
+    "cl3_csv": "F:\\stock\\ml\\reports\\regime_exit_overlay_cl3_20260509_cl3.csv",
+    "subsets_csv": "F:\\stock\\ml\\reports\\regime_exit_overlay_cl3_20260509_subsets.csv",
+    "april_summary_csv": "F:\\stock\\ml\\reports\\regime_exit_overlay_cl3_20260509_april_replay_summary.csv",
+    "april_rescued_csv": "F:\\stock\\ml\\reports\\regime_exit_overlay_cl3_20260509_april_rescued.csv"
+  },
+  "summary": [
+    {
+      "variant": "Control_AsymmetricV2",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.02295393711787255,
+      "monthly_avg_alpha": 0.012232814203980499,
+      "compound_return": 0.853968563820769,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.120625564702319,
+      "calmar": 4.0681844446193,
+      "avg_hold_days": 4.886904761904762,
+      "strong_trend_no_ma5_count": 109,
+      "ma_exit_count": 704,
+      "hwm_exit_count": 70,
+      "stop_exit_count": 103,
+      "timeout_count": 33,
+      "regime_overlay_count": 0
+    },
+    {
+      "variant": "Variant_A_regime_ma20_3pct",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.02606979372809085,
+      "monthly_avg_alpha": 0.009993501459843901,
+      "compound_return": 1.0177733968576752,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.3709906673069745,
+      "calmar": 4.702471558490938,
+      "avg_hold_days": 6.186904761904762,
+      "strong_trend_no_ma5_count": 85,
+      "ma_exit_count": 618,
+      "hwm_exit_count": 52,
+      "stop_exit_count": 124,
+      "timeout_count": 98,
+      "regime_overlay_count": 120
+    },
+    {
+      "variant": "Variant_B_regime_ma20_5pct",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.025281123035935747,
+      "monthly_avg_alpha": 0.010944060715288596,
+      "compound_return": 0.975953133975803,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.337458687044952,
+      "calmar": 4.539913096954534,
+      "avg_hold_days": 5.830952380952381,
+      "strong_trend_no_ma5_count": 91,
+      "ma_exit_count": 642,
+      "hwm_exit_count": 54,
+      "stop_exit_count": 118,
+      "timeout_count": 80,
+      "regime_overlay_count": 90
+    },
+    {
+      "variant": "Variant_C_regime_20d_return_8pct",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.02495616315025734,
+      "monthly_avg_alpha": 0.015234198304884743,
+      "compound_return": 0.9546029857085154,
+      "mdd": -0.10961865885355637,
+      "sharpe": 2.1973610268623545,
+      "calmar": 3.139965195964743,
+      "avg_hold_days": 6.6761904761904765,
+      "strong_trend_no_ma5_count": 94,
+      "ma_exit_count": 577,
+      "hwm_exit_count": 58,
+      "stop_exit_count": 151,
+      "timeout_count": 112,
+      "regime_overlay_count": 150
+    },
+    {
+      "variant": "Variant_D_regime_ma20_5pct_hwm",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.022306596678568193,
+      "monthly_avg_alpha": 0.009902005033254146,
+      "compound_return": 0.8211178158284007,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.0535918524896752,
+      "calmar": 3.939050119193019,
+      "avg_hold_days": 5.3238095238095235,
+      "strong_trend_no_ma5_count": 181,
+      "ma_exit_count": 642,
+      "hwm_exit_count": 110,
+      "stop_exit_count": 152,
+      "timeout_count": 46,
+      "regime_overlay_count": 90
+    }
+  ],
+  "cl3": [
+    {
+      "variant": "Variant_A_regime_ma20_3pct",
+      "alpha_sacrifice": 0.002239312744136598,
+      "alpha_pass": true,
+      "mdd_delta": 0.0,
+      "mdd_pass": false,
+      "sharpe_regression": 0.0,
+      "sharpe_pass": true,
+      "calmar_regression": 0.0,
+      "calmar_pass": true,
+      "overall_pass": false
+    },
+    {
+      "variant": "Variant_B_regime_ma20_5pct",
+      "alpha_sacrifice": 0.001288753488691903,
+      "alpha_pass": true,
+      "mdd_delta": 0.0,
+      "mdd_pass": false,
+      "sharpe_regression": 0.0,
+      "sharpe_pass": true,
+      "calmar_regression": 0.0,
+      "calmar_pass": true,
+      "overall_pass": false
+    },
+    {
+      "variant": "Variant_C_regime_20d_return_8pct",
+      "alpha_sacrifice": 0.0,
+      "alpha_pass": true,
+      "mdd_delta": -0.032674058104831594,
+      "mdd_pass": false,
+      "sharpe_regression": 0.0,
+      "sharpe_pass": true,
+      "calmar_regression": 0.22816547806288548,
+      "calmar_pass": false,
+      "overall_pass": false
+    },
+    {
+      "variant": "Variant_D_regime_ma20_5pct_hwm",
+      "alpha_sacrifice": 0.002330809170726353,
+      "alpha_pass": true,
+      "mdd_delta": 0.0,
+      "mdd_pass": false,
+      "sharpe_regression": 0.031610348063522316,
+      "sharpe_pass": true,
+      "calmar_regression": 0.031742495254136756,
+      "calmar_pass": true,
+      "overall_pass": false
+    }
+  ],
+  "subsets": [
+    {
+      "variant": "Control_AsymmetricV2",
+      "strong_months": 14,
+      "strong_month_avg_alpha": 0.014599637369180688,
+      "weak_months": 5,
+      "weak_month_mdd": -0.04718868583805036,
+      "weak_month_avg_return": 0.008380522160712365
+    },
+    {
+      "variant": "Variant_A_regime_ma20_3pct",
+      "strong_months": 14,
+      "strong_month_avg_alpha": 0.010894029104474562,
+      "weak_months": 5,
+      "weak_month_mdd": -0.03188398539858173,
+      "weak_month_avg_return": 0.011526420710554274
+    },
+    {
+      "variant": "Variant_B_regime_ma20_5pct",
+      "strong_months": 14,
+      "strong_month_avg_alpha": 0.012795147615363947,
+      "weak_months": 5,
+      "weak_month_mdd": -0.03188398539858173,
+      "weak_month_avg_return": 0.011526420710554274
+    },
+    {
+      "variant": "Variant_C_regime_20d_return_8pct",
+      "strong_months": 14,
+      "strong_month_avg_alpha": 0.022722127924577094,
+      "weak_months": 5,
+      "weak_month_mdd": -0.04718868583805036,
+      "weak_month_avg_return": 0.008380522160712365
+    },
+    {
+      "variant": "Variant_D_regime_ma20_5pct_hwm",
+      "strong_months": 14,
+      "strong_month_avg_alpha": 0.010822743924484587,
+      "weak_months": 5,
+      "weak_month_mdd": -0.03453698056427579,
+      "weak_month_avg_return": 0.010981094542459487
+    }
+  ],
+  "april_replay_summary": [
+    {
+      "variant": "Variant_A_regime_ma20_3pct",
+      "april_trades": 30,
+      "control_ma5_exits": 22,
+      "rescued_count": 22,
+      "rescued_avg_delta_return": -0.001557065556472806
+    },
+    {
+      "variant": "Variant_B_regime_ma20_5pct",
+      "april_trades": 30,
+      "control_ma5_exits": 22,
+      "rescued_count": 22,
+      "rescued_avg_delta_return": -0.001557065556472806
+    },
+    {
+      "variant": "Variant_C_regime_20d_return_8pct",
+      "april_trades": 30,
+      "control_ma5_exits": 22,
+      "rescued_count": 0,
+      "rescued_avg_delta_return": 0.0
+    },
+    {
+      "variant": "Variant_D_regime_ma20_5pct_hwm",
+      "april_trades": 30,
+      "control_ma5_exits": 22,
+      "rescued_count": 22,
+      "rescued_avg_delta_return": -0.009888136237788735
+    }
+  ]
+}

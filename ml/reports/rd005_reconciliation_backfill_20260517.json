@@ -1,0 +1,249 @@
+{
+  "status": "blocked_before_timing_bc",
+  "method_lock_doc": {
+    "path": "F:\\stock\\docs\\designs\\rd005_residual_deepdive_method_lock_20260517.md",
+    "exists": true
+  },
+  "window": {
+    "mock": [
+      "2026-04-23",
+      "2026-04-29"
+    ],
+    "formal": [
+      "2026-05-11",
+      "2026-05-15"
+    ]
+  },
+  "reconciliation": {
+    "nav_unexplained_reconciliation_residual_pct": -0.05638164814819354,
+    "holding_level_residual_after_factor_pct": 0.060354606833734496,
+    "difference_pct": 0.11673625498192804,
+    "gross_exposure_cash_residual_pct": -0.041455336458437894,
+    "selection_effect_pct": 0.11664542924171165,
+    "allocation_effect_pct": -0.03704562538943071,
+    "execution_effect_pct": 0.010651526461913858,
+    "exit_effect_pct": 0.004274785227841791,
+    "ledger_reconciliation_error_pct": 0.09621205130210712,
+    "bridge_assessment": "The two residuals are different diagnostics. Holding-level residual_after_factor is a selection/idiosyncratic return of marked holdings versus locked market/sector factors. NAV unexplained is the remaining gross-exposure/cash reconciliation bucket after execution and exit effects. They should not be treated as the same target without an explicit bridge."
+  },
+  "ticker_6419": {
+    "weighted_residual_pct": 0.033972847585799396,
+    "share_of_formal_residual": 0.5628873977986163,
+    "position": {
+      "id": 118,
+      "opened_by_run_id": 26,
+      "last_run_id": 28,
+      "prediction_date": "2026-05-11",
+      "last_signal_date": "2026-05-13",
+      "ticker": "6419",
+      "sector": "光電業",
+      "entry_signal_type": "20D_only",
+      "current_signal_type": "20D_only",
+      "target_units": 2,
+      "target_weight": 0.12681172600619192,
+      "planned_entry_ref_price": 137.0,
+      "entry_date": "2026-05-12",
+      "entry_price": 150.5,
+      "exit_policy": "20D",
+      "hold_days_target": 20,
+      "upgrade_count": 0,
+      "upgraded_at": null,
+      "status": "open",
+      "days_observed": 4,
+      "last_mark_date": "2026-05-15",
+      "exit_date": null,
+      "exit_price": null,
+      "realized_return_pct": null,
+      "max_drawdown_pct": 0.0,
+      "max_drawdown_date": "2026-05-12",
+      "max_drawdown_low": 150.5,
+      "created_at": "2026-05-12 05:32:58",
+      "updated_at": "2026-05-16 12:51:37",
+      "order_type": "INTRADAY_CHASE",
+      "fill_status": "FILLED",
+      "fill_price": 150.5,
+      "entry_slippage_pct": 0.0985401459854014,
+      "exit_reason": null,
+      "entry_tag": "FUNDAMENTAL_DRIVEN",
+      "narrative_heat_at_entry": null,
+      "two_stage_rank_at_entry": null,
+      "price_vs_ma20_at_entry": -0.0034551736679395,
+      "two_stage_rank_status": "rank_unknown",
+      "entry_snapshot_id": "2026-05-11:6e243e0f8289a04065acf13dee5162b871feeb75e941b33eafa033b4df8e5238:6419",
+      "entry_model_version": "source_20d=predictions_2026-05-11.csv",
+      "entry_rank_20d": 3.0,
+      "entry_two_stage_rank": null,
+      "entry_score": 0.0440671603447745,
+      "entry_prob_edge": 0.0906043702671004,
+      "entry_risk_adjusted_return_pre_penalty": 0.0194161834331687,
+      "entry_leaderboard_score_pre_penalty": null,
+      "entry_penalty_overlay_total": 0.0049999998882412,
+      "entry_guardrail_version": "guardrail_v1|monitor_top_n=50|loose_mode=0|intercept_rate_top50=0.42",
+      "entry_allocation_version": "sector_cap=0.20|group_cap=0.15|group_cap_applied=False",
+      "entry_execution_policy_version": "rule=unified-v2-order-sim|exit_policy=20D|order_type=pending_fill",
+      "entry_snapshot_confidence": "partial_backfill",
+      "entry_snapshot_reason_code": "BACKFILLED_FROM_SIGNAL_FILE;MISSING_TWO_STAGE_RANK;MISSING_LEADERBOARD_PRE_PENALTY"
+    },
+    "marks": [
+      {
+        "id": 855,
+        "position_id": 118,
+        "mark_date": "2026-05-12",
+        "trading_day_number": 1,
+        "open": 150.5,
+        "high": 150.5,
+        "low": 150.5,
+        "close": 150.5,
+        "close_return_pct": 0.0,
+        "intraday_drawdown_pct": 0.0,
+        "is_exit_day": 0,
+        "created_at": "2026-05-13 05:32:47"
+      },
+      {
+        "id": 1016,
+        "position_id": 118,
+        "mark_date": "2026-05-13",
+        "trading_day_number": 2,
+        "open": 156.0,
+        "high": 165.5,
+        "low": 156.0,
+        "close": 165.5,
+        "close_return_pct": 0.09966777408637872,
+        "intraday_drawdown_pct": 0.03654485049833878,
+        "is_exit_day": 0,
+        "created_at": "2026-05-14 05:23:34"
+      },
+      {
+        "id": 1223,
+        "position_id": 118,
+        "mark_date": "2026-05-14",
+        "trading_day_number": 3,
+        "open": 177.0,
+        "high": 182.0,
+        "low": 169.0,
+        "close": 177.0,
+        "close_return_pct": 0.17607973421926904,
+        "intraday_drawdown_pct": 0.12292358803986714,
+        "is_exit_day": 0,
+        "created_at": "2026-05-15 05:24:47"
+      },
+      {
+        "id": 1407,
+        "position_id": 118,
+        "mark_date": "2026-05-15",
+        "trading_day_number": 4,
+        "open": 178.5,
+        "high": 194.5,
+        "low": 177.0,
+        "close": 194.5,
+        "close_return_pct": 0.2923588039867109,
+        "intraday_drawdown_pct": 0.17607973421926904,
+        "is_exit_day": 0,
+        "created_at": "2026-05-15 23:35:51"
+      }
+    ],
+    "daily_k": {
+      "status": "ok",
+      "path": "F:\\stock\\日K資料\\6419.csv",
+      "start_close": 137.0,
+      "end_close": 194.5,
+      "close_return_pct": 0.4197080291970803,
+      "max_volume": 2646611.0,
+      "max_volume_date": "2026-05-14",
+      "avg_volume_20d_before_window": 624087.85,
+      "max_volume_vs_20d_avg": 4.2407667446177655,
+      "flows": {
+        "Foreign_BuySell": 361282.0,
+        "Trust_BuySell": 0.0,
+        "Dealer_BuySell": 361282.0
+      },
+      "window_rows": [
+        {
+          "date": "2026-05-11",
+          "open": 145.0,
+          "high": 146.0,
+          "low": 135.0,
+          "close": 137.0,
+          "volume": 649889.0,
+          "foreign_buy_sell": 18000.0,
+          "dealer_buy_sell": 18000.0
+        },
+        {
+          "date": "2026-05-12",
+          "open": 150.5,
+          "high": 150.5,
+          "low": 150.5,
+          "close": 150.5,
+          "volume": 335608.0,
+          "foreign_buy_sell": 29000.0,
+          "dealer_buy_sell": 29000.0
+        },
+        {
+          "date": "2026-05-13",
+          "open": 156.0,
+          "high": 165.5,
+          "low": 156.0,
+          "close": 165.5,
+          "volume": 1944765.0,
+          "foreign_buy_sell": 281972.0,
+          "dealer_buy_sell": 281972.0
+        },
+        {
+          "date": "2026-05-14",
+          "open": 177.0,
+          "high": 182.0,
+          "low": 169.0,
+          "close": 177.0,
+          "volume": 2646611.0,
+          "foreign_buy_sell": 13310.0,
+          "dealer_buy_sell": 13310.0
+        },
+        {
+          "date": "2026-05-15",
+          "open": 178.5,
+          "high": 194.5,
+          "low": 177.0,
+          "close": 194.5,
+          "volume": 978850.0,
+          "foreign_buy_sell": 19000.0,
+          "dealer_buy_sell": 19000.0
+        }
+      ]
+    },
+    "financial_latest": {
+      "Ticker": "6419",
+      "Name": "京晨科",
+      "Revenue_M": 498.24,
+      "Gross_Margin_Pct": 26.6,
+      "Operating_Margin_Pct": 12.07,
+      "Pretax_Margin_Pct": 27.45,
+      "Net_Margin_Pct": 25.3,
+      "Market": "OTC",
+      "Year": 2025,
+      "Season": 4,
+      "_source": "F:\\stock\\季報財務\\financial_2025Q4.csv"
+    },
+    "valuation_at_formal_end": {
+      "Ticker": "6419",
+      "Name": "京晨科",
+      "PE_Ratio": 15.47,
+      "PB_Ratio": 4.93,
+      "Dividend_Yield": 1.39,
+      "Market": "上櫃",
+      "_source": "F:\\stock\\估值資料\\valuation_20260515.csv"
+    },
+    "disposition_overlap": [],
+    "local_news_rows_found": 0,
+    "assessment": "6419 is an idiosyncratic concentration, not broad factor exposure. It entered as INTRADAY_CHASE with high entry slippage, then rallied sharply with volume and dealer flow spikes during the formal window."
+  },
+  "window_sensitivity": {
+    "mock_residual_after_factor_pct": -0.11251254219763071,
+    "formal_residual_after_factor_pct": 0.060354606833734496,
+    "sign_flipped": true,
+    "assessment": "The locked residual_after_factor metric is window-sensitive. Any future citation must include the date window and should not infer a stable structural residual from one week."
+  },
+  "next_gate": {
+    "timing_bc_allowed": false,
+    "reason": "A-stage reconciliation backfill only; PM must choose the target metric before B/C."
+  }
+}

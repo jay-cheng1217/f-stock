@@ -1,0 +1,34 @@
+{
+  "scope": "Actual formal _load_pipeline_snapshot read under an active isolated-write guard; no production writes or scoring",
+  "app_sha256": "90374838caa06bf3765ddeaed2a40173de5bb39dda966e79c6a21ae125fe6e15",
+  "before": {
+    "rows": 1098,
+    "columns": 302,
+    "bound_sha": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "source_manifest_present": false,
+    "file_sha": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "pickle_loads_sha": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "pd_read_pickle_sha": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "exact_values_dtypes_index_flags_attrs": true,
+    "after_series_sha": "8a14a1a541c4b2ba1ce6795d9098dc74476592de05da72b7125376673e86cd3c",
+    "guard": "REPRODUCED_FAIL",
+    "error": "解釋快照與正式推論輸入不一致，請重新載入已驗證快照。",
+    "cause": "No original snapshot-byte binding"
+  },
+  "after": {
+    "rows": 1098,
+    "columns": 302,
+    "bound_sha": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "source_manifest_present": false,
+    "file_sha": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "pickle_loads_sha": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "pd_read_pickle_sha": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "exact_values_dtypes_index_flags_attrs": true,
+    "after_series_sha": "8a14a1a541c4b2ba1ce6795d9098dc74476592de05da72b7125376673e86cd3c",
+    "guard": "PASS"
+  },
+  "source_paths": "Formal read-only; all receipts written in physical acceptance copy",
+  "producer_changed": false,
+  "certificate_changed": false,
+  "values_tolerance": 0
+}

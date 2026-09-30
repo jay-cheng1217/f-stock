@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-09T14:47:16.034057+00:00",
+    "source_trades": "F:\\stock\\ml\\reports\\exit_v2_cl3_backtest_20260509_trades.csv",
+    "actual_start": "2024-01",
+    "actual_end": "2026-04",
+    "threshold": -0.05,
+    "baseline_trades": 840,
+    "removed_trades": 81,
+    "summary_csv": "F:\\stock\\ml\\reports\\ma5_entry_guard_minus5pct_cl3_backtest_20260509_summary.csv",
+    "monthly_csv": "F:\\stock\\ml\\reports\\ma5_entry_guard_minus5pct_cl3_backtest_20260509_monthly.csv",
+    "trades_csv": "F:\\stock\\ml\\reports\\ma5_entry_guard_minus5pct_cl3_backtest_20260509_trades.csv",
+    "groups_csv": "F:\\stock\\ml\\reports\\ma5_entry_guard_minus5pct_cl3_backtest_20260509_groups.csv"
+  },
+  "summary": [
+    {
+      "variant": "Control_AsymmetricV2",
+      "monthly_avg_return": 0.022953937117872553,
+      "monthly_avg_alpha": 0.012232814203980508,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.1206255647023196,
+      "calmar": 4.0681844446193,
+      "avg_hold_days": 4.886904761904762,
+      "trades": 840,
+      "removed_trades": 0
+    },
+    {
+      "variant": "Treatment_MA5EntryGuard",
+      "monthly_avg_return": 0.02283817948155042,
+      "monthly_avg_alpha": 0.012819166418141573,
+      "mdd": -0.09787459608814686,
+      "sharpe": 1.8179969413458572,
+      "calmar": 3.1800177401132137,
+      "avg_hold_days": 5.0818972696653075,
+      "trades": 759,
+      "removed_trades": 81
+    }
+  ],
+  "groups": [
+    {
+      "entry_ma5_bucket": "A_price_vs_ma5_at_entry_gt_0",
+      "samples": 441,
+      "kept": 441,
+      "removed": 0,
+      "removed_pct": 0.0,
+      "baseline_avg_return": 0.03222089912166117,
+      "kept_avg_return": 0.03222089912166117,
+      "removed_avg_return": NaN,
+      "ma5_break_exit_pct": 0.764172335600907
+    },
+    {
+      "entry_ma5_bucket": "B_minus5pct_to_0",
+      "samples": 318,
+      "kept": 318,
+      "removed": 0,
+      "removed_pct": 0.0,
+      "baseline_avg_return": 0.013304926036436833,
+      "kept_avg_return": 0.013304926036436833,
+      "removed_avg_return": NaN,
+      "ma5_break_exit_pct": 0.9119496855345912
+    },
+    {
+      "entry_ma5_bucket": "C_le_minus5pct",
+      "samples": 81,
+      "kept": 0,
+      "removed": 81,
+      "removed_pct": 1.0,
+      "baseline_avg_return": 0.010381780083622933,
+      "kept_avg_return": NaN,
+      "removed_avg_return": 0.010381780083622933,
+      "ma5_break_exit_pct": 0.9506172839506173
+    }
+  ],
+  "cl3": {
+    "checks": {
+      "alpha_sacrifice": {
+        "value": 0.00011575763632213146,
+        "threshold": 0.005,
+        "pass": true
+      },
+      "mdd_delta": {
+        "value": -0.02092999533942208,
+        "threshold": 0.001,
+        "pass": false
+      },
+      "sharpe_regression": {
+        "value": 0.14270724091687703,
+        "threshold": 0.05,
+        "pass": false
+      },
+      "calmar_regression": {
+        "value": 0.21832016630435763,
+        "threshold": 0.05,
+        "pass": false
+      }
+    },
+    "overall_pass": false
+  }
+}

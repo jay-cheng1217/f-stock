@@ -1,0 +1,136 @@
+{
+  "status": "mock_inconsistent_needs_pm_review",
+  "mock_window": [
+    "2026-04-23",
+    "2026-04-29"
+  ],
+  "mock_target_formula": "gross_exposure_cash_residual_pct - execution_pnl_pct - exit_pnl_pct",
+  "mock": {
+    "start_date": "2026-04-23",
+    "end_date": "2026-04-29",
+    "target_pct": -0.012565565715093228,
+    "buckets": {
+      "b1_overnight_gap_timing_pct": 0.023856913409182307,
+      "b2_rebalance_day_intraday_slippage_pct": -0.1892389166126023,
+      "b3_held_intraday_mark_timing_pct": -0.009132915301257757,
+      "b4_mark_weight_sync_residual_pct": 0.16194935278958453
+    },
+    "observable_b1_b2_b3_sum_pct": -0.17451491850467776,
+    "b4_dominance_triggered": false,
+    "holding_day_rows": 95,
+    "missing_required_price_rows": 0,
+    "avg_gross_exposure": 1.3544263157894734,
+    "daily_contributions": [
+      {
+        "date": "2026-04-23",
+        "gross_exposure": 1.0,
+        "b1_overnight_gap_timing_pct": 0.0,
+        "b2_rebalance_day_intraday_slippage_pct": -0.09766274354421786,
+        "b3_held_intraday_mark_timing_pct": 0.0,
+        "weighted_mark_delta_pct": -0.08107503367489553,
+        "missing_rows": 0,
+        "target_allocated_pct": -0.0018554816262217942,
+        "b4_mark_weight_sync_residual_pct": 0.09580726191799607,
+        "bucket_total_pct": -0.0018554816262217888
+      },
+      {
+        "date": "2026-04-24",
+        "gross_exposure": 1.4547368421052627,
+        "b1_overnight_gap_timing_pct": 0.004363764700835934,
+        "b2_rebalance_day_intraday_slippage_pct": -0.04101669418414971,
+        "b3_held_intraday_mark_timing_pct": -0.0027802877926320253,
+        "weighted_mark_delta_pct": -0.025860175039583728,
+        "missing_rows": 0,
+        "target_allocated_pct": -0.00269923748151423,
+        "b4_mark_weight_sync_residual_pct": 0.03673397979443157,
+        "bucket_total_pct": -0.0026992374815142314
+      },
+      {
+        "date": "2026-04-27",
+        "gross_exposure": 1.6555263157894733,
+        "b1_overnight_gap_timing_pct": 0.019381722213743218,
+        "b2_rebalance_day_intraday_slippage_pct": -0.03250782111449146,
+        "b3_held_intraday_mark_timing_pct": -0.015075657876066212,
+        "weighted_mark_delta_pct": -0.018324098766618016,
+        "missing_rows": 0,
+        "target_allocated_pct": -0.003071798660674028,
+        "b4_mark_weight_sync_residual_pct": 0.025129958116140425,
+        "bucket_total_pct": -0.0030717986606740265
+      },
+      {
+        "date": "2026-04-28",
+        "gross_exposure": 1.3825,
+        "b1_overnight_gap_timing_pct": 0.003190134978779093,
+        "b2_rebalance_day_intraday_slippage_pct": -0.00847270710082846,
+        "b3_held_intraday_mark_timing_pct": 0.0019273806954435222,
+        "weighted_mark_delta_pct": 0.010594840502996744,
+        "missing_rows": 0,
+        "target_allocated_pct": -0.002565203348251631,
+        "b4_mark_weight_sync_residual_pct": 0.000789988078354213,
+        "bucket_total_pct": -0.002565203348251631
+      },
+      {
+        "date": "2026-04-29",
+        "gross_exposure": 1.2793684210526315,
+        "b1_overnight_gap_timing_pct": -0.0030787084841759397,
+        "b2_rebalance_day_intraday_slippage_pct": -0.009578950668914838,
+        "b3_held_intraday_mark_timing_pct": 0.006795649671996959,
+        "weighted_mark_delta_pct": -0.0023274066041071933,
+        "missing_rows": 0,
+        "target_allocated_pct": -0.0023738445984315456,
+        "b4_mark_weight_sync_residual_pct": 0.0034881648826622733,
+        "bucket_total_pct": -0.0023738445984315456
+      }
+    ]
+  },
+  "formal_reference": {
+    "source": "F:\\stock\\ml\\reports\\rd005_phase_b_timing_split_20260517.json",
+    "window": [
+      "2026-05-11",
+      "2026-05-15"
+    ],
+    "b1_overnight_gap_timing_pct": 0.052564967919357275,
+    "b2_rebalance_day_intraday_slippage_pct": -0.016835146188920923,
+    "b3_held_intraday_mark_timing_pct": 0.012596516518090316,
+    "b4_mark_weight_sync_residual_pct": -0.10470798639672022,
+    "observable_b1_b2_b3_sum_pct": 0.04832633824852667,
+    "b4_dominance_triggered": true
+  },
+  "cross_window_checks": {
+    "b4_same_sign": false,
+    "mock_b4_dominance_triggered": false,
+    "formal_b4_dominance_triggered": true,
+    "entry_slippage_offset_ratio_abs_mock_b4_to_abs_mock_b2": 0.8557930667142678
+  },
+  "candidate_readout": [
+    {
+      "candidate": "C1 target/bucket basis mismatch",
+      "mock_support": "high",
+      "reason": "B4 flips sign across the mock and formal windows, so a stable one-direction daily sync drag is not established."
+    },
+    {
+      "candidate": "C2 weight snapshot lag",
+      "mock_support": "medium",
+      "reason": "Mock gross exposure averages above 100%, while formal exposure is below 100%; exposure normalization likely changes B4 behavior."
+    },
+    {
+      "candidate": "C3 mark refresh / stale mark timing",
+      "mock_support": "low_to_medium",
+      "reason": "No missing required price rows are observed in the mock, but timestamp semantics still require row-level inspection."
+    },
+    {
+      "candidate": "C4 cash/gross exposure normalization",
+      "mock_support": "medium",
+      "reason": "Mock leverage and formal near-cash exposure differ materially, making gross/cash normalization a plausible B4 driver."
+    },
+    {
+      "candidate": "C5 corporate action / price basis",
+      "mock_support": "low",
+      "reason": "No candidate evidence from existing aggregate rows yet; defer unless row-level outliers appear."
+    }
+  ],
+  "sa_gate": {
+    "rd_patch_allowed": false,
+    "reason": "Mock does not reproduce the same B4 sign/dominance pattern. RD should not patch production attribution before PM accepts a broader diagnostic scope."
+  }
+}

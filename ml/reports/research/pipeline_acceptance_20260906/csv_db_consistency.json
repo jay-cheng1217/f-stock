@@ -1,0 +1,329 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-06T13:06:43.750888+08:00",
+  "target_date": "2026-09-04",
+  "status": "PASS",
+  "scope": "Read-only frozen CSV-to-isolated-DuckDB ingestion acceptance. No fetch, ingest, pipeline, ledger, model, source-data or database mutation.",
+  "method": {
+    "daily_universe": "Numeric CSV stems excluding the canonical main-repository ml.universe retirement set; every file scanned, all target-date rows outer-joined by ticker/date.",
+    "comparison": "Independent pandas read_csv float_precision=round_trip versus DuckDB stored DOUBLE; exact binary equality without tolerance; null/nonfinite OHLCV fails.",
+    "full_tables": "Source accepted row counts equal actual DB counts and ingest_meta for all five tables; same generation required. Full non-OHLCV cell equality is outside scope.",
+    "known_snapshot_limit": "9/4 source date, copied 9/6; does not prove historical announcement-time availability or live 9/7 nightly/fetch execution."
+  },
+  "checks": {
+    "source_files_match_frozen_input_manifest": true,
+    "source_files_stable_during_read": true,
+    "database_unchanged_during_read": true,
+    "all_five_tables_one_nonnull_generation": true,
+    "all_source_db_meta_row_counts_equal": true,
+    "daily_target_one_to_one_complete": true,
+    "daily_target_ohlcv_exact": true,
+    "retired_absent_from_database": true,
+    "financials_q2_matches_source": true,
+    "financials_due_q2_audit_no_gaps": true,
+    "twii_price_and_total_return_exact_on_target": true,
+    "stock_list_nonempty": true
+  },
+  "generation_id": [
+    "4768117cb9fe4a6cb9e1322920d04298"
+  ],
+  "ingest_meta": [
+    {
+      "table_name": "daily_k",
+      "rows": 2974036,
+      "ingested_at": "2026-09-06T12:55:53.586",
+      "freshness_value": "2026-09-04",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    },
+    {
+      "table_name": "financials",
+      "rows": 47219,
+      "ingested_at": "2026-09-06T12:56:59.253",
+      "freshness_value": "20262",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    },
+    {
+      "table_name": "indices",
+      "rows": 10037,
+      "ingested_at": "2026-09-06T12:56:59.743",
+      "freshness_value": "2026-09-05",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    },
+    {
+      "table_name": "revenue",
+      "rows": 61854,
+      "ingested_at": "2026-09-06T12:56:57.895",
+      "freshness_value": "2026-07",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    },
+    {
+      "table_name": "tdcc",
+      "rows": 899102,
+      "ingested_at": "2026-09-06T12:56:59.472",
+      "freshness_value": "20260904",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    }
+  ],
+  "tables": {
+    "daily_k": {
+      "source_files": 1947,
+      "source_rows_accepted": 2974036,
+      "source_rows_filtered_by_ingest_contract": 0,
+      "db_rows": 2974036,
+      "ingest_meta_rows": 2974036,
+      "source_db_meta_row_counts_equal": true
+    },
+    "revenue": {
+      "source_files": 1898,
+      "source_rows_accepted": 61854,
+      "source_rows_filtered_by_ingest_contract": 0,
+      "db_rows": 61854,
+      "ingest_meta_rows": 61854,
+      "source_db_meta_row_counts_equal": true
+    },
+    "financials": {
+      "source_files": 26,
+      "source_rows_accepted": 47219,
+      "source_rows_filtered_by_ingest_contract": 0,
+      "db_rows": 47219,
+      "ingest_meta_rows": 47219,
+      "source_db_meta_row_counts_equal": true
+    },
+    "tdcc": {
+      "source_files": 1,
+      "source_rows_accepted": 899102,
+      "source_rows_filtered_by_ingest_contract": 0,
+      "db_rows": 899102,
+      "ingest_meta_rows": 899102,
+      "source_db_meta_row_counts_equal": true
+    },
+    "indices": {
+      "source_files": 6,
+      "source_rows_accepted": 10037,
+      "source_rows_filtered_by_ingest_contract": 1,
+      "db_rows": 10037,
+      "ingest_meta_rows": 10037,
+      "source_db_meta_row_counts_equal": true
+    }
+  },
+  "daily_k": {
+    "all_csv_files": 2002,
+    "eligible_numeric_nonretired_csv_files": 1947,
+    "nonnumeric_excluded": 55,
+    "retired_source_files_excluded": [],
+    "eligible_files_without_target_date": [
+      "1538",
+      "1563",
+      "1589",
+      "2724",
+      "2867",
+      "2949",
+      "3064",
+      "3067",
+      "3632",
+      "4130",
+      "4154",
+      "4406",
+      "4550",
+      "4804",
+      "5205",
+      "5310",
+      "5371",
+      "5520",
+      "5703",
+      "5906",
+      "6129",
+      "6228",
+      "6236",
+      "6461",
+      "6496",
+      "6615",
+      "6762",
+      "6767",
+      "6904",
+      "6949",
+      "6997",
+      "8077",
+      "8342",
+      "8416",
+      "8923",
+      "8929"
+    ],
+    "target_csv_rows": 1911,
+    "target_db_rows": 1911,
+    "matched_rows": 1911,
+    "csv_duplicate_key_rows": 0,
+    "db_duplicate_key_rows": 0,
+    "missing_in_db": [],
+    "unexpected_in_db": [],
+    "ohlcv": {
+      "Open": {
+        "compared": 1911,
+        "exact_mismatch_count": 0,
+        "null_or_nonfinite_rows": 0,
+        "max_abs_delta": 0.0
+      },
+      "High": {
+        "compared": 1911,
+        "exact_mismatch_count": 0,
+        "null_or_nonfinite_rows": 0,
+        "max_abs_delta": 0.0
+      },
+      "Low": {
+        "compared": 1911,
+        "exact_mismatch_count": 0,
+        "null_or_nonfinite_rows": 0,
+        "max_abs_delta": 0.0
+      },
+      "Close": {
+        "compared": 1911,
+        "exact_mismatch_count": 0,
+        "null_or_nonfinite_rows": 0,
+        "max_abs_delta": 0.0
+      },
+      "Volume": {
+        "compared": 1911,
+        "exact_mismatch_count": 0,
+        "null_or_nonfinite_rows": 0,
+        "max_abs_delta": 0.0
+      }
+    },
+    "mismatched_tickers": [],
+    "differences": [],
+    "csv_target_ohlcv_sha256": "5162050fbd549c84c96dadc81fdd5cb8743abaa286b36628a399b068982d3a3a",
+    "db_target_ohlcv_sha256": "5162050fbd549c84c96dadc81fdd5cb8743abaa286b36628a399b068982d3a3a"
+  },
+  "retirement_contract": {
+    "canonical_path": "F:\\stock\\config\\retired_tickers.csv",
+    "canonical_sha256": "fbdb2f9e34335cab2e05997b4a753376c2baf63867f0c11beb7625e454b65403",
+    "canonical_retired_tickers": [
+      "3426",
+      "3454",
+      "4945",
+      "4987",
+      "6747",
+      "6806"
+    ],
+    "isolated_retired_config_exists": true,
+    "retired_rows_in_db": [],
+    "assessment": "Initial preparation omitted the retirement CSV; the omission has been repaired. The isolated and canonical files now match exactly. All six retired tickers were absent from source CSV and DB, so the original consistency verification remains valid.",
+    "remediation": {
+      "status": "RESOLVED",
+      "verified_at": "2026-09-06T13:08:09.979435+08:00",
+      "isolated_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\config\\retired_tickers.csv",
+      "isolated_sha256": "fbdb2f9e34335cab2e05997b4a753376c2baf63867f0c11beb7625e454b65403",
+      "canonical_sha256": "fbdb2f9e34335cab2e05997b4a753376c2baf63867f0c11beb7625e454b65403",
+      "sha256_equal": true,
+      "bytes": 1300,
+      "initial_finding": "The retirement CSV was missing during the initial workspace inspection. The original ingestion-result verification independently applied the canonical six-ticker retirement set and found none in source CSV or DB.",
+      "verification_scope": "Read-only comparison of the two current retirement CSV hashes; no full data consistency rerun, ingestion, source CSV edit or database mutation."
+    }
+  },
+  "financials_2026": [
+    {
+      "Year": 2026,
+      "Season": 1,
+      "rows": 1933,
+      "tickers": 1933
+    },
+    {
+      "Year": 2026,
+      "Season": 2,
+      "rows": 1825,
+      "tickers": 1825
+    }
+  ],
+  "fundamentals_audit": {
+    "date": "2026-09-04",
+    "due_quarter": "2026Q2",
+    "gaps": [],
+    "status": "OK"
+  },
+  "indices": [
+    {
+      "Index_Name": "GSPC",
+      "rows": 1677,
+      "latest_date": "2026-09-04"
+    },
+    {
+      "Index_Name": "SOX",
+      "rows": 1677,
+      "latest_date": "2026-09-04"
+    },
+    {
+      "Index_Name": "TWII",
+      "rows": 1621,
+      "latest_date": "2026-09-04"
+    },
+    {
+      "Index_Name": "TWII_total_return",
+      "rows": 1622,
+      "latest_date": "2026-09-04"
+    },
+    {
+      "Index_Name": "USDTWDX",
+      "rows": 1760,
+      "latest_date": "2026-09-05"
+    },
+    {
+      "Index_Name": "VIX",
+      "rows": 1680,
+      "latest_date": "2026-09-04"
+    }
+  ],
+  "twii_target_rows": [
+    {
+      "Index_Name": "TWII",
+      "Date": "2026-09-04",
+      "Open": 45991.28,
+      "High": 46620.96,
+      "Low": 45966.86,
+      "Close": 46551.13,
+      "Volume": 0
+    },
+    {
+      "Index_Name": "TWII_total_return",
+      "Date": "2026-09-04",
+      "Open": null,
+      "High": null,
+      "Low": null,
+      "Close": 107486.11,
+      "Volume": null
+    }
+  ],
+  "stock_list_rows": 1953,
+  "provenance": {
+    "input_manifest_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\input_manifest.json",
+    "input_manifest_sha256": "533b299f91effa0970a736ef227ac8d1aa363cda6f5187ca946cd742b86dc72f",
+    "input_copied_at": "2026-09-06T12:54:09.520861",
+    "source_file_count": 3878,
+    "source_bytes": 1019232900,
+    "source_manifest_sha256_including_mtime": "dd2c2da60aa8abcbeb0774ba836ac83f3e28219adecb98e43fac0dd14c4afc29",
+    "source_mtime_min_ns": 1773320599215489900,
+    "source_mtime_max_ns": 1788610758033510800,
+    "changed_from_input_manifest": [],
+    "missing_from_input_manifest": [],
+    "unstable_during_read": [],
+    "database_before": {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\stock.duckdb",
+      "bytes": 497823744,
+      "mtime_ns": 1788670620495852400,
+      "mtime_utc": "2026-09-06T04:57:00.495852+00:00",
+      "sha256": "f2f506d925950f16c3540ec0bc250dfe29d4de10ce3bd6f30cb8c31bece30eda"
+    },
+    "database_after": {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\stock.duckdb",
+      "bytes": 497823744,
+      "mtime_ns": 1788670620495852400,
+      "mtime_utc": "2026-09-06T04:57:00.495852+00:00",
+      "sha256": "f2f506d925950f16c3540ec0bc250dfe29d4de10ce3bd6f30cb8c31bece30eda"
+    }
+  },
+  "limits": [
+    "Live exchange fetching and the complete repaired nightly schedule have not been exercised by this audit.",
+    "Indices freshness 2026-09-05 is USDTWDX; TWII and TWII_total_return both end 2026-09-04.",
+    "Non-numeric file stems are excluded by the existing ingest contract; no signal, universe, or rere rule changed.",
+    "A file lacking 9/4 data is listed explicitly; CSV-to-DB equality does not independently prove exchange universe coverage.",
+    "Per-table ingestion is not one database-wide atomic transaction; same generation is validated for this completed snapshot."
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-05-08T12:26:11.223591+00:00",
+  "summary_csv": "F:\\stock\\ml\\reports\\req004_sector_overheat_signal_replay_20260508_summary.csv",
+  "selections_csv": "F:\\stock\\ml\\reports\\req004_sector_overheat_signal_replay_20260508_selections.csv",
+  "triggers_csv": "F:\\stock\\ml\\reports\\req004_sector_overheat_signal_replay_20260508_triggers.csv",
+  "diffs_csv": "F:\\stock\\ml\\reports\\req004_sector_overheat_signal_replay_20260508_diffs.csv",
+  "summary": [
+    {
+      "threshold": 0.2,
+      "months": 28,
+      "trigger_count": 659,
+      "raw_top30_trigger_count": 24,
+      "avg_monthly_return": 0.04349661881553811,
+      "avg_monthly_alpha": 0.002034970860265838,
+      "median_selected_return": 0.004434823989868164,
+      "positive_rate": 0.5119047619047619,
+      "mdd": -0.06433804266906051
+    },
+    {
+      "threshold": 0.25,
+      "months": 28,
+      "trigger_count": 605,
+      "raw_top30_trigger_count": 22,
+      "avg_monthly_return": 0.04374722246109023,
+      "avg_monthly_alpha": 0.0022855744958395095,
+      "median_selected_return": 0.004514128668233752,
+      "positive_rate": 0.513095238095238,
+      "mdd": -0.06433804266906051
+    },
+    {
+      "threshold": 0.3,
+      "months": 28,
+      "trigger_count": 567,
+      "raw_top30_trigger_count": 22,
+      "avg_monthly_return": 0.04374722246109023,
+      "avg_monthly_alpha": 0.0022855744958395095,
+      "median_selected_return": 0.004514128668233752,
+      "positive_rate": 0.513095238095238,
+      "mdd": -0.06433804266906051
+    },
+    {
+      "threshold": 0.4,
+      "months": 28,
+      "trigger_count": 487,
+      "raw_top30_trigger_count": 20,
+      "avg_monthly_return": 0.043628446609065674,
+      "avg_monthly_alpha": 0.0021667986260754768,
+      "median_selected_return": 0.004514128668233752,
+      "positive_rate": 0.513095238095238,
+      "mdd": -0.06433804266906051
+    }
+  ]
+}

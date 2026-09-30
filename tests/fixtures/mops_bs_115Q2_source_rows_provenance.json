@@ -1,0 +1,68 @@
+[
+  {
+    "ticker": "2801",
+    "source": "output\\financial_q2_reconciliation_v2_20260906\\raw\\bs_115Q2_sii.html",
+    "sha256": "56c17eaff9a0e06af47a9dbca10c03bdc40fb6a2e06793cbe038dbd58b9071c7",
+    "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+    "request": {
+      "year": 115,
+      "season": 2,
+      "TYPEK": "sii"
+    }
+  },
+  {
+    "ticker": "2330",
+    "source": "output\\financial_q2_reconciliation_v2_20260906\\raw\\bs_115Q2_sii.html",
+    "sha256": "56c17eaff9a0e06af47a9dbca10c03bdc40fb6a2e06793cbe038dbd58b9071c7",
+    "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+    "request": {
+      "year": 115,
+      "season": 2,
+      "TYPEK": "sii"
+    }
+  },
+  {
+    "ticker": "2880",
+    "source": "output\\financial_q2_reconciliation_v2_20260906\\raw\\bs_115Q2_sii.html",
+    "sha256": "56c17eaff9a0e06af47a9dbca10c03bdc40fb6a2e06793cbe038dbd58b9071c7",
+    "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+    "request": {
+      "year": 115,
+      "season": 2,
+      "TYPEK": "sii"
+    }
+  },
+  {
+    "ticker": "2816",
+    "source": "output\\financial_q2_reconciliation_v2_20260906\\raw\\bs_115Q2_sii.html",
+    "sha256": "56c17eaff9a0e06af47a9dbca10c03bdc40fb6a2e06793cbe038dbd58b9071c7",
+    "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+    "request": {
+      "year": 115,
+      "season": 2,
+      "TYPEK": "sii"
+    }
+  },
+  {
+    "ticker": "1409",
+    "source": "output\\financial_q2_reconciliation_v2_20260906\\raw\\bs_115Q2_sii.html",
+    "sha256": "56c17eaff9a0e06af47a9dbca10c03bdc40fb6a2e06793cbe038dbd58b9071c7",
+    "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+    "request": {
+      "year": 115,
+      "season": 2,
+      "TYPEK": "sii"
+    }
+  },
+  {
+    "ticker": "6026",
+    "source": "output\\financial_q2_reconciliation_v2_20260906\\raw\\bs_115Q2_otc.html",
+    "sha256": "6d6fe7eefbb7f6b24a46dbc50547ffc5da4741f45298faa2bbbdaa64a08b83e9",
+    "url": "https://mopsov.twse.com.tw/mops/web/ajax_t163sb05",
+    "request": {
+      "year": 115,
+      "season": 2,
+      "TYPEK": "otc"
+    }
+  }
+]

@@ -1,0 +1,225 @@
+{
+  "status": "PASS_FINAL_CERTIFIED_ENTRY_UI",
+  "observed_at": "2026-09-07T00:02:34.301946+08:00",
+  "comparison": {
+    "status": "PASS",
+    "backup": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_certified_entry_20260906\\backup\\ml\\reports\\entry_dashboard_latest.html",
+    "source": "F:\\stock\\ml\\reports\\entry_dashboard_latest.html",
+    "before_sha256": "2f42e26080846e6bf0691b1b1d49529e16b130025fca242214e99c8485c28113",
+    "after_sha256": "c951a38444bd5ac1ee24e1c2863528787faa27cb258d2b6d7a9102d4089787a9",
+    "bytes": 9489910,
+    "template_exact": true,
+    "payload_differences": [
+      {
+        "path": "/meta/generated",
+        "before": "2026-09-06 23:04",
+        "after": "2026-09-06 23:57"
+      }
+    ],
+    "rows": 18,
+    "rere": [
+      "3605",
+      "3189",
+      "3066",
+      "2364",
+      "3176",
+      "6472"
+    ],
+    "html_receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_certified_entry_20260906\\02_html.finished.json",
+    "preview": "F:\\stock\\output\\playwright\\final_certified_entry_20260906.html",
+    "preview_sha256": "c951a38444bd5ac1ee24e1c2863528787faa27cb258d2b6d7a9102d4089787a9",
+    "preview_url": "http://127.0.0.1:8876/final_certified_entry_20260906.html",
+    "served_sha256": "c951a38444bd5ac1ee24e1c2863528787faa27cb258d2b6d7a9102d4089787a9"
+  },
+  "canonical": {
+    "path": "F:\\stock\\logs\\entry_list_20260907.json",
+    "sha256": "d5cf77a5cbc9a09c4be7e73f4ea7e94d768492265d7d747376a9b2995b5ad8f5",
+    "manifest_sha256": "9431921c8ef6ac1a8b0ca0fa3f99853991d724da075731162366cd1648d26de3",
+    "rows": 18,
+    "as_of_date": "2026-09-04",
+    "trade_date": "2026-09-07",
+    "model_source": "dataA_predictions_2026-09-04.csv",
+    "proof_run_id": "6fd8edfce9f7400581242a7436714d6e"
+  },
+  "desktop": {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "scroll": {
+      "document": 1440,
+      "body": 1440
+    },
+    "horizontalOverflow": false,
+    "cardCount": 18,
+    "rereCount": 6,
+    "rereTickers": [
+      "3605",
+      "3189",
+      "3066",
+      "2364",
+      "3176",
+      "6472"
+    ],
+    "jsErrors": [],
+    "all_card_opacity_1": true,
+    "sources": [
+      {
+        "key": "snapshot",
+        "label": "四面向",
+        "asof": "2026-09-04",
+        "expected": "2026-09-04",
+        "status": "fresh"
+      },
+      {
+        "key": "data_a",
+        "label": "20D模型",
+        "asof": "2026-09-04",
+        "expected": "2026-09-04",
+        "status": "fresh"
+      },
+      {
+        "key": "production",
+        "label": "正式標籤",
+        "asof": "2026-09-04",
+        "expected": "2026-09-04",
+        "status": "fresh"
+      },
+      {
+        "key": "tdcc",
+        "label": "集保週報",
+        "asof": "2026-09-04",
+        "expected": "2026-08-28",
+        "status": "fresh"
+      },
+      {
+        "key": "whale",
+        "label": "大戶雷達",
+        "asof": "2026-09-04",
+        "expected": "2026-08-28",
+        "status": "fresh"
+      }
+    ],
+    "trade_date": "2026-09-07",
+    "card_source_dates": [
+      "2026-09-04"
+    ],
+    "rere_model_veto": false,
+    "rere_horizon_trading_days": 60
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "scroll": {
+      "document": 390,
+      "body": 390
+    },
+    "horizontalOverflow": false,
+    "cardCount": 18,
+    "rereCount": 6,
+    "rereTickers": [
+      "3605",
+      "3189",
+      "3066",
+      "2364",
+      "3176",
+      "6472"
+    ],
+    "jsErrors": [],
+    "all_card_opacity_1": true,
+    "sources": [
+      {
+        "key": "snapshot",
+        "label": "四面向",
+        "asof": "2026-09-04",
+        "expected": "2026-09-04",
+        "status": "fresh"
+      },
+      {
+        "key": "data_a",
+        "label": "20D模型",
+        "asof": "2026-09-04",
+        "expected": "2026-09-04",
+        "status": "fresh"
+      },
+      {
+        "key": "production",
+        "label": "正式標籤",
+        "asof": "2026-09-04",
+        "expected": "2026-09-04",
+        "status": "fresh"
+      },
+      {
+        "key": "tdcc",
+        "label": "集保週報",
+        "asof": "2026-09-04",
+        "expected": "2026-08-28",
+        "status": "fresh"
+      },
+      {
+        "key": "whale",
+        "label": "大戶雷達",
+        "asof": "2026-09-04",
+        "expected": "2026-08-28",
+        "status": "fresh"
+      }
+    ],
+    "trade_date": "2026-09-07",
+    "card_source_dates": [
+      "2026-09-04"
+    ],
+    "rere_model_veto": false,
+    "rere_horizon_trading_days": 60
+  },
+  "interaction": {
+    "firstTicker": "3066",
+    "firstDetailsOpen": false,
+    "errorListenerActive": true,
+    "jsErrors": [],
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "expanded_open_observed": true,
+    "expanded_ticker": "3066",
+    "console_errors": 0,
+    "console_warnings": 0
+  },
+  "screenshots": [
+    {
+      "path": "F:\\stock\\output\\playwright\\final_certified_desktop_expanded_20260906.png",
+      "sha256": "7a4045ad7fa86c30d5ed080190fd68998569a5887383b4b80911b7ea90aaf0a7"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_certified_desktop_header_20260906.png",
+      "sha256": "79a893a6cfd5aa6e1b188a19bc78cd92524223672e63fc5de7ed98e986c86c35"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_certified_mobile_card_20260906.png",
+      "sha256": "c05f98332cceb7bdc2850e3dbbd1c3ec44cbfcfdcba66dfa65724b35adc772ba"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_certified_mobile_expanded_20260906.png",
+      "sha256": "b8d85b2114af925d6311a9a1e68200ba9c19e97ef64d28891a7c7dde34565421"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_certified_mobile_header_20260906.png",
+      "sha256": "f23e81f25840b3627e94e0258b21b3547573a9bae21370508cdc668944d7768b"
+    }
+  ],
+  "visual_inspection": "Desktop header and mobile expanded card inspected; clear text, no clipping; source/risk/execution limits retained.",
+  "limits": [
+    "Chromium viewport simulation; no claim of all browsers or physical mobile testing.",
+    "Lower existing ledger tables use contained horizontal scrolling, without page overflow.",
+    "No live Web/API requests; root and separate agent validate Web.",
+    "No production/source/code edits, publishing, email, or commit performed by this QA.",
+    "Fixed Claude Artifact still needs independent same-URL republish; GitHub push is not Artifact redeploy."
+  ],
+  "formal_html_unchanged_during_QA": true,
+  "evidence_files": [
+    "F:\\stock\\output\\playwright\\final_certified_entry_comparison_20260906.json",
+    "F:\\stock\\output\\playwright\\final_certified_desktop_metrics_20260906.json",
+    "F:\\stock\\output\\playwright\\final_certified_mobile_metrics_20260906.json",
+    "F:\\stock\\output\\playwright\\final_certified_mobile_expanded_metrics_20260906.json",
+    "F:\\stock\\output\\playwright\\final_certified_interaction_20260906.json"
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20260916"
+  },
+  "rows": 1289681,
+  "setup_count": 6193,
+  "filled_count": 5375,
+  "missed_gap_up_count": 1335,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5375,
+      "mean_return": -0.008865349012390462,
+      "median_return": -0.012235294117647118,
+      "win_rate": 0.34418604651162793,
+      "p25": -0.033025661449617216,
+      "p75": 0.009462715375200052
+    },
+    {
+      "hold_days": 2,
+      "n": 5365,
+      "mean_return": -0.0080538905416937,
+      "median_return": -0.015312217194570096,
+      "win_rate": 0.37688723205964586,
+      "p25": -0.04572461752433932,
+      "p75": 0.020137931034482696
+    },
+    {
+      "hold_days": 3,
+      "n": 5356,
+      "mean_return": -0.00748948424579072,
+      "median_return": -0.01811010558069381,
+      "win_rate": 0.38237490664675133,
+      "p25": -0.055681054322614276,
+      "p75": 0.027923390660050288
+    },
+    {
+      "hold_days": 5,
+      "n": 5340,
+      "mean_return": -0.00503178569391272,
+      "median_return": -0.020680578742348407,
+      "win_rate": 0.39681647940074904,
+      "p25": -0.07001682312482571,
+      "p75": 0.03954791076237796
+    },
+    {
+      "hold_days": 10,
+      "n": 5291,
+      "mean_return": 4.778790308955949e-05,
+      "median_return": -0.023607843137254943,
+      "win_rate": 0.41315441315441315,
+      "p25": -0.09357235390034502,
+      "p75": 0.06411868686868682
+    },
+    {
+      "hold_days": 20,
+      "n": 5197,
+      "mean_return": 0.009036138905229944,
+      "median_return": -0.036085561497326335,
+      "win_rate": 0.41389263036367135,
+      "p25": -0.12717073170731696,
+      "p75": 0.09901204819277099
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-09-15",
+      "ticker": "2351",
+      "name": "順德",
+      "sector": "半導體業",
+      "Close": 251.5,
+      "momentum_score": 0.716778,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 242.6975,
+      "momentum_entry_limit": 251.5,
+      "momentum_entry_high": 255.2725,
+      "price_vs_ma5": 0.0345536816,
+      "price_vs_ma20": 0.1236457054,
+      "price_vs_ma60": 0.2926954933,
+      "volume_ratio_20d": 1.7055368663,
+      "RSI_14": 67.1248511691,
+      "MACDh_12_26_9": 1.4265158407,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-09-15",
+      "ticker": "6218",
+      "name": "豪勉",
+      "sector": "通信網路業",
+      "Close": 49.25,
+      "momentum_score": 0.587005,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 47.52625,
+      "momentum_entry_limit": 49.25,
+      "momentum_entry_high": 49.98875,
+      "price_vs_ma5": 0.0614224138,
+      "price_vs_ma20": 0.1622418879,
+      "price_vs_ma60": 0.3062505526,
+      "volume_ratio_20d": 1.6345854634,
+      "RSI_14": 74.3853964372,
+      "MACDh_12_26_9": 0.3952608352,
+      "missed_gap_up": false
+    }
+  ]
+}

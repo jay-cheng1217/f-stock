@@ -1,0 +1,165 @@
+{
+  "prepared_at": "2026-09-06T22:08:03.4991647+08:00",
+  "prepared_by": "rere_validation; integration owner stages and commits",
+  "status": "READY_FOR_ROOT_REVIEW_NO_AGENT_COMMIT",
+  "files": [
+    {
+      "path": "scripts/audit_tdcc_collection_status.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "232c7fef00fe28b7596050f5496a2a52dfea20b157f8e7f53295c2b5b1d15fb9"
+    },
+    {
+      "path": "scripts/audit_tdcc_history_feature_ab.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "290b9f7ef9f445b40b0c1c6b2e573ccf063c6a501cf654789c4f34f5d1fd8007"
+    },
+    {
+      "path": "scripts/backfill_tdcc_public_history.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "3babb904052aef51c539d324bb410c922b182c0585e195e5361ee2393052233e"
+    },
+    {
+      "path": "scripts/finalize_tdcc_history_evidence.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "711c1e61d8534ca61f795d7c41858d65a76f0f1f12e1b25161035c2512ab28fc"
+    },
+    {
+      "path": "scripts/normalize_tdcc_public_history.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "24d63db0ee0a054c5b64fcd6ea9c533e91c8892f7e0a1a2969b98a08adb55038"
+    },
+    {
+      "path": "scripts/probe_tdcc_finmind_access.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "06d3a4e78003db02b730cf62379efb0a9568e13743860fe34ef0de476222dd72"
+    },
+    {
+      "path": "scripts/recheck_tdcc_history_checkpoint.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "cb4693d2573efcc355db30ed964c7ed9d5389fbcb579cbf208fc138626d8324c"
+    },
+    {
+      "path": "scripts/reconcile_tdcc_holiday_weeks.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "5e0d9259d9a197b1c0bd6cd8136104224fedf349cd98a1c9e0d3dc89f54debdd"
+    },
+    {
+      "path": "scripts/verify_tdcc_normalization_backend.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "89342ba0490a455fd41fe54fcfc5952c6799bd8e079d92e08e6c7213495622e4"
+    },
+    {
+      "path": "tests/test_tdcc_public_history.py",
+      "category": "research-only source collection/verification tooling and focused fixtures",
+      "sha256": "f3be16d21eca1b101234ed114f5f92fe3ef53b94ed137d9d69287e35ed887ed0"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_calendar_reconciliation.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "3f7c57e4161fcce805314de74af047cccb6b22fd75c501b0e2fca099259e69b0"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_calendar_reconciliation.md",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "ee67a351518a7a037256353dc778464811ce833270d43fb57fb3a7564170071f"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_collection_status_1600.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "83b8703689944bba75b756132422c0620491d479e7220d1664beb55b314b81a1"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_collection_status_complete_2145.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "3d1d86c17e4daad5ff76c397edf73cee4604d3f9ca0ce5d372a780517d9935b0"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_finmind_access.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "e88761bc84f7ad52501ea1dcea6f849c9b577b3d2e5dfceb81bf2a630bbf2537"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_historical_gap_inventory.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "db7e2e4e8498e94e10a1dfecac59869a3d1307d149d1b689f86abfa499b551dd"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_history_completion.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "31606bf452da450d603f9511272fef6e9b11ce9ffdf583cbdc1ca9b0fabe8516"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_history_completion.md",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "35dd8027cb5d9da5908971d8ee4235426225435c2e65c2de82a1ef666fa09945"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_history_promotion_plan.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "18837844408c02c33bb468908c3856570f8f221ef0ada4763498d84e7e0e4c1d"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_latest_feature_D.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "421b8bc5f3f5095ddcae64ba9e8f03ef91385941e647fba6cba9be05cf718f76"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_no_data_confirmation.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "8ae7bf6f8c96cf73b0dbaaec461c13f543466b1f5c396ad9f2fdf040a77be55c"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_normalization_backend.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "b03f40c7d2595ef8e5cf9cd1078168a1689d2fb97bed9ee1442e7b5e317ecee3"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_pacing_50.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "3be98cbfd0835cfa36d9fcc88a5e3bda8938bd53feb7228af73664616cd89533"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_public_collection_plan.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "c5df9a6d723986b141dd60ded68c2ee2fbff4e369797aa55f0fc38e38a41a878"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_public_collection.md",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "dc71d17cac746c8b32443318b98a533522b2e63919c87fd2e7551c4564af12cc"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_source_contract_reference.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "046bb4268eeecee5bd3516b497afbf3920b52208cac693d5959869a98f63d6a6"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_source_preflight.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "ca1e0a1115d72eb8697b3aba4c77ea7be8f1c4ebebfcb45e0dfb86fb6836ff53"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_targeted_recheck.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "a118ccb877faab1dc2604a6ede34f895d26afbf3f08b4733ca956cf8c9931a13"
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/tdcc_run_receipts.json",
+      "category": "research-only source/feature reconciliation evidence",
+      "sha256": "3da0f3dc665ae2f12a4f388f0f7474de3b53af1e03a6dcb6ac07d7b7ec8abbe2"
+    },
+    {
+      "path": "ml/features/tdcc.py",
+      "category": "documentation-only correction of TDCC level descriptions; algorithm unchanged",
+      "sha256": "f75087000eebbed4841e427db4553c4223a361c9055110f3c715d3e1735c3b14"
+    }
+  ],
+  "include_this_manifest": "ml/reports/research/data_layer_consistency_20260906/tdcc_commit_whitelist.json",
+  "excluded": [
+    "twstock.py Step9 and its tests are owned by disposition_integrity",
+    "TDCC radar UI/lineage files are owned by entry_cards",
+    "Valuation57-date family repair files are owned by root",
+    "Protected models, model selection, DB and ledgers were not modified by this TDCC task"
+  ],
+  "validation": "18 focused fixtures passed; 414 real source parser backend samples exact;11659 plan queries terminal;50 no-data independently confirmed twice;2031x13 latest comparison has5 cells in2 inactive tickers;4file source promotion preflight passed;no publish"
+}

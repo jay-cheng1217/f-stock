@@ -1,0 +1,128 @@
+{
+  "summary": {
+    "status": "PASS",
+    "source_first_date": "2020-01-03",
+    "source_last_date": "2026-07-09",
+    "source_distinct_weeks": 298,
+    "complete_grid_weeks": 341,
+    "global_missing_weeks": 43,
+    "training_tickers": 1893,
+    "tickers_with_gaps": 1893,
+    "ticker_gap_weeks": 81927,
+    "observed_weekly_samples": 530182,
+    "affected_observed_samples": 380420,
+    "affected_observed_pct": 71.75271887766841,
+    "global_gap_neighborhood_pct": 75.16778523489933,
+    "old_value_to_unknown_cells": 309134,
+    "no_gap_tickers": 0,
+    "no_gap_max_abs_delta": 0.0,
+    "no_gap_nan_mismatches": 0,
+    "continuous_prefix_samples": 7438,
+    "continuous_prefix_max_abs_delta": 0.0,
+    "continuous_prefix_nan_mismatches": 0
+  },
+  "global_missing_periods": [
+    "2020-01-18/2020-01-24",
+    "2020-02-08/2020-02-14",
+    "2020-02-22/2020-02-28",
+    "2020-03-28/2020-04-03",
+    "2020-04-25/2020-05-01",
+    "2020-06-13/2020-06-19",
+    "2020-06-20/2020-06-26",
+    "2020-09-19/2020-09-25",
+    "2020-09-26/2020-10-02",
+    "2020-10-03/2020-10-09",
+    "2020-12-26/2021-01-01",
+    "2021-02-06/2021-02-12",
+    "2021-02-13/2021-02-19",
+    "2021-03-27/2021-04-02",
+    "2021-04-24/2021-04-30",
+    "2021-09-04/2021-09-10",
+    "2021-12-25/2021-12-31",
+    "2022-01-15/2022-01-21",
+    "2022-01-29/2022-02-04",
+    "2022-05-28/2022-06-03",
+    "2022-09-03/2022-09-09",
+    "2022-12-31/2023-01-06",
+    "2023-01-14/2023-01-20",
+    "2023-01-21/2023-01-27",
+    "2023-01-28/2023-02-03",
+    "2023-02-11/2023-02-17",
+    "2023-03-18/2023-03-24",
+    "2023-06-10/2023-06-16",
+    "2023-06-17/2023-06-23",
+    "2023-09-16/2023-09-22",
+    "2023-09-23/2023-09-29",
+    "2024-02-03/2024-02-09",
+    "2024-02-10/2024-02-16",
+    "2024-03-30/2024-04-05",
+    "2025-01-25/2025-01-31",
+    "2025-02-01/2025-02-07",
+    "2025-02-22/2025-02-28",
+    "2025-03-29/2025-04-04",
+    "2025-05-24/2025-05-30",
+    "2025-10-04/2025-10-10",
+    "2025-10-18/2025-10-24",
+    "2026-02-14/2026-02-20",
+    "2026-02-21/2026-02-27"
+  ],
+  "per_feature": {
+    "retail_pct": {
+      "affected_rows": 0,
+      "old_value_to_unknown": 0
+    },
+    "whale_pct": {
+      "affected_rows": 0,
+      "old_value_to_unknown": 0
+    },
+    "whale_pct_chg": {
+      "affected_rows": 60317,
+      "old_value_to_unknown": 60317
+    },
+    "retail_pct_chg": {
+      "affected_rows": 60317,
+      "old_value_to_unknown": 60317
+    },
+    "holders_chg_pct": {
+      "affected_rows": 60317,
+      "old_value_to_unknown": 60317
+    },
+    "whale_retail_ratio": {
+      "affected_rows": 0,
+      "old_value_to_unknown": 0
+    },
+    "whale_trend_4w": {
+      "affected_rows": 122885,
+      "old_value_to_unknown": 3739
+    },
+    "retail_capitulation": {
+      "affected_rows": 300148,
+      "old_value_to_unknown": 32
+    },
+    "whale_acc_weeks": {
+      "affected_rows": 42319,
+      "old_value_to_unknown": 0
+    },
+    "whale_trend_8w": {
+      "affected_rows": 242277,
+      "old_value_to_unknown": 1908
+    },
+    "whale_acc_momentum": {
+      "affected_rows": 168363,
+      "old_value_to_unknown": 62155
+    },
+    "whale_pct_rank_12w": {
+      "affected_rows": 314373,
+      "old_value_to_unknown": 32
+    },
+    "whale_retail_diverge": {
+      "affected_rows": 60317,
+      "old_value_to_unknown": 60317
+    }
+  },
+  "definitions": {
+    "affected_observed_sample": "at least one TDCC feature changed on an observed week",
+    "global_gap_neighborhood_pct": "observed global weeks within 12 weeks after a missing global week",
+    "old_value_to_unknown": "legacy numeric value becomes NaN because a gap invalidates the calculation"
+  }
+}

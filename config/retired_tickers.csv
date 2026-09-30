@@ -1,0 +1,7 @@
+ticker,status,retired_as_of,reason,source,notes
+3426,delisted_or_not_currently_listed,2026-06-23,missing_from_twse_tpex_current_company_lists,official_twse_tpex_crosscheck,Archive local daily-K and exclude from update/universe until relisted evidence exists.
+3454,delisted_or_not_currently_listed,2026-06-23,missing_from_twse_tpex_current_company_lists,official_twse_tpex_crosscheck,Archive local daily-K and exclude from update/universe until relisted evidence exists.
+4945,delisted_or_not_currently_listed,2026-06-23,missing_from_twse_tpex_current_company_lists,official_twse_tpex_crosscheck,Archive local daily-K and exclude from update/universe until relisted evidence exists.
+4987,delisted_or_not_currently_listed,2026-06-23,missing_from_twse_tpex_current_company_lists,official_twse_tpex_crosscheck,Archive local daily-K and exclude from update/universe until relisted evidence exists.
+6747,delisted_or_not_currently_listed,2026-06-23,missing_from_twse_tpex_current_company_lists,official_twse_tpex_crosscheck,Archive local daily-K and exclude from update/universe until relisted evidence exists.
+6806,terminated_listing,2026-06-23,twse_announced_termination_of_listing,official_twse_announcement,Final trading day was 2026-06-22; exclude from active update/universe and archive local daily-K.

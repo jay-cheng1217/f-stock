@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-05-16T05:34:48.888024+00:00",
+  "post_exit_csv": "F:\\stock\\exports\\champion_ma5break_post_exit.csv",
+  "ma5_break_original_positions": 89,
+  "classification_counts": {
+    "drift": 45,
+    "whipsaw_short": 31,
+    "late_winner": 11,
+    "true_loser": 2
+  },
+  "reentry_trades": 31,
+  "rejected": 58,
+  "all_horizon": {
+    "subset": "all_horizon",
+    "trades": 31,
+    "avg_return": -0.003456264770012517,
+    "win_rate": 0.3870967741935484,
+    "weighted_contribution": -0.030806108369127498,
+    "avg_weight": 0.04381878245780484,
+    "second_ma5_break_rate": 0.7741935483870968
+  },
+  "full_10d_coverage": {
+    "subset": "full_10d_coverage",
+    "trades": 8,
+    "avg_return": 0.02482964649737339,
+    "win_rate": 0.625,
+    "weighted_contribution": 0.004813536260075289,
+    "avg_weight": 0.040222039473684204,
+    "second_ma5_break_rate": 1.0
+  },
+  "mdd_worsening": 0.04906639939850606,
+  "round_trip_turnover": 2.7167645123839,
+  "rd_proposed_turnover_cap": 1.5,
+  "kill_checks": {
+    "weighted_contribution": {
+      "value": -0.030806108369127498,
+      "threshold": 0.005,
+      "pass": false
+    },
+    "mdd_worsening": {
+      "value": 0.04906639939850606,
+      "threshold": 0.01,
+      "pass": false
+    },
+    "round_trip_turnover": {
+      "value": 2.7167645123839,
+      "threshold": 1.5,
+      "pass": false,
+      "note": "RD-proposed cap; requires PM approval."
+    },
+    "coverage_direction_consistency": {
+      "value": false,
+      "threshold": true,
+      "pass": false
+    }
+  },
+  "overall_pass": false,
+  "decision": "KILL",
+  "paths": {
+    "md": "F:\\stock\\ml\\reports\\rd20260516_003_ma5_reentry_v12.md",
+    "json": "F:\\stock\\ml\\reports\\rd20260516_003_ma5_reentry_v12.json",
+    "trades": "F:\\stock\\ml\\reports\\rd20260516_003_ma5_reentry_v12_trades.csv",
+    "rejections": "F:\\stock\\ml\\reports\\rd20260516_003_ma5_reentry_v12_rejections.csv",
+    "classifications": "F:\\stock\\ml\\reports\\rd20260516_003_ma5_reentry_v12_classifications.csv",
+    "overlay_nav": "F:\\stock\\ml\\reports\\rd20260516_003_ma5_reentry_v12_overlay_nav.csv",
+    "classification_stats": "F:\\stock\\ml\\reports\\rd20260516_003_ma5_reentry_v12_classification_stats.csv"
+  }
+}

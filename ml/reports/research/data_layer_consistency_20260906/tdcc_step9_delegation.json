@@ -1,0 +1,36 @@
+{
+  "status": "code_and_isolated_tests_pass",
+  "classification": "L1 source refresh fail-closed delegation",
+  "changed_function": "twstock.py::step9_update_tdcc",
+  "canonical_entrypoint": "scripts.fetch_tdcc_weekly.fetch_and_save()",
+  "canonical_contract": "No arguments; False for empty response; source/schema/date/coverage exceptions propagate; rebuild_summary owned by canonical fetcher after raw validation; True on success",
+  "changes": [
+    "Every call delegates even if the same-week raw file exists",
+    "False raises RuntimeError",
+    "Source exceptions propagate",
+    "Step9 no longer invokes legacy summary rebuilding after failure or successful canonical fetch"
+  ],
+  "tests": {
+    "passed": 22,
+    "command": "python -B -m pytest tests/test_tdcc_step9_delegation.py tests/test_tdcc_radar_lineage.py tests/test_backfill_tdcc_summary.py -q",
+    "focused_cases": [
+      "False response fails without old summary",
+      "HTTP/source exception propagates",
+      "Actual canonical empty-response branch preserves old summary bytes",
+      "Actual canonical same-week successful delegation queries and repairs raw on every call",
+      "Malformed canonical response preserves previous valid raw bytes and does not rebuild summary"
+    ]
+  },
+  "limits": [
+    "No real network fetch or production source/pipeline execution",
+    "Canonical minimum 80% coverage floor and weekly semantics unchanged; this wrapper does not add exact all-market completeness certification",
+    "No TDCC feature/level definitions/model/strategy changes"
+  ],
+  "whitelist": [
+    "twstock.py (Step9 only)",
+    "tests/test_tdcc_step9_delegation.py",
+    "docs/METHOD_tdcc_step9_delegation_20260906.md",
+    "ml/reports/research/data_layer_consistency_20260906/tdcc_step9_delegation.json",
+    "ml/reports/research/data_layer_consistency_20260906/tdcc_step9_delegation.md"
+  ]
+}

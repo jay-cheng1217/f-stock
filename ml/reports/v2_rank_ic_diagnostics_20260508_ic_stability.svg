@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="560" viewBox="0 0 1180 560">
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#222}
+.title{font-size:20px;font-weight:700}
+.axis{stroke:#333;stroke-width:1}
+.grid{stroke:#ddd;stroke-width:1}
+.tick{font-size:11px;fill:#555}
+.legend{font-size:12px}
+</style>
+<rect x="0" y="0" width="1180" height="560" fill="white"/>
+<text class="title" x="590.0" y="28" text-anchor="middle">V2 Rank IC Stability</text>
+<line class="axis" x1="72" y1="455" x2="1130" y2="455"/>
+<line class="axis" x1="72" y1="58" x2="72" y2="455"/>
+<line class="grid" x1="72" y1="455.0" x2="1130" y2="455.0"/>
+<text class="tick" x="64" y="459.0" text-anchor="end">-0.19</text>
+<line class="grid" x1="72" y1="375.6" x2="1130" y2="375.6"/>
+<text class="tick" x="64" y="379.6" text-anchor="end">-0.08</text>
+<line class="grid" x1="72" y1="296.2" x2="1130" y2="296.2"/>
+<text class="tick" x="64" y="300.2" text-anchor="end">0.04</text>
+<line class="grid" x1="72" y1="216.8" x2="1130" y2="216.8"/>
+<text class="tick" x="64" y="220.8" text-anchor="end">0.15</text>
+<line class="grid" x1="72" y1="137.4" x2="1130" y2="137.4"/>
+<text class="tick" x="64" y="141.4" text-anchor="end">0.26</text>
+<line class="grid" x1="72" y1="58.0" x2="1130" y2="58.0"/>
+<text class="tick" x="64" y="62.0" text-anchor="end">0.38</text>
+<text class="tick" x="18" y="256.5" text-anchor="middle" transform="rotate(-90 18 256.5)">Spearman IC</text>
+<line x1="72" y1="322.1" x2="1130" y2="322.1" stroke="#333" stroke-width="1"/>
+<line x1="72" y1="287.0" x2="1130" y2="287.0" stroke="#888" stroke-width="1" stroke-dasharray="5,4"/>
+<polyline points="72.0,283.5 111.2,223.5 150.4,262.3 189.6,344.7 228.7,273.3 267.9,271.8 307.1,263.5 346.3,266.3 385.5,233.2 424.7,330.0 463.9,319.2 503.0,312.6 542.2,328.8 581.4,317.9 620.6,374.0 659.8,348.7 699.0,222.1 738.1,310.5 777.3,314.8 816.5,278.5 855.7,285.6 894.9,334.7 934.1,416.6 973.3,379.9 1012.4,330.7 1051.6,290.8 1090.8,158.4 1130.0,96.4" fill="none" stroke="#b0b0b0" stroke-width="1.5"/>
+<circle cx="72.0" cy="283.5" r="3" fill="#b0b0b0"/>
+<circle cx="111.2" cy="223.5" r="3" fill="#b0b0b0"/>
+<circle cx="150.4" cy="262.3" r="3" fill="#b0b0b0"/>
+<circle cx="189.6" cy="344.7" r="3" fill="#b0b0b0"/>
+<circle cx="228.7" cy="273.3" r="3" fill="#b0b0b0"/>
+<circle cx="267.9" cy="271.8" r="3" fill="#b0b0b0"/>
+<circle cx="307.1" cy="263.5" r="3" fill="#b0b0b0"/>
+<circle cx="346.3" cy="266.3" r="3" fill="#b0b0b0"/>
+<circle cx="385.5" cy="233.2" r="3" fill="#b0b0b0"/>
+<circle cx="424.7" cy="330.0" r="3" fill="#b0b0b0"/>
+<circle cx="463.9" cy="319.2" r="3" fill="#b0b0b0"/>
+<circle cx="503.0" cy="312.6" r="3" fill="#b0b0b0"/>
+<circle cx="542.2" cy="328.8" r="3" fill="#b0b0b0"/>
+<circle cx="581.4" cy="317.9" r="3" fill="#b0b0b0"/>
+<circle cx="620.6" cy="374.0" r="3" fill="#b0b0b0"/>
+<circle cx="659.8" cy="348.7" r="3" fill="#b0b0b0"/>
+<circle cx="699.0" cy="222.1" r="3" fill="#b0b0b0"/>
+<circle cx="738.1" cy="310.5" r="3" fill="#b0b0b0"/>
+<circle cx="777.3" cy="314.8" r="3" fill="#b0b0b0"/>
+<circle cx="816.5" cy="278.5" r="3" fill="#b0b0b0"/>
+<circle cx="855.7" cy="285.6" r="3" fill="#b0b0b0"/>
+<circle cx="894.9" cy="334.7" r="3" fill="#b0b0b0"/>
+<circle cx="934.1" cy="416.6" r="3" fill="#b0b0b0"/>
+<circle cx="973.3" cy="379.9" r="3" fill="#b0b0b0"/>
+<circle cx="1012.4" cy="330.7" r="3" fill="#b0b0b0"/>
+<circle cx="1051.6" cy="290.8" r="3" fill="#b0b0b0"/>
+<circle cx="1090.8" cy="158.4" r="3" fill="#b0b0b0"/>
+<circle cx="1130.0" cy="96.4" r="3" fill="#b0b0b0"/>
+<polyline points="150.4,256.4 189.6,278.5 228.7,277.5 267.9,276.5 307.1,273.2 346.3,280.3 385.5,275.5 424.7,273.0 463.9,280.7 503.0,287.5 542.2,298.4 581.4,307.0 620.6,330.4 659.8,333.5 699.0,317.4 738.1,317.0 777.3,314.7 816.5,308.1 855.7,293.4 894.9,291.0 934.1,323.4 973.3,335.0 1012.4,337.7 1051.6,339.7 1090.8,318.5 1130.0,278.8" fill="none" stroke="#d62728" stroke-width="2.8"/>
+<polyline points="72.0,283.5 111.2,253.5 150.4,256.4 189.6,278.5 228.7,277.5 267.9,276.5 307.1,274.7 346.3,273.6 385.5,269.1 424.7,275.2 463.9,279.2 503.0,282.0 542.2,285.6 581.4,287.9 620.6,293.7 659.8,297.1 699.0,292.7 738.1,293.7 777.3,294.8 816.5,294.0 855.7,293.6 894.9,295.4 934.1,300.7 973.3,304.0 1012.4,305.1 1051.6,304.5 1090.8,299.1 1130.0,291.9" fill="none" stroke="#1f77b4" stroke-width="2.8"/>
+<text class="tick" x="72.0" y="476" text-anchor="end" transform="rotate(-60 72.0 476)">2024-01</text>
+<text class="tick" x="111.2" y="476" text-anchor="end" transform="rotate(-60 111.2 476)">2024-02</text>
+<text class="tick" x="150.4" y="476" text-anchor="end" transform="rotate(-60 150.4 476)">2024-03</text>
+<text class="tick" x="189.6" y="476" text-anchor="end" transform="rotate(-60 189.6 476)">2024-04</text>
+<text class="tick" x="228.7" y="476" text-anchor="end" transform="rotate(-60 228.7 476)">2024-05</text>
+<text class="tick" x="267.9" y="476" text-anchor="end" transform="rotate(-60 267.9 476)">2024-06</text>
+<text class="tick" x="307.1" y="476" text-anchor="end" transform="rotate(-60 307.1 476)">2024-07</text>
+<text class="tick" x="346.3" y="476" text-anchor="end" transform="rotate(-60 346.3 476)">2024-08</text>
+<text class="tick" x="385.5" y="476" text-anchor="end" transform="rotate(-60 385.5 476)">2024-09</text>
+<text class="tick" x="424.7" y="476" text-anchor="end" transform="rotate(-60 424.7 476)">2024-10</text>
+<text class="tick" x="463.9" y="476" text-anchor="end" transform="rotate(-60 463.9 476)">2024-11</text>
+<text class="tick" x="503.0" y="476" text-anchor="end" transform="rotate(-60 503.0 476)">2024-12</text>
+<text class="tick" x="542.2" y="476" text-anchor="end" transform="rotate(-60 542.2 476)">2025-01</text>
+<text class="tick" x="581.4" y="476" text-anchor="end" transform="rotate(-60 581.4 476)">2025-02</text>
+<text class="tick" x="620.6" y="476" text-anchor="end" transform="rotate(-60 620.6 476)">2025-03</text>
+<text class="tick" x="659.8" y="476" text-anchor="end" transform="rotate(-60 659.8 476)">2025-04</text>
+<text class="tick" x="699.0" y="476" text-anchor="end" transform="rotate(-60 699.0 476)">2025-05</text>
+<text class="tick" x="738.1" y="476" text-anchor="end" transform="rotate(-60 738.1 476)">2025-06</text>
+<text class="tick" x="777.3" y="476" text-anchor="end" transform="rotate(-60 777.3 476)">2025-07</text>
+<text class="tick" x="816.5" y="476" text-anchor="end" transform="rotate(-60 816.5 476)">2025-08</text>
+<text class="tick" x="855.7" y="476" text-anchor="end" transform="rotate(-60 855.7 476)">2025-09</text>
+<text class="tick" x="894.9" y="476" text-anchor="end" transform="rotate(-60 894.9 476)">2025-10</text>
+<text class="tick" x="934.1" y="476" text-anchor="end" transform="rotate(-60 934.1 476)">2025-11</text>
+<text class="tick" x="973.3" y="476" text-anchor="end" transform="rotate(-60 973.3 476)">2025-12</text>
+<text class="tick" x="1012.4" y="476" text-anchor="end" transform="rotate(-60 1012.4 476)">2026-01</text>
+<text class="tick" x="1051.6" y="476" text-anchor="end" transform="rotate(-60 1051.6 476)">2026-02</text>
+<text class="tick" x="1090.8" y="476" text-anchor="end" transform="rotate(-60 1090.8 476)">2026-03</text>
+<text class="tick" x="1130.0" y="476" text-anchor="end" transform="rotate(-60 1130.0 476)">2026-04</text>
+<rect x="84" y="78" width="12" height="12" fill="#b0b0b0"/>
+<text class="legend" x="102" y="88">Monthly IC</text>
+<rect x="84" y="96" width="12" height="12" fill="#d62728"/>
+<text class="legend" x="102" y="106">6M rolling mean</text>
+<rect x="84" y="114" width="12" height="12" fill="#1f77b4"/>
+<text class="legend" x="102" y="124">Cumulative mean</text>
+<rect x="84" y="132" width="12" height="12" fill="#888888"/>
+<text class="legend" x="102" y="142">IC 0.05 hurdle</text>
+</svg>

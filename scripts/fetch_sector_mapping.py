@@ -24,7 +24,7 @@ except Exception:
     pass
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT_DIR = os.path.join(BASE_DIR, "ml", "data")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 OUTPUT_PATH = os.path.join(OUTPUT_DIR, "sector_mapping.csv")
@@ -83,6 +83,7 @@ def fetch_isin_listing(mode: int, market_name: str) -> list[dict]:
 
     records = []
     in_stock_section = False
+    in_innovation_section = False
 
     for tr in table.find_all("tr"):
         tds = tr.find_all("td")
@@ -90,13 +91,18 @@ def fetch_isin_listing(mode: int, market_name: str) -> list[dict]:
         # 區段標題 (colspan=7): 「股票」、「ETF」、「特別股」等
         if len(tds) == 1 and tds[0].get("colspan"):
             section = tds[0].get_text(strip=True)
-            in_stock_section = "股票" in section
+            # ISIN lists Taiwan Innovation Board shares in a separate section.
+            # They use the same official industry taxonomy as ordinary stocks.
+            in_innovation_section = section == "創新板"
+            in_stock_section = "股票" in section or in_innovation_section
             continue
 
         if not in_stock_section:
             continue
 
         if len(tds) < 5:
+            continue
+        if in_innovation_section and (len(tds) < 6 or not tds[5].get_text(strip=True).startswith("ES")):
             continue
 
         # 欄位: 代號及名稱 | ISIN | 上市日 | 市場別 | 產業別 | CFI | 備註

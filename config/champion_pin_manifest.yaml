@@ -1,0 +1,57 @@
+version: "2026-05-17"
+model_era: "v2.6_incident_edition"
+notes: "Production pins after Stage1 binary incident; do not auto-upgrade without CL3."
+
+champion:
+  stage1_key: "champion_stage1_v26"
+  stage2_key: "champion_stage2_v26"
+  two_stage_enabled: true
+  exit_policy: "asymmetric_v2"
+  sector_overheat_thresholds_enabled: true
+
+pins:
+  - key: "champion_stage1_v26"
+    family: "v2_stage1"
+    role: "champion_stage1"
+    meta_path: "ml/models/lgbm_v2_20260508_200128_meta.json"
+    model_path: "ml/models/lgbm_v2_20260508_200128.txt"
+    pin_reason: "Champion v2.6 incident edition Stage1; preserve current production behavior after Stage1 binary incident."
+    pinned_at: "2026-05-17"
+    retire_after: null
+
+  - key: "champion_stage2_v26"
+    family: "two_stage_ranker"
+    role: "champion_stage2"
+    meta_path: "ml/models/lgbm_two_stage_ranker_20260509_011500_meta.json"
+    model_path: "ml/models/lgbm_two_stage_ranker_20260509_011500.txt"
+    pin_reason: "Champion v2.6 incident edition Stage2; original CL3-passed Two-Stage N=75 ranker."
+    pinned_at: "2026-05-17"
+    retire_after: null
+
+  - key: "t1_research_frozen"
+    family: "t1"
+    role: "research_t1"
+    meta_path: "ml/models/lgbm_t1_20260417_191108_meta.json"
+    model_path: "ml/models/lgbm_t1_20260417_191108.txt"
+    pin_reason: "T+1 research-only frozen model retained for audit and historical comparisons."
+    pinned_at: "2026-05-17"
+    retire_after: null
+
+  - key: "alpha_classifier_research"
+    family: "alpha_classifier"
+    role: "research_alpha_classifier"
+    meta_path: "ml/models/lgbm_alpha_cls_v2_20260422_220036_meta.json"
+    model_path: "ml/models/lgbm_alpha_cls_v2_20260422_220036.txt"
+    pin_reason: "V2 alpha classifier research artifact retained for prediction explain and audit trails."
+    pinned_at: "2026-05-17"
+    retire_after: null
+
+  - key: "legacy_v1_reference"
+    family: "v1_legacy"
+    role: "legacy_reference"
+    meta_path: "ml/models/lgbm_20260516_112903_meta.json"
+    model_path: "ml/models/lgbm_20260516_112903.txt"
+    pin_reason: "Latest legacy V1 reference bundle retained for diagnostics and compatibility checks."
+    pinned_at: "2026-05-17"
+    retire_after: null
+

@@ -1,0 +1,738 @@
+{
+  "status": "FAILED",
+  "started_at": "2026-09-07T00:05:51.4807839+08:00",
+  "scope": "Read-only live HTTP after authorized deployment",
+  "expected_listener_pid": 15672,
+  "requests": [
+    {
+      "name": "frontend_index",
+      "route": "/",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.157,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\frontend_index.html",
+      "response_sha256": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af"
+    },
+    {
+      "name": "health_check",
+      "route": "/api/health_check",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.038,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\health_check.json",
+      "response_sha256": "83f06e06a7be469fdac5db9d33310d014f638f3b5c4320b1f44f318b76e7caa3"
+    },
+    {
+      "name": "pipeline_status",
+      "route": "/api/pipeline/status",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 0.45,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\pipeline_status.json",
+      "response_sha256": "af5b02203b172a7cb924e5f690bd02491eda15498dbae1d60752ef53f39a9afa"
+    },
+    {
+      "name": "predictions_latest_top30",
+      "route": "/api/predictions/latest?top_n=30",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 1.086,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\predictions_latest_top30.json",
+      "response_sha256": "9a9c6745f4aaaf84ff78bb82a213c6c741667ae266f73fee108bb3f1142ccff0"
+    },
+    {
+      "name": "explain_2603",
+      "route": "/api/predictions/2603/explain",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 28.908,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\explain_2603.json",
+      "response_sha256": "c0d85cc6f196a0a60b2a36ca3e65fa63645e6728b0e0795701bd3aabb696b861"
+    },
+    {
+      "name": "explain_3605",
+      "route": "/api/predictions/3605/explain",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 2.701,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\explain_3605.json",
+      "response_sha256": "caafe40f02df655c7e0a7a6c8603cda481fcc4e69db589f501e49f38f42401f3"
+    },
+    {
+      "name": "explain_2330",
+      "route": "/api/predictions/2330/explain",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 3.22,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\explain_2330.json",
+      "response_sha256": "d07f3a72105d9f02a6b1ea296821337681f377916d3f8e51103ef42285aaa29e"
+    },
+    {
+      "name": "explain_6949",
+      "route": "/api/predictions/6949/explain",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 2.026,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\explain_6949.json",
+      "response_sha256": "1fa8a11a626c98bbb2d00ced07aa2a17bc98f082f2395e11fab1e1b9e0ec3a08"
+    },
+    {
+      "name": "canonical_entry",
+      "route": "/api/entry/canonical",
+      "method": "GET",
+      "http_status": 200,
+      "seconds": 2.251,
+      "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v3\\canonical_entry.json",
+      "response_sha256": "923e1fbbd45eb86c7d0da639462271d00e57f529dd5d78c3afe99098b316e0e7"
+    }
+  ],
+  "comparisons": [
+    {
+      "context": "canonical.local_proof",
+      "field": "schema",
+      "actual": 1,
+      "expected": 1,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "canonical.local_proof",
+      "field": "scope",
+      "actual": "successful_live_entry_generation",
+      "expected": "successful_live_entry_generation",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.local_proof",
+      "field": "run_id",
+      "actual": "6fd8edfce9f7400581242a7436714d6e",
+      "expected": "6fd8edfce9f7400581242a7436714d6e",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.local_proof",
+      "field": "as_of_date",
+      "actual": "2026-09-04",
+      "expected": "2026-09-04",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.local_proof",
+      "field": "trade_date",
+      "actual": "2026-09-07",
+      "expected": "2026-09-07",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.local_proof",
+      "field": "result_sha256",
+      "actual": "16a7887c3e521d8e8d02c21fcd4e81610cb81cf99489761fb67f7d926ea1d636",
+      "expected": "16a7887c3e521d8e8d02c21fcd4e81610cb81cf99489761fb67f7d926ea1d636",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.local_proof",
+      "field": "payload_sha256",
+      "actual": "03eeb5043a475c95a8bea2572a30effb496c2641b669c7a85bcceca0101a75f8",
+      "expected": "03eeb5043a475c95a8bea2572a30effb496c2641b669c7a85bcceca0101a75f8",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "frontend",
+      "field": "served_sha256",
+      "actual": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af",
+      "expected": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "health",
+      "field": "latest_trading_date",
+      "actual": "2026-09-04",
+      "expected": "2026-09-04",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "health",
+      "field": "latest_prediction_date",
+      "actual": "2026-09-04",
+      "expected": "2026-09-04",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "ingest.daily_k",
+      "field": "generation_id",
+      "actual": "313405adc97749b5aab935e979ef617c",
+      "expected": "313405adc97749b5aab935e979ef617c",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "ingest.daily_k",
+      "field": "actual_rows",
+      "actual": 2990060,
+      "expected": 2990060,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "ingest.revenue",
+      "field": "generation_id",
+      "actual": "313405adc97749b5aab935e979ef617c",
+      "expected": "313405adc97749b5aab935e979ef617c",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "ingest.revenue",
+      "field": "actual_rows",
+      "actual": 61854,
+      "expected": 61854,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "ingest.financials",
+      "field": "generation_id",
+      "actual": "313405adc97749b5aab935e979ef617c",
+      "expected": "313405adc97749b5aab935e979ef617c",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "ingest.financials",
+      "field": "actual_rows",
+      "actual": 47331,
+      "expected": 47331,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "ingest.tdcc",
+      "field": "generation_id",
+      "actual": "313405adc97749b5aab935e979ef617c",
+      "expected": "313405adc97749b5aab935e979ef617c",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "ingest.tdcc",
+      "field": "actual_rows",
+      "actual": 910711,
+      "expected": 910711,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "ingest.indices",
+      "field": "generation_id",
+      "actual": "313405adc97749b5aab935e979ef617c",
+      "expected": "313405adc97749b5aab935e979ef617c",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "ingest.indices",
+      "field": "actual_rows",
+      "actual": 10037,
+      "expected": 10037,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "latest",
+      "field": "prediction_date",
+      "actual": "2026-09-04",
+      "expected": "2026-09-04",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "latest",
+      "field": "total_stocks",
+      "actual": 1098,
+      "expected": 1098,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "latest",
+      "field": "ordered_top_tickers",
+      "actual": "2603",
+      "expected": "2603",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "latest.2603",
+      "field": "close",
+      "actual": 233.0,
+      "expected": 233.0,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "latest.2603",
+      "field": "up_prob",
+      "actual": 0.296,
+      "expected": 0.296,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "latest.2603",
+      "field": "flat_prob",
+      "actual": 0.3237,
+      "expected": 0.3237,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "latest.2603",
+      "field": "down_prob",
+      "actual": 0.3803,
+      "expected": 0.3803,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "latest.2603",
+      "field": "pred_return_20d",
+      "actual": 2.35,
+      "expected": 2.35,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "latest.2603",
+      "field": "recommendation",
+      "actual": "建議買進",
+      "expected": "建議買進",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "explain.2603",
+      "field": "pred_return_20d",
+      "actual": 2.35,
+      "expected": 2.35,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.2603",
+      "field": "recommendation",
+      "actual": "建議買進",
+      "expected": "建議買進",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "explain.2603",
+      "field": "model_pred_return_20d",
+      "actual": 2.35,
+      "expected": 2.35,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.2603",
+      "field": "prediction_postprocessed",
+      "actual": false,
+      "expected": false,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.3605",
+      "field": "pred_return_20d",
+      "actual": 2.75,
+      "expected": 2.75,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.3605",
+      "field": "recommendation",
+      "actual": "建議買進",
+      "expected": "建議買進",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "explain.3605",
+      "field": "model_pred_return_20d",
+      "actual": 2.75,
+      "expected": 2.75,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.3605",
+      "field": "prediction_postprocessed",
+      "actual": false,
+      "expected": false,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.2330",
+      "field": "pred_return_20d",
+      "actual": 0.48,
+      "expected": 0.48,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.2330",
+      "field": "recommendation",
+      "actual": "建議買進",
+      "expected": "建議買進",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "explain.2330",
+      "field": "model_pred_return_20d",
+      "actual": 0.48,
+      "expected": 0.48,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.2330",
+      "field": "prediction_postprocessed",
+      "actual": false,
+      "expected": false,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.6949",
+      "field": "pred_return_20d",
+      "actual": 50.73,
+      "expected": 50.73,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.6949",
+      "field": "recommendation",
+      "actual": "觀望（預測值異常）",
+      "expected": "觀望（預測值異常）",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "explain.6949",
+      "field": "model_pred_return_20d",
+      "actual": 50.93,
+      "expected": 50.93,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "explain.6949",
+      "field": "prediction_postprocessed",
+      "actual": true,
+      "expected": true,
+      "delta": 0.0,
+      "ok": true
+    },
+    {
+      "context": "canonical",
+      "field": "source_file",
+      "actual": "entry_list_20260907.json",
+      "expected": "entry_list_20260907.json",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.api_proof",
+      "field": "run_id",
+      "actual": "6fd8edfce9f7400581242a7436714d6e",
+      "expected": "6fd8edfce9f7400581242a7436714d6e",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.api_proof",
+      "field": "as_of_date",
+      "actual": "2026-09-04",
+      "expected": "2026-09-04",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.api_proof",
+      "field": "trade_date",
+      "actual": "2026-09-07",
+      "expected": "2026-09-07",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.api_proof",
+      "field": "result_sha256",
+      "actual": "16a7887c3e521d8e8d02c21fcd4e81610cb81cf99489761fb67f7d926ea1d636",
+      "expected": "16a7887c3e521d8e8d02c21fcd4e81610cb81cf99489761fb67f7d926ea1d636",
+      "delta": null,
+      "ok": true
+    },
+    {
+      "context": "canonical.api_proof",
+      "field": "payload_sha256",
+      "actual": "03eeb5043a475c95a8bea2572a30effb496c2641b669c7a85bcceca0101a75f8",
+      "expected": "03eeb5043a475c95a8bea2572a30effb496c2641b669c7a85bcceca0101a75f8",
+      "delta": null,
+      "ok": true
+    }
+  ],
+  "failures": [
+    "Explain 2603 failed or fell back from V2: ",
+    "Explain 3605 failed or fell back from V2: ",
+    "Explain 2330 failed or fell back from V2: ",
+    "Explain 6949 failed or fell back from V2: "
+  ],
+  "listener": {
+    "pid": 15672,
+    "name": "python",
+    "started_at": "2026-09-07T00:05:37.7358395+08:00"
+  },
+  "prediction_evidence": {
+    "csv_sha256": "850b627d22431b48ad8fab04b2179df426d141cc929cd42a351fa83f882c4624",
+    "rows": 1098,
+    "as_of": "2026-09-04",
+    "snapshot_sha256": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "source_signature": "bb50c8f338e9bfd4559fe2d37a54fd74e776934d3b94341e17ad44082fc4b39e",
+    "runtime_environment": {
+      "V2_MODEL_META": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+      "ENABLE_ALPHA_CLASSIFIER_RESEARCH": null,
+      "TWO_STAGE_RANKER_ENABLED": "1",
+      "TWO_STAGE_RANKER_META": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+      "VALIDATED_CHIP_MOMENTUM_GATE_ENABLED": null,
+      "VALIDATED_CHIP_MOMENTUM_TOP_N": null,
+      "VALIDATED_CHIP_MOMENTUM_MIN_OPEN": null,
+      "VALIDATED_CHIP_MOMENTUM_MIN_VOLUME": null,
+      "VALIDATED_CHIP_MOMENTUM_MIN_AMOUNT": null
+    },
+    "models": [
+      {
+        "role": "base",
+        "meta_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json",
+        "meta_sha256": "bda3fcc1e5be8fc273708bfc8556ab0a07cc48452f98ba8a78b5e8080bc0f829",
+        "model_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903.txt",
+        "model_sha256": "3a10ef2f9f78644ca98e1d2854f9f35a1c81c6241df247a4c672c77514c7d624"
+      },
+      {
+        "role": "v2",
+        "meta_path": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+        "meta_sha256": "75735092749bea981f4554b6e7435b8d896bbb0d443bf8b93822a391cef8abac",
+        "model_path": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128.txt",
+        "model_sha256": "17e294e05b2086abc0d3f6a7fcc68e8f9cd8ed42bea6aff154c544e1faa46872"
+      },
+      {
+        "role": "ranker",
+        "meta_path": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+        "meta_sha256": "9c09ea22b3d78662a79175ad4b8455ccf829ad15c0bcdd66d2c0acd411580324",
+        "model_path": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500.txt",
+        "model_sha256": "ca798ff01d61d0c0ea22140c92271a51e611b39c03cf99a2277d9606c65593f0"
+      }
+    ]
+  },
+  "file_hashes_before": {
+    "F:\\stock\\ml\\models\\predictions_2026-09-04.csv": "850b627d22431b48ad8fab04b2179df426d141cc929cd42a351fa83f882c4624",
+    "F:\\stock\\ml\\reports\\shadow_dataA_ledger.csv": "bfe4f53aff7650df797453ea3d9185c1cd283945b59ba57327631f1465ce624b",
+    "F:\\stock\\ml\\prediction_provenance.py": "2441cada4a3d4c63e6c923b4f536781f57985a455e5f9fb338780f6182e55e75",
+    "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json": "9c09ea22b3d78662a79175ad4b8455ccf829ad15c0bcdd66d2c0acd411580324",
+    "F:\\stock\\logs\\entry_list_20260907.json": "d5cf77a5cbc9a09c4be7e73f4ea7e94d768492265d7d747376a9b2995b5ad8f5",
+    "F:\\stock\\ml\\models\\predictions_2026-09-04.csv.manifest.json": "dea85ee2bb61c2414eb2f0419be2a3391b45e52ba65c9f95d66f451d2bdb3fcf",
+    "F:\\stock\\ml\\models\\model_selection.json": "70d10fc2ee372fa43cd4c94cacd333dababed8c323c34fa330cd1891daf982c9",
+    "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500.txt": "ca798ff01d61d0c0ea22140c92271a51e611b39c03cf99a2277d9606c65593f0",
+    "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128.txt": "17e294e05b2086abc0d3f6a7fcc68e8f9cd8ed42bea6aff154c544e1faa46872",
+    "F:\\stock\\logs\\entry_list_20260907.json.manifest.json": "9431921c8ef6ac1a8b0ca0fa3f99853991d724da075731162366cd1648d26de3",
+    "F:\\stock\\app.py": "90374838caa06bf3765ddeaed2a40173de5bb39dda966e79c6a21ae125fe6e15",
+    "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json": "bda3fcc1e5be8fc273708bfc8556ab0a07cc48452f98ba8a78b5e8080bc0f829",
+    "F:\\stock\\ml\\models\\lgbm_20260516_112903.txt": "3a10ef2f9f78644ca98e1d2854f9f35a1c81c6241df247a4c672c77514c7d624",
+    "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json": "75735092749bea981f4554b6e7435b8d896bbb0d443bf8b93822a391cef8abac",
+    "F:\\stock\\frontend\\index.html": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af",
+    "F:\\stock\\ml\\reports\\rere_lane_ledger.csv": "7bfb4a565fdd41ac08a87e1aa8ac131d3cddfa00b7e5568137f67eef6d221e10",
+    "F:\\stock\\ml\\models\\snapshot_cache.pkl.manifest.json": "9ade2569fff0b5034f61a02b2d05c5250afdc00e7fc984031d2080e5c4ed1649",
+    "F:\\stock\\ml\\predict.py": "3301827476f48f1d3f6dc27567d66c882f4845fb8fb5c924c47d0118e86fa30c",
+    "F:\\stock\\ml\\models\\snapshot_cache.pkl": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "F:\\stock\\config\\champion_pin_manifest.yaml": "328c79fe32fa5036f180872d814ce03342a900ae68a48fc0ffe005088d1bda24"
+  },
+  "explain_cache_before": {
+    "F:\\stock\\ml\\models\\latest_snapshot_cache.pkl": null,
+    "F:\\stock\\ml\\models\\latest_snapshot_cache_meta.json": null
+  },
+  "frontend": {
+    "path": "F:\\stock\\frontend\\index.html",
+    "source_sha256": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af",
+    "served_sha256": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af",
+    "has_static_canonical_fallback": false
+  },
+  "replay_health": {
+    "status": "ok",
+    "scope": "Legacy replay health; daily production checks are evaluated separately"
+  },
+  "daily_health": {
+    "status": "ok",
+    "all_ok": true,
+    "checks": [
+      {
+        "name": "duckdb_exists",
+        "status": "ok",
+        "message": "DuckDB file is present."
+      },
+      {
+        "name": "daily_k_fresh",
+        "status": "ok",
+        "message": "daily_k latest=2026-09-04, expected_at_least=2026-09-04."
+      },
+      {
+        "name": "daily_k_snapshot_size",
+        "status": "ok",
+        "message": "latest daily_k tickers=1994."
+      },
+      {
+        "name": "daily_k_required_values",
+        "status": "ok",
+        "message": "null_close=0, null_volume=0."
+      },
+      {
+        "name": "ingest_layer_consistency",
+        "status": "ok",
+        "message": "same_generation=True, row_counts_match=True, stock_list_mismatched_tickers=0; error=None"
+      },
+      {
+        "name": "daily_k_older_row_coverage",
+        "status": "ok",
+        "message": "older-row coverage=ok; counts={'official_no_ohlc_reported_volume': 2, 'official_suspended': 6, 'official_no_ohlc_zero_volume': 26, 'official_terminated': 3}; error=None"
+      },
+      {
+        "name": "twenty_day_prediction_fresh",
+        "status": "ok",
+        "message": "twenty_day latest=2026-09-04, expected_at_least=2026-09-04, rows=1098."
+      },
+      {
+        "name": "unified_signals_prediction_fresh",
+        "status": "ok",
+        "message": "unified_signals latest=2026-09-04, expected_at_least=2026-09-04, rows=1."
+      },
+      {
+        "name": "phase1_latest_success",
+        "status": "ok",
+        "message": "latest phase1={'log': 'smart_update_auto_20260904.log', 'finished_at': '2026-09-04 20:34:29', 'elapsed_min': 64.5, 'all_ok': True}."
+      },
+      {
+        "name": "phase2_latest_success",
+        "status": "ok",
+        "message": "latest phase2={'log': 'smart_update_auto_20260904.log', 'finished_at': '2026-09-04 07:25:52', 'elapsed_min': 25.9, 'all_ok': True}."
+      }
+    ],
+    "ingest_consistency": {
+      "tables": {
+        "daily_k": {
+          "recorded_rows": 2990060,
+          "generation_id": "313405adc97749b5aab935e979ef617c",
+          "actual_rows": 2990060
+        },
+        "revenue": {
+          "recorded_rows": 61854,
+          "generation_id": "313405adc97749b5aab935e979ef617c",
+          "actual_rows": 61854
+        },
+        "financials": {
+          "recorded_rows": 47331,
+          "generation_id": "313405adc97749b5aab935e979ef617c",
+          "actual_rows": 47331
+        },
+        "tdcc": {
+          "recorded_rows": 910711,
+          "generation_id": "313405adc97749b5aab935e979ef617c",
+          "actual_rows": 910711
+        },
+        "indices": {
+          "recorded_rows": 10037,
+          "generation_id": "313405adc97749b5aab935e979ef617c",
+          "actual_rows": 10037
+        }
+      },
+      "missing_metadata": [],
+      "same_generation": true,
+      "row_counts_match": true,
+      "stock_list_mismatched_tickers": 0,
+      "ok": true
+    },
+    "daily_k_latest_date": "2026-09-04",
+    "daily_k_tickers_latest": 1994
+  },
+  "latest": {
+    "prediction_date": "2026-09-04",
+    "model_date": "20260516_1",
+    "has_v3": null,
+    "total_stocks": 1098,
+    "top_n": 30,
+    "returned_tickers": [
+      "2603"
+    ]
+  },
+  "canonical_api": {
+    "source_file": "entry_list_20260907.json",
+    "as_of_date": "2026-09-04",
+    "trade_date": "2026-09-07",
+    "model_source": "dataA_predictions_2026-09-04.csv",
+    "rows": 18,
+    "artifact_lineage": {
+      "schema": 1,
+      "scope": "successful_live_entry_generation",
+      "run_id": "6fd8edfce9f7400581242a7436714d6e",
+      "as_of_date": "2026-09-04",
+      "trade_date": "2026-09-07",
+      "result_sha256": "16a7887c3e521d8e8d02c21fcd4e81610cb81cf99489761fb67f7d926ea1d636",
+      "payload_sha256": "03eeb5043a475c95a8bea2572a30effb496c2641b669c7a85bcceca0101a75f8"
+    },
+    "json_sha256": "d5cf77a5cbc9a09c4be7e73f4ea7e94d768492265d7d747376a9b2995b5ad8f5",
+    "manifest_sha256": "9431921c8ef6ac1a8b0ca0fa3f99853991d724da075731162366cd1648d26de3",
+    "all_payload_properties_exact": true
+  },
+  "file_hashes_after": {
+    "F:\\stock\\ml\\models\\predictions_2026-09-04.csv": "850b627d22431b48ad8fab04b2179df426d141cc929cd42a351fa83f882c4624",
+    "F:\\stock\\ml\\reports\\shadow_dataA_ledger.csv": "bfe4f53aff7650df797453ea3d9185c1cd283945b59ba57327631f1465ce624b",
+    "F:\\stock\\ml\\prediction_provenance.py": "2441cada4a3d4c63e6c923b4f536781f57985a455e5f9fb338780f6182e55e75",
+    "F:\\stock\\ml\\models\\snapshot_cache.pkl": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "F:\\stock\\ml\\models\\predictions_2026-09-04.csv.manifest.json": "dea85ee2bb61c2414eb2f0419be2a3391b45e52ba65c9f95d66f451d2bdb3fcf",
+    "F:\\stock\\ml\\models\\model_selection.json": "70d10fc2ee372fa43cd4c94cacd333dababed8c323c34fa330cd1891daf982c9",
+    "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500.txt": "ca798ff01d61d0c0ea22140c92271a51e611b39c03cf99a2277d9606c65593f0",
+    "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128.txt": "17e294e05b2086abc0d3f6a7fcc68e8f9cd8ed42bea6aff154c544e1faa46872",
+    "F:\\stock\\config\\champion_pin_manifest.yaml": "328c79fe32fa5036f180872d814ce03342a900ae68a48fc0ffe005088d1bda24",
+    "F:\\stock\\logs\\entry_list_20260907.json.manifest.json": "9431921c8ef6ac1a8b0ca0fa3f99853991d724da075731162366cd1648d26de3",
+    "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json": "9c09ea22b3d78662a79175ad4b8455ccf829ad15c0bcdd66d2c0acd411580324",
+    "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json": "bda3fcc1e5be8fc273708bfc8556ab0a07cc48452f98ba8a78b5e8080bc0f829",
+    "F:\\stock\\ml\\models\\lgbm_20260516_112903.txt": "3a10ef2f9f78644ca98e1d2854f9f35a1c81c6241df247a4c672c77514c7d624",
+    "F:\\stock\\frontend\\index.html": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af",
+    "F:\\stock\\ml\\reports\\rere_lane_ledger.csv": "7bfb4a565fdd41ac08a87e1aa8ac131d3cddfa00b7e5568137f67eef6d221e10",
+    "F:\\stock\\logs\\entry_list_20260907.json": "d5cf77a5cbc9a09c4be7e73f4ea7e94d768492265d7d747376a9b2995b5ad8f5",
+    "F:\\stock\\app.py": "90374838caa06bf3765ddeaed2a40173de5bb39dda966e79c6a21ae125fe6e15",
+    "F:\\stock\\ml\\predict.py": "3301827476f48f1d3f6dc27567d66c882f4845fb8fb5c924c47d0118e86fa30c",
+    "F:\\stock\\ml\\models\\snapshot_cache.pkl.manifest.json": "9ade2569fff0b5034f61a02b2d05c5250afdc00e7fc984031d2080e5c4ed1649",
+    "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json": "75735092749bea981f4554b6e7435b8d896bbb0d443bf8b93822a391cef8abac"
+  },
+  "explain_cache_after": {
+    "F:\\stock\\ml\\models\\latest_snapshot_cache.pkl": null,
+    "F:\\stock\\ml\\models\\latest_snapshot_cache_meta.json": null
+  },
+  "explain_cache_changed_paths": [],
+  "model_identity_conclusion": "Successful verified CSV and explain paths enforce role/meta/weight equality with certificate; scores also match pinned CSV at API units. No weekly-model fallback accepted.",
+  "completed_at": "2026-09-07T00:06:33.5265635+08:00",
+  "read_only_note": "Only explicit GET endpoints were requested. No update/predict/retrain/service/ledger commands executed. Response bodies are in ignored output; compact evidence contains no authorization token."
+}

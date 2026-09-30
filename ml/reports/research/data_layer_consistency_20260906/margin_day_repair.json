@@ -1,0 +1,470 @@
+{
+  "status": "staged_not_promoted",
+  "date": "2026-03-20",
+  "official_url": "https://www.tpex.org.tw/www/zh-tw/margin/balance?date=2026/03/20&response=json",
+  "scope": "Both official markets, all existing source CSVs; no invented bar or new margin columns",
+  "official_rows": {
+    "twse": 1253,
+    "tpex": 889
+  },
+  "source_receipts": [
+    {
+      "path": "F:\\stock\\原始融資資料\\raw_margin_twse_20260320.csv",
+      "sha256": "5dbe24240768d42d86e992b84ee2e3853f6cf2e5ec4bdc88a13588d49e07c94b",
+      "size": 125942,
+      "mtime_ns": 1774016159836878600
+    },
+    {
+      "path": "output\\new_stock_sources_20260906\\raw_margin_overrides\\raw_margin_tpex_20260320.json",
+      "sha256": "19b65d2337cb781dcb14b40ec6c452f1d71c5561e4074d67838e697da8aed814",
+      "size": 335513,
+      "mtime_ns": 1788679475756872600
+    },
+    {
+      "path": "F:\\stock\\原始融資資料\\raw_margin_tpex_20260320.json",
+      "sha256": "aee99567a8488b43ee0b88ec57d8a9b4361d900aec3bf8aaf518de5c811f9ae3",
+      "size": 422,
+      "mtime_ns": 1774007509732180300
+    },
+    {
+      "path": "F:\\stock\\清理後資料\\cleaned_all_margin_data.csv",
+      "sha256": "ef50348804ca20550efa4f8d21ba26149da07b7ced34f86a43e7a39e6688a3ae",
+      "size": 72751766,
+      "mtime_ns": 1788575385167274100
+    }
+  ],
+  "merged": {
+    "before_rows": 3013611,
+    "after_rows": 3014577,
+    "before_day_rows": 1176,
+    "after_day_rows": 2142,
+    "cell_and_missing_row_classification": {
+      "missing_row": 985,
+      "already_equal": 2304,
+      "incorrect_nonzero": 6,
+      "incorrect_zero": 4
+    },
+    "removed_wrong_keys": [
+      "50",
+      "51",
+      "52",
+      "53",
+      "55",
+      "56",
+      "57",
+      "61",
+      "636",
+      "639",
+      "643",
+      "645",
+      "646",
+      "652",
+      "657",
+      "660",
+      "661",
+      "662",
+      "668"
+    ],
+    "other_date_value_changes": 0
+  },
+  "daily_csv": {
+    "scope": "every official TWSE/TPEx margin security on target date, including ETF codes",
+    "classification": {
+      "repairable_existing_bar": 1846,
+      "already_equal": 8,
+      "margin_schema_missing": 47,
+      "no_price_bar": 9,
+      "no_csv": 232
+    },
+    "by_market": {
+      "twse": {
+        "repairable_existing_bar": 1076,
+        "already_equal": 8,
+        "margin_schema_missing": 47,
+        "no_price_bar": 2,
+        "no_csv": 120
+      },
+      "tpex": {
+        "no_csv": 112,
+        "repairable_existing_bar": 770,
+        "no_price_bar": 7
+      }
+    },
+    "cell_classification": {
+      "incorrect_zero": 63,
+      "already_equal": 45,
+      "unknown_to_observed_nonzero": 2437,
+      "unknown_to_observed_zero": 1163
+    },
+    "nonmargin_value_changes": 0
+  },
+  "feature_ab": {
+    "function": "ml.features.institutional.compute_institutional_features",
+    "input": "one byte-frozen actual daily CSV frame per ticker for both branches",
+    "changed_historical_ticker_dates": 4573,
+    "changed_historical_tickers": 1526,
+    "changes_by_date": {
+      "2026-03-20": 1526,
+      "2026-03-24": 1,
+      "2026-03-27": 1515,
+      "2026-03-30": 7,
+      "2026-03-31": 1,
+      "2026-04-07": 1507,
+      "2026-04-08": 10,
+      "2026-04-09": 1,
+      "2026-04-10": 1,
+      "2026-04-13": 1,
+      "2026-04-14": 1,
+      "2026-04-15": 1,
+      "2026-04-16": 1
+    },
+    "changes_by_feature": {
+      "margin_change_5d": 3034,
+      "margin_change_10d": 3036,
+      "short_change_5d": 1355,
+      "short_change_10d": 1344,
+      "margin_short_ratio": 935,
+      "chip_diverge_bear": 262,
+      "chip_diverge_bull": 446
+    },
+    "canonical_asof_eligible_changed_ticker_dates": 3180,
+    "actual_latest_changed_tickers": [],
+    "asof": "2026-09-04",
+    "asof_changed_tickers": [],
+    "prob_edge": "N/A: no model prediction run; source/feature impact only"
+  },
+  "actual_20260904_rows_replayed": 1823,
+  "both_unknown_daily_tickers": 1800,
+  "observed_wrong_zero_etf_tickers": 46,
+  "historical_alias_inventory": [
+    {
+      "official_ticker": "0050",
+      "stripped_alias": "50",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "0051",
+      "stripped_alias": "51",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "0052",
+      "stripped_alias": "52",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "0053",
+      "stripped_alias": "53",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "0055",
+      "stripped_alias": "55",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "0056",
+      "stripped_alias": "56",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "0057",
+      "stripped_alias": "57",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "0061",
+      "stripped_alias": "61",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "006201",
+      "stripped_alias": "6201",
+      "rows_requiring_raw_reconciliation": 1622,
+      "first": "2020-01-02",
+      "last": "2026-09-04",
+      "alias_is_current_official_security": true
+    },
+    {
+      "official_ticker": "006203",
+      "stripped_alias": "6203",
+      "rows_requiring_raw_reconciliation": 1622,
+      "first": "2020-01-02",
+      "last": "2026-09-04",
+      "alias_is_current_official_security": true
+    },
+    {
+      "official_ticker": "006204",
+      "stripped_alias": "6204",
+      "rows_requiring_raw_reconciliation": 1622,
+      "first": "2020-01-02",
+      "last": "2026-09-04",
+      "alias_is_current_official_security": true
+    },
+    {
+      "official_ticker": "006205",
+      "stripped_alias": "6205",
+      "rows_requiring_raw_reconciliation": 1621,
+      "first": "2020-01-02",
+      "last": "2026-09-04",
+      "alias_is_current_official_security": true
+    },
+    {
+      "official_ticker": "006206",
+      "stripped_alias": "6206",
+      "rows_requiring_raw_reconciliation": 1621,
+      "first": "2020-01-02",
+      "last": "2026-09-04",
+      "alias_is_current_official_security": true
+    },
+    {
+      "official_ticker": "006207",
+      "stripped_alias": "6207",
+      "rows_requiring_raw_reconciliation": 1622,
+      "first": "2020-01-02",
+      "last": "2026-09-04",
+      "alias_is_current_official_security": true
+    },
+    {
+      "official_ticker": "006208",
+      "stripped_alias": "6208",
+      "rows_requiring_raw_reconciliation": 1622,
+      "first": "2020-01-02",
+      "last": "2026-09-04",
+      "alias_is_current_official_security": true
+    },
+    {
+      "official_ticker": "00636",
+      "stripped_alias": "636",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00639",
+      "stripped_alias": "639",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00643",
+      "stripped_alias": "643",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00645",
+      "stripped_alias": "645",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00646",
+      "stripped_alias": "646",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00652",
+      "stripped_alias": "652",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00657",
+      "stripped_alias": "657",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00660",
+      "stripped_alias": "660",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00661",
+      "stripped_alias": "661",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00662",
+      "stripped_alias": "662",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00668",
+      "stripped_alias": "668",
+      "rows_requiring_raw_reconciliation": 1535,
+      "first": "2020-01-02",
+      "last": "2026-05-06",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "00678",
+      "stripped_alias": "678",
+      "rows_requiring_raw_reconciliation": 993,
+      "first": "2020-01-02",
+      "last": "2024-01-26",
+      "alias_is_current_official_security": false
+    },
+    {
+      "official_ticker": "009802",
+      "stripped_alias": "9802",
+      "rows_requiring_raw_reconciliation": 1621,
+      "first": "2020-01-02",
+      "last": "2026-09-04",
+      "alias_is_current_official_security": true
+    }
+  ],
+  "historical_alias_candidate_rows": 43131,
+  "raw_history_availability": {
+    "twse": {
+      "files": 1622,
+      "bytes": 182707684,
+      "first": "20200102",
+      "last": "20260904",
+      "expected_dates_missing": [],
+      "scope": "filename presence, not every payload validation"
+    },
+    "tpex": {
+      "files": 2388,
+      "bytes": 149888550,
+      "first": "20200102",
+      "last": "20260904",
+      "expected_dates_missing": [],
+      "scope": "filename presence, not every payload validation"
+    }
+  },
+  "raw_history_structure": {
+    "scope": "TPEx all official daily-price trading dates since 2020; structure/rowcount only, not full semantic or value validation",
+    "dates": 1622,
+    "schemas": {
+      "tables": 1622
+    },
+    "low_coverage_or_error": [
+      {
+        "date": "20260320",
+        "schema": "tables",
+        "rows": 0,
+        "stat": "ok"
+      }
+    ],
+    "seconds": 6.52
+  },
+  "tests": "12 passed: tests/test_margin_day_repair.py + tests/test_margin_source_completeness.py",
+  "real_parser_validation": {
+    "TWSE_rows": 1253,
+    "numeric_codes": 1178,
+    "alphanumeric_codes": 75,
+    "value_disagreements": 0
+  },
+  "evidence": [
+    {
+      "path": "F:\\stock\\output\\margin_20260320_repair_full_v2_20260906\\validation.json",
+      "sha256": "f6697c726809843bc441a794bda1f29d22707c5b9014acbc3ca383b56a9b9c9b",
+      "size": 1826114,
+      "mtime_ns": 1788680688591306900
+    },
+    {
+      "path": "F:\\stock\\output\\margin_20260320_repair_full_v2_20260906\\feature_changed_rows.json",
+      "sha256": "8baf7c3958624da2df66285e256bc3ef3d8848e749f42b91889d239b02a9a146",
+      "size": 468721,
+      "mtime_ns": 1788680688518990500
+    }
+  ],
+  "code_receipts": [
+    {
+      "path": "F:\\stock\\twstock.py",
+      "sha256": "a4505185569b885c1394b3d79d8239c704d40ed8c9c6026ebbb3b632a1157e0c",
+      "size": 96371,
+      "mtime_ns": 1788680851702664700
+    },
+    {
+      "path": "F:\\stock\\scripts\\audit_margin_day_repair.py",
+      "sha256": "9c06e45344349fa045a15b51388a5af0d52b9cc120563b20223a18bfd9bf98be",
+      "size": 19757,
+      "mtime_ns": 1788680972665038200
+    },
+    {
+      "path": "F:\\stock\\ml\\features\\institutional.py",
+      "sha256": "d97a0e76d4f841e4452f62ae5168e5e7620a9f112911e4c5f0ea082858635ca7",
+      "size": 8538,
+      "mtime_ns": 1774266054559791000
+    },
+    {
+      "path": "F:\\stock\\ml\\dataset.py",
+      "sha256": "7b0a83e109d9d403e08880cf99110c5d6c9a73ce0035eaf6859081d3d17646f6",
+      "size": 35122,
+      "mtime_ns": 1784252919138277000
+    }
+  ],
+  "promotion_plan": "F:\\stock\\output\\margin_20260320_repair_full_v2_20260906\\promotion_plan.json",
+  "planned_targets": 1848,
+  "limitations": [
+    "Historic alias counts are candidates, not confirmed raw/CSV value discrepancies.",
+    "No production CSV, raw cache, merged table, DB, model, ledger or service was changed.",
+    "Raw source repair changes historical research/training inputs; old model training is not retroactively corrected.",
+    "This is canonical institutional-feature replay, not full model probability A/B or a new backtest.",
+    "47 alphanumeric ETF daily files lack margin columns; they are reported without creating partially populated columns.",
+    "Historical leading-zero alias inventory requires raw reconciliation before any whole-history repair."
+  ],
+  "whitelist": {
+    "code": [
+      "twstock.py::_clean_twse_margin",
+      "twstock.py::_clean_and_merge_margin",
+      "scripts/audit_margin_day_repair.py",
+      "tests/test_margin_day_repair.py"
+    ],
+    "source_candidate_only": [
+      "1846 exact daily CSV margin-cell patches",
+      "raw_margin_tpex_20260320.json",
+      "cleaned_all_margin_data.csv target day only"
+    ]
+  }
+}

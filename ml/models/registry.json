@@ -1,0 +1,73 @@
+{
+  "generated_at": "2026-05-17T01:55:34",
+  "manifest_path": "F:\\stock\\config\\champion_pin_manifest.yaml",
+  "manifest_version": "2026-05-17",
+  "model_era": "v2.6_incident_edition",
+  "pins": [
+    {
+      "key": "champion_stage1_v26",
+      "family": "v2_stage1",
+      "role": "champion_stage1",
+      "meta_path": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+      "model_path": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128.txt",
+      "meta_sha256": "75735092749bea981f4554b6e7435b8d896bbb0d443bf8b93822a391cef8abac",
+      "model_sha256": "17e294e05b2086abc0d3f6a7fcc68e8f9cd8ed42bea6aff154c544e1faa46872",
+      "pin_reason": "Champion v2.6 incident edition Stage1; preserve current production behavior after Stage1 binary incident.",
+      "pinned_at": "2026-05-17",
+      "retire_after": null,
+      "checksum_path": "F:\\stock\\archive\\model_pins\\lgbm_v2_20260508_200128.txt.sha256.txt"
+    },
+    {
+      "key": "champion_stage2_v26",
+      "family": "two_stage_ranker",
+      "role": "champion_stage2",
+      "meta_path": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+      "model_path": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500.txt",
+      "meta_sha256": "9c09ea22b3d78662a79175ad4b8455ccf829ad15c0bcdd66d2c0acd411580324",
+      "model_sha256": "ca798ff01d61d0c0ea22140c92271a51e611b39c03cf99a2277d9606c65593f0",
+      "pin_reason": "Champion v2.6 incident edition Stage2; original CL3-passed Two-Stage N=75 ranker.",
+      "pinned_at": "2026-05-17",
+      "retire_after": null,
+      "checksum_path": "F:\\stock\\archive\\model_pins\\lgbm_two_stage_ranker_20260509_011500.txt.sha256.txt"
+    },
+    {
+      "key": "t1_research_frozen",
+      "family": "t1",
+      "role": "research_t1",
+      "meta_path": "F:\\stock\\ml\\models\\lgbm_t1_20260417_191108_meta.json",
+      "model_path": "F:\\stock\\ml\\models\\lgbm_t1_20260417_191108.txt",
+      "meta_sha256": "492e69146c6dfdc5f0a70d2d7fd8ff101c6706055ce93cc4c84c4008094dbafe",
+      "model_sha256": "f779959c720ffdc3bc9ee4b84828967e89e0d62e563caf74231aec84d0f87ed4",
+      "pin_reason": "T+1 research-only frozen model retained for audit and historical comparisons.",
+      "pinned_at": "2026-05-17",
+      "retire_after": null,
+      "checksum_path": "F:\\stock\\archive\\model_pins\\lgbm_t1_20260417_191108.txt.sha256.txt"
+    },
+    {
+      "key": "alpha_classifier_research",
+      "family": "alpha_classifier",
+      "role": "research_alpha_classifier",
+      "meta_path": "F:\\stock\\ml\\models\\lgbm_alpha_cls_v2_20260422_220036_meta.json",
+      "model_path": "F:\\stock\\ml\\models\\lgbm_alpha_cls_v2_20260422_220036.txt",
+      "meta_sha256": "f7b75303a15d7861a783f742219a3f064103dd835702c1c1c852cca0df504acd",
+      "model_sha256": "766f2c52a1d066a68912b9a549c9d13855209e37c987ec9582b5de90942f7306",
+      "pin_reason": "V2 alpha classifier research artifact retained for prediction explain and audit trails.",
+      "pinned_at": "2026-05-17",
+      "retire_after": null,
+      "checksum_path": "F:\\stock\\archive\\model_pins\\lgbm_alpha_cls_v2_20260422_220036.txt.sha256.txt"
+    },
+    {
+      "key": "legacy_v1_reference",
+      "family": "v1_legacy",
+      "role": "legacy_reference",
+      "meta_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json",
+      "model_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903.txt",
+      "meta_sha256": "bda3fcc1e5be8fc273708bfc8556ab0a07cc48452f98ba8a78b5e8080bc0f829",
+      "model_sha256": "3a10ef2f9f78644ca98e1d2854f9f35a1c81c6241df247a4c672c77514c7d624",
+      "pin_reason": "Latest legacy V1 reference bundle retained for diagnostics and compatibility checks.",
+      "pinned_at": "2026-05-17",
+      "retire_after": null,
+      "checksum_path": "F:\\stock\\archive\\model_pins\\lgbm_20260516_112903.txt.sha256.txt"
+    }
+  ]
+}

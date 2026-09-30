@@ -1,0 +1,15 @@
+# Method lock: missing listed-company source onboarding
+
+84 companies with valid official TWSE/TPEx company metadata are absent from the local daily CSV universe on 2026-09-04. Four TDRs are separately reported and excluded from this batch. Existing ETF and retired registries exclude none of the 84. 44 companies have 2026 listing dates, 37 have dates from September–December 2025, and 3521/3666/6432 have older listings.
+
+Read existing official full-market daily tapes only (2020-01-02 to 2026-09-04); validate both markets/date/schema/coverage for each tape pair. Extract only actual complete positive OHLC and nonnegative volume on/after the official listing date. Missing/zero-volume no-OHLC rows remain an explicit absence; no placeholders. Do not splice 5371 history into 3718. Preserve official unadjusted OHLCV, source hashes, metadata listing dates, exclusions, counts and first/last observed dates. Stage files under a new output directory; never write production CSV/DB/model/ledger here.
+
+The update discovery repair should use successful, schema-valid, credible-size, date-bearing official company lists from both markets, apply stock/ETF/retired boundaries, and make newly observed companies explicit. Listing date is a lower bound for requesting/extracting bars, not evidence a trade took place. New source history may alter latest ML ranks; source-only staging is not model/ledger promotion. Root owns fixed-snapshot before/after inference and promotion.
+
+Validate source failures, wrong field names/date/partial market, duplicate/conflicting company codes, retired/ETF boundaries, old/new ticker separation, listing-date floor, exact official values and isolated output guard. Missing source dates or extraction failures must be reported and return nonzero, not silently call the archive complete. Historical corporate-action and feature coverage remain separate acceptance gates before any new-company model eligibility claim.
+
+## Authorized enrichment addendum (before model A/B)
+
+Join the 84 staged histories to existing canonical institutional caches and margin raw/merged sources on exact ticker/date. Keep absent rows and invalid values as NaN; only an observed numeric zero is zero. Do not forward fill or infer a margin eligibility balance from source absence. Read full-market cache generations and reject duplicate/conflicting matched keys. Preserve all OHLCV values and row keys exactly. Report coverage overall, by ticker, and for the unchanged ML eligibility gate's 18 currently qualifying companies. Root controls any remaining model processor missing-value semantics.
+
+For missing name/sector metadata, use the existing `fetch_sector_mapping.py::fetch_isin_listing` TWSE ISIN convention. Produce only additions for missing tickers plus a staged full mapping with all existing rows byte/value-preserved. Do not replace existing industries with company-list numeric industry codes or another taxonomy. Metadata and enriched CSVs remain isolated until root completes A/B.

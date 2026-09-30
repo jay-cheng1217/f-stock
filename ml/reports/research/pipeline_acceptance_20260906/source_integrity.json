@@ -1,0 +1,16 @@
+{
+  "checked": 17021,
+  "changed": [
+    "app.py",
+    "scripts/agent_arena.py",
+    "scripts/ai_summary.py",
+    "scripts/daily_pipeline.py",
+    "scripts/entry_dashboard.py",
+    "scripts/pipeline_acceptance.py",
+    "scripts/send_daily_email.py",
+    "ml/reports/entry_dashboard_latest.html",
+    "kol_tracker.db",
+    "scripts/pipeline_acceptance_checks.py"
+  ],
+  "note": "Concurrent scheduled outputs may change independently; inspect provenance before attribution."
+}

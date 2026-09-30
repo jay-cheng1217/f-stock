@@ -16,8 +16,13 @@ import argparse
 import subprocess
 from datetime import datetime, date, timedelta
 
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
+
+from scripts.taiwan_trading_calendar import (
+    is_taiwan_trading_day,
+    previous_taiwan_trading_day,
+)
 
 # 資料目錄
 DAILY_K_DIR = os.path.join(BASE_DIR, "日K資料")
@@ -148,21 +153,18 @@ def get_expected_quarter():
 
 
 def is_weekday():
-    return TODAY.weekday() < 5
+    return is_taiwan_trading_day(TODAY)
 
 
 def prev_trading_day():
     """回傳「此刻應已有資料」的最新交易日。
     - 平日 17:00 後 → 今天（收盤+法人+融資券資料皆已公布）
     - 平日 17:00 前 → 上一個交易日
-    - 假日         → 上一個交易日（週五）
+    - 假日         → 上一個台股交易日
     """
     if is_weekday() and NOW.hour >= 17:
         return TODAY
-    d = TODAY - timedelta(days=1)
-    while d.weekday() >= 5:
-        d -= timedelta(days=1)
-    return d
+    return previous_taiwan_trading_day(TODAY)
 
 
 # ==============================================================================
@@ -276,64 +278,102 @@ def run_task(name, description, func):
         return False
 
 
+from scripts.job_runner import run_job
+
+
 def exec_twstock():
-    subprocess.run(
-        [sys.executable, os.path.join(BASE_DIR, "twstock.py")],
-        cwd=BASE_DIR,
-        check=True,
-    )
+    run_job("twstock",
+            [sys.executable, os.path.join(BASE_DIR, "twstock.py")],
+            timeout="twstock_full", cwd=BASE_DIR, raise_on_fail=True)
+
+
+def exec_twstock_daily():
+    """Run the nightly daily-data refresh without the slow monthly revenue pass."""
+    run_job("twstock_daily",
+            [
+                sys.executable,
+                os.path.join(BASE_DIR, "twstock.py"),
+                "--skip-revenue",
+                "--skip-snapshot-cache",
+            ],
+            timeout="twstock_daily", cwd=BASE_DIR, raise_on_fail=True)
+
+
+def exec_monthly_revenue():
+    """月營收:每晚呼叫,但 twstock 內部只在每月 11-15 公布視窗實際抓取,其餘日子秒跳過。
+    補上排程原本缺的自動月營收步驟(exec_twstock_daily 用 --skip-revenue,兩者互補)。"""
+    run_job("monthly_revenue",
+            [
+                sys.executable,
+                os.path.join(BASE_DIR, "twstock.py"),
+                "--monthly-revenue",
+            ],
+            timeout="twstock_full", cwd=BASE_DIR, raise_on_fail=False)
+
+
+def exec_strategy_scoreboard():
+    """策略計分板:每月 1-3 號重測所有已驗證策略(全期 vs 近6月 edge 衰減),
+    其餘日子秒跳過。原則:策略排名是時點快照,需定期重評,edge 衰減就降權。"""
+    from datetime import date as _date
+    if _date.today().day > 3:
+        print("  非月度重評窗(每月1-3號),跳過 strategy scoreboard")
+        return
+    run_job("strategy_scoreboard",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "strategy_scoreboard.py")],
+            timeout="data_fetch", cwd=BASE_DIR, raise_on_fail=False)
 
 
 def exec_valuation():
     # 找到最新估值日期之後的資料
     val_date = get_latest_valuation_date()
     start = val_date + timedelta(days=1) if val_date else TODAY - timedelta(days=7)
-    subprocess.run(
-        [
-            sys.executable,
-            os.path.join(BASE_DIR, "scripts", "backfill_valuation.py"),
-            "--start-date",
-            start.strftime("%Y-%m-%d"),
-        ],
-        cwd=BASE_DIR,
-        check=True,
-    )
+    run_job("valuation",
+            [sys.executable,
+             os.path.join(BASE_DIR, "scripts", "backfill_valuation.py"),
+             "--start-date", start.strftime("%Y-%m-%d")],
+            timeout="valuation", cwd=BASE_DIR, raise_on_fail=True)
 
 
 def exec_eps():
-    subprocess.run(
-        [sys.executable, os.path.join(BASE_DIR, "scripts", "backfill_eps.py")],
-        cwd=BASE_DIR,
-        check=True,
-    )
+    run_job("eps",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "backfill_eps.py")],
+            timeout="data_fetch", cwd=BASE_DIR, raise_on_fail=True)
 
 
 def exec_news():
     # 每日抓取最新公告，追加到對應月份檔案
-    subprocess.run(
-        [sys.executable, os.path.join(BASE_DIR, "scripts", "fetch_daily_news.py")],
-        cwd=BASE_DIR,
-        check=True,
-    )
+    run_job("news",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "fetch_daily_news.py")],
+            timeout="news", cwd=BASE_DIR, raise_on_fail=True)
+    run_job("finnhub_news_sentiment",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "fetch_finnhub_news_sentiment.py")],
+            timeout="news", cwd=BASE_DIR, raise_on_fail=False)
+    # 產業新聞日報(白名單制:官方+一線財經媒體;同學會/部落格=出貨文防線,一律排除)
+    run_job("industry_news",
+            [sys.executable, "-X", "utf8", os.path.join(BASE_DIR, "scripts", "fetch_industry_news.py")],
+            timeout="news", cwd=BASE_DIR, raise_on_fail=False)
+    # 敘事 shadow(RSS/cnyes → DuckDB news_articles);研究用,失敗不可拖垮生產管線
+    # 預設抓 today-2~today 窄窗,不會踩到 cnyes 深度分頁 422 上限
+    run_job("narrative_news_shadow",
+            [sys.executable, "-X", "utf8", os.path.join(BASE_DIR, "scripts", "fetch_news_daily.py"), "--source", "all"],
+            timeout="news", cwd=BASE_DIR, raise_on_fail=False)
 
 
 def exec_tdcc():
-    subprocess.run(
-        [sys.executable, os.path.join(BASE_DIR, "scripts", "fetch_tdcc_weekly.py")],
-        cwd=BASE_DIR,
-        check=True,
-    )
+    run_job("tdcc",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "fetch_tdcc_weekly.py")],
+            timeout="data_fetch", cwd=BASE_DIR, raise_on_fail=True)
 
 
 def exec_retrain():
     # v1 分類模型
-    subprocess.run([sys.executable, "-m", "ml.train"], cwd=BASE_DIR, check=True)
+    run_job("retrain_v1",
+            [sys.executable, "-m", "ml.train"],
+            timeout="train", cwd=BASE_DIR, raise_on_fail=True)
     # v2 迴歸模型
-    subprocess.run(
-        [sys.executable, os.path.join(BASE_DIR, "scripts", "train_v2_backtest.py")],
-        cwd=BASE_DIR,
-        check=True,
-    )
+    run_job("retrain_v2",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "train_v2_backtest.py")],
+            timeout="train", cwd=BASE_DIR, raise_on_fail=True)
 
 
 def exec_retrain_t1():
@@ -354,7 +394,7 @@ def exec_retrain_t1():
     if max_stocks.isdigit() and int(max_stocks) > 0:
         args.extend(["--max-stocks", max_stocks])
 
-    subprocess.run(args, cwd=BASE_DIR, check=True)
+    run_job("retrain_t1", args, timeout="train_t1", cwd=BASE_DIR, raise_on_fail=True)
 
 
 def _api_post(path: str, timeout: int = 10) -> bool:
@@ -364,12 +404,43 @@ def _api_post(path: str, timeout: int = 10) -> bool:
     try:
         url = f"http://127.0.0.1:8001{path}"
         req = urllib.request.Request(url, method="POST", data=b"",
-                                     headers={"Content-Type": "application/json"})
+                                     headers=_admin_api_headers())
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             result = _json.loads(resp.read())
             return bool(result.get("success"))
     except Exception:
         return False
+
+
+def _load_admin_token() -> str:
+    token = os.environ.get("ADMIN_TOKEN", "").strip()
+    if token:
+        return token
+
+    env_path = os.path.join(BASE_DIR, ".env")
+    if not os.path.exists(env_path):
+        return ""
+
+    try:
+        with open(env_path, encoding="utf-8") as fh:
+            for raw_line in fh:
+                line = raw_line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                if key.strip() == "ADMIN_TOKEN":
+                    return value.strip().strip("\"'")
+    except OSError:
+        return ""
+    return ""
+
+
+def _admin_api_headers() -> dict[str, str]:
+    headers = {"Content-Type": "application/json"}
+    token = _load_admin_token()
+    if token:
+        headers["X-Admin-Token"] = token
+    return headers
 
 
 def _api_post_json(path: str, timeout: int = 10) -> dict:
@@ -382,10 +453,22 @@ def _api_post_json(path: str, timeout: int = 10) -> dict:
         url,
         method="POST",
         data=b"",
-        headers={"Content-Type": "application/json"},
+        headers=_admin_api_headers(),
     )
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return _json.loads(resp.read())
+
+
+def _env_int(name: str, default: int, *, minimum: int = 0) -> int:
+    raw = os.environ.get(name)
+    if raw is None or raw.strip() == "":
+        return default
+    try:
+        value = int(raw)
+    except ValueError:
+        print(f"[ingest] warning: invalid {name}={raw!r}; using {default}")
+        return default
+    return max(minimum, value)
 
 
 def exec_ingest():
@@ -396,22 +479,44 @@ def exec_ingest():
     else:
         print("[ingest] web server release unavailable; trying standalone ingest")
 
+    cmd = [
+        sys.executable,
+        "-c",
+        "from backend.db.ingest import ingest_all; "
+        "from backend.db.engine import close_conn; "
+        "close_conn(); ingest_all()",
+    ]
+    last_exc: subprocess.CalledProcessError | None = None
+
     try:
-        subprocess.run(
-            [
-                sys.executable,
-                "-c",
-                "from backend.db.ingest import ingest_all; "
-                "from backend.db.engine import close_conn; "
-                "close_conn(); ingest_all()",
-            ],
-            cwd=BASE_DIR,
-            check=True,
-        )
-        return
-    except subprocess.CalledProcessError as exc:
+        max_attempts = _env_int("SMART_UPDATE_INGEST_RETRIES", 3, minimum=1)
+        retry_delay = _env_int("SMART_UPDATE_INGEST_RETRY_DELAY_SECONDS", 20, minimum=0)
+        for attempt in range(1, max(1, max_attempts) + 1):
+            try:
+                run_job(f"ingest_attempt_{attempt}", cmd,
+                        timeout="ingest", cwd=BASE_DIR, raise_on_fail=True)
+                return
+            except subprocess.CalledProcessError as exc:
+                last_exc = exc
+                if attempt < max_attempts:
+                    print(
+                        f"[ingest] standalone ingest failed with exit code {exc.returncode}; "
+                        f"retrying in {retry_delay}s ({attempt}/{max_attempts})"
+                    )
+                    time.sleep(max(0, retry_delay))
+            except subprocess.TimeoutExpired as exc:
+                # timeout 視為 retry 機會（非永久失敗）
+                last_exc = subprocess.CalledProcessError(124, cmd)
+                if attempt < max_attempts:
+                    print(
+                        f"[ingest] standalone ingest timed out; "
+                        f"retrying in {retry_delay}s ({attempt}/{max_attempts})"
+                    )
+                    time.sleep(max(0, retry_delay))
+
+        exc = last_exc
         print(
-            f"[ingest] standalone ingest failed with exit code {exc.returncode}; "
+            f"[ingest] standalone ingest failed with exit code {exc.returncode if exc else 'unknown'}; "
             "trying server-side ingest fallback"
         )
         try:
@@ -434,30 +539,87 @@ def exec_ingest():
 
 
 def exec_predict():
-    subprocess.run([sys.executable, "-m", "ml.predict"], cwd=BASE_DIR, check=True)
-    subprocess.run([sys.executable, "-m", "ml.predict_t1"], cwd=BASE_DIR, check=True)
+    run_job("predict_v1v2",
+            [sys.executable, "-m", "ml.predict"],
+            timeout="predict", cwd=BASE_DIR, raise_on_fail=True)
+    return
+    run_job("predict_t1",
+            [sys.executable, "-m", "ml.predict_t1"],
+            timeout="predict", cwd=BASE_DIR, raise_on_fail=True)
+    # V4 rank-15 shadow: V3 sector-capped Top 30 → re-ranked by T+1 → Top 15
+    # shadow failure must not block production pipeline → raise_on_fail=False
+    run_job("predict_v4_rank15_shadow",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "build_v4_rank15_shadow.py")],
+            timeout="shadow_overlay", cwd=BASE_DIR, raise_on_fail=False)
 
 
 def exec_verify():
-    subprocess.run(
-        [sys.executable, os.path.join(BASE_DIR, "scripts", "verify_predictions.py")],
-        cwd=BASE_DIR,
-        check=True,
-    )
+    run_job("verify_predictions",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "verify_predictions.py")],
+            timeout="verify", cwd=BASE_DIR, raise_on_fail=True)
 
 
 def exec_indices():
     """只更新大盤指數 + 國際指標（VIX/費半/S&P500/美元台幣），幾秒就好"""
-    subprocess.run(
-        [sys.executable, os.path.join(BASE_DIR, "twstock.py"), "--step", "10"],
+    run_job("indices",
+            [sys.executable, os.path.join(BASE_DIR, "twstock.py"), "--step", "10"],
+            timeout="news", cwd=BASE_DIR, raise_on_fail=True)
+
+
+def exec_margin_backfill():
+    """補抓前一交易日融資券（TWSE 約 21:00 公布，Phase-1 19:30 抓不到當日，
+    Phase-2 早晨補齊讓當日預測的融資特徵與日K同步，消除 T+1 落差）"""
+    run_job("margin_backfill",
+            [sys.executable, os.path.join(BASE_DIR, "twstock.py"), "--step", "3"],
+            timeout="news", cwd=BASE_DIR, raise_on_fail=False)
+
+
+def exec_exdiv_calendar():
+    """更新除權息日曆與雙口徑公司行動因子。"""
+    run_job("exdiv_calendar",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "update_ex_dividend_calendar.py")],
+            timeout="news", cwd=BASE_DIR, raise_on_fail=True)
+    run_job(
+        "corporate_action_factors",
+        [
+            sys.executable,
+            os.path.join(BASE_DIR, "scripts", "update_corporate_action_factors.py"),
+        ],
+        timeout="news",
         cwd=BASE_DIR,
-        check=True,
+        raise_on_fail=True,
     )
+
+
+def exec_taiex_total_return_index():
+    """更新官方 TAIEX 含息報酬指數，供重訓標籤雙邊同口徑比較。"""
+    output = os.path.join(BASE_DIR, "大盤指數", "index_TWII_total_return.csv")
+    command = [
+        sys.executable,
+        os.path.join(BASE_DIR, "scripts", "update_taiex_total_return_index.py"),
+    ]
+    if not os.path.exists(output):
+        command.append("--backfill")
+    run_job(
+        "taiex_total_return_index",
+        command,
+        timeout="news",
+        cwd=BASE_DIR,
+        raise_on_fail=True,
+    )
+
+
+def exec_macro_strategy_context():
+    """Refresh macro calendar + market sentiment context used by selection overlays."""
+    run_job("macro_strategy_context",
+            [sys.executable, os.path.join(BASE_DIR, "scripts", "update_macro_strategy_context.py")],
+            timeout="news", cwd=BASE_DIR, raise_on_fail=False)
 
 
 TASK_MAP = {
     "twstock":   ("更新台股資料 (日K/法人/融資券/營收/季報/集保/大盤)", exec_twstock),
     "indices":   ("更新國際指數 (VIX/費半/S&P500/匯率)", exec_indices),
+    "macro_strategy_context": ("更新國際局勢/事件風險選股情境", exec_macro_strategy_context),
     "valuation": ("更新估值資料 (PE/PB/殖利率)", exec_valuation),
     "eps":       ("更新 EPS 季報", exec_eps),
     "news":      ("更新 MOPS 重大訊息公告", exec_news),
@@ -589,11 +751,12 @@ def main():
     print(f"  執行完畢  (總耗時 {total_elapsed/60:.1f} 分鐘)")
     print(f"{'='*60}")
     for desc, success in results:
-        icon = "✓" if success else "✗"
+        icon = "OK" if success else "FAIL"
         print(f"  [{icon}] {desc}")
 
     print()
-    input("按 Enter 結束...")
+    if sys.stdin.isatty():
+        input("按 Enter 結束...")
 
 
 if __name__ == "__main__":

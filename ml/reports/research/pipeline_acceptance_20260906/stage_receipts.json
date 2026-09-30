@@ -1,0 +1,510 @@
+[
+  {
+    "label": "allocation_risk",
+    "started": "2026-09-06T13:37:51.299920",
+    "seconds": 1.81,
+    "command": [
+      "scripts/pipeline_acceptance_allocation_risk.py"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 1,
+    "execution_status": "FAIL",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\allocation_risk.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "cc5e731df0a1ae31aa719b7b416731a9dedf78401ce9b1147ff4aa713195cf45"
+  },
+  {
+    "label": "allocation_risk_inspect",
+    "started": "2026-09-06T13:34:16.987063",
+    "seconds": 0.12,
+    "command": [
+      "-c",
+      "import sqlite3,json; from pathlib import Path; p=Path('paper_portfolio_v2_champion.db').resolve(); c=sqlite3.connect(p.as_uri()+'?mode=ro',uri=True); c.row_factory=sqlite3.Row; q=['select status,count(*) n,sum(target_weight) w from unified_positions group by status','select ticker,sector,status,target_weight,target_units,prediction_date,entry_date,last_mark_date from unified_positions where status in (\\'pending\\',\\'open\\') order by target_weight desc','select * from unified_runs where prediction_date=\\'2026-09-04\\'']; print(json.dumps({x:[dict(r) for r in c.execute(x)] for x in q},ensure_ascii=False))"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\allocation_risk_inspect.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "bca270a4f62a7be8816c7e8374675dfaaae02b70a201c6662d74979be6e10fd2"
+  },
+  {
+    "label": "allocation_risk_verified",
+    "started": "2026-09-06T13:38:02.386325",
+    "seconds": 1.55,
+    "command": [
+      "scripts/pipeline_acceptance_allocation_risk.py"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\allocation_risk_verified.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "30a8abba5b960f4c8de1aae8a861af74457f3efb44f9bb36835a00c7f730d600"
+  },
+  {
+    "label": "arena_reader_repaired",
+    "started": "2026-09-06T13:40:35.579577",
+    "seconds": 83.35,
+    "command": [
+      "scripts/acceptance_arena_reader_leaf.py"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\arena_reader_repaired.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "d771f51f7a8aab19edc878f15d8d8263f7dff90b83987cfc886e1db7cb5ca819"
+  },
+  {
+    "label": "canonical_candidates",
+    "started": "2026-09-06T13:20:28.093308",
+    "seconds": 22.79,
+    "command": [
+      "scripts/generate_entry_candidates.py",
+      "--date",
+      "2026-09-07",
+      "--as-of",
+      "2026-09-04",
+      "-o",
+      "logs/entry_list_20260907.json"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\canonical_candidates.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "6ad29a6ddb0c26a13f1777dc56c946e264c6862ba6dc371c5a14d25cda7386ff"
+  },
+  {
+    "label": "champion_prediction",
+    "started": "2026-09-06T13:01:13.432511",
+    "seconds": 1055.91,
+    "command": [
+      "-m",
+      "ml.predict",
+      "--model-slot",
+      "production",
+      "--model-meta",
+      "ml/models/lgbm_20260516_112903_meta.json",
+      "--output-path",
+      "ml/models/predictions_2026-09-04.csv"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\champion_prediction.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "cee5dbfc966af4aa09b89a8a3b9ade2b15cf9c031ccc4dcbfb4d1b8d3ef9097d"
+  },
+  {
+    "label": "dashboard",
+    "started": "2026-09-06T13:25:20.981612",
+    "seconds": 22.87,
+    "command": [
+      "scripts/entry_dashboard.py",
+      "--date",
+      "20260907"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\dashboard.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "eb3126fabbcd30a931637f911fcc9a464d497490a1b6b3c3f9317a07617e4a9e"
+  },
+  {
+    "label": "dashboard_banner_verified",
+    "started": "2026-09-06T13:46:42.244778",
+    "seconds": 22.08,
+    "command": [
+      "scripts/entry_dashboard.py",
+      "--date",
+      "20260907"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\dashboard_banner_verified.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "eb3126fabbcd30a931637f911fcc9a464d497490a1b6b3c3f9317a07617e4a9e"
+  },
+  {
+    "label": "email_observation_html_labels",
+    "started": "2026-09-06T13:58:11.620984",
+    "seconds": 2.25,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "email"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\email_observation_html_labels.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "c4cbfebf44060ba502d676f46caec316c1e2c9a3667dc1f4711f748986c17a04"
+  },
+  {
+    "label": "email_observation_layout_verified",
+    "started": "2026-09-06T13:55:30.613005",
+    "seconds": 1.85,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "email"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\email_observation_layout_verified.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "4d66e7551e8b9ff671431a339714e93cab7629da316b7057bd2451cc9097ddba"
+  },
+  {
+    "label": "email_preview",
+    "started": "2026-09-06T13:26:54.041435",
+    "seconds": 1.81,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "email"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\email_preview.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "8bb3ed947f33f61a7083f78b214425dc39428fee8652a6d2ffc8786a268df1c3"
+  },
+  {
+    "label": "email_preview_mobile_repaired",
+    "started": "2026-09-06T13:42:50.776022",
+    "seconds": 1.81,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "email"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\email_preview_mobile_repaired.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "52640bd79f4d8c306e1f3388c87c754ce2dd379d36e3e3b1401f5bd12da84b54"
+  },
+  {
+    "label": "email_preview_repaired",
+    "started": "2026-09-06T13:35:52.497693",
+    "seconds": 1.87,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "email"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\email_preview_repaired.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "1b3c968914d16456bbb02362a49a7bbaf530714f2d3c2f2c5973ee9ea46fffee"
+  },
+  {
+    "label": "fundamentals",
+    "started": "2026-09-06T12:55:01.511139",
+    "seconds": 1.33,
+    "command": [
+      "-c",
+      "from datetime import date; from scripts.fundamentals_completeness_audit import run_audit; g=run_audit(heal=False,today=date(2026,9,4)); print(g); raise SystemExit(bool(g))"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\fundamentals.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+  },
+  {
+    "label": "guard_preflight",
+    "started": "2026-09-06T13:01:12.742068",
+    "seconds": 0.09,
+    "command": [
+      "-c",
+      "import os; import scripts.pipeline_acceptance_guard as g; assert g._INSTALLED is not None; assert os.environ['STOCK_ACCEPTANCE_GUARD_ACTIVE']==os.environ['STOCK_ACCEPTANCE_ROOT']; print('guard active')"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\guard_preflight.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "2d4aa5cdb79d840aa1f7fe1ad98076bfd3cca52789a32d239921b9cd858d23f0"
+  },
+  {
+    "label": "health_api_repaired",
+    "started": "2026-09-06T13:30:12.619245",
+    "seconds": 2.88,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "health"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\health_api_repaired.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "3d0dfb470730ad84a64c4d565f4f5b05b8e7f90a17c7e98d791e0717cb4df479"
+  },
+  {
+    "label": "ingest",
+    "started": "2026-09-06T12:55:53.418340",
+    "seconds": 67.27,
+    "command": [
+      "-c",
+      "import os; from pathlib import Path; from backend.config import DUCKDB_PATH; assert Path(DUCKDB_PATH).resolve().is_relative_to(Path(os.environ['STOCK_ACCEPTANCE_ROOT']).resolve()); from backend.db.ingest import ingest_all; from backend.db.engine import close_conn; r=ingest_all(); print(r); assert {'daily_k','revenue','financials','tdcc','indices'} <= set(r); assert all(v>0 for v in r.values()); close_conn()"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\ingest.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "9b2454e59c8350ecd4641e3f947898d93a22436265e0f1c0226049af49b25a5b"
+  },
+  {
+    "label": "input_contracts",
+    "started": "2026-09-06T12:59:14.279728",
+    "seconds": 0.07,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "inputs"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 2,
+    "execution_status": "FAIL",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\input_contracts.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "800fc5accb5323c5579a2336b735638edbe5617f080a7a379b6ae04f3cca1534"
+  },
+  {
+    "label": "input_contracts_final",
+    "started": "2026-09-06T13:08:04.835013",
+    "seconds": 0.87,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "inputs"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\input_contracts_final.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "d46c5d15a4e392ed80351762054c05bf961f7f1cb4cf1ec9f24571399eca95ef"
+  },
+  {
+    "label": "input_contracts_ready",
+    "started": "2026-09-06T12:59:32.657613",
+    "seconds": 0.81,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "inputs"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\input_contracts_ready.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "d46c5d15a4e392ed80351762054c05bf961f7f1cb4cf1ec9f24571399eca95ef"
+  },
+  {
+    "label": "market_regime",
+    "started": "2026-09-06T13:05:10.754755",
+    "seconds": 13.64,
+    "command": [
+      "-c",
+      "from ml.market_regime import update_market_regime_report; print(update_market_regime_report())"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\market_regime.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "72cd98adb89ca03ee1979bd92982690fc8a7bbf0ad89b7d567fa48438ec66e3f"
+  },
+  {
+    "label": "observation_ledgers",
+    "started": "2026-09-06T13:24:59.577552",
+    "seconds": 14.79,
+    "command": [
+      "scripts/pipeline_acceptance_ledger.py",
+      "--as-of",
+      "2026-09-04",
+      "--trade-date",
+      "2026-09-07"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\observation_ledgers.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "c5a7cbc9d6743251e0bbd85a205d9122ee6ca294aaeac07968c794b4f168089b"
+  },
+  {
+    "label": "official_bars",
+    "started": "2026-09-06T12:55:01.510867",
+    "seconds": 27.5,
+    "command": [
+      "scripts/verify_otc_bars.py",
+      "--lookback-trading-days",
+      "5"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\official_bars.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "f2322f17d11183eeb3626166a52f8becb7330372211a0b00457478cdab404462"
+  },
+  {
+    "label": "output_contracts",
+    "started": "2026-09-06T13:26:06.692163",
+    "seconds": 0.87,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "outputs"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\output_contracts.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "60e11d6573bade9252f92892c29e7e06ca4359e968cc89d2046a0adceb3379c8"
+  },
+  {
+    "label": "output_contracts_final",
+    "started": "2026-09-06T13:48:06.580984",
+    "seconds": 0.9,
+    "command": [
+      "scripts/pipeline_acceptance_checks.py",
+      "outputs"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\output_contracts_final.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "8484b7afb4d576af1e962929823c18fe2baaacf384a20476b586a69854436df0"
+  },
+  {
+    "label": "portfolio_fresh",
+    "started": "2026-09-06T13:31:13.595999",
+    "seconds": 2.15,
+    "command": [
+      "scripts/pipeline_acceptance_portfolio.py"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 1,
+    "execution_status": "FAIL",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\portfolio_fresh.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "26f448f5e8122d3c210ac869bd2a8234da79330b39ff5f8d0841d0f860292072"
+  },
+  {
+    "label": "portfolio_fresh_inspect",
+    "started": "2026-09-06T13:31:25.739254",
+    "seconds": 0.12,
+    "command": [
+      "-c",
+      "from pathlib import Path; import json,sqlite3; p=Path('output/portfolio_fresh/champion_20260904.db').resolve(); c=sqlite3.connect(p.as_uri()+'?mode=ro',uri=True); c.row_factory=sqlite3.Row; print(json.dumps([dict(r) for r in c.execute('select ticker,status,fill_status,entry_date,entry_price,last_mark_date from unified_positions')]))"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\portfolio_fresh_inspect.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "0a3d34bf472c0b4132a5ac53cf18972c915c75dd18343e0b5fe56c6c00eca507"
+  },
+  {
+    "label": "portfolio_fresh_verified",
+    "started": "2026-09-06T13:31:40.140763",
+    "seconds": 2.16,
+    "command": [
+      "scripts/pipeline_acceptance_portfolio.py"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\portfolio_fresh_verified.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "f81f7035680956a4724fbced16ae0e7998cf9076c8ad72b948d29af0f51d916c"
+  },
+  {
+    "label": "release_radar",
+    "started": "2026-09-06T13:05:10.755082",
+    "seconds": 0.7,
+    "command": [
+      "scripts/disposition_release_radar.py"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\release_radar.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "daa1c84c157f74e9f2900b487e6cfbda97b56192b2dfe7d178cd463c1fe6c3b6"
+  },
+  {
+    "label": "sector_strength",
+    "started": "2026-09-06T13:05:10.755270",
+    "seconds": 8.68,
+    "command": [
+      "scripts/sector_strength.py"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\sector_strength.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "179f9a0f0605bd2b14dfd1d4c5ac777227853c3434ed493482ea553051f05e14"
+  },
+  {
+    "label": "shadow_prediction",
+    "started": "2026-09-06T13:19:48.373401",
+    "seconds": 1.71,
+    "command": [
+      "scripts/shadow_dataA_tracker.py",
+      "record",
+      "--predictions-only",
+      "--as-of",
+      "2026-09-04"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\shadow_prediction.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "8f57043bec6e2a519c9b6c45f667b5158cb1641be9e994fbdb0c2dc049d33de9"
+  },
+  {
+    "label": "special_status",
+    "started": "2026-09-06T12:55:01.540444",
+    "seconds": 1.29,
+    "command": [
+      "scripts/fetch_disposition.py",
+      "--retry-now"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\special_status.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "b7b552da156d590e681adc7ac5f623ef5158288c62c24addad3ab1f1ad6f61c4"
+  },
+  {
+    "label": "unified_portfolio",
+    "started": "2026-09-06T13:19:50.638415",
+    "seconds": 24.05,
+    "command": [
+      "-c",
+      "from scripts.smart_update_auto import exec_paper_portfolio; exec_paper_portfolio()"
+    ],
+    "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "exit_code": 0,
+    "execution_status": "PASS",
+    "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\unified_portfolio.log",
+    "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates.",
+    "log_sha256": "3b721830e5487af9639ef7e3bb172d49bdc605e8623405092bcc59aa870af3b9"
+  }
+]

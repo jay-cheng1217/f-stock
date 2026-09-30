@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-05-08T21:30:41",
+  "baseline_backtest_csv": "ml\\reports\\v2_backtest_20260508_200128.csv",
+  "baseline_fold_top30_csv": "ml\\reports\\v2_fold_top30_20260508_200128.csv",
+  "feature_ic_csv": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_features.csv",
+  "removed_features_csv": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_removed_features.csv",
+  "after_monthly_csv": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_after_monthly.csv",
+  "after_fold_top30_csv": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_after_fold_top30.csv",
+  "comparison_csv": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_comparison.csv",
+  "before_calibration_deciles_csv": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_before_calibration_deciles.csv",
+  "after_calibration_deciles_csv": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_after_calibration_deciles.csv",
+  "calibration_png": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_calibration.png",
+  "report": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508.md",
+  "features": {
+    "total": 245,
+    "kept": 113,
+    "removed": 132,
+    "low_ic_threshold": 0.01
+  },
+  "comparison": [
+    {
+      "model": "Before_baseline",
+      "universe_ic_mean": 0.04312090339404594,
+      "universe_ic_t_stat": 2.4270798766531803,
+      "top30_internal_ic_mean": -0.03505174107251766,
+      "top30_internal_ic_t_stat": -0.7028357886774584,
+      "positive_deciles": 4,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.4,
+      "max_consecutive_negative_deciles": 4,
+      "calibration_spearman": 0.406060606060606,
+      "top30_excess_mean": 0.0013836281142857153
+    },
+    {
+      "model": "After_feature_cleanup",
+      "universe_ic_mean": 0.01252353467804797,
+      "universe_ic_t_stat": 0.6660982531565729,
+      "top30_internal_ic_mean": -0.011628300023814122,
+      "top30_internal_ic_t_stat": -0.29055558655392427,
+      "positive_deciles": 5,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.5,
+      "max_consecutive_negative_deciles": 2,
+      "calibration_spearman": 0.35757575757575755,
+      "top30_excess_mean": 0.003660377913287708
+    }
+  ],
+  "before_calibration": {
+    "positive_deciles": 4,
+    "total_deciles": 10,
+    "positive_decile_pct": 0.4,
+    "max_consecutive_negative_deciles": 4,
+    "monotonic_spearman": 0.406060606060606
+  },
+  "after_calibration": {
+    "positive_deciles": 5,
+    "total_deciles": 10,
+    "positive_decile_pct": 0.5,
+    "max_consecutive_negative_deciles": 2,
+    "monotonic_spearman": 0.35757575757575755
+  },
+  "verdict": "Feature cleanup did not turn Top30 IC positive. Recommendation: move to Step 3 and evaluate LambdaRank / pairwise ranking objective or a two-stage screen-then-rank architecture."
+}

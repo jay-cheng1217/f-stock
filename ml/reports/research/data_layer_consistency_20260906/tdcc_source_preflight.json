@@ -1,0 +1,8 @@
+{
+  "label": "tdcc_history_three_weeks_20260906",
+  "plan_sha256": "18837844408c02c33bb468908c3856570f8f221ef0ada4763498d84e7e0e4c1d",
+  "started_at": "2026-09-06T22:05:28.246758+08:00",
+  "status": "PREFLIGHT_PASS",
+  "file_count": 4,
+  "files": []
+}

@@ -1,0 +1,94 @@
+{
+  "start_date": "2026-04-23",
+  "end_date": "2026-04-29",
+  "champion_db_path": "F:\\stock\\paper_portfolio_v2_champion.db",
+  "nav": {
+    "return_pct": -0.11699187358220771,
+    "daily_rows": 5,
+    "marked_days": 5,
+    "cash_only_days": 0,
+    "avg_gross_exposure": 1.3544263157894734,
+    "realized_pnl_pct": -0.0441157802888957,
+    "unrealized_pnl_pct": -0.07287609329331204,
+    "open_mtm_pct": 0.007069681246885967,
+    "cash_drag_vs_twii_pct": 0.0,
+    "execution_pnl_pct": 0.057523044922470054,
+    "exit_pnl_pct": -0.0441157802888957
+  },
+  "benchmarks": {
+    "twii_return_pct": 0.0421420508840038,
+    "strategy_fit_return_pct": 0.0013750963993322978,
+    "sector_proxy_return_pct": 0.0013750963993322978
+  },
+  "attribution": {
+    "allocation_effect_pct": -0.013065937932010654,
+    "selection_effect_pct": -0.10530103204952936,
+    "gross_exposure_cash_residual_pct": 0.0008416989184811263,
+    "allocation_plus_selection_pct": -0.11836696998154,
+    "champion_vs_sector_proxy_alpha_pct": -0.11836696998154,
+    "reconciliation_error_pct": 0.0,
+    "reconciliation_pass": true
+  },
+  "ledger_reconciliation": {
+    "nav_return_pct": -0.11699187358220771,
+    "ledger_realized_pnl_pct": -0.1240615548290937,
+    "ledger_open_mtm_pct": 0.007813170773589756,
+    "ledger_total_pnl_pct": -0.11624838405550394,
+    "reconciliation_error_pct": -0.0007434895267037639,
+    "reconciliation_pass": true
+  },
+  "open_winners": [
+    {
+      "ticker": "8027",
+      "status": "stopped_out",
+      "mark_date": "2026-04-23",
+      "close_return_pct": -0.06557377049180324,
+      "target_weight": 0.0625,
+      "weighted_open_mtm_pct": -0.0040983606557377025
+    },
+    {
+      "ticker": "8027",
+      "status": "open",
+      "mark_date": "2026-04-29",
+      "close_return_pct": 0.14845024469820545,
+      "target_weight": 0.0526315789473684,
+      "weighted_open_mtm_pct": 0.007813170773589756
+    },
+    {
+      "ticker": "3450",
+      "status": "open",
+      "mark_date": null,
+      "close_return_pct": null,
+      "target_weight": 0.03,
+      "weighted_open_mtm_pct": null
+    },
+    {
+      "ticker": "6426",
+      "status": "open",
+      "mark_date": null,
+      "close_return_pct": null,
+      "target_weight": 0.11467105263157895,
+      "weighted_open_mtm_pct": null
+    },
+    {
+      "ticker": "5228",
+      "status": "open",
+      "mark_date": null,
+      "close_return_pct": null,
+      "target_weight": 0.0312875386996904,
+      "weighted_open_mtm_pct": null
+    }
+  ],
+  "week1_reference": {
+    "champion_return_pct": -0.0021231273408239618,
+    "benchmark_return_pct": 0.05325711889322304,
+    "champion_vs_benchmark_alpha_pct": -0.055380246234047005,
+    "allocation_effect_total_pct": -0.04237224698082897,
+    "selection_effect_total_pct": -0.013007999253218031,
+    "allocation_plus_selection_pct": -0.055380246234047,
+    "reconciliation_error_pct": 6.938893903907228e-18,
+    "reconciliation_pass": true,
+    "twii_alpha_pct": -0.04426517822482776,
+    "twii_scale_residual_pct": 0.011115068009219242
+  }
+}

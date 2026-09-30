@@ -1,0 +1,2246 @@
+{
+  "superseded_classification": "tdcc_calendar_reconciliation.json",
+  "updated_collection_scope": "tdcc_public_collection_plan.json:11659dated securities; full collection in progress, not published",
+  "status": "PARTIAL_ACCESSIBLE_HISTORY_NOT_YET_UNIVERSE_BACKFILLED",
+  "old43_by_actual_raw_bucket": [
+    {
+      "week": "2020-01-18/2020-01-24",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 1,
+      "twii_last_session": "2020-01-20",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-02-08/2020-02-14",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2020-02-14",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-02-22/2020-02-28",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2020-02-27",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-03-28/2020-04-03",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2020-04-01",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-04-25/2020-05-01",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2020-04-30",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-06-13/2020-06-19",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2020-06-19",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-06-20/2020-06-26",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2020-06-24",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-09-19/2020-09-25",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2020-09-25",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-09-26/2020-10-02",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2020-09-30",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-10-03/2020-10-09",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2020-10-08",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2020-12-26/2021-01-01",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2020-12-31",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2021-02-06/2021-02-12",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2021-02-13/2021-02-19",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2021-02-19",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2021-03-27/2021-04-02",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2021-04-01",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2021-04-24/2021-04-30",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2021-04-29",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2021-09-04/2021-09-10",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2021-09-10",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2021-12-25/2021-12-31",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2021-12-30",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2022-01-15/2022-01-21",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2022-01-21",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2022-01-29/2022-02-04",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2022-05-28/2022-06-03",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2022-06-02",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2022-09-03/2022-09-09",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2022-09-08",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2022-12-31/2023-01-06",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2023-01-06",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-01-14/2023-01-20",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 2,
+      "twii_last_session": "2023-01-17",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-01-21/2023-01-27",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-01-28/2023-02-03",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-02-03",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-02-11/2023-02-17",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-02-17",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-03-18/2023-03-24",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-03-24",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-06-10/2023-06-16",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-06-16",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-06-17/2023-06-23",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2023-06-21",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-09-16/2023-09-22",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-09-22",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2023-09-23/2023-09-29",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2023-09-28",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2024-02-03/2024-02-09",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 1,
+      "twii_last_session": "2024-02-05",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2024-02-10/2024-02-16",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 2,
+      "twii_last_session": "2024-02-16",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2024-03-30/2024-04-05",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2024-04-03",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2025-01-25/2025-01-31",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2025-02-01/2025-02-07",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2025-02-07",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2025-02-22/2025-02-28",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2025-02-27",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2025-03-29/2025-04-04",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2025-04-02",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2025-05-24/2025-05-30",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2025-05-29",
+      "category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2025-10-04/2025-10-10",
+      "raw_present": false,
+      "official_published_date": "20251009",
+      "twii_sessions": 3,
+      "twii_last_session": "2025-10-09",
+      "category": "PUBLIC_DATED_QUERY_AVAILABLE",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2025-10-18/2025-10-24",
+      "raw_present": false,
+      "official_published_date": "20251023",
+      "twii_sessions": 4,
+      "twii_last_session": "2025-10-23",
+      "category": "PUBLIC_DATED_QUERY_AVAILABLE",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2026-02-14/2026-02-20",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "NO_OBSERVATION_IN_CURRENT_OFFICIAL_CALENDAR",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    },
+    {
+      "week": "2026-02-21/2026-02-27",
+      "raw_present": false,
+      "official_published_date": "20260226",
+      "twii_sessions": 4,
+      "twii_last_session": "2026-02-26",
+      "category": "PUBLIC_DATED_QUERY_AVAILABLE",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed."
+    }
+  ],
+  "category_counts": {
+    "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW": 39,
+    "PUBLIC_DATED_QUERY_AVAILABLE": 3,
+    "NO_OBSERVATION_IN_CURRENT_OFFICIAL_CALENDAR": 1
+  },
+  "raw_files": [
+    {
+      "file": "tdcc_20200103.csv",
+      "actual_date": "2020-01-03",
+      "week": "2019-12-28/2020-01-03",
+      "sha256": "04d56a1414f768d6d3319468d7fcc4a971d9b937be4703f5bc17abbfc2af329d"
+    },
+    {
+      "file": "tdcc_20200110.csv",
+      "actual_date": "2020-01-10",
+      "week": "2020-01-04/2020-01-10",
+      "sha256": "65b226a71c9ccdf57e2624df36d7770c0c1f815677aa0e884a9880816d1b4906"
+    },
+    {
+      "file": "tdcc_20200117.csv",
+      "actual_date": "2020-01-17",
+      "week": "2020-01-11/2020-01-17",
+      "sha256": "c7045b5cf4bd0b9d0565dad5a38d88ebb5789e77d0e1373a71104831722cbab5"
+    },
+    {
+      "file": "tdcc_20200131.csv",
+      "actual_date": "2020-01-31",
+      "week": "2020-01-25/2020-01-31",
+      "sha256": "9fe28bdfe7c92d3704e5a6ec353cc6f22015610f991e5ecc853256c37a736d99"
+    },
+    {
+      "file": "tdcc_20200207.csv",
+      "actual_date": "2020-02-07",
+      "week": "2020-02-01/2020-02-07",
+      "sha256": "75bd079e08edc2bdd5d7b06381e8438b2be343cc5e4eb000814b27a1ab5f4018"
+    },
+    {
+      "file": "tdcc_20200221.csv",
+      "actual_date": "2020-02-21",
+      "week": "2020-02-15/2020-02-21",
+      "sha256": "bbc7bbedab576b553c9b6fdb0b2e6ce7864f7bc3bc19adaf419d46a626e89486"
+    },
+    {
+      "file": "tdcc_20200306.csv",
+      "actual_date": "2020-03-06",
+      "week": "2020-02-29/2020-03-06",
+      "sha256": "bbc8480a689703d9494aca0eac8702b1b00103113cacf232fca4aca6b1b88e53"
+    },
+    {
+      "file": "tdcc_20200313.csv",
+      "actual_date": "2020-03-13",
+      "week": "2020-03-07/2020-03-13",
+      "sha256": "944fe5a3408f2cc9384df69ae79d855faa20eb0728316252c4ea3a1c1aa5e0f4"
+    },
+    {
+      "file": "tdcc_20200320.csv",
+      "actual_date": "2020-03-20",
+      "week": "2020-03-14/2020-03-20",
+      "sha256": "cafde068d6048aa3de04aa6a212a4c31fa5cb454abfbbaf4baebf415854d3410"
+    },
+    {
+      "file": "tdcc_20200327.csv",
+      "actual_date": "2020-03-27",
+      "week": "2020-03-21/2020-03-27",
+      "sha256": "9f5ca1f46b3e1af92d95c2099163badbefc428823e82cf169608df8e563bd6b0"
+    },
+    {
+      "file": "tdcc_20200410.csv",
+      "actual_date": "2020-04-10",
+      "week": "2020-04-04/2020-04-10",
+      "sha256": "7643f529048dc1c6bba95f448b15558d29286e03033ee79a195ac55b2742fc58"
+    },
+    {
+      "file": "tdcc_20200417.csv",
+      "actual_date": "2020-04-17",
+      "week": "2020-04-11/2020-04-17",
+      "sha256": "57611ec73cf95d9fe102a19714c27a7a9095b4af4f458497c5bd0a92bd8e8ca4"
+    },
+    {
+      "file": "tdcc_20200424.csv",
+      "actual_date": "2020-04-24",
+      "week": "2020-04-18/2020-04-24",
+      "sha256": "e1449d38924a0ff2740539486d7fcede021113f32e502e4ba63acd57fd1ea826"
+    },
+    {
+      "file": "tdcc_20200508.csv",
+      "actual_date": "2020-05-08",
+      "week": "2020-05-02/2020-05-08",
+      "sha256": "b781947cb883de403053bb760534e6b0d5a5c7753ee115e6208ba49b1c33588a"
+    },
+    {
+      "file": "tdcc_20200515.csv",
+      "actual_date": "2020-05-15",
+      "week": "2020-05-09/2020-05-15",
+      "sha256": "e60598ed55833b6dcdabbe34fa2b86162479ea6109d9df0a98813781317510ea"
+    },
+    {
+      "file": "tdcc_20200522.csv",
+      "actual_date": "2020-05-22",
+      "week": "2020-05-16/2020-05-22",
+      "sha256": "59e5baa7666d6968f2d53414bf1ce6101d5790453b130a2cc7e59a774d07eb5a"
+    },
+    {
+      "file": "tdcc_20200529.csv",
+      "actual_date": "2020-05-29",
+      "week": "2020-05-23/2020-05-29",
+      "sha256": "a929da421de07de02b9c0ebe1d54bf619cc081c323b24fa23870a7b850e732aa"
+    },
+    {
+      "file": "tdcc_20200605.csv",
+      "actual_date": "2020-06-05",
+      "week": "2020-05-30/2020-06-05",
+      "sha256": "7dbeed1236b58fa0f0a2a5c2f92a768fcb72ca193e78192a06fde268b523648e"
+    },
+    {
+      "file": "tdcc_20200612.csv",
+      "actual_date": "2020-06-12",
+      "week": "2020-06-06/2020-06-12",
+      "sha256": "ba82c50a8fbdcf38c6e1e7f166f96681e905302e608aa0f3c64b766f54aedecb"
+    },
+    {
+      "file": "tdcc_20200703.csv",
+      "actual_date": "2020-07-03",
+      "week": "2020-06-27/2020-07-03",
+      "sha256": "6e534dac3a442a2b65576c2e61e8f6e29e105cfbebac5182bdc4e081dedb67ed"
+    },
+    {
+      "file": "tdcc_20200710.csv",
+      "actual_date": "2020-07-10",
+      "week": "2020-07-04/2020-07-10",
+      "sha256": "1a22b0fd272b3652e9825b7f820f70a866fb83e987dd0b65581b32bcbb248239"
+    },
+    {
+      "file": "tdcc_20200717.csv",
+      "actual_date": "2020-07-17",
+      "week": "2020-07-11/2020-07-17",
+      "sha256": "9e17510d24383a6d407be235f03bdb441ac5e97256d6fb6f86968965ee5b2f41"
+    },
+    {
+      "file": "tdcc_20200724.csv",
+      "actual_date": "2020-07-24",
+      "week": "2020-07-18/2020-07-24",
+      "sha256": "74a39f243e34638f1b9e5fdeddbf0fa1a935b820e700a85fe9cf673ccabc349d"
+    },
+    {
+      "file": "tdcc_20200731.csv",
+      "actual_date": "2020-07-31",
+      "week": "2020-07-25/2020-07-31",
+      "sha256": "3739095171475e0769b0df1768d62d4ae15b6c4a29263717253fc1427b4d84a0"
+    },
+    {
+      "file": "tdcc_20200807.csv",
+      "actual_date": "2020-08-07",
+      "week": "2020-08-01/2020-08-07",
+      "sha256": "0869bd6581999a315d64fdc831581834ceeab48d7020dd426fe0135d89b3c7fa"
+    },
+    {
+      "file": "tdcc_20200814.csv",
+      "actual_date": "2020-08-14",
+      "week": "2020-08-08/2020-08-14",
+      "sha256": "73c6e7afeb909d4f7fb4b03c489d2683d96f3cdbbf08a05ab9993324e6eb333c"
+    },
+    {
+      "file": "tdcc_20200821.csv",
+      "actual_date": "2020-08-21",
+      "week": "2020-08-15/2020-08-21",
+      "sha256": "6eab5bc0fbed4ce04e7439214f2f45692471746d250f94d8988306404bca3845"
+    },
+    {
+      "file": "tdcc_20200828.csv",
+      "actual_date": "2020-08-28",
+      "week": "2020-08-22/2020-08-28",
+      "sha256": "7a106de04755f008e169525cfe921be7fde8190ec3f4b320224c9b75b69f2292"
+    },
+    {
+      "file": "tdcc_20200904.csv",
+      "actual_date": "2020-09-04",
+      "week": "2020-08-29/2020-09-04",
+      "sha256": "6d9d3b7bcef2b7272f2808e5eb6cf734e827d4bb44b34436781e2762f0dd484a"
+    },
+    {
+      "file": "tdcc_20200911.csv",
+      "actual_date": "2020-09-11",
+      "week": "2020-09-05/2020-09-11",
+      "sha256": "eba10cf82144a17b4387714549367039b929bb4fe0ccdd51139b3b30f1d887a9"
+    },
+    {
+      "file": "tdcc_20200918.csv",
+      "actual_date": "2020-09-18",
+      "week": "2020-09-12/2020-09-18",
+      "sha256": "6942f8f0c3578b3d8b3893ce93f5f2cbf53468e59a13187b16256e8e19d97e75"
+    },
+    {
+      "file": "tdcc_20201016.csv",
+      "actual_date": "2020-10-16",
+      "week": "2020-10-10/2020-10-16",
+      "sha256": "a49fdc5ac4afc1c7d1420b89dbc3ec90fe97ed40e04bd18642fee3793d5eee84"
+    },
+    {
+      "file": "tdcc_20201023.csv",
+      "actual_date": "2020-10-23",
+      "week": "2020-10-17/2020-10-23",
+      "sha256": "fd9b98506fe6d38cf77ba268c74e51298d79092075e3a18eb2ce3e1ddfafa978"
+    },
+    {
+      "file": "tdcc_20201030.csv",
+      "actual_date": "2020-10-30",
+      "week": "2020-10-24/2020-10-30",
+      "sha256": "08957b61fb4590acb10126df49b7227e94a93548fb8ba236f8fa00ad2363adfe"
+    },
+    {
+      "file": "tdcc_20201106.csv",
+      "actual_date": "2020-11-06",
+      "week": "2020-10-31/2020-11-06",
+      "sha256": "fc32b8de410f28435c4c927e7fa9b3a413fa5921506843aeb3989831b6c92b41"
+    },
+    {
+      "file": "tdcc_20201113.csv",
+      "actual_date": "2020-11-13",
+      "week": "2020-11-07/2020-11-13",
+      "sha256": "b110dd40744f4168d4e4d92ad69c4978723506f166480baf1164bbdaa645f4b0"
+    },
+    {
+      "file": "tdcc_20201120.csv",
+      "actual_date": "2020-11-20",
+      "week": "2020-11-14/2020-11-20",
+      "sha256": "df9191f1d10d424351dc2bc4147317cb71f6385f67badfacd737ced9c486019c"
+    },
+    {
+      "file": "tdcc_20201127.csv",
+      "actual_date": "2020-11-27",
+      "week": "2020-11-21/2020-11-27",
+      "sha256": "e852c653b734b27b450e394b61c40e82936457f688e26b9303265f7dc8ed2275"
+    },
+    {
+      "file": "tdcc_20201204.csv",
+      "actual_date": "2020-12-04",
+      "week": "2020-11-28/2020-12-04",
+      "sha256": "2f631f739f0836cc8251447a89c8ea564d3afbedfda0641492b1f543d210adea"
+    },
+    {
+      "file": "tdcc_20201211.csv",
+      "actual_date": "2020-12-11",
+      "week": "2020-12-05/2020-12-11",
+      "sha256": "2b8b836598d07cf3c2858510d652215bb5d5af2f3da96404ac7d83fd51526300"
+    },
+    {
+      "file": "tdcc_20201218.csv",
+      "actual_date": "2020-12-18",
+      "week": "2020-12-12/2020-12-18",
+      "sha256": "acc424b703d241cf3d34246c2ce2f22490c69b6087e17f4a29d2255245731ce4"
+    },
+    {
+      "file": "tdcc_20201225.csv",
+      "actual_date": "2020-12-25",
+      "week": "2020-12-19/2020-12-25",
+      "sha256": "67f26f62f0d3d792202a1a03ee7e3dfb510a0a30765bd80e1ca1a9e1445cc679"
+    },
+    {
+      "file": "tdcc_20210108.csv",
+      "actual_date": "2021-01-08",
+      "week": "2021-01-02/2021-01-08",
+      "sha256": "b7a3cc3a00e4935f7a0f918feb5a3bb09d85bca54ba1961a7603d11ba3019bc2"
+    },
+    {
+      "file": "tdcc_20210115.csv",
+      "actual_date": "2021-01-15",
+      "week": "2021-01-09/2021-01-15",
+      "sha256": "ca377e38d85be76525a4af1dd80dae240cc5d4c586ccd843fc6d5a94097c7a92"
+    },
+    {
+      "file": "tdcc_20210122.csv",
+      "actual_date": "2021-01-22",
+      "week": "2021-01-16/2021-01-22",
+      "sha256": "8cd8fae6e17d08b3ad3f52ef9a0f91f7158f7e78db7bdd981f4ac43d70ea0a7a"
+    },
+    {
+      "file": "tdcc_20210129.csv",
+      "actual_date": "2021-01-29",
+      "week": "2021-01-23/2021-01-29",
+      "sha256": "42c90fdcb36d512df86936401f1ef3cfe43a5950164c7c0cd3bfbe09009e0f0c"
+    },
+    {
+      "file": "tdcc_20210205.csv",
+      "actual_date": "2021-02-05",
+      "week": "2021-01-30/2021-02-05",
+      "sha256": "731ffb63924626ed841798f019bf008cde486d138dcbf6a4ab66a8b06a6d2e45"
+    },
+    {
+      "file": "tdcc_20210226.csv",
+      "actual_date": "2021-02-26",
+      "week": "2021-02-20/2021-02-26",
+      "sha256": "ef557f3f9ced2cc2c5d9234f86179c6231df73d5f4b55d23f88f16bba0430b84"
+    },
+    {
+      "file": "tdcc_20210305.csv",
+      "actual_date": "2021-03-05",
+      "week": "2021-02-27/2021-03-05",
+      "sha256": "97ce454d455a2f25b8bc58ea613b1efbf3f3f67073f4163c8ba888845bfddaef"
+    },
+    {
+      "file": "tdcc_20210312.csv",
+      "actual_date": "2021-03-12",
+      "week": "2021-03-06/2021-03-12",
+      "sha256": "fc2995dddae31be3f645c1c13d8def2c87832255ff4a45a6b24593cac32cd17c"
+    },
+    {
+      "file": "tdcc_20210319.csv",
+      "actual_date": "2021-03-19",
+      "week": "2021-03-13/2021-03-19",
+      "sha256": "f35aaa8359de2d237eeb01721d4206d581f63b84aa12fd120b16fbc3ee59db58"
+    },
+    {
+      "file": "tdcc_20210326.csv",
+      "actual_date": "2021-03-26",
+      "week": "2021-03-20/2021-03-26",
+      "sha256": "3eb5a9a35d35970f0284d957f8066177d3b9d75f43581037bd98a08c5dc0d231"
+    },
+    {
+      "file": "tdcc_20210409.csv",
+      "actual_date": "2021-04-09",
+      "week": "2021-04-03/2021-04-09",
+      "sha256": "76dfa1716df41a075c12c883e79b3431b9b07f44f61813adad300935c2042550"
+    },
+    {
+      "file": "tdcc_20210416.csv",
+      "actual_date": "2021-04-16",
+      "week": "2021-04-10/2021-04-16",
+      "sha256": "6e7791499f9812f61a0619a1e68e20dda75172ed0a78d6d5a6ed9d6a9f806d2c"
+    },
+    {
+      "file": "tdcc_20210423.csv",
+      "actual_date": "2021-04-23",
+      "week": "2021-04-17/2021-04-23",
+      "sha256": "74b9743e5a95c636552e53e2435abe5cc2eeefde562d87b0b70532019d9cdaf2"
+    },
+    {
+      "file": "tdcc_20210507.csv",
+      "actual_date": "2021-05-07",
+      "week": "2021-05-01/2021-05-07",
+      "sha256": "5e3f26df9fb18dc3700796b9d4ee304f87806cd0e77351b523c7e77285596607"
+    },
+    {
+      "file": "tdcc_20210514.csv",
+      "actual_date": "2021-05-14",
+      "week": "2021-05-08/2021-05-14",
+      "sha256": "7c4ac0b0fe6ac11f11cb2d70663e9f6457787358fc02918419106f0105379f73"
+    },
+    {
+      "file": "tdcc_20210521.csv",
+      "actual_date": "2021-05-21",
+      "week": "2021-05-15/2021-05-21",
+      "sha256": "a5e56a71d7bef2e223f71458c3a9375aacfed4565e710bd5079d117afeb71d5d"
+    },
+    {
+      "file": "tdcc_20210528.csv",
+      "actual_date": "2021-05-28",
+      "week": "2021-05-22/2021-05-28",
+      "sha256": "f27d15bab519d87fbe360c85b35818d695468c359c78eef84d67651fbb0c481d"
+    },
+    {
+      "file": "tdcc_20210604.csv",
+      "actual_date": "2021-06-04",
+      "week": "2021-05-29/2021-06-04",
+      "sha256": "d20f2fc91dd39bf755f18c44035be7e16b6d09656cfb758d165726db7bf8efd1"
+    },
+    {
+      "file": "tdcc_20210611.csv",
+      "actual_date": "2021-06-11",
+      "week": "2021-06-05/2021-06-11",
+      "sha256": "cc299fcfe2f047c22bf507c58139cc6150db264c49eaa558605794e4474a446f"
+    },
+    {
+      "file": "tdcc_20210618.csv",
+      "actual_date": "2021-06-18",
+      "week": "2021-06-12/2021-06-18",
+      "sha256": "1863e38d6d5cdcf97b2542c48dd59055b64f0c989a2576bc249437185aa7877f"
+    },
+    {
+      "file": "tdcc_20210625.csv",
+      "actual_date": "2021-06-25",
+      "week": "2021-06-19/2021-06-25",
+      "sha256": "4d5e52b39753d1c9b187bfa5947c065d12b0d729cd54944361c1c74db76d6ae6"
+    },
+    {
+      "file": "tdcc_20210702.csv",
+      "actual_date": "2021-07-02",
+      "week": "2021-06-26/2021-07-02",
+      "sha256": "edea3e0d52ef4032d51f315f840d1fdb3bb2a3b815383927fda6283630fd7f12"
+    },
+    {
+      "file": "tdcc_20210709.csv",
+      "actual_date": "2021-07-09",
+      "week": "2021-07-03/2021-07-09",
+      "sha256": "f061cc73728217a62e2e4f0210cb308a67fa77caa50fff07492605f88be1eddb"
+    },
+    {
+      "file": "tdcc_20210716.csv",
+      "actual_date": "2021-07-16",
+      "week": "2021-07-10/2021-07-16",
+      "sha256": "d28ab93fdcb6d59f1fc24cae39d18e4c089dc8b4e33d07d4306ea28135a9c8b9"
+    },
+    {
+      "file": "tdcc_20210723.csv",
+      "actual_date": "2021-07-23",
+      "week": "2021-07-17/2021-07-23",
+      "sha256": "b2928c43bdccffd9f95a7a63b79eab3420495bbc00003d0df9e59454113576d5"
+    },
+    {
+      "file": "tdcc_20210730.csv",
+      "actual_date": "2021-07-30",
+      "week": "2021-07-24/2021-07-30",
+      "sha256": "c603e192786dd602e3c82e0dec300ccd847d1bfc62b9c798a6b9d58d14b24673"
+    },
+    {
+      "file": "tdcc_20210806.csv",
+      "actual_date": "2021-08-06",
+      "week": "2021-07-31/2021-08-06",
+      "sha256": "527b87ba8d17094575335774f751941fc400ff9b96192e4fb8cc24795a3a2f16"
+    },
+    {
+      "file": "tdcc_20210813.csv",
+      "actual_date": "2021-08-13",
+      "week": "2021-08-07/2021-08-13",
+      "sha256": "fa1a38522824848743cc70b5db6537db72f2c91345cb8f5576b6c55403644f7d"
+    },
+    {
+      "file": "tdcc_20210820.csv",
+      "actual_date": "2021-08-20",
+      "week": "2021-08-14/2021-08-20",
+      "sha256": "2ca45314140b632f8169ec44b132574706a1905444745dcbfa42f2253b8395b0"
+    },
+    {
+      "file": "tdcc_20210827.csv",
+      "actual_date": "2021-08-27",
+      "week": "2021-08-21/2021-08-27",
+      "sha256": "9707cf25c612cf9a4b12970e9e273f246952e53574db6c3c8c31862875abd478"
+    },
+    {
+      "file": "tdcc_20210903.csv",
+      "actual_date": "2021-09-03",
+      "week": "2021-08-28/2021-09-03",
+      "sha256": "9bc92934d3232cd8fc2282ba5891ee59da01d728d3ed2eac31f8c3a51042d828"
+    },
+    {
+      "file": "tdcc_20210917.csv",
+      "actual_date": "2021-09-17",
+      "week": "2021-09-11/2021-09-17",
+      "sha256": "155291d2a806b5de7e34a1e9ba80c9b5a576132fc56cd3afa909366c32530ff8"
+    },
+    {
+      "file": "tdcc_20210924.csv",
+      "actual_date": "2021-09-24",
+      "week": "2021-09-18/2021-09-24",
+      "sha256": "3cbd7500409941059785e7ab5a523aa814bf1e48bfbc7493ab8f33baa9434499"
+    },
+    {
+      "file": "tdcc_20211001.csv",
+      "actual_date": "2021-10-01",
+      "week": "2021-09-25/2021-10-01",
+      "sha256": "38383b63f22907a46a656dda463a6584ca032d3863dccd253efe1f2168bc1455"
+    },
+    {
+      "file": "tdcc_20211008.csv",
+      "actual_date": "2021-10-08",
+      "week": "2021-10-02/2021-10-08",
+      "sha256": "5791df8356dc5c3f2c256f7bd16c16ecdde3dd98cb86fc8a34d36b1092884299"
+    },
+    {
+      "file": "tdcc_20211015.csv",
+      "actual_date": "2021-10-15",
+      "week": "2021-10-09/2021-10-15",
+      "sha256": "137474b0e40edbb11eebd93e72d39f9b4e7cf6433a0a33e2716ab851b816ffb5"
+    },
+    {
+      "file": "tdcc_20211022.csv",
+      "actual_date": "2021-10-22",
+      "week": "2021-10-16/2021-10-22",
+      "sha256": "e6028488fca1981c1c644435af0eb0807fb016593bd9b5da7f2bdda4631a29b0"
+    },
+    {
+      "file": "tdcc_20211029.csv",
+      "actual_date": "2021-10-29",
+      "week": "2021-10-23/2021-10-29",
+      "sha256": "1bb2c871d4ed8a9dc3a577dd2490817b56320baee7592f3e43759b47104a5440"
+    },
+    {
+      "file": "tdcc_20211105.csv",
+      "actual_date": "2021-11-05",
+      "week": "2021-10-30/2021-11-05",
+      "sha256": "37f0b9e98cbfb7e3afeec9c8e751c7102dbc028750dc09beff41eef9d0f46cb3"
+    },
+    {
+      "file": "tdcc_20211112.csv",
+      "actual_date": "2021-11-12",
+      "week": "2021-11-06/2021-11-12",
+      "sha256": "c41a7e52214bb4cbce78301f939bfa3148401be536567aa6a365d5e5565cd24c"
+    },
+    {
+      "file": "tdcc_20211119.csv",
+      "actual_date": "2021-11-19",
+      "week": "2021-11-13/2021-11-19",
+      "sha256": "738a43f8f1593648858e971da49405aff7c9895c2aca992c2eb85871179b31d7"
+    },
+    {
+      "file": "tdcc_20211126.csv",
+      "actual_date": "2021-11-26",
+      "week": "2021-11-20/2021-11-26",
+      "sha256": "6a7ca3e1324d93d2ee8fc9fae6dde4ddff700950f76ec4756ec9af7a58d66a60"
+    },
+    {
+      "file": "tdcc_20211203.csv",
+      "actual_date": "2021-12-03",
+      "week": "2021-11-27/2021-12-03",
+      "sha256": "c999a9ee75d4d86c58c530fadb55d38368fb333c67f9fe48f2022b40e037ad90"
+    },
+    {
+      "file": "tdcc_20211210.csv",
+      "actual_date": "2021-12-10",
+      "week": "2021-12-04/2021-12-10",
+      "sha256": "2969c567145dcb6b9ea5769e26e2e1980cd341e7f3f3cbc98859ee8b02972d24"
+    },
+    {
+      "file": "tdcc_20211217.csv",
+      "actual_date": "2021-12-17",
+      "week": "2021-12-11/2021-12-17",
+      "sha256": "64b6ad765d49391b85b822f05d8c2dfacd65a907716a88c28c4d91957ca0867f"
+    },
+    {
+      "file": "tdcc_20211224.csv",
+      "actual_date": "2021-12-24",
+      "week": "2021-12-18/2021-12-24",
+      "sha256": "882d3e9018c1c5e4832c1cc0d3a04bfc736511528e0f49b6139201f2c89165b1"
+    },
+    {
+      "file": "tdcc_20220107.csv",
+      "actual_date": "2022-01-07",
+      "week": "2022-01-01/2022-01-07",
+      "sha256": "91ebe198ff20969c6eebe57f363f7881eb1e9736914aa5a145f0a662bd9e7dd5"
+    },
+    {
+      "file": "tdcc_20220114.csv",
+      "actual_date": "2022-01-14",
+      "week": "2022-01-08/2022-01-14",
+      "sha256": "db9fee5e1bed334e74cca00dbab7e65ec5b65b93caa6dc460b3bde408595cf5f"
+    },
+    {
+      "file": "tdcc_20220128.csv",
+      "actual_date": "2022-01-28",
+      "week": "2022-01-22/2022-01-28",
+      "sha256": "803d7bf615a6978b4a120221c804ca0cce0972f85016f06a5c856c53a33681d7"
+    },
+    {
+      "file": "tdcc_20220211.csv",
+      "actual_date": "2022-02-11",
+      "week": "2022-02-05/2022-02-11",
+      "sha256": "d4597c1c872257af6d9856b83bc912983c52ab2ce3d33145966b943bb76c7f29"
+    },
+    {
+      "file": "tdcc_20220218.csv",
+      "actual_date": "2022-02-18",
+      "week": "2022-02-12/2022-02-18",
+      "sha256": "2d59ec3c60a073815fdd317eddb9b219bff6af547b24224425c95a217326bb63"
+    },
+    {
+      "file": "tdcc_20220225.csv",
+      "actual_date": "2022-02-25",
+      "week": "2022-02-19/2022-02-25",
+      "sha256": "2975d881c25d176f80eac8c5e8e735e7ec1c62d295e12882cd4fecb4a9b2b881"
+    },
+    {
+      "file": "tdcc_20220304.csv",
+      "actual_date": "2022-03-04",
+      "week": "2022-02-26/2022-03-04",
+      "sha256": "4d50041e8de044aa950e4cd8ef39dedec287b3d3c80e0d7c9f320e80d8099824"
+    },
+    {
+      "file": "tdcc_20220311.csv",
+      "actual_date": "2022-03-11",
+      "week": "2022-03-05/2022-03-11",
+      "sha256": "982be7698b6621e78960c212726aa66248e8d92349b46d4de8a395a2d19f3136"
+    },
+    {
+      "file": "tdcc_20220318.csv",
+      "actual_date": "2022-03-18",
+      "week": "2022-03-12/2022-03-18",
+      "sha256": "2fbefc8afc80b9d62b02f135cce631e8f816095c3bd3f45cd296d5c2c98aba66"
+    },
+    {
+      "file": "tdcc_20220325.csv",
+      "actual_date": "2022-03-25",
+      "week": "2022-03-19/2022-03-25",
+      "sha256": "edfddf6660964ff290d754512d50d88eb0ae6814892c87e9e17b7d8cfe6a765e"
+    },
+    {
+      "file": "tdcc_20220401.csv",
+      "actual_date": "2022-04-01",
+      "week": "2022-03-26/2022-04-01",
+      "sha256": "27b8b54a884047970da5db2b5bc968daf39086dbd440b7a5781cf1468700020d"
+    },
+    {
+      "file": "tdcc_20220408.csv",
+      "actual_date": "2022-04-08",
+      "week": "2022-04-02/2022-04-08",
+      "sha256": "6e5cc66d711f61c29fee26c3bc9115c139edf16694b7164a35ea4a490d4dcbb8"
+    },
+    {
+      "file": "tdcc_20220415.csv",
+      "actual_date": "2022-04-15",
+      "week": "2022-04-09/2022-04-15",
+      "sha256": "c1258957301cceeeca54e9af8ceea6e5bacdb690831fc3817e55b5c90f213c6b"
+    },
+    {
+      "file": "tdcc_20220422.csv",
+      "actual_date": "2022-04-22",
+      "week": "2022-04-16/2022-04-22",
+      "sha256": "21a5f3c9769004f32ee89d41906b52de734f21e0321a9d6aae9c83b84700bc28"
+    },
+    {
+      "file": "tdcc_20220429.csv",
+      "actual_date": "2022-04-29",
+      "week": "2022-04-23/2022-04-29",
+      "sha256": "37c81a7d8ead174cdda8ed8c8d63281bfc153491579b249b73e9ec2f9f8788cb"
+    },
+    {
+      "file": "tdcc_20220506.csv",
+      "actual_date": "2022-05-06",
+      "week": "2022-04-30/2022-05-06",
+      "sha256": "cd9f733b2843f36a74d93449787ad1ba279d2aabfd7f594d93fb6ed6335a913b"
+    },
+    {
+      "file": "tdcc_20220513.csv",
+      "actual_date": "2022-05-13",
+      "week": "2022-05-07/2022-05-13",
+      "sha256": "ca1560e1a2ec3b1c832fa9e0b8e728b5d0a9c272c3718fac863891507e96dbfc"
+    },
+    {
+      "file": "tdcc_20220520.csv",
+      "actual_date": "2022-05-20",
+      "week": "2022-05-14/2022-05-20",
+      "sha256": "966ddb3d96be407ba00a3fb273a6d95b6f70ea7ac38650f83b3defe6d7cc49fe"
+    },
+    {
+      "file": "tdcc_20220527.csv",
+      "actual_date": "2022-05-27",
+      "week": "2022-05-21/2022-05-27",
+      "sha256": "a58ad05cb9c29f710d2302ba74c2aa7e7d0bb3f94c2ef17296f5ec4028b92e26"
+    },
+    {
+      "file": "tdcc_20220610.csv",
+      "actual_date": "2022-06-10",
+      "week": "2022-06-04/2022-06-10",
+      "sha256": "e6215fe3f4c250e266cc17532536b308315243d5dc5d03a9f0f45fe7d622bf36"
+    },
+    {
+      "file": "tdcc_20220617.csv",
+      "actual_date": "2022-06-17",
+      "week": "2022-06-11/2022-06-17",
+      "sha256": "dab33710e9884d033b1c0c0746fff247d91077c5be623adb041250db74d580e5"
+    },
+    {
+      "file": "tdcc_20220624.csv",
+      "actual_date": "2022-06-24",
+      "week": "2022-06-18/2022-06-24",
+      "sha256": "1b07754103d2c6dd81575de878543a1c26159c6025a016b1de8187ebf0014226"
+    },
+    {
+      "file": "tdcc_20220701.csv",
+      "actual_date": "2022-07-01",
+      "week": "2022-06-25/2022-07-01",
+      "sha256": "7e930b11d38919fca8d3f696123a4518ddd7d86878fb0bb431ae04b6d685c644"
+    },
+    {
+      "file": "tdcc_20220708.csv",
+      "actual_date": "2022-07-08",
+      "week": "2022-07-02/2022-07-08",
+      "sha256": "2372513b313e34c06deba8c216403c566e9423f51460f8fd7f96b87ff217250a"
+    },
+    {
+      "file": "tdcc_20220715.csv",
+      "actual_date": "2022-07-15",
+      "week": "2022-07-09/2022-07-15",
+      "sha256": "1ae83b020b69f731a6e30c29f85ac73a024501d3d0859ecbf253bbd14329f221"
+    },
+    {
+      "file": "tdcc_20220722.csv",
+      "actual_date": "2022-07-22",
+      "week": "2022-07-16/2022-07-22",
+      "sha256": "0d31dbc77935b4a988ad38ad8b8041b43441d68cc6088d757b29420d9f5a5152"
+    },
+    {
+      "file": "tdcc_20220729.csv",
+      "actual_date": "2022-07-29",
+      "week": "2022-07-23/2022-07-29",
+      "sha256": "467a2d4fae4a354b5b9ff764bf31a3009568d9037aae52e2a7a2faffd5cf5b27"
+    },
+    {
+      "file": "tdcc_20220805.csv",
+      "actual_date": "2022-08-05",
+      "week": "2022-07-30/2022-08-05",
+      "sha256": "21a8ce22a871db345b01ea9dd55ce125a559e9a3c3b4aecb69b85735640210d2"
+    },
+    {
+      "file": "tdcc_20220812.csv",
+      "actual_date": "2022-08-12",
+      "week": "2022-08-06/2022-08-12",
+      "sha256": "63a7d39b56e160ca4851247dffb712094fc3e3cb6b45365e13bdf892b87d3bf1"
+    },
+    {
+      "file": "tdcc_20220819.csv",
+      "actual_date": "2022-08-19",
+      "week": "2022-08-13/2022-08-19",
+      "sha256": "4b5c03c1b1ac258cce5fdf8fbc60a43328e36a7ec5b9f5cdbbdca366bc936f46"
+    },
+    {
+      "file": "tdcc_20220826.csv",
+      "actual_date": "2022-08-26",
+      "week": "2022-08-20/2022-08-26",
+      "sha256": "f98479e4e4baca04c92a31a22839bef48744e1a334bc16f4408a798fbbe80416"
+    },
+    {
+      "file": "tdcc_20220902.csv",
+      "actual_date": "2022-09-02",
+      "week": "2022-08-27/2022-09-02",
+      "sha256": "a2f48751a153772851aba9dc88c8d0a7ba18cde18647b06abd3cde79a78c5f99"
+    },
+    {
+      "file": "tdcc_20220916.csv",
+      "actual_date": "2022-09-16",
+      "week": "2022-09-10/2022-09-16",
+      "sha256": "7863e03dc0190dca31321248d8feb5d4efe8a5bb345e999dccd6d1649e3cf312"
+    },
+    {
+      "file": "tdcc_20220923.csv",
+      "actual_date": "2022-09-23",
+      "week": "2022-09-17/2022-09-23",
+      "sha256": "d96565fb943156ee4e693d0e69ffb377973319f1edea7cb3b54dbc741866102a"
+    },
+    {
+      "file": "tdcc_20220930.csv",
+      "actual_date": "2022-09-30",
+      "week": "2022-09-24/2022-09-30",
+      "sha256": "143ad8cc897ed770dede714eb8c74853482418e80b94548c9b356d0e0fcc642d"
+    },
+    {
+      "file": "tdcc_20221007.csv",
+      "actual_date": "2022-10-07",
+      "week": "2022-10-01/2022-10-07",
+      "sha256": "46819bbbd1d694c7086b63305c5b13beb60237e6b2d23db666d420a3eedc51b5"
+    },
+    {
+      "file": "tdcc_20221014.csv",
+      "actual_date": "2022-10-14",
+      "week": "2022-10-08/2022-10-14",
+      "sha256": "a45281c32e499643e2997d7ff07cce51718a8d94f685f910cf228de03d246891"
+    },
+    {
+      "file": "tdcc_20221021.csv",
+      "actual_date": "2022-10-21",
+      "week": "2022-10-15/2022-10-21",
+      "sha256": "a4e60175d3c694f929c26ec653bc7f9f37595c532a0840f2b9783678c8b53ec3"
+    },
+    {
+      "file": "tdcc_20221028.csv",
+      "actual_date": "2022-10-28",
+      "week": "2022-10-22/2022-10-28",
+      "sha256": "fabe7f6c63b3e520153c26c099b2dc9f1507ed1ccf94d410ad86f2c1f2cfed9b"
+    },
+    {
+      "file": "tdcc_20221104.csv",
+      "actual_date": "2022-11-04",
+      "week": "2022-10-29/2022-11-04",
+      "sha256": "d0b14d3fba988e80d262cb1ee6e98d05d0a83e4507869a1bf7ba5eb0aa612533"
+    },
+    {
+      "file": "tdcc_20221111.csv",
+      "actual_date": "2022-11-11",
+      "week": "2022-11-05/2022-11-11",
+      "sha256": "6473748c1e1304b30a9eb239e25b6339695d8932f2490bce47d0236d21c2ec63"
+    },
+    {
+      "file": "tdcc_20221118.csv",
+      "actual_date": "2022-11-18",
+      "week": "2022-11-12/2022-11-18",
+      "sha256": "4990bc971064509f0508c156cbca907bbc845b406c5f829a010904ea7d75f9b8"
+    },
+    {
+      "file": "tdcc_20221125.csv",
+      "actual_date": "2022-11-25",
+      "week": "2022-11-19/2022-11-25",
+      "sha256": "3baa018b3c85ccefe2353d86abc04fda7376464aaa1562e935ff1b767700542a"
+    },
+    {
+      "file": "tdcc_20221202.csv",
+      "actual_date": "2022-12-02",
+      "week": "2022-11-26/2022-12-02",
+      "sha256": "ac6ccf3f3798093ac47a7777344e57eaf19342ece2b194089df5f130d86b8e3f"
+    },
+    {
+      "file": "tdcc_20221209.csv",
+      "actual_date": "2022-12-09",
+      "week": "2022-12-03/2022-12-09",
+      "sha256": "9431fa04af24b6dc80ad883de6f6db82e72362294429e393140ac26431a10545"
+    },
+    {
+      "file": "tdcc_20221216.csv",
+      "actual_date": "2022-12-16",
+      "week": "2022-12-10/2022-12-16",
+      "sha256": "491ef89588cff850cd0148f34abcb3ffd2f558f9f80bfc50a43182b3b36d0058"
+    },
+    {
+      "file": "tdcc_20221223.csv",
+      "actual_date": "2022-12-23",
+      "week": "2022-12-17/2022-12-23",
+      "sha256": "7477a02686c739cecc256c269907d0b484459bf4ae1565cfb70d7751d654e072"
+    },
+    {
+      "file": "tdcc_20221230.csv",
+      "actual_date": "2022-12-30",
+      "week": "2022-12-24/2022-12-30",
+      "sha256": "bcc3adc3747cb2acb501e4c588a2bf173d5cf394d3447926f4742188f3c1b11a"
+    },
+    {
+      "file": "tdcc_20230113.csv",
+      "actual_date": "2023-01-13",
+      "week": "2023-01-07/2023-01-13",
+      "sha256": "72b42ee5f01b5bfddd2c3b1a986cc7dd91cd881b2a848b62ab530db8a1fbf087"
+    },
+    {
+      "file": "tdcc_20230210.csv",
+      "actual_date": "2023-02-10",
+      "week": "2023-02-04/2023-02-10",
+      "sha256": "eafe433442c9f389a20a49bd4320cc3d0986676fea31242902fc968104c5112d"
+    },
+    {
+      "file": "tdcc_20230224.csv",
+      "actual_date": "2023-02-24",
+      "week": "2023-02-18/2023-02-24",
+      "sha256": "eba26f65f5ec5b1c688272b3118568c34e749f0ae8ff215915a01fdb742cc69e"
+    },
+    {
+      "file": "tdcc_20230303.csv",
+      "actual_date": "2023-03-03",
+      "week": "2023-02-25/2023-03-03",
+      "sha256": "6b273aedfa65df1f2a93d9a61d8a8bfabe3161c58a261d7b575b8fb5cc72b4d3"
+    },
+    {
+      "file": "tdcc_20230310.csv",
+      "actual_date": "2023-03-10",
+      "week": "2023-03-04/2023-03-10",
+      "sha256": "c0e60601eeca9ba74bfb33aba431c00581ab449eabf52fb56fe8f712b210d194"
+    },
+    {
+      "file": "tdcc_20230317.csv",
+      "actual_date": "2023-03-17",
+      "week": "2023-03-11/2023-03-17",
+      "sha256": "5a7ccd33042e9e8c0d2e15fadc4fb4a6ab111f9ba12c028d30ad8c111019b45a"
+    },
+    {
+      "file": "tdcc_20230331.csv",
+      "actual_date": "2023-03-31",
+      "week": "2023-03-25/2023-03-31",
+      "sha256": "e6f075e8374be0a795a81331ad901c0b70baa7de3706ef392db7ea4947213506"
+    },
+    {
+      "file": "tdcc_20230407.csv",
+      "actual_date": "2023-04-07",
+      "week": "2023-04-01/2023-04-07",
+      "sha256": "3890c7e5a43819a694463e4647979ad4a7d97435ac19a9173caeb3fe340f55d9"
+    },
+    {
+      "file": "tdcc_20230414.csv",
+      "actual_date": "2023-04-14",
+      "week": "2023-04-08/2023-04-14",
+      "sha256": "b0fabc76d446c5dec4af1f47b1c469d0d84d9ec3cdc9abe6f25b16f030082dec"
+    },
+    {
+      "file": "tdcc_20230421.csv",
+      "actual_date": "2023-04-21",
+      "week": "2023-04-15/2023-04-21",
+      "sha256": "a88e6e676ce837a797056a11e3891fb2686952138fb90b2a7269029b491b90d9"
+    },
+    {
+      "file": "tdcc_20230428.csv",
+      "actual_date": "2023-04-28",
+      "week": "2023-04-22/2023-04-28",
+      "sha256": "99eec658e84ae23f879a89ff209d23306357cd5da008954a53bd18ba0b00c728"
+    },
+    {
+      "file": "tdcc_20230505.csv",
+      "actual_date": "2023-05-05",
+      "week": "2023-04-29/2023-05-05",
+      "sha256": "9cbe85637aefc95bebb6c8026913c4b6b17defa4a994c47a9eb02334e23ee524"
+    },
+    {
+      "file": "tdcc_20230512.csv",
+      "actual_date": "2023-05-12",
+      "week": "2023-05-06/2023-05-12",
+      "sha256": "665b44d8cd48463b101fc06d2bcfcc284a554164982086a2b9bc1730fb875e29"
+    },
+    {
+      "file": "tdcc_20230519.csv",
+      "actual_date": "2023-05-19",
+      "week": "2023-05-13/2023-05-19",
+      "sha256": "b7fcb208f950f978deb7095790eeef0c4316f8d4d603b78c792dcb5f524fca19"
+    },
+    {
+      "file": "tdcc_20230526.csv",
+      "actual_date": "2023-05-26",
+      "week": "2023-05-20/2023-05-26",
+      "sha256": "418c35ba58971b5b09957ad13e72dc639ecea6f38429ce7b2e9d4f40b04c5050"
+    },
+    {
+      "file": "tdcc_20230602.csv",
+      "actual_date": "2023-06-02",
+      "week": "2023-05-27/2023-06-02",
+      "sha256": "089e6e798f86c5ea199420e0294db8e9f83a5651c0e4ddd5ea25e8b9a6d66e00"
+    },
+    {
+      "file": "tdcc_20230609.csv",
+      "actual_date": "2023-06-09",
+      "week": "2023-06-03/2023-06-09",
+      "sha256": "94f5a0d1d893c83625c397fc212e0933acae071be4630adef944a37f6f6fde27"
+    },
+    {
+      "file": "tdcc_20230630.csv",
+      "actual_date": "2023-06-30",
+      "week": "2023-06-24/2023-06-30",
+      "sha256": "5ab467ba0b228a100556b0193b2a30e4d99476380d5757d8c1037f0777f552f2"
+    },
+    {
+      "file": "tdcc_20230707.csv",
+      "actual_date": "2023-07-07",
+      "week": "2023-07-01/2023-07-07",
+      "sha256": "3855e05cb2a260dd458c7c0f5ec6125baeae5c752386064ba3542bad07fe7839"
+    },
+    {
+      "file": "tdcc_20230714.csv",
+      "actual_date": "2023-07-14",
+      "week": "2023-07-08/2023-07-14",
+      "sha256": "b0036ee0bffb34003c421288d981215976886518eff5431e8b437299bdae4167"
+    },
+    {
+      "file": "tdcc_20230721.csv",
+      "actual_date": "2023-07-21",
+      "week": "2023-07-15/2023-07-21",
+      "sha256": "b0a80e7d4382217dafda7ae80bb36fc9347e80bcc5380bbc97aaa823351ede91"
+    },
+    {
+      "file": "tdcc_20230728.csv",
+      "actual_date": "2023-07-28",
+      "week": "2023-07-22/2023-07-28",
+      "sha256": "579a20d04a1608dd5d048ec510839ab18a69e8472648e08ec3d9f47540ec058f"
+    },
+    {
+      "file": "tdcc_20230804.csv",
+      "actual_date": "2023-08-04",
+      "week": "2023-07-29/2023-08-04",
+      "sha256": "47b0e443ada78c5faf693575db9340e22435bdd1fb6e1beea05f12ea4e994b93"
+    },
+    {
+      "file": "tdcc_20230811.csv",
+      "actual_date": "2023-08-11",
+      "week": "2023-08-05/2023-08-11",
+      "sha256": "e8388aaa41c3f1e7b9a9e5e64dbaeeee183908605d79612afe0fc627cbc9a7bd"
+    },
+    {
+      "file": "tdcc_20230818.csv",
+      "actual_date": "2023-08-18",
+      "week": "2023-08-12/2023-08-18",
+      "sha256": "b365e021d171dd7dbf54149ca738c6393dfd296cfdfbdb51e815abb02623a9c2"
+    },
+    {
+      "file": "tdcc_20230825.csv",
+      "actual_date": "2023-08-25",
+      "week": "2023-08-19/2023-08-25",
+      "sha256": "44b2d9c72ecc02db4817fcd925c45dd944057c7f084cd7a55598b4e3be150d06"
+    },
+    {
+      "file": "tdcc_20230901.csv",
+      "actual_date": "2023-09-01",
+      "week": "2023-08-26/2023-09-01",
+      "sha256": "6e38dee89c0a2d9c88d7498b3fd82452fb0baf3a92a09aa0bbd30e9727951496"
+    },
+    {
+      "file": "tdcc_20230908.csv",
+      "actual_date": "2023-09-08",
+      "week": "2023-09-02/2023-09-08",
+      "sha256": "de3feb67d305c560bddf732473c0971bb4a73c8bd8bc885d17fd306ee31b5271"
+    },
+    {
+      "file": "tdcc_20230915.csv",
+      "actual_date": "2023-09-15",
+      "week": "2023-09-09/2023-09-15",
+      "sha256": "0ad09f2763315a54d18194edef9009a1284f22cd0d1b0bec64b1bf4dae5f243b"
+    },
+    {
+      "file": "tdcc_20231006.csv",
+      "actual_date": "2023-10-06",
+      "week": "2023-09-30/2023-10-06",
+      "sha256": "825f7f46705c5a6284afef9c7ee509de352bb342fd7f52f9bee938b933c84e0d"
+    },
+    {
+      "file": "tdcc_20231013.csv",
+      "actual_date": "2023-10-13",
+      "week": "2023-10-07/2023-10-13",
+      "sha256": "44dd081bdb0b8ce9828b192932d5ea7befcb644855456393380e31f5df6ca726"
+    },
+    {
+      "file": "tdcc_20231020.csv",
+      "actual_date": "2023-10-20",
+      "week": "2023-10-14/2023-10-20",
+      "sha256": "2e6524e3497cc3144dd7f200a7784406fe7d1058ce49f3cc8d97b1f6c8e4f7aa"
+    },
+    {
+      "file": "tdcc_20231027.csv",
+      "actual_date": "2023-10-27",
+      "week": "2023-10-21/2023-10-27",
+      "sha256": "f209bf9a56bd47e4e492e8b82055a23916e08c33f01c5e3b9b7bec9dd3d148d1"
+    },
+    {
+      "file": "tdcc_20231103.csv",
+      "actual_date": "2023-11-03",
+      "week": "2023-10-28/2023-11-03",
+      "sha256": "c2a95fd0b2e11779781f9a5f536c986a7693c7964b722dca5bdd4d306a0d786b"
+    },
+    {
+      "file": "tdcc_20231110.csv",
+      "actual_date": "2023-11-10",
+      "week": "2023-11-04/2023-11-10",
+      "sha256": "2fe77602eb90f4c8fcdfbadbdd83aad4c6ef68e776819e45d5f598552f2483fb"
+    },
+    {
+      "file": "tdcc_20231117.csv",
+      "actual_date": "2023-11-17",
+      "week": "2023-11-11/2023-11-17",
+      "sha256": "dedc03e4b42a2feaf36af5f73c33837e63b6737aaf1a6c6cc5125be06ec2f08a"
+    },
+    {
+      "file": "tdcc_20231124.csv",
+      "actual_date": "2023-11-24",
+      "week": "2023-11-18/2023-11-24",
+      "sha256": "e1d3a71f9f78050855f13d2502323dd50fb492541609a0eb2c567abadc9d3b04"
+    },
+    {
+      "file": "tdcc_20231201.csv",
+      "actual_date": "2023-12-01",
+      "week": "2023-11-25/2023-12-01",
+      "sha256": "501f8a968a60238a87829d146e7dcaca1091a41661a73efbf7c7e665edd8d27b"
+    },
+    {
+      "file": "tdcc_20231208.csv",
+      "actual_date": "2023-12-08",
+      "week": "2023-12-02/2023-12-08",
+      "sha256": "98afe020b88755e91863f92f757b016893d4e051f96aa4e4bf70ce2e25edc369"
+    },
+    {
+      "file": "tdcc_20231215.csv",
+      "actual_date": "2023-12-15",
+      "week": "2023-12-09/2023-12-15",
+      "sha256": "c3ee686f8e8098e3a5ba9c27c9bd8865a02f4473e81e790635ab47a9e50fee17"
+    },
+    {
+      "file": "tdcc_20231222.csv",
+      "actual_date": "2023-12-22",
+      "week": "2023-12-16/2023-12-22",
+      "sha256": "de13c0546028e29af482c1368fb80288f78dc7a980f1318507516e991aa2daee"
+    },
+    {
+      "file": "tdcc_20231229.csv",
+      "actual_date": "2023-12-29",
+      "week": "2023-12-23/2023-12-29",
+      "sha256": "65d7d7f726eab6abcbb7b223b8140fe5d0fa7b0fce634e47fc941384eac13fd1"
+    },
+    {
+      "file": "tdcc_20240105.csv",
+      "actual_date": "2024-01-05",
+      "week": "2023-12-30/2024-01-05",
+      "sha256": "e078bebfd62567d050c94cd0472bb6df5f8b097ddcfe0b009372f054d0e0b4ce"
+    },
+    {
+      "file": "tdcc_20240112.csv",
+      "actual_date": "2024-01-12",
+      "week": "2024-01-06/2024-01-12",
+      "sha256": "b19464a7b35a10f5793010d0e6c7ca76e6acb06064cf4ad8caacce29dbf6f945"
+    },
+    {
+      "file": "tdcc_20240119.csv",
+      "actual_date": "2024-01-19",
+      "week": "2024-01-13/2024-01-19",
+      "sha256": "20244c4a62fd3207398494726a973244a3a91f6c6c4da2b80f083cda3f6ae9b9"
+    },
+    {
+      "file": "tdcc_20240126.csv",
+      "actual_date": "2024-01-26",
+      "week": "2024-01-20/2024-01-26",
+      "sha256": "f56d10dbc92dc7c30e06932f0834070334cd83c60be581b72dce884a75b27fe8"
+    },
+    {
+      "file": "tdcc_20240202.csv",
+      "actual_date": "2024-02-02",
+      "week": "2024-01-27/2024-02-02",
+      "sha256": "8c32cb265b9778b23c1cbab8a2a373e6e09cba5cae90a1d83a503a9238cea767"
+    },
+    {
+      "file": "tdcc_20240223.csv",
+      "actual_date": "2024-02-23",
+      "week": "2024-02-17/2024-02-23",
+      "sha256": "037c7654c55af6876fea4027d40f8002efca295cc02dd15954a3bd3b3cca1443"
+    },
+    {
+      "file": "tdcc_20240301.csv",
+      "actual_date": "2024-03-01",
+      "week": "2024-02-24/2024-03-01",
+      "sha256": "6e69cd6d8b32c2f2fc6c9d3848139549af0c909d296c7d0a22380bd6f3df0137"
+    },
+    {
+      "file": "tdcc_20240308.csv",
+      "actual_date": "2024-03-08",
+      "week": "2024-03-02/2024-03-08",
+      "sha256": "164de2eef2d70ee0b00aa36c0ad57705a3ebd0c51a1b5372aa3eb27c3ea83099"
+    },
+    {
+      "file": "tdcc_20240315.csv",
+      "actual_date": "2024-03-15",
+      "week": "2024-03-09/2024-03-15",
+      "sha256": "1e3fa87c0990a877122b12aff30a97357d67be5141bbe5b93c7eb48e3e8f5a79"
+    },
+    {
+      "file": "tdcc_20240322.csv",
+      "actual_date": "2024-03-22",
+      "week": "2024-03-16/2024-03-22",
+      "sha256": "9bd93c946d61782a99a1a27b31d2825333b52b9d47217b1290808ab84b1fcaee"
+    },
+    {
+      "file": "tdcc_20240329.csv",
+      "actual_date": "2024-03-29",
+      "week": "2024-03-23/2024-03-29",
+      "sha256": "06f76c5d20075637ecad41c552a7d29146fccfc9a7871c60a5a174344cb148df"
+    },
+    {
+      "file": "tdcc_20240412.csv",
+      "actual_date": "2024-04-12",
+      "week": "2024-04-06/2024-04-12",
+      "sha256": "6ca28887b16ba9410fc19cb15723a7003595abbb82bb78696c4bf69283fe5189"
+    },
+    {
+      "file": "tdcc_20240419.csv",
+      "actual_date": "2024-04-19",
+      "week": "2024-04-13/2024-04-19",
+      "sha256": "7c2eb8a6a7480a0a485d531e9204011f0147e60539cc308ebf2738d65b4d7a72"
+    },
+    {
+      "file": "tdcc_20240426.csv",
+      "actual_date": "2024-04-26",
+      "week": "2024-04-20/2024-04-26",
+      "sha256": "ae1c02212b18cda9349318ebc096849f8a2ec01c0b6a9e029cbbbb623e8b025c"
+    },
+    {
+      "file": "tdcc_20240503.csv",
+      "actual_date": "2024-05-03",
+      "week": "2024-04-27/2024-05-03",
+      "sha256": "9cbc4f2083cfa3c3e95e056d863d1c68b4f3ea56a8f14c5133e57f851ba8f324"
+    },
+    {
+      "file": "tdcc_20240510.csv",
+      "actual_date": "2024-05-10",
+      "week": "2024-05-04/2024-05-10",
+      "sha256": "2378ff3de89093878b87102f0a21ee702f7de366674cbfd4a13f9093fd9023eb"
+    },
+    {
+      "file": "tdcc_20240517.csv",
+      "actual_date": "2024-05-17",
+      "week": "2024-05-11/2024-05-17",
+      "sha256": "d5a9705fbfc321a703e8b0a1a068f696940e081f4954a20313e1c25d32772707"
+    },
+    {
+      "file": "tdcc_20240524.csv",
+      "actual_date": "2024-05-24",
+      "week": "2024-05-18/2024-05-24",
+      "sha256": "725fc08d6f8cf19e575f5214cbe69440bf5df81290821f9517e90b7645027785"
+    },
+    {
+      "file": "tdcc_20240531.csv",
+      "actual_date": "2024-05-31",
+      "week": "2024-05-25/2024-05-31",
+      "sha256": "96bb332a741e9c11b6a4e83ca4370b24c68fb7b46f3a17531f2cac8cc7ea3c77"
+    },
+    {
+      "file": "tdcc_20240607.csv",
+      "actual_date": "2024-06-07",
+      "week": "2024-06-01/2024-06-07",
+      "sha256": "fbea89d25a70a64dfacf2ad79d698d74998c3f19002243c8f7bd01137cf1f108"
+    },
+    {
+      "file": "tdcc_20240614.csv",
+      "actual_date": "2024-06-14",
+      "week": "2024-06-08/2024-06-14",
+      "sha256": "32d894f58ae15a2bc69c48a9d4b1613e932d27711604d4eb522dc992d7f9d9ca"
+    },
+    {
+      "file": "tdcc_20240621.csv",
+      "actual_date": "2024-06-21",
+      "week": "2024-06-15/2024-06-21",
+      "sha256": "e010d4c7bfae5e0de7137d1308010106b991bbaeb30aaf9aaaec12c4ff2bad7e"
+    },
+    {
+      "file": "tdcc_20240628.csv",
+      "actual_date": "2024-06-28",
+      "week": "2024-06-22/2024-06-28",
+      "sha256": "de21d9675698d85f60de016232256e78fe97978469e82c48745f7ad51ea0fc27"
+    },
+    {
+      "file": "tdcc_20240705.csv",
+      "actual_date": "2024-07-05",
+      "week": "2024-06-29/2024-07-05",
+      "sha256": "e067b9d167b5bd8a81340e64e52f5c77bca508f69488d22beed12dec73da8cae"
+    },
+    {
+      "file": "tdcc_20240712.csv",
+      "actual_date": "2024-07-12",
+      "week": "2024-07-06/2024-07-12",
+      "sha256": "9a88adf11842c6aa09a74548dc4806466349324c98966537af8c86013343f3e0"
+    },
+    {
+      "file": "tdcc_20240719.csv",
+      "actual_date": "2024-07-19",
+      "week": "2024-07-13/2024-07-19",
+      "sha256": "96ea7a0be05eaed3ab8f536d223d1ffdd0c2de09576de92887f775c99e42a161"
+    },
+    {
+      "file": "tdcc_20240726.csv",
+      "actual_date": "2024-07-26",
+      "week": "2024-07-20/2024-07-26",
+      "sha256": "d8a77efbc0b59c4ad0c2da7823aa58f3834325112ee23b2b32987ececafe5699"
+    },
+    {
+      "file": "tdcc_20240802.csv",
+      "actual_date": "2024-08-02",
+      "week": "2024-07-27/2024-08-02",
+      "sha256": "28770f9da011ac9b5c08070239f8251f34ef852837015f9cb35cb16e05db5156"
+    },
+    {
+      "file": "tdcc_20240809.csv",
+      "actual_date": "2024-08-09",
+      "week": "2024-08-03/2024-08-09",
+      "sha256": "15e1b7ff0d6eaaaeb94b6f9108f6b2ad91b39010c38d0ca47325e11dc860a061"
+    },
+    {
+      "file": "tdcc_20240816.csv",
+      "actual_date": "2024-08-16",
+      "week": "2024-08-10/2024-08-16",
+      "sha256": "1dd17b0a1f11196da108568501bdc46a319ad78ddd6353b83a6716c143f30f10"
+    },
+    {
+      "file": "tdcc_20240823.csv",
+      "actual_date": "2024-08-23",
+      "week": "2024-08-17/2024-08-23",
+      "sha256": "5ca2c792697087cdfa2d1a5065176916cffe055bd122a6f2cb53222c90354f91"
+    },
+    {
+      "file": "tdcc_20240830.csv",
+      "actual_date": "2024-08-30",
+      "week": "2024-08-24/2024-08-30",
+      "sha256": "8973ee342cb86d5bb6495731fbce1f5ea9c6a805803d517e4e31f8309871c843"
+    },
+    {
+      "file": "tdcc_20240906.csv",
+      "actual_date": "2024-09-06",
+      "week": "2024-08-31/2024-09-06",
+      "sha256": "1b1754e18dd12e8a93f655b6674b9e9a32f954f5d5b119636d39fa9a5f6e174b"
+    },
+    {
+      "file": "tdcc_20240913.csv",
+      "actual_date": "2024-09-13",
+      "week": "2024-09-07/2024-09-13",
+      "sha256": "97c8fa1b550e2eb1d5c8017240370cc6e655b4a7891388f38e0ea488a5a6ac0b"
+    },
+    {
+      "file": "tdcc_20240920.csv",
+      "actual_date": "2024-09-20",
+      "week": "2024-09-14/2024-09-20",
+      "sha256": "f2ff14d47017519f1a564f1c8a06c474f51f019013a6edfbfbe74f3741672754"
+    },
+    {
+      "file": "tdcc_20240927.csv",
+      "actual_date": "2024-09-27",
+      "week": "2024-09-21/2024-09-27",
+      "sha256": "d76123ca4ba2094a9430dda25b95efa86c8f1b2f6deec4f47c6754cbd3871d8c"
+    },
+    {
+      "file": "tdcc_20241004.csv",
+      "actual_date": "2024-10-04",
+      "week": "2024-09-28/2024-10-04",
+      "sha256": "b388128fa0cf63a9ae3c06633cf0415d0aca20006ba393785674e15c33a358c3"
+    },
+    {
+      "file": "tdcc_20241011.csv",
+      "actual_date": "2024-10-11",
+      "week": "2024-10-05/2024-10-11",
+      "sha256": "ad5dd5caf66f1ad1a255dc16dffdfea9c10a60f7af8257bdaa502dcec5a373b5"
+    },
+    {
+      "file": "tdcc_20241018.csv",
+      "actual_date": "2024-10-18",
+      "week": "2024-10-12/2024-10-18",
+      "sha256": "9cd7a82b92bf6015d945b29d3385083d4985c62e6be08cf2620b898a4d0203c0"
+    },
+    {
+      "file": "tdcc_20241025.csv",
+      "actual_date": "2024-10-25",
+      "week": "2024-10-19/2024-10-25",
+      "sha256": "91b6e1d1bd784baeed3770442f1e1c822b4ca101929e5c09306fbc4e514988fd"
+    },
+    {
+      "file": "tdcc_20241101.csv",
+      "actual_date": "2024-11-01",
+      "week": "2024-10-26/2024-11-01",
+      "sha256": "bf68103d0b5062862c7f45fad7b0259b97ebdba0b5fd2dac11b6ecc8675d1ff5"
+    },
+    {
+      "file": "tdcc_20241108.csv",
+      "actual_date": "2024-11-08",
+      "week": "2024-11-02/2024-11-08",
+      "sha256": "8e48180e152fe17568d55de1d817a331b39ccbeeb3ff604461f17ba531793b3f"
+    },
+    {
+      "file": "tdcc_20241115.csv",
+      "actual_date": "2024-11-15",
+      "week": "2024-11-09/2024-11-15",
+      "sha256": "161a25405f5d4b0dc8627715f9521d18b494ba239b4ffba2dc88ea8ba275755d"
+    },
+    {
+      "file": "tdcc_20241122.csv",
+      "actual_date": "2024-11-22",
+      "week": "2024-11-16/2024-11-22",
+      "sha256": "e76c654446fd4f604970917b08f418553d1594640dc7185e71714660ed57818d"
+    },
+    {
+      "file": "tdcc_20241129.csv",
+      "actual_date": "2024-11-29",
+      "week": "2024-11-23/2024-11-29",
+      "sha256": "6447560c2ff3c7fc845833d4fe3666a07321dfac4ec2406b533fbfecaed104bc"
+    },
+    {
+      "file": "tdcc_20241206.csv",
+      "actual_date": "2024-12-06",
+      "week": "2024-11-30/2024-12-06",
+      "sha256": "0787c4a240c039ec580bcbbb8fa16be998b57deebd274dfa8e82baf9a967cccc"
+    },
+    {
+      "file": "tdcc_20241213.csv",
+      "actual_date": "2024-12-13",
+      "week": "2024-12-07/2024-12-13",
+      "sha256": "ef221e5fc1d9b7a385584553be2d9467cf9cca6780438004e7e4a92d398958f5"
+    },
+    {
+      "file": "tdcc_20241220.csv",
+      "actual_date": "2024-12-20",
+      "week": "2024-12-14/2024-12-20",
+      "sha256": "9e68e20f16ef5835032a66d938ea348727ec246ed763ac2702b3c9a879d1d0ff"
+    },
+    {
+      "file": "tdcc_20241227.csv",
+      "actual_date": "2024-12-27",
+      "week": "2024-12-21/2024-12-27",
+      "sha256": "64ec4c27bb7f6911ce748fa77d4004f835b9b5ac16c4e9e164d01524e7f62495"
+    },
+    {
+      "file": "tdcc_20250103.csv",
+      "actual_date": "2025-01-03",
+      "week": "2024-12-28/2025-01-03",
+      "sha256": "47b8638e3a6758b7d188898b6d2b03615fb1995f75f2f2b29b4e430cab9daad5"
+    },
+    {
+      "file": "tdcc_20250110.csv",
+      "actual_date": "2025-01-10",
+      "week": "2025-01-04/2025-01-10",
+      "sha256": "c0511a0d688b705d5aa64714dba031f7ac4d1f41eb3b1608e3fe0a675b1d4e6f"
+    },
+    {
+      "file": "tdcc_20250117.csv",
+      "actual_date": "2025-01-17",
+      "week": "2025-01-11/2025-01-17",
+      "sha256": "52e14dbfb5dd9532e1e04fd02ddf7afd9588327416c1ff73978fe0c536a29bdd"
+    },
+    {
+      "file": "tdcc_20250124.csv",
+      "actual_date": "2025-01-24",
+      "week": "2025-01-18/2025-01-24",
+      "sha256": "ff8fa59aff3b23a6284e4d36677d86b12f4886c36989102e673e9d950a602b80"
+    },
+    {
+      "file": "tdcc_20250214.csv",
+      "actual_date": "2025-02-14",
+      "week": "2025-02-08/2025-02-14",
+      "sha256": "01ec995bda48d202631649eb3b71828ea49d56deaa34514615ded75b83ea8301"
+    },
+    {
+      "file": "tdcc_20250221.csv",
+      "actual_date": "2025-02-21",
+      "week": "2025-02-15/2025-02-21",
+      "sha256": "e9c908ffef37067b0e75ece85ab664317c73c16c7578f7df288da480f5cd49cd"
+    },
+    {
+      "file": "tdcc_20250307.csv",
+      "actual_date": "2025-03-07",
+      "week": "2025-03-01/2025-03-07",
+      "sha256": "84d3df537a59cd09adf95d98369398b564bd833129fd16f3e8d3160e69367ebb"
+    },
+    {
+      "file": "tdcc_20250314.csv",
+      "actual_date": "2025-03-14",
+      "week": "2025-03-08/2025-03-14",
+      "sha256": "8eb0eb09e4f723570c44e87150d4f3a0d47d82ba85e445f5ad928f4c52fc1ed4"
+    },
+    {
+      "file": "tdcc_20250321.csv",
+      "actual_date": "2025-03-21",
+      "week": "2025-03-15/2025-03-21",
+      "sha256": "78ae05ae67d0b8b62d785ecfc817daefcba6fda08bf63eba19236d8b16b481f4"
+    },
+    {
+      "file": "tdcc_20250328.csv",
+      "actual_date": "2025-03-28",
+      "week": "2025-03-22/2025-03-28",
+      "sha256": "e0291197a76022a0f9ef718610bcf75638a07bfe22b41f2e357792ac0aed5c5a"
+    },
+    {
+      "file": "tdcc_20250411.csv",
+      "actual_date": "2025-04-11",
+      "week": "2025-04-05/2025-04-11",
+      "sha256": "ca444a44d6c85254c938a4cbc309ec05d1168827852b239a37b0156ac75ab014"
+    },
+    {
+      "file": "tdcc_20250418.csv",
+      "actual_date": "2025-04-18",
+      "week": "2025-04-12/2025-04-18",
+      "sha256": "312799baa6efcd1a71a646eb546264f9ab971df8afcf9509a0375bf734cfdac2"
+    },
+    {
+      "file": "tdcc_20250425.csv",
+      "actual_date": "2025-04-25",
+      "week": "2025-04-19/2025-04-25",
+      "sha256": "061c89d0aefd437555ab71a8b84cae2194495f24eebab4b4f6ac0763588d523b"
+    },
+    {
+      "file": "tdcc_20250502.csv",
+      "actual_date": "2025-05-02",
+      "week": "2025-04-26/2025-05-02",
+      "sha256": "7061e396a9ef15d6114a015e120989c01f28bef97f5409a61c69d6d2429fcc40"
+    },
+    {
+      "file": "tdcc_20250509.csv",
+      "actual_date": "2025-05-09",
+      "week": "2025-05-03/2025-05-09",
+      "sha256": "ab76bbc5148f162dce19c8fdd1420c961ec43aaebd5f201ece163540b0023bc7"
+    },
+    {
+      "file": "tdcc_20250516.csv",
+      "actual_date": "2025-05-16",
+      "week": "2025-05-10/2025-05-16",
+      "sha256": "92c4dd39abd923ab83902a48ac2d6e73ed5099c43e650a8a15c410dfc841cd84"
+    },
+    {
+      "file": "tdcc_20250523.csv",
+      "actual_date": "2025-05-23",
+      "week": "2025-05-17/2025-05-23",
+      "sha256": "4239835245e3401ca0063c5601a059613f9fbcb0d61ee8835b0b5d695a3851fc"
+    },
+    {
+      "file": "tdcc_20250606.csv",
+      "actual_date": "2025-06-06",
+      "week": "2025-05-31/2025-06-06",
+      "sha256": "fe1565f08f0798a8d24d4e3a97fcd85c540b1269117d97692475fd4ca4ea5f31"
+    },
+    {
+      "file": "tdcc_20250613.csv",
+      "actual_date": "2025-06-13",
+      "week": "2025-06-07/2025-06-13",
+      "sha256": "691fbe7534833c529972cfa8508cf21693a358d3d080e0bd5a6d55582689683d"
+    },
+    {
+      "file": "tdcc_20250620.csv",
+      "actual_date": "2025-06-20",
+      "week": "2025-06-14/2025-06-20",
+      "sha256": "c38b8d216759730d95a3b3aa1dd0997ddc33d27dbea76fb951dd3d36c2d7a04c"
+    },
+    {
+      "file": "tdcc_20250627.csv",
+      "actual_date": "2025-06-27",
+      "week": "2025-06-21/2025-06-27",
+      "sha256": "d0533a9bfdee0a71a733be0c97d3621c63fdbe4d99d9a9211d2e206bacbb8722"
+    },
+    {
+      "file": "tdcc_20250704.csv",
+      "actual_date": "2025-07-04",
+      "week": "2025-06-28/2025-07-04",
+      "sha256": "2a617effc8ce3e229a06e1c01850b713540ab01d689a21c5f82c82b53c5a8b56"
+    },
+    {
+      "file": "tdcc_20250711.csv",
+      "actual_date": "2025-07-11",
+      "week": "2025-07-05/2025-07-11",
+      "sha256": "571e59d7ef896d9fcdced849a4bd060e87429c09349736a2481450b181cc7987"
+    },
+    {
+      "file": "tdcc_20250718.csv",
+      "actual_date": "2025-07-18",
+      "week": "2025-07-12/2025-07-18",
+      "sha256": "8689103102888a5e0abc91c32015b653b616651438506f952b507e39b069b400"
+    },
+    {
+      "file": "tdcc_20250725.csv",
+      "actual_date": "2025-07-25",
+      "week": "2025-07-19/2025-07-25",
+      "sha256": "f16a23666055f7b3b7e2d2465b3ded7fff2f5d0d63d20f5efaaff6190e311e82"
+    },
+    {
+      "file": "tdcc_20250801.csv",
+      "actual_date": "2025-08-01",
+      "week": "2025-07-26/2025-08-01",
+      "sha256": "0b94b3e224e8aa9e08097a574ae147d1cea9780217a6d0b5d5a1c8bd2bbafd65"
+    },
+    {
+      "file": "tdcc_20250808.csv",
+      "actual_date": "2025-08-08",
+      "week": "2025-08-02/2025-08-08",
+      "sha256": "4a487dfe1c98de0389e0a5da8cb4cbd3ba2fccb241187315160e42ae83070fa4"
+    },
+    {
+      "file": "tdcc_20250815.csv",
+      "actual_date": "2025-08-15",
+      "week": "2025-08-09/2025-08-15",
+      "sha256": "b44048da518a0e2a492b5d5642b8ac3ff0a08dac969d1cd209c7db211113dd87"
+    },
+    {
+      "file": "tdcc_20250822.csv",
+      "actual_date": "2025-08-22",
+      "week": "2025-08-16/2025-08-22",
+      "sha256": "0c8790940dd5dc9df1259e44672e6ff44cd183cf62a7168321221cffdafacba3"
+    },
+    {
+      "file": "tdcc_20250829.csv",
+      "actual_date": "2025-08-29",
+      "week": "2025-08-23/2025-08-29",
+      "sha256": "27dd2455f70f697c390680840564cacb97f6a4ba64c438aaaf4a5e7222875c2a"
+    },
+    {
+      "file": "tdcc_20250905.csv",
+      "actual_date": "2025-09-05",
+      "week": "2025-08-30/2025-09-05",
+      "sha256": "2710c6870adcf0df1b020982a57196cd110d8ea0510df7f31125433aacbdf505"
+    },
+    {
+      "file": "tdcc_20250912.csv",
+      "actual_date": "2025-09-12",
+      "week": "2025-09-06/2025-09-12",
+      "sha256": "9ff1a8c02f1f2a72b803ccc95295b73d39e376f103f76874195733485b1c307b"
+    },
+    {
+      "file": "tdcc_20250919.csv",
+      "actual_date": "2025-09-19",
+      "week": "2025-09-13/2025-09-19",
+      "sha256": "c582d57bde9485078003e5e8a832056b156c3fa85a409077f619858d97c5ae00"
+    },
+    {
+      "file": "tdcc_20250926.csv",
+      "actual_date": "2025-09-26",
+      "week": "2025-09-20/2025-09-26",
+      "sha256": "7ebfa7d229407fda4e7bef2ceb218ad4ad62899c718419d868604bf2b2cbd979"
+    },
+    {
+      "file": "tdcc_20251003.csv",
+      "actual_date": "2025-10-03",
+      "week": "2025-09-27/2025-10-03",
+      "sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+    },
+    {
+      "file": "tdcc_20251017.csv",
+      "actual_date": "2025-10-17",
+      "week": "2025-10-11/2025-10-17",
+      "sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+    },
+    {
+      "file": "tdcc_20251031.csv",
+      "actual_date": "2025-10-31",
+      "week": "2025-10-25/2025-10-31",
+      "sha256": "8ed9cd0933d6a0081c62d83d473ab77f003fa3c386eec4e1adf2834aa19808d2"
+    },
+    {
+      "file": "tdcc_20251107.csv",
+      "actual_date": "2025-11-07",
+      "week": "2025-11-01/2025-11-07",
+      "sha256": "3901cbceb458e2e52b39fe56872091741feb214fe07e728ade5ff9fe42af7753"
+    },
+    {
+      "file": "tdcc_20251114.csv",
+      "actual_date": "2025-11-14",
+      "week": "2025-11-08/2025-11-14",
+      "sha256": "813d3d4c2270750862cf977c6196dfe9ff3dd98ce2620c9bc6a0a75979eb9cd4"
+    },
+    {
+      "file": "tdcc_20251121.csv",
+      "actual_date": "2025-11-21",
+      "week": "2025-11-15/2025-11-21",
+      "sha256": "37966cd9e6497123dfeff7352df6d41b7a3b3d4a0065c5083df37e36d639e666"
+    },
+    {
+      "file": "tdcc_20251128.csv",
+      "actual_date": "2025-11-28",
+      "week": "2025-11-22/2025-11-28",
+      "sha256": "97e1ea877b27621dec6b19ecf0d26e867acb3eaf53f53c78bd9b8fc530f831b6"
+    },
+    {
+      "file": "tdcc_20251205.csv",
+      "actual_date": "2025-12-05",
+      "week": "2025-11-29/2025-12-05",
+      "sha256": "8e8a83e2b363eeca47284e237f834762cf9185b10f26802a355ce6c68ef0cfed"
+    },
+    {
+      "file": "tdcc_20251212.csv",
+      "actual_date": "2025-12-12",
+      "week": "2025-12-06/2025-12-12",
+      "sha256": "b03ea135823405d3c281790ae3c4ae95b9cf8d4254095c423af95f4ea1410115"
+    },
+    {
+      "file": "tdcc_20251219.csv",
+      "actual_date": "2025-12-19",
+      "week": "2025-12-13/2025-12-19",
+      "sha256": "b58c56e92bbcbe47caf2d254f24de5f61e75e117671689603aaa3f1fda4019bf"
+    },
+    {
+      "file": "tdcc_20251226.csv",
+      "actual_date": "2025-12-26",
+      "week": "2025-12-20/2025-12-26",
+      "sha256": "793cc5782ccca2835f9fbb9512abc3988ba2a1ed0759491349a1e848a6f50790"
+    },
+    {
+      "file": "tdcc_20260102.csv",
+      "actual_date": "2026-01-02",
+      "week": "2025-12-27/2026-01-02",
+      "sha256": "a006e4dd6303d2a70c677615d58bda8d815b5494ebaa2df687b184ab74fd9819"
+    },
+    {
+      "file": "tdcc_20260109.csv",
+      "actual_date": "2026-01-09",
+      "week": "2026-01-03/2026-01-09",
+      "sha256": "2e92689aea4d41c507aa5f974e523cdf301e5e25a7f968c8986e980c90efda4e"
+    },
+    {
+      "file": "tdcc_20260116.csv",
+      "actual_date": "2026-01-16",
+      "week": "2026-01-10/2026-01-16",
+      "sha256": "d66abc77e98d47e20ae497e9201f17d1edcb7bd242c93aacdbe8baaa6f53fdf5"
+    },
+    {
+      "file": "tdcc_20260123.csv",
+      "actual_date": "2026-01-23",
+      "week": "2026-01-17/2026-01-23",
+      "sha256": "1cd522e948c555c7f29d85d880cc3bcdc4083976f08141a22bfa6484482848fe"
+    },
+    {
+      "file": "tdcc_20260130.csv",
+      "actual_date": "2026-01-30",
+      "week": "2026-01-24/2026-01-30",
+      "sha256": "9a61c335703b52df809cdf183bce57980d00e8a2ba886481787d05cba974fbd8"
+    },
+    {
+      "file": "tdcc_20260206.csv",
+      "actual_date": "2026-02-06",
+      "week": "2026-01-31/2026-02-06",
+      "sha256": "c11fdb911e1a5537a7eceee64233f7edec0e7bd0f3bbdebd9dfaa292596b142d"
+    },
+    {
+      "file": "tdcc_20260213.csv",
+      "actual_date": "2026-02-13",
+      "week": "2026-02-07/2026-02-13",
+      "sha256": "cbea877d2e5f185abba41bb3f5d1665fb414dec45f1a9b803de4fa7266bc5078"
+    },
+    {
+      "file": "tdcc_20260306.csv",
+      "actual_date": "2026-03-06",
+      "week": "2026-02-28/2026-03-06",
+      "sha256": "132c40cc6668e373f15f239f726dcab41e56b4c3921d3225b72015bb6f0e69dd"
+    },
+    {
+      "file": "tdcc_20260313.csv",
+      "actual_date": "2026-03-13",
+      "week": "2026-03-07/2026-03-13",
+      "sha256": "1759b7f62bf19d8757d3fd5968e782c43e4f39b42e0379019b40a09637228226"
+    },
+    {
+      "file": "tdcc_20260320.csv",
+      "actual_date": "2026-03-20",
+      "week": "2026-03-14/2026-03-20",
+      "sha256": "75c72095901a8d357a15cf383b7d6a08cab0024fefdaf6181ec95b99e2c80b60"
+    },
+    {
+      "file": "tdcc_20260327.csv",
+      "actual_date": "2026-03-27",
+      "week": "2026-03-21/2026-03-27",
+      "sha256": "712b0bfcb56f0668fb94bb950671139e7fcd2a216f84542012ed5b7304d76462"
+    },
+    {
+      "file": "tdcc_20260402.csv",
+      "actual_date": "2026-04-02",
+      "week": "2026-03-28/2026-04-03",
+      "sha256": "5bca93649fc72664ae5ea04feb247e8f188ac627e829091fe8a4500cb7e3d7a2"
+    },
+    {
+      "file": "tdcc_20260410.csv",
+      "actual_date": "2026-04-10",
+      "week": "2026-04-04/2026-04-10",
+      "sha256": "8d76944e35f56af0bdba3ef4be556f26fa4bd4fc4601366dec53c31ce0259c13"
+    },
+    {
+      "file": "tdcc_20260417.csv",
+      "actual_date": "2026-04-17",
+      "week": "2026-04-11/2026-04-17",
+      "sha256": "d72f28872f7622626852788212abb1c9f1a2e9e6d04c79abb5ca6778e6333193"
+    },
+    {
+      "file": "tdcc_20260424.csv",
+      "actual_date": "2026-04-24",
+      "week": "2026-04-18/2026-04-24",
+      "sha256": "caeb1349f4bbbfeecaabdd351a566e2df6351c4e375ee2c433927311e95051d4"
+    },
+    {
+      "file": "tdcc_20260430.csv",
+      "actual_date": "2026-04-30",
+      "week": "2026-04-25/2026-05-01",
+      "sha256": "f431288bd6c33d3a06bc534fd7df6a7f408033666364151d078dff1c52f5594f"
+    },
+    {
+      "file": "tdcc_20260508.csv",
+      "actual_date": "2026-05-08",
+      "week": "2026-05-02/2026-05-08",
+      "sha256": "c1ccf89f48a059d889ae1c2797c03e09f503725ce875a51e2dd98b886fbc13cb"
+    },
+    {
+      "file": "tdcc_20260515.csv",
+      "actual_date": "2026-05-15",
+      "week": "2026-05-09/2026-05-15",
+      "sha256": "c6ad8d59508f135137c2c317adc9ada30b40b64420fbd804fb8ae3d8f1077635"
+    },
+    {
+      "file": "tdcc_20260522.csv",
+      "actual_date": "2026-05-22",
+      "week": "2026-05-16/2026-05-22",
+      "sha256": "e8bd6a805f0f9e768b733a41bd6af9ea576d7a40d04f02dbad0a9ad095f64088"
+    },
+    {
+      "file": "tdcc_20260529.csv",
+      "actual_date": "2026-05-29",
+      "week": "2026-05-23/2026-05-29",
+      "sha256": "10c46ac93c6120e64e8d5f61c236347a1c39e71a7a44074274ab96f0804362f2"
+    },
+    {
+      "file": "tdcc_20260605.csv",
+      "actual_date": "2026-06-05",
+      "week": "2026-05-30/2026-06-05",
+      "sha256": "255a496200b9fbc6371cee280306cdc5e70ad98ee613e4d22b7def2cb8f78e08"
+    },
+    {
+      "file": "tdcc_20260612.csv",
+      "actual_date": "2026-06-12",
+      "week": "2026-06-06/2026-06-12",
+      "sha256": "bd49da01ed63a2b3e8fd04f4cf59aefa12fbdfe5ff785e8b918e40e1fe7d582b"
+    },
+    {
+      "file": "tdcc_20260618.csv",
+      "actual_date": "2026-06-18",
+      "week": "2026-06-13/2026-06-19",
+      "sha256": "c047c74f82726b19fb27f668f4ceafca96e682ab2222af303979ce9c266ce436"
+    },
+    {
+      "file": "tdcc_20260626.csv",
+      "actual_date": "2026-06-26",
+      "week": "2026-06-20/2026-06-26",
+      "sha256": "161ca3d103701c3b1ca8907cd1b2a6facbfbbaea54ab4fd4528b9b3d085ec7d8"
+    },
+    {
+      "file": "tdcc_20260703.csv",
+      "actual_date": "2026-07-03",
+      "week": "2026-06-27/2026-07-03",
+      "sha256": "1f01966f46a1fe51e13db65ef37d2aba305c7ba968464607ba891779563e44d5"
+    },
+    {
+      "file": "tdcc_20260709.csv",
+      "actual_date": "2026-07-09",
+      "week": "2026-07-04/2026-07-10",
+      "sha256": "8542d579dc093f360f1b2e645b2b54e4403daa857cd5cade77f746cde53bf8fe"
+    },
+    {
+      "file": "tdcc_20260717.csv",
+      "actual_date": "2026-07-17",
+      "week": "2026-07-11/2026-07-17",
+      "sha256": "f0e41f8f4738c9958de4e3c909ca78e132d91b23915d5f687ad9d108f3a0e27d"
+    },
+    {
+      "file": "tdcc_20260724.csv",
+      "actual_date": "2026-07-24",
+      "week": "2026-07-18/2026-07-24",
+      "sha256": "9f0b45cfa995287e509ccf9d003cdd4d7d49f6b00cb44a9bbf2f766846f159de"
+    },
+    {
+      "file": "tdcc_20260731.csv",
+      "actual_date": "2026-07-31",
+      "week": "2026-07-25/2026-07-31",
+      "sha256": "d46a73751221f6005d9bb656320d3e7d6e4cc767ef7eb2523443408350e7bff2"
+    },
+    {
+      "file": "tdcc_20260807.csv",
+      "actual_date": "2026-08-07",
+      "week": "2026-08-01/2026-08-07",
+      "sha256": "d07a8866ed39744537b933b5d93b8717816dfad3ef75e2e80e49df88282001fa"
+    },
+    {
+      "file": "tdcc_20260814.csv",
+      "actual_date": "2026-08-14",
+      "week": "2026-08-08/2026-08-14",
+      "sha256": "a26be605a8d9096a7feabd9ea453379219b04e8fc8a53ab3e8f0cfd95792f4fb"
+    },
+    {
+      "file": "tdcc_20260821.csv",
+      "actual_date": "2026-08-21",
+      "week": "2026-08-15/2026-08-21",
+      "sha256": "6ce6e81a140b4ecbeb7a2eaa2ce7eb36a7070710da198d9c135e69a8d2f98b5c"
+    },
+    {
+      "file": "tdcc_20260828.csv",
+      "actual_date": "2026-08-28",
+      "week": "2026-08-22/2026-08-28",
+      "sha256": "5db187485869472084aff302949189c6fdcf4c12f54a9c8a5f7eb58e284b65ca"
+    },
+    {
+      "file": "tdcc_20260904.csv",
+      "actual_date": "2026-09-04",
+      "week": "2026-08-29/2026-09-04",
+      "sha256": "2e16ed91d1cca9565c9419d2c365a270ecca6c1aaf4f4886d022b028209d7cc1"
+    }
+  ],
+  "public_calendar_min": "20250912",
+  "public_calendar_max": "20260904",
+  "official_samples": "tdcc_public_samples.json:3dated2330observations prove free source exists; not eligible for whole-market raw replacement",
+  "blocking_detail": "Legacy queryStockCustStat bulk endpoint returns HTTP404. Current public form supports one named security with session token. Full3-week model universe requires about6000dated security requests plus validation; not classified as paywall or source unavailable. No summary or feature changed in this bounded probe.",
+  "official_sources": [
+    "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock",
+    "https://www.twse.com.tw/holidaySchedule/holidaySchedule?queryYear=115&response=html",
+    "https://www.twse.com.tw/staticFiles/news/news/tsecnews/8a8216d69bde495d019c0d7f8f0100e2.pdf"
+  ]
+}

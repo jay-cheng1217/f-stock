@@ -1,0 +1,220 @@
+{
+  "label": "margin_identifier_history_20260906",
+  "plan_sha256": "78d82c4898127f7c92d7a397b49b2c5a3432b0677e87a39d31a3d64201726727",
+  "started_at": "2026-09-06T16:32:03.819498+08:00",
+  "status": "PUBLISHED",
+  "file_count": 35,
+  "files": [
+    {
+      "target": "日K資料\\0050.csv",
+      "status": "published",
+      "before_sha256": "f295c48db5ed34e90eeea1d4e7392bb2d7f7949f02e550c65ed1b1fdd867e11c",
+      "after_sha256": "8fbb896f3293b838da16c1d8804e886343b4cd1c695a82747621495597435c4d"
+    },
+    {
+      "target": "日K資料\\0051.csv",
+      "status": "published",
+      "before_sha256": "a3750eb5c043a044c976f7bdc8492ab5400f4def8b4c26657092b2ad7a62a0e0",
+      "after_sha256": "46248ae210ce6208e1a1509e36323e0e1b55a5ce6c9c05d541a2c5806569f1a2"
+    },
+    {
+      "target": "日K資料\\0052.csv",
+      "status": "published",
+      "before_sha256": "694a7d0a636baf5818ad12f594ae6a9aa89a371ea273860b3fcdcbaacbc71760",
+      "after_sha256": "ddce99d8c9b561b7c5e9da5b33d9bd1ff69e8eef53496b1ebd120867bd520bb4"
+    },
+    {
+      "target": "日K資料\\0053.csv",
+      "status": "published",
+      "before_sha256": "3b053a0c6b162694d67bd40e9b1892aba882bbfc7669a61765b1e57d8042d12a",
+      "after_sha256": "87b5a4ae4f6e45d60d8dca18914055cf04725c21e53e563a89d1d5bbe0c69df1"
+    },
+    {
+      "target": "日K資料\\0055.csv",
+      "status": "published",
+      "before_sha256": "d23aaccbb682679d762aded14523a0001231d598479a36b405126a9e1f1a0b10",
+      "after_sha256": "1e33350aa7785651424f9aeed36b4f425d759d8885cde28749665cbbd854cd4e"
+    },
+    {
+      "target": "日K資料\\0056.csv",
+      "status": "published",
+      "before_sha256": "762fb93ca13c79505a538c175219116dcdfc2ea9712bc7bbb9885755266f50ba",
+      "after_sha256": "03419d356a8b560bb91c730ed9563e1e6e208f2d10e48bcb3ef6adeec32ac49d"
+    },
+    {
+      "target": "日K資料\\0057.csv",
+      "status": "published",
+      "before_sha256": "7edfb590be96ee12dc8090179e00babd646d0ee106503bcf638ddb229a580b6e",
+      "after_sha256": "bdd4625f28214ef99e42dadc31314a716863e7962ba9ae0ee9871c604a153a19"
+    },
+    {
+      "target": "日K資料\\0061.csv",
+      "status": "published",
+      "before_sha256": "5451f79af5246b4a199edc2d58e0fbd4e829b8d3a42c82b04e45eab243b8107c",
+      "after_sha256": "30aa7433da2c0f89205b65ca3065eafde36503914b6809736300b155c99c53e9"
+    },
+    {
+      "target": "日K資料\\006203.csv",
+      "status": "published",
+      "before_sha256": "4f8910289ac6e2335b7dbc16dd9e63a8e009154defe69bec5bab59f1ee694c74",
+      "after_sha256": "3bf94314b689fda360004ffca79e2e850367343522cbad6430876fe6260ff093"
+    },
+    {
+      "target": "日K資料\\006204.csv",
+      "status": "published",
+      "before_sha256": "98b7369479e0d6fc2446325f35fee9443492c931339fb41af699279c50b819b7",
+      "after_sha256": "68422dc3895514fd8d74b39a94bc4f7b2e7a65ee9549128d72bea9feb87e4778"
+    },
+    {
+      "target": "日K資料\\006205.csv",
+      "status": "published",
+      "before_sha256": "163f90843cfa747489fb44614cf5942805e368b646e6e5f9db93f52d85022606",
+      "after_sha256": "b28f3ab68269b5bf618e275aa5530b12546064c8cc28671de2ee5f78d56eadcb"
+    },
+    {
+      "target": "日K資料\\006206.csv",
+      "status": "published",
+      "before_sha256": "9e52f04ae7d8b0d17a7fc2a83ce0fb7c34c45cdf07807d29375b117130f50ba8",
+      "after_sha256": "2e4fab42c1f8188242a8b55782c4c7e36ad93c87b603e1a9598d84ee5b14311f"
+    },
+    {
+      "target": "日K資料\\006207.csv",
+      "status": "published",
+      "before_sha256": "cf912d989f1a7cdfdaca6704d415839d88b5e381e9ace9ff60b2739c7e8c49e3",
+      "after_sha256": "3de407ef8bb3f60b1e6f78c3bf6255d4c41dcd09ebaeaa12119cecb1ca883594"
+    },
+    {
+      "target": "日K資料\\006208.csv",
+      "status": "published",
+      "before_sha256": "b02b42a57077982f99e7010f197f0a08e88a67c9fbc8b429b3153a202eb543c3",
+      "after_sha256": "6be48e5aea77625bde27237d0386c051297ec3960b4ef5978928410ec89c545e"
+    },
+    {
+      "target": "日K資料\\00636.csv",
+      "status": "published",
+      "before_sha256": "8d411605142090fdd48410c6887d56e8ffff8e1a43952f2e5eb3aa85f650204c",
+      "after_sha256": "7ec67cd5db40359fb46dd215646d3c610f60fb2c0c8f9abc116900a92255bc47"
+    },
+    {
+      "target": "日K資料\\00639.csv",
+      "status": "published",
+      "before_sha256": "5793ccefbe0bcc833b8bac53cdcbd6ead278b8a0c1ecfb4c816bc7c489328d73",
+      "after_sha256": "c7998bf7d45109a3f0a5446be8aa0433a7474d1177e40a77b3110901b59cdc05"
+    },
+    {
+      "target": "日K資料\\00643.csv",
+      "status": "published",
+      "before_sha256": "ef03d8bc072d819e6284fb8feab6ec15d9f6ea3bf6416c05c41a16c007971624",
+      "after_sha256": "051cae7160ba473c690301520d1f5d6453abfd08190d56937b7c6d903f097e84"
+    },
+    {
+      "target": "日K資料\\00645.csv",
+      "status": "published",
+      "before_sha256": "2cd72064824ee5e73d3617fc1c70235ba6658b43d2c9e9c24577a2c4a5174336",
+      "after_sha256": "6f90133b008272d0c011dceab86327b12d6c80e70fdd664a677389f961f602e8"
+    },
+    {
+      "target": "日K資料\\00646.csv",
+      "status": "published",
+      "before_sha256": "6ffb1fa0d4c59a5367fa4f163db2b8227675b482427133c8270e5fd5a32e4ead",
+      "after_sha256": "e69939800000fb86d65d955acc9199e5cfac77b565fe669c6dcd758e85aa521d"
+    },
+    {
+      "target": "日K資料\\00652.csv",
+      "status": "published",
+      "before_sha256": "5d4702a33e150600fcff207a21ded85e85ff64a81db41e564a7387bc4d4333a7",
+      "after_sha256": "c60076c2f201013a5ba8173a385a0fcb4ebcf98a0df6d3f784b1e65617c62cbf"
+    },
+    {
+      "target": "日K資料\\00657.csv",
+      "status": "published",
+      "before_sha256": "643f03528473b37f090c5c6d2f119b6747082560dfba3a2a64c09c1f5dcd4d2a",
+      "after_sha256": "201c8b7d98d9981af6b93ab02dcca1d4d807f6474b95cb9429b908f913d37f70"
+    },
+    {
+      "target": "日K資料\\00660.csv",
+      "status": "published",
+      "before_sha256": "a47e2f420ffea5ab66af8dc0161307c2aa62cbb1e633f7f0ef899c4ae097fe46",
+      "after_sha256": "a8cfc718b4720ee70635419506eab52d14bab03b93a1158f6fd8ef03c518ddb1"
+    },
+    {
+      "target": "日K資料\\00661.csv",
+      "status": "published",
+      "before_sha256": "a16c9a4f0ceb9335730c0868b69c687f5e6df5b249a3be96b3de8902c2077a29",
+      "after_sha256": "5cf370b591a1ce7ce7adfcad532d7bd86ea844928a07656cb7520f12da8644be"
+    },
+    {
+      "target": "日K資料\\00662.csv",
+      "status": "published",
+      "before_sha256": "612eb55cf54ff4d21b888198f313fd846f9494cbf7fa1d292a9e97b207e2ef45",
+      "after_sha256": "e03ce5407a7ad9784d67e474a16d974e025a073f2d4ffbd2e08cf3297ee89bc5"
+    },
+    {
+      "target": "日K資料\\00668.csv",
+      "status": "published",
+      "before_sha256": "ada41be452c661041a7cf3f112f2c5db4cb319ab2e03db34a09334cc396317e9",
+      "after_sha256": "09a2ca096291572f3ebdd0e5d6b129c14398e316865e3ee87ecec7171dfec2ec"
+    },
+    {
+      "target": "日K資料\\00678.csv",
+      "status": "published",
+      "before_sha256": "a28ce24a401e724d315d4212b7dcffcef3efd5cef542e7ed6aafe35d5568c64f",
+      "after_sha256": "e89e1b294baef637628ce63bdfccc506c1527cbd5fd57040ecdc69d5bd612563"
+    },
+    {
+      "target": "日K資料\\6201.csv",
+      "status": "published",
+      "before_sha256": "a40984984044979da191f57c3b017e60003bf968a83cb82cf4a7bd79cf814df4",
+      "after_sha256": "c4f8429b39aa23666231b4382f8d566d20e8c839ebef23b977f2720d77b8ace2"
+    },
+    {
+      "target": "日K資料\\6203.csv",
+      "status": "published",
+      "before_sha256": "537c4792b29904d62a24e18f52c1b6a7cb772a9838883cd34c47e628a5f04126",
+      "after_sha256": "2cf2f2c3565c2d7eca376b2355d27c590a0be0d113d0228da3be32ada25704c2"
+    },
+    {
+      "target": "日K資料\\6204.csv",
+      "status": "published",
+      "before_sha256": "7294907ba2017e9bff1b749c5a90a1079c9507a80bd5a5be7438c006b8e64627",
+      "after_sha256": "e0a9ebf1bcba8603bbd8b05d65ab00bd244a4b45ce296bb5f271d86765e6c330"
+    },
+    {
+      "target": "日K資料\\6205.csv",
+      "status": "published",
+      "before_sha256": "975a9521730a14daf66db2cd0212d23f822f1aa5a9fc237f9843d0c8c64a9588",
+      "after_sha256": "b1cf494e80d41528bbf563e10bee4be23d42fc49a4d7c45c5fe7f47e5bff67b8"
+    },
+    {
+      "target": "日K資料\\6206.csv",
+      "status": "published",
+      "before_sha256": "e03893d675e0517f9b1d0c3209122c3393eb2b931e9af7b9b62e7dae04c9d804",
+      "after_sha256": "ff8f6c9ffcaafcaf5623b8ded0c3940eb0882eacf518bec99778088c41db0db3"
+    },
+    {
+      "target": "日K資料\\6207.csv",
+      "status": "published",
+      "before_sha256": "8c2b2a5a0d886298249d32e8c404325bc921f18ee22b1440182855caa962c872",
+      "after_sha256": "0246adfc2fbf4e64f6d99e539bf96c8cc5031caa1d1d3c5680f8eddf8e2daf26"
+    },
+    {
+      "target": "日K資料\\6208.csv",
+      "status": "published",
+      "before_sha256": "4ccc69a7ee9ff403ce954c8f51d140436908e59c5e4056e7a6f46c4e6d6d7ead",
+      "after_sha256": "a066c2b35eab44931b17d01ed3efc056aa1ab8bd78d3397eecab2e0eb5131fc1"
+    },
+    {
+      "target": "日K資料\\9802.csv",
+      "status": "published",
+      "before_sha256": "6ce4ed7c7b49a118093860ad6a93dde07e906493f9805efa1ce0f575266eec99",
+      "after_sha256": "7fa868ebc64d3537ad7f5db5fe14bd06a511ef28b6fdf2daff26d9075015119a"
+    },
+    {
+      "target": "清理後資料\\cleaned_all_margin_data.csv",
+      "status": "published",
+      "before_sha256": "add1f16df0b2939c9859c009ca9bcae6fc8207d1737ef5461e839fa6aaeaebeb",
+      "after_sha256": "11a01c8c3dcd38f2a88e96efcbe60587148817e5fe2654164c36c6269e63d9e5"
+    }
+  ],
+  "completed_at": "2026-09-06T16:32:04.721944+08:00"
+}

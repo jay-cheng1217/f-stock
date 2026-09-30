@@ -1,0 +1,58 @@
+﻿ticker,chipk_name,recommendation,pred_return_20d,leaderboard_score,risk_tags,chipk_bucket,chipk_main_force_pattern,chipk_entry_alignment,model_chipk_decision,chipk_risk_flags,chipk_main_force_1d,chipk_main_force_5d,chipk_main_force_20d,chipk_main_force_score
+6465,威潤,建議買進,0.0173267518401371,0.895009029975516,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,2.0,3.0,3.0,0.5625
+4534,慶騰,建議買進,0.0179513912109152,0.7958861780578396,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 ⚠️本業仍虧損但營運修復中 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,3.0,2.0,0.6
+6175,立敦,建議買進,0.0558581519353196,0.6946613174943933,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk;weak_20d_main_force,1.0,2.0,4.0,0.6125
+6683,雍智科技,建議買進,0.0198114432201191,0.6691574592241234,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,weak_20d_main_force,4.0,3.0,4.0,0.3375
+5328,華容,建議買進,0.0135395702192865,0.5281179096632215,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,weak,distribution_pressure,AVOID,model_chipk_conflict,distribution_pressure;short_term_main_force_fade;weak_20d_main_force,5.0,4.0,4.0,0.1875
+5228,鈺鎧,建議買進,0.090838365843784,0.5279399695885515,⚠️本業仍虧損但營運修復中 ⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,,3.0,3.0,3.0,0.5
+6204,艾華,建議買進,0.0283368519949998,0.449117528516899,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,2.0,3.0,3.0,0.5625
+4908,前鼎,建議買進,0.0067142821791846,0.4414694982018161,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,weak_20d_main_force,3.0,3.0,4.0,0.4
+8046,南電,建議買進,0.0527047935854007,0.4161994516207274,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,weak,distribution_pressure,AVOID,model_chipk_conflict,distribution_pressure;short_term_main_force_fade;weak_20d_main_force,5.0,4.0,4.0,0.1875
+6426,統新,建議買進,0.0172423743078857,0.3168633022961116,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 ⚠️本業仍虧損但營運修復中 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,,3.0,3.0,3.0,0.5
+8299,群聯,建議買進,0.0078532630081299,0.2942935533408886,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,weak,distribution_pressure,AVOID,model_chipk_conflict,distribution_pressure;short_term_main_force_fade;weak_20d_main_force,5.0,4.0,4.0,0.1875
+4739,康普,建議買進,0.0099371244568312,0.1337056078649664,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,4.0,2.0,0.5125
+3537,堡達,建議買進,0.0192502427826145,0.071853374503756,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk,1.0,4.0,3.0,0.5375
+3406,玉晶光,建議買進,0.0068250938696856,0.0507904598638948,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,,5.0,3.0,2.0,0.475
+6265,方土昶,建議買進,0.0114063984745274,-0.0257016029917374,MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,3.0,2.0,0.6
+3105,穩懋,建議買進,0.0109195022271446,-0.1000575290219669,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,strong,sustained_accumulation,CONFIRM_ENTRY,model_chipk_confirmed,,1.0,2.0,2.0,0.8125
+5386,青雲,強力買進,0.1229461333142327,-0.1430201546037163,MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,weak_20d_main_force,3.0,3.0,4.0,0.4
+6435,大中,建議買進,0.0233803250725909,-0.2123667279313312,MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,,3.0,3.0,3.0,0.5
+3042,晶技,建議買進,0.0328321287164623,-0.2197065811094662,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,weak,distribution_pressure,AVOID,model_chipk_conflict,distribution_pressure;short_term_main_force_fade;weak_20d_main_force,4.0,4.0,4.0,0.25
+4931,新盛力,建議買進,0.0245100265477015,-0.2303817955742481,MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,3.0,2.0,0.6
+5289,宜鼎,建議買進,0.0500188233225412,-0.2507407252633488,MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,,5.0,3.0,3.0,0.375
+5475,德宏,建議買進,0.0775643409941799,-inf,⚠️本業仍虧損但營運修復中 ⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,near_term_accumulation,SUPPORTIVE_ENTRY,model_chipk_confirmed,,2.0,2.0,3.0,0.65
+3037,欣興,建議買進,0.0550427300469455,-inf,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,constructive_support,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,2.0,2.0,0.6875
+6727,亞泰金屬,建議買進,0.0525316323243228,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,weak_20d_main_force,3.0,4.0,4.0,0.3125
+3675,德微,建議買進,0.0376860432421771,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,,3.0,3.0,3.0,0.5
+2472,立隆電,建議買進,0.0351572430520581,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,neutral,short_term_chase_trap,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk;weak_20d_main_force,2.0,4.0,4.0,0.375
+2383,台光電,建議買進,0.0313101520892629,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,3.0,2.0,0.6
+6213,聯茂,建議買進,0.0299566273415126,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,strong,sustained_accumulation,CONFIRM_ENTRY,model_chipk_confirmed,,1.0,2.0,2.0,0.8125
+2327,國巨*,建議買進,0.028694917582609,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,weak_20d_main_force,4.0,3.0,4.0,0.3375
+2428,興勤,建議買進,0.0269562901646087,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,supportive,near_term_accumulation,SUPPORTIVE_ENTRY,model_chipk_confirmed,,2.0,2.0,3.0,0.65
+4973,廣穎,建議買進,0.0269120391401077,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,weak,mixed_or_unconfirmed,AVOID,model_chipk_conflict,weak_20d_main_force,3.0,5.0,4.0,0.225
+8121,越峰,建議買進,0.0267510368490686,-inf,⚠️本業仍虧損但營運修復中 MACRO_EVENT_RISK,supportive,constructive_support,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,2.0,2.0,0.6875
+6672,騰輝電子-KY,建議買進,0.0223421728975066,-inf,⚠️籌碼頂部背離 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk;weak_20d_main_force,2.0,2.0,4.0,0.55
+6197,佳必琪,建議買進,0.0217323043943624,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,neutral,short_term_chase_trap,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk;weak_20d_main_force,1.0,4.0,4.0,0.4375
+2308,台達電,建議買進,0.0183727713612258,-inf,MACRO_EVENT_RISK,weak,distribution_pressure,AVOID,model_chipk_conflict,distribution_pressure;short_term_main_force_fade;weak_20d_main_force,5.0,5.0,4.0,0.1
+2476,鉅祥,建議買進,0.0168930108111203,-inf,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk,2.0,4.0,2.0,0.575
+3556,禾瑞亞,建議買進,0.0136884435771444,-inf,MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,,3.0,3.0,3.0,0.5
+6274,台燿,建議買進,0.0134934804625324,-inf,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk;weak_20d_main_force,2.0,2.0,4.0,0.55
+3044,健鼎,建議買進,0.0116342679112967,-inf,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,strong,sustained_accumulation,CONFIRM_ENTRY,model_chipk_confirmed,,1.0,1.0,2.0,0.9
+6670,復盛應用,建議買進,0.0112212774694028,-inf,⚠️法人10日賣壓占量偏高（>20%） MACRO_EVENT_RISK,strong,sustained_accumulation,CONFIRM_ENTRY,model_chipk_confirmed,,2.0,1.0,2.0,0.8375
+6446,藥華藥,建議買進,0.0102464399624136,-inf,MACRO_EVENT_RISK,strong,mixed_or_unconfirmed,CONFIRM_ENTRY,model_chipk_confirmed,,1.0,3.0,2.0,0.725
+3374,精材,建議買進,0.0096040579081656,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk;weak_20d_main_force,1.0,2.0,4.0,0.6125
+3290,東浦,建議買進,0.0095882555536341,-inf,MACRO_EVENT_RISK,neutral,short_term_fade,WATCH,model_chipk_watch,short_term_main_force_fade,4.0,4.0,2.0,0.45
+2368,金像電,建議買進,0.0093237954650506,-inf,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,4.0,2.0,0.5125
+3088,艾訊,建議買進,0.0084192842580062,-inf,MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,DO_NOT_CHASE,model_chipk_conflict,day_trade_trap_risk,2.0,5.0,3.0,0.3875
+4939,亞電,建議買進,0.0071861820795515,-inf,⚠️本業仍虧損但營運修復中 ⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,4.0,2.0,0.5125
+3443,創意,建議買進,0.0062984547958609,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 ⚠️籌碼頂部背離 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,weak_20d_main_force,3.0,3.0,4.0,0.4
+6139,亞翔,建議買進,0.0061690509531924,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,supportive,constructive_pullback,WAIT_FOR_TURN,model_chipk_watch,,5.0,2.0,2.0,0.5625
+6166,凌華,建議買進,0.0051970166071451,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,supportive,constructive_support,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,2.0,2.0,0.6875
+3141,晶宏,建議買進,0.0043620677461644,-inf,MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,weak_20d_main_force,3.0,3.0,4.0,0.4
+6290,良維,建議買進,0.0043449176484925,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,weak,distribution_pressure,AVOID,model_chipk_conflict,distribution_pressure;short_term_main_force_fade;weak_20d_main_force,4.0,5.0,4.0,0.1625
+8040,九暘,建議買進,0.0039538278320526,-inf,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,weak_20d_main_force,3.0,4.0,4.0,0.3125
+4760,勤凱,建議買進,0.0028399024498729,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 MACRO_EVENT_RISK,weak,distribution_pressure,AVOID,model_chipk_conflict,distribution_pressure;short_term_main_force_fade;weak_20d_main_force,4.0,4.0,4.0,0.25
+3023,信邦,建議買進,0.0027774857152123,-inf,MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,3.0,2.0,0.6
+3294,英濟,建議買進,0.0019842591632961,-inf,⚠️V1偏空但V2看多（分歧） ⚠️Guardrail熔斷：已暫停V1否決權 ⚠️本業仍虧損但營運修復中 MACRO_EVENT_RISK,supportive,mixed_or_unconfirmed,SUPPORTIVE_ENTRY,model_chipk_confirmed,,3.0,3.0,2.0,0.6
+4971,IET-KY,建議買進,0.0006972712665321,-inf,⚠️勝率優勢未達強力買進門檻 MACRO_EVENT_RISK,neutral,mixed_or_unconfirmed,WATCH,model_chipk_watch,,3.0,3.0,3.0,0.5
+5468,凱鈺,建議買進,0.0003366461161077,-inf,⚠️短線偏熱，追價風險高 MACRO_EVENT_RISK,weak,distribution_pressure,AVOID,model_chipk_conflict,distribution_pressure;short_term_main_force_fade;weak_20d_main_force,5.0,5.0,5.0,0.0

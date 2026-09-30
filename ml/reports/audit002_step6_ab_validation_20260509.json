@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-05-09T01:07:46",
+  "stage1_oof": "F:\\stock\\ml\\reports\\audit002_step4_two_stage_20260509_stage1_oof_candidates.csv",
+  "treatment_fold": "F:\\stock\\ml\\reports\\audit002_step5_grid_search_20260509_N75_bins5_fold_top30.csv",
+  "months": [
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+  ],
+  "monthly_csv": "F:\\stock\\ml\\reports\\audit002_step6_ab_validation_20260509_monthly.csv",
+  "control_top30_csv": "F:\\stock\\ml\\reports\\audit002_step6_ab_validation_20260509_control_top30.csv",
+  "treatment_top30_csv": "F:\\stock\\ml\\reports\\audit002_step6_ab_validation_20260509_treatment_top30.csv",
+  "chart_png": "F:\\stock\\ml\\reports\\audit002_step6_ab_validation_20260509_monthly_returns.png",
+  "report": "F:\\stock\\ml\\reports\\audit002_step6_ab_validation_20260509.md",
+  "control": {
+    "months": 6,
+    "monthly_return": 0.0828943426011111,
+    "monthly_alpha": -0.014717377384444438,
+    "mdd": -0.004378515843333375,
+    "win_rate": 0.8333333333333334
+  },
+  "treatment": {
+    "months": 6,
+    "monthly_return": 0.17792515062833333,
+    "monthly_alpha": 0.08031343173877778,
+    "mdd": 0.0,
+    "win_rate": 1.0
+  },
+  "ac": {
+    "alpha_delta": 0.09503080912322222,
+    "alpha_pass": true,
+    "control_mdd_magnitude": 0.004378515843333375,
+    "treatment_mdd_magnitude": 0.0,
+    "mdd_deterioration": -0.004378515843333375,
+    "mdd_pass": true,
+    "average_jaccard": 0.3024923144488362,
+    "jaccard_pass": false,
+    "pass_all": false
+  }
+}

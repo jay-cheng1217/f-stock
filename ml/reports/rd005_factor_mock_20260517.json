@@ -1,0 +1,139 @@
+{
+  "status": "pass_for_review",
+  "start_date": "2026-04-23",
+  "end_date": "2026-04-29",
+  "method": "fixed 50/50 market-plus-sector constrained holding-level mock",
+  "observation_count": 95,
+  "effective_observation_count": 95,
+  "position_count": 51,
+  "ticker_count": 30,
+  "sector_count": 10,
+  "sector_groups": [
+    "OTHER",
+    "其他電子業",
+    "半導體業",
+    "通信網路業"
+  ],
+  "parameter_count": 6,
+  "parameter_limit": 19,
+  "missing_data": {
+    "market_factor_rows": 0,
+    "sector_factor_rows": 0,
+    "sector_return_source": "holding ticker equal-weight daily K proxy",
+    "sector_return_rows": 50,
+    "sector_count": 10
+  },
+  "totals": {
+    "weighted_holding_return_pct": -0.11699187358220775,
+    "weighted_factor_return_pct": -0.004479331384577012,
+    "residual_after_factor_pct": -0.11251254219763071,
+    "abs_residual_after_factor_pct": 0.11251254219763071
+  },
+  "bootstrap": {
+    "draws": 1000,
+    "residual_after_factor_pct": {
+      "median": -0.1125125421976307,
+      "p05": -0.17310755241112927,
+      "p95": -0.05849699875415807,
+      "sign_stability": 1.0
+    },
+    "market_component_pct": {
+      "median": 0.030686326975017983,
+      "p05": 0.003145349859739232,
+      "p95": 0.06083534817939403,
+      "sign_stability": 0.966
+    },
+    "sector_component_pct": {
+      "median": -0.035165658359595,
+      "p05": -0.08399510389204948,
+      "p95": 0.010034921801579753,
+      "sign_stability": 0.929
+    }
+  },
+  "top_ticker_residuals": [
+    {
+      "ticker": "3491",
+      "weighted_factor_residual_pct": -0.017819392396024984
+    },
+    {
+      "ticker": "6693",
+      "weighted_factor_residual_pct": -0.011777346676034401
+    },
+    {
+      "ticker": "6510",
+      "weighted_factor_residual_pct": -0.010848504612795
+    },
+    {
+      "ticker": "6226",
+      "weighted_factor_residual_pct": -0.006247565671214706
+    },
+    {
+      "ticker": "3498",
+      "weighted_factor_residual_pct": -0.006026673073880414
+    },
+    {
+      "ticker": "2485",
+      "weighted_factor_residual_pct": -0.005451103674008811
+    },
+    {
+      "ticker": "1528",
+      "weighted_factor_residual_pct": -0.004628549483012969
+    },
+    {
+      "ticker": "6640",
+      "weighted_factor_residual_pct": -0.004541369951629303
+    },
+    {
+      "ticker": "6788",
+      "weighted_factor_residual_pct": -0.004541369951629296
+    },
+    {
+      "ticker": "3131",
+      "weighted_factor_residual_pct": -0.004408395835703096
+    }
+  ],
+  "daily": [
+    {
+      "date": "2026-04-23",
+      "weighted_return_pct": -0.08107503367489553,
+      "weighted_factor_return_pct": -0.03158296857201938,
+      "weighted_factor_residual_pct": -0.049492065102876154,
+      "weighted_market_component_pct": -0.0021690463992158904,
+      "weighted_sector_component_pct": -0.029413922172803485
+    },
+    {
+      "date": "2026-04-24",
+      "weighted_return_pct": -0.025860175039583728,
+      "weighted_factor_return_pct": 0.009332701588735845,
+      "weighted_factor_residual_pct": -0.035192876628319575,
+      "weighted_market_component_pct": 0.023495600872861847,
+      "weighted_sector_component_pct": -0.014162899284126002
+    },
+    {
+      "date": "2026-04-27",
+      "weighted_return_pct": -0.018324098766618016,
+      "weighted_factor_return_pct": 0.006158737447008512,
+      "weighted_factor_residual_pct": -0.024482836213626527,
+      "weighted_market_component_pct": 0.014547823962489352,
+      "weighted_sector_component_pct": -0.00838908651548084
+    },
+    {
+      "date": "2026-04-28",
+      "weighted_return_pct": 0.010594840502996744,
+      "weighted_factor_return_pct": 0.014332509451734542,
+      "weighted_factor_residual_pct": -0.0037376689487377997,
+      "weighted_market_component_pct": -0.001655860808958155,
+      "weighted_sector_component_pct": 0.0159883702606927
+    },
+    {
+      "date": "2026-04-29",
+      "weighted_return_pct": -0.0023274066041071933,
+      "weighted_factor_return_pct": -0.0027203113000365373,
+      "weighted_factor_residual_pct": 0.0003929046959293442,
+      "weighted_market_component_pct": -0.0035321906521591697,
+      "weighted_sector_component_pct": 0.0008118793521226325
+    }
+  ],
+  "kill_reasons": [],
+  "can_distinguish_factor_from_residual": true
+}

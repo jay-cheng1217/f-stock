@@ -1,0 +1,89 @@
+{
+  "summary": {
+    "generated_at": "2026-04-22T14:32:40.773127+00:00",
+    "signal_start": "2026-04-21",
+    "signal_end": "2026-04-21",
+    "replay_start": "2026-04-21",
+    "replay_end": "2026-04-21",
+    "signal_file_count": 1,
+    "position_count": 17,
+    "status_counts": {
+      "pending": 17
+    },
+    "entry_signal_type_counts": {
+      "20D_only": 17
+    },
+    "current_signal_type_counts": {
+      "20D_only": 17
+    },
+    "fill_status_counts": {
+      "PENDING": 17
+    },
+    "order_type_counts": {
+      "NULL": 17
+    },
+    "exit_reason_counts": {
+      "NULL": 17
+    },
+    "filled_position_count": 0,
+    "closed_position_count": 0,
+    "open_position_count": 0,
+    "missed_entry_count": 0,
+    "avg_entry_slippage_pct": null,
+    "realized_avg_return_pct": null,
+    "realized_median_return_pct": null,
+    "realized_win_rate_pct": null,
+    "realized_capital_weighted_return_pct": null,
+    "mtm_capital_weighted_return_pct": null,
+    "mtm_cash_return_contribution_pct": null,
+    "open_avg_unrealized_return_pct": null,
+    "open_capital_weighted_unrealized_return_pct": null,
+    "twii": {
+      "start_date": "2026-04-21",
+      "end_date": "2026-04-21",
+      "return_pct": null,
+      "reason": "insufficient TWII rows in replay window"
+    },
+    "realized_alpha_vs_twii_pct": null,
+    "mtm_alpha_vs_twii_pct": null,
+    "exit_day_compounded_return_pct": null,
+    "exit_day_max_drawdown_pct": null,
+    "exit_day_count": 0
+  },
+  "replay_result": {
+    "db_path": "C:\\Users\\cheng\\AppData\\Local\\Temp\\unified_execution_replay_cz27mbf2\\unified_execution_replay.db",
+    "signal_files": [
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-21.csv"
+    ],
+    "processed_dates": [
+      "2026-04-21"
+    ],
+    "new_runs": 1,
+    "skipped_runs": 0,
+    "new_positions": 17,
+    "upgraded_positions": 0,
+    "refreshed_positions": 0,
+    "marks_upserted": 0,
+    "cash_deployed": 1.0,
+    "summary": {
+      "total_runs": 1,
+      "total_positions": 17,
+      "pending_positions": 17,
+      "open_positions": 0,
+      "closed_positions": 0,
+      "stopped_out_positions": 0,
+      "missed_entry_positions": 0,
+      "invested_capital": 1.0,
+      "available_cash": 0.0,
+      "avg_realized_return_pct": null,
+      "avg_max_drawdown_pct": null,
+      "total_marks": 0
+    }
+  },
+  "signal_files": [
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-21.csv"
+  ],
+  "positions_csv": "F:\\stock\\ml\\reports\\alpha_pr90_replay\\unified_execution_replay_positions_latest.csv",
+  "daily_exit_curve": [],
+  "db_path": null
+}

@@ -1,0 +1,7 @@
+# Quarterly source refresh method lock
+
+Authorized L1 prevention repair after frozen Q2 source reconciliation. Every producer invocation revalidates its latest due quarter even when local coverage exceeds 80%; historical missing/partial selection remains. No file-exists or mtime completion shortcut. Nightly audit with heal enabled invokes all three quarterly producers and propagates process failures; read-only/no-heal audit performs no network requests.
+
+Validate actual HTML h2 market and quarter; financial additionally requires the response ROC year. EPS/BS h2 has no year: record request year explicitly, and for the latest due quarter obtain the same-run official ci OpenAPI response, require explicit matching year/quarter, and compare five common company values. Preserve exact HTML and anchor JSON by SHA plus receipt request/knowledge date. Historical EPS/BS evidence remains request-year only, clearly labeled; latest OpenAPI must never certify a historical response.
+
+Validate incoming ticker uniqueness, exact quarter, schema and both markets before atomically merging by string ticker. Official updates including true NaN replace prior values; prior filed companies omitted from today's source are retained. Save no data on source verification failure. Model functions, thresholds, historical availability assumptions and frozen C inputs are unchanged. Acceptance uses real parsers and temporary files plus deterministic network fixtures, never production pipeline execution or retraining. Root integrates the scoped files and commits serially.

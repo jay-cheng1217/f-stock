@@ -1,0 +1,118 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20260804"
+  },
+  "rows": 1214922,
+  "setup_count": 5911,
+  "filled_count": 5110,
+  "missed_gap_up_count": 1290,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5110,
+      "mean_return": -0.008977056138681386,
+      "median_return": -0.01243289242876788,
+      "win_rate": 0.34031311154598826,
+      "p25": -0.03301223807749182,
+      "p75": 0.009294660293966531
+    },
+    {
+      "hold_days": 2,
+      "n": 5103,
+      "mean_return": -0.007929987595799808,
+      "median_return": -0.015450381679389277,
+      "win_rate": 0.3766411914560063,
+      "p25": -0.04564258188824655,
+      "p75": 0.020237592315240364
+    },
+    {
+      "hold_days": 3,
+      "n": 5101,
+      "mean_return": -0.007162815732249873,
+      "median_return": -0.017698630136986356,
+      "win_rate": 0.3842383846304646,
+      "p25": -0.05547058823529394,
+      "p75": 0.028258064516129004
+    },
+    {
+      "hold_days": 5,
+      "n": 5096,
+      "mean_return": -0.004521654136727803,
+      "median_return": -0.020565438513043762,
+      "win_rate": 0.3989403453689168,
+      "p25": -0.06986470848234014,
+      "p75": 0.040063815416530923
+    },
+    {
+      "hold_days": 10,
+      "n": 5059,
+      "mean_return": 0.0010077102360387985,
+      "median_return": -0.023122609673790758,
+      "win_rate": 0.416287803913817,
+      "p25": -0.0926789670073595,
+      "p75": 0.06511515385081568
+    },
+    {
+      "hold_days": 20,
+      "n": 4981,
+      "mean_return": 0.011800082412315924,
+      "median_return": -0.032935185185185234,
+      "win_rate": 0.42160208793414977,
+      "p25": -0.12521212121212122,
+      "p75": 0.10294183864915563
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-08-03",
+      "ticker": "2425",
+      "name": "承啟",
+      "sector": "電腦及週邊設備業",
+      "Close": 48.3,
+      "momentum_score": 0.577227,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 46.6095,
+      "momentum_entry_limit": 48.3,
+      "momentum_entry_high": 49.0245,
+      "price_vs_ma5": 0.0714285714,
+      "price_vs_ma20": 0.1093884582,
+      "price_vs_ma60": 0.239171231,
+      "volume_ratio_20d": 2.223428471,
+      "RSI_14": 63.3763310274,
+      "MACDh_12_26_9": 0.1287283154,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-08-03",
+      "ticker": "5490",
+      "name": "同亨",
+      "sector": "電腦及週邊設備業",
+      "Close": 35.4,
+      "momentum_score": 0.574336,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 34.161,
+      "momentum_entry_limit": 35.4,
+      "momentum_entry_high": 35.931,
+      "price_vs_ma5": 0.0720775288,
+      "price_vs_ma20": 0.1272987819,
+      "price_vs_ma60": 0.2319628305,
+      "volume_ratio_20d": 2.7789462183,
+      "RSI_14": 67.6808534895,
+      "MACDh_12_26_9": 0.2194578627,
+      "missed_gap_up": false
+    }
+  ]
+}

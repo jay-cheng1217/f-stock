@@ -1,0 +1,89 @@
+{
+  "generated_at": "2026-05-12T21:55:29",
+  "step3_comparison_csv": "F:\\stock\\ml\\reports\\audit002_step3_lambdarank_20260508_comparison.csv",
+  "stage1_oof_candidates_csv": "F:\\stock\\ml\\reports\\req032_step4_two_stage_20260512_stage1_oof_candidates.csv",
+  "stage1_monthly_csv": "F:\\stock\\ml\\reports\\req032_step4_two_stage_20260512_stage1_monthly.csv",
+  "comparison_csv": "F:\\stock\\ml\\reports\\req032_step4_two_stage_20260512_comparison.csv",
+  "calibration_png": "F:\\stock\\ml\\reports\\req032_step4_two_stage_20260512_calibration.png",
+  "report": "F:\\stock\\ml\\reports\\req032_step4_two_stage_20260512.md",
+  "candidate_sizes": [
+    75
+  ],
+  "two_stage_monthly_csv": {
+    "75": "F:\\stock\\ml\\reports\\req032_step4_two_stage_20260512_top75_monthly.csv"
+  },
+  "two_stage_fold_top30_csv": {
+    "75": "F:\\stock\\ml\\reports\\req032_step4_two_stage_20260512_top75_fold_top30.csv"
+  },
+  "two_stage_calibration_csv": {
+    "75": "F:\\stock\\ml\\reports\\req032_step4_two_stage_20260512_top75_calibration_deciles.csv"
+  },
+  "comparison": [
+    {
+      "model": "Before_baseline",
+      "universe_ic_mean": 0.0431209033940459,
+      "universe_ic_t_stat": 2.4270798766531803,
+      "top30_internal_ic_mean": -0.0350517410725176,
+      "top30_internal_ic_t_stat": -0.7028357886774584,
+      "positive_deciles": 4,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.4,
+      "max_consecutive_negative_deciles": 4,
+      "calibration_spearman": 0.406060606060606,
+      "top30_excess_mean": 0.0013836281142857,
+      "ndcg_at_30": NaN
+    },
+    {
+      "model": "After_feature_cleanup",
+      "universe_ic_mean": 0.0125235346780479,
+      "universe_ic_t_stat": 0.6660982531565729,
+      "top30_internal_ic_mean": -0.0116283000238141,
+      "top30_internal_ic_t_stat": -0.2905555865539242,
+      "positive_deciles": 5,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.5,
+      "max_consecutive_negative_deciles": 2,
+      "calibration_spearman": 0.3575757575757575,
+      "top30_excess_mean": 0.0036603779132877,
+      "ndcg_at_30": NaN
+    },
+    {
+      "model": "LambdaRank",
+      "universe_ic_mean": 0.004869266686507,
+      "universe_ic_t_stat": 0.2624418075965752,
+      "top30_internal_ic_mean": 0.0689219038122267,
+      "top30_internal_ic_t_stat": 1.6636056164675743,
+      "positive_deciles": 8,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.8,
+      "max_consecutive_negative_deciles": 2,
+      "calibration_spearman": 0.5272727272727272,
+      "top30_excess_mean": 0.0101897702988935,
+      "ndcg_at_30": 0.4630081191793424
+    },
+    {
+      "model": "TwoStage_Top75",
+      "universe_ic_mean": 0.04321442268936295,
+      "universe_ic_t_stat": 2.827302166956349,
+      "top30_internal_ic_mean": 0.026293303419478158,
+      "top30_internal_ic_t_stat": 0.5326982715733484,
+      "positive_deciles": 8,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.8,
+      "max_consecutive_negative_deciles": 1,
+      "calibration_spearman": 0.41818181818181815,
+      "top30_excess_mean": 0.011483545307003493,
+      "ndcg_at_30": 0.5148103060198074
+    }
+  ],
+  "calibration_summary": {
+    "75": {
+      "positive_deciles": 8,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.8,
+      "max_consecutive_negative_deciles": 1,
+      "monotonic_spearman": 0.41818181818181815
+    }
+  },
+  "verdict": "Two-stage does not fully clear AC. Best research candidate is `TwoStage_Top75` with Top30 IC 0.0263, NDCG@30 0.515, and Top30 excess +1.15%. Recommendation: redesign Stage 2 labels/objective or test a wider Stage 1 candidate pool before production work."
+}

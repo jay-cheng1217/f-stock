@@ -1,0 +1,41 @@
+{
+  "status": "a5_closed_for_pm_review_bc_still_hold",
+  "window": [
+    "2026-05-11",
+    "2026-05-15"
+  ],
+  "legacy_artifact": "F:\\stock\\ml\\reports\\rd005_residual_split_20260517.json",
+  "source_classification": {
+    "data_source_inconsistency": false,
+    "sampling_timestamp_gap": false,
+    "calculation_definition_mismatch": true,
+    "reason": "The legacy ledger check compared a window NAV delta with cumulative ledger P&L as of the window end. Both values came from the same Champion DB and marks; no missing source table was needed to close the gap."
+  },
+  "one_time_vs_structural": {
+    "classification": "structural_for_non_inception_windows",
+    "reason": "Any report whose start date is after ledger inception can create a false ledger error if the start baseline cumulative P&L is not subtracted. The magnitude equals the negative pre-window ledger baseline."
+  },
+  "legacy_check": {
+    "nav_window_return_pct": 0.05897786471044052,
+    "legacy_cumulative_ledger_total_pct": -0.03723418659166661,
+    "legacy_reconciliation_error_pct": 0.09621205130210712
+  },
+  "corrected_window_check": {
+    "baseline_date": "2026-05-10",
+    "ledger_baseline_cumulative_pnl_pct": -0.09621205130210718,
+    "ledger_end_cumulative_pnl_pct": -0.03723418659166661,
+    "ledger_window_delta_pct": 0.05897786471044057,
+    "corrected_reconciliation_error_pct": -5.551115123125783e-17,
+    "legacy_error_equals_negative_baseline": true,
+    "nav_return_matches_ledger_window_delta": true
+  },
+  "fix_direction": {
+    "selected": "adjust_definition",
+    "implemented_in": "scripts/champion_nav_attribution.py",
+    "details": "Ledger reconciliation is now start-aware: it records the pre-window baseline cumulative P&L, the window-end cumulative P&L, and reconciles NAV return against the ledger window delta."
+  },
+  "bridge_decision": {
+    "bc_allowed": false,
+    "reason": "A5 closes the ledger accounting error, but it does not make holding-level factor residual and NAV-level unexplained residual the same target. PM still needs to select the target metric before B/C."
+  }
+}

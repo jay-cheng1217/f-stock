@@ -2,7 +2,11 @@
 
 import os
 
-BASE_DIR = r"F:\stock"
+# 優先吃 STOCK_BASE_DIR env var（給 Docker / Linux 部署用）；
+# 否則由本檔案位置往上推一層（backend/ 的父）。
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
 
 # Phase 1 資料目錄
 DAILY_K_DIR = os.path.join(BASE_DIR, "日K資料")

@@ -1,0 +1,7 @@
+﻿ticker,status,before_rank,signal_rank,after_rank,before_status,after_status,price_vs_ma20_at_entry,strong_trend_candidate
+2049,pending,,,,rank_unknown,rank_unknown,0.0773899848254931,False
+3529,pending,,,,rank_unknown,rank_unknown,0.0945587678323444,False
+3653,pending,,,,rank_unknown,rank_unknown,-0.2266539541289263,False
+4577,pending,,,,rank_unknown,rank_unknown,-0.0888675008020532,False
+4991,pending,26.0,30.0,26.0,known,known,-0.0060961493942434,False
+5475,pending,,,,rank_unknown,rank_unknown,-0.0645463049579046,False

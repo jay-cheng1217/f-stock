@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-05-08T12:23:03.473150+00:00",
+  "months": [
+    "2026-03",
+    "2026-04"
+  ],
+  "detail_csv": "F:\\stock\\ml\\reports\\req009_regime_overlap_detail_20260508_detail.csv",
+  "sector_csv": "F:\\stock\\ml\\reports\\req009_regime_overlap_detail_20260508_sector.csv",
+  "summary": [
+    {
+      "month": "2026-03",
+      "source": "both",
+      "count": 3
+    },
+    {
+      "month": "2026-03",
+      "source": "production_only",
+      "count": 27
+    },
+    {
+      "month": "2026-03",
+      "source": "regime_only",
+      "count": 27
+    },
+    {
+      "month": "2026-04",
+      "source": "both",
+      "count": 8
+    },
+    {
+      "month": "2026-04",
+      "source": "production_only",
+      "count": 22
+    },
+    {
+      "month": "2026-04",
+      "source": "regime_only",
+      "count": 22
+    }
+  ]
+}

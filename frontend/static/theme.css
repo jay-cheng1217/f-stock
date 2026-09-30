@@ -1,0 +1,211 @@
+/* ============================================================
+   Clean Theme v2 — GitHub Primer Light 全站一致(2026-07-02)
+   v1 教訓:只蓋元件類別 → 沒蓋到的角落殘留深色,黑白混雜。
+   v2 作法:
+     1) 改寫原始 :root 變數(全站 var() 一次翻新,Primer light 對應)
+     2) 補丁清單:style 區所有硬編碼深色 hex 逐一蓋掉
+     3) 元件層微調(nav/表格/卡片)沿用 v1
+   回滾:移除 index.html 內的這個 <link> 即還原深色原版。
+   ============================================================ */
+
+/* ---------- 1) 變數翻寫(對應原 :root 名稱) ---------- */
+:root {
+  color-scheme: light;
+  /* 原深色 → Primer light 對應 */
+  --bg: #f6f8fa;          /* 原 #0b1220 */
+  --panel: #ffffff;        /* 原 #111827 */
+  --panel-2: #f6f8fa;      /* 原 #172132 */
+  --panel-3: #eef1f4;      /* 原 #1f2b3f */
+  --line: #d1d9e0;         /* 原 #2b3a4f */
+  --text: #1f2328;         /* 原 #ecf3fb */
+  --muted: #59636e;        /* 原 #93a4b8 */
+  --soft: #818b98;         /* 原 #64748b */
+  --blue: #0969da;         /* 原 #60a5fa */
+  --green: #1a7f37;        /* 原 #10b981 */
+  --yellow: #9a6700;       /* 原 #f59e0b */
+  --red: #cf222e;          /* 原 #ef4444 */
+  --pink: #bf3989;         /* 原 #f472b6 */
+  --cyan: #1b7c83;         /* 原 #22d3ee */
+  /* v1 元件層沿用的 token */
+  --c-bg: #f6f8fa; --c-surface: #ffffff; --c-border: #d1d9e0;
+  --c-border-muted: #e6eaef; --c-fg: #1f2328; --c-fg-muted: #59636e;
+  --c-fg-subtle: #818b98; --c-accent: #0969da; --c-accent-bg: #ddf4ff;
+  --radius: 8px; --shadow-sm: 0 1px 0 rgba(31,35,40,.04);
+}
+
+/* ---------- 2) 硬編碼深色補丁(逐一蓋掉) ---------- */
+/* topbar 深色漸層 → 白底細邊 */
+.topbar {
+  background: var(--panel) !important;
+  border-bottom: 1px solid var(--line) !important;
+}
+/* 任何殘留的深色背景元素,一律翻白/淺灰 */
+[style*="#0b1220"], [style*="#111827"], [style*="#172132"] { background: var(--panel) !important; }
+body, .shell { background: var(--bg) !important; color: var(--text) !important; }
+
+/* 針對 style 區硬編碼 hex 的類別補丁:用高頻容器兜底 */
+.panel, .section, .card, .modal, .drawer, .dropdown, .tooltip-body,
+.stat, .stat-card, .banner, .table-wrap, .chart-shell, .code-block {
+  background-color: var(--panel) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+.section-body, .panel-body { background: transparent !important; }
+input, select, textarea {
+  background: var(--panel) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 6px !important;
+}
+input::placeholder, textarea::placeholder { color: var(--soft) !important; }
+
+/* ---------- 3) 元件層(v1 沿用+微調) ---------- */
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC",
+               "Microsoft JhengHei", Helvetica, Arial, sans-serif !important;
+  font-size: 14px !important; line-height: 1.55 !important;
+}
+.content, main { max-width: 1400px; margin: 0 auto; }
+
+.nav {
+  background: var(--panel) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+  padding: 6px 10px !important;
+  display: flex !important; flex-wrap: wrap !important;
+  gap: 2px 6px !important; align-items: center !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.nav .nav-group { display: flex; align-items: center; gap: 2px;
+  padding: 2px 6px 2px 2px; margin-right: 4px;
+  border-right: 1px solid var(--c-border-muted); }
+.nav .nav-group:last-child { border-right: 0; margin-right: 0; }
+.nav .nav-group-label { font-size: 11px; color: var(--soft);
+  padding: 0 8px 0 6px; user-select: none; letter-spacing: .04em; }
+.nav button { background: transparent !important; border: 1px solid transparent !important;
+  border-radius: 6px !important; color: var(--muted) !important;
+  font-size: 13px !important; padding: 5px 10px !important; box-shadow: none !important; }
+.nav button:hover { background: var(--bg) !important; color: var(--text) !important; }
+.nav button.active { background: var(--c-accent-bg) !important; color: var(--c-accent) !important;
+  border-color: transparent !important; font-weight: 600 !important; }
+
+.section { margin-bottom: 14px !important; border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-sm) !important; }
+.section-header { border-bottom: 1px solid var(--c-border-muted) !important;
+  background: transparent !important; padding: 10px 14px !important; }
+.section-title { color: var(--text) !important; font-size: 14px !important; font-weight: 600 !important; }
+.section-sub, .muted, .chart-note, .stat-sub { color: var(--muted) !important; font-size: 12px !important; }
+.section-body { padding: 12px 14px !important; }
+.meta-strip { background: transparent !important; border: 0 !important;
+  box-shadow: none !important; color: var(--soft) !important;
+  font-size: 12px !important; padding: 4px 2px !important; }
+
+.table-wrap { border: 1px solid var(--c-border-muted) !important; border-radius: 6px !important; }
+table { border-collapse: collapse !important; font-size: 13px !important; width: 100%; }
+th { background: var(--bg) !important; color: var(--muted) !important; font-weight: 600 !important;
+  font-size: 12px !important; border-bottom: 1px solid var(--line) !important;
+  padding: 6px 10px !important; position: sticky; top: 0; }
+td { border-bottom: 1px solid var(--c-border-muted) !important; padding: 6px 10px !important;
+  color: var(--text) !important; background: transparent !important; }
+tr:hover td { background: #f6f8fa !important; }
+tr:last-child td { border-bottom: 0 !important; }
+
+.stats-grid { gap: 10px !important; }
+.stat, .stat-card { padding: 10px 12px !important; }
+.stat-value { color: var(--text) !important; font-size: 20px !important; font-weight: 600 !important; }
+.stat-label { color: var(--soft) !important; font-size: 11px !important; letter-spacing: .03em; }
+
+.btn { background: var(--panel) !important; border: 1px solid var(--line) !important;
+  color: var(--text) !important; border-radius: 6px !important;
+  font-size: 12px !important; padding: 4px 10px !important; box-shadow: var(--shadow-sm) !important; }
+.btn:hover { background: var(--bg) !important; border-color: var(--soft) !important; }
+.pill, .badge, .tag { border-radius: 999px !important; font-size: 11px !important;
+  padding: 1px 8px !important; border: 1px solid var(--line) !important;
+  background: var(--bg) !important; color: var(--muted) !important; }
+
+/* 台股慣例:紅漲綠跌 */
+.up, .pos, .text-up { color: var(--red) !important; }
+.down, .neg, .text-down { color: var(--green) !important; }
+.banner { border-left: 3px solid var(--yellow) !important; }
+
+.info-row { border-bottom: 1px dashed var(--c-border-muted) !important; padding: 4px 0 !important; }
+.info-key { color: var(--soft) !important; font-size: 12px !important; }
+.empty { color: var(--soft) !important; background: transparent !important;
+  border: 1px dashed var(--line) !important; border-radius: 6px !important; }
+.code, code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace !important;
+  font-size: 12px !important; background: var(--bg) !important;
+  border: 1px solid var(--c-border-muted) !important; border-radius: 6px !important;
+  color: var(--text) !important; }
+.chart-shell { background: var(--panel) !important; border: 1px solid var(--c-border-muted) !important;
+  border-radius: 6px !important; }
+.chart-empty { color: var(--soft) !important; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- lane 徽章(進場名單) ---------- */
+.lane-badge {
+  display: inline-block; margin-left: 4px; padding: 1px 8px !important;
+  border-radius: 999px !important; font-size: 11px !important; font-weight: 600;
+  border: 1px solid var(--line) !important; background: var(--bg) !important;
+  color: var(--muted) !important; vertical-align: 1px;
+}
+.lane-badge.lane-main {
+  background: var(--c-accent-bg) !important; color: var(--c-accent) !important;
+  border-color: transparent !important;
+}
+.lane-badge.lane-rere {
+  background: var(--yellow) !important; color: #fff !important;
+  border-color: var(--yellow) !important;
+}
+.lane-badge.lane-rere_watch {
+  background: #fff8e1 !important; color: var(--yellow) !important;
+  border-color: var(--yellow) !important;
+}
+.lane-badge.lane-watch { /* 灰,用預設 */ }
+
+/* ---------- canonical 名單表 ---------- */
+.canon-table td.num, .canon-table th.num {
+  text-align: right !important; white-space: nowrap;
+  font-variant-numeric: tabular-nums; font-family: ui-monospace, Consolas, monospace;
+  font-size: 12.5px !important;
+}
+.canon-table .canon-stock { min-width: 220px; }
+.canon-table .canon-reason {
+  color: var(--soft) !important; font-size: 11.5px; line-height: 1.45;
+  margin-top: 2px; max-width: 480px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.canon-table tr.canon-group td {
+  background: var(--panel-3) !important; color: var(--muted) !important;
+  font-size: 11px !important; font-weight: 600; letter-spacing: .05em;
+  padding: 4px 10px !important; border-bottom: 1px solid var(--line) !important;
+}
+.canon-table tr:hover td { background: #f0f6ff !important; }
+.canon-table tr.canon-group:hover td { background: var(--panel-3) !important; }
+
+/* ---------- 狀態 chip + pred 色塊 ---------- */
+.st-chip {
+  display: inline-block; padding: 2px 9px; border-radius: 6px;
+  font-size: 12px !important; font-weight: 600; white-space: nowrap;
+}
+.st-chip.st-green  { background: #dafbe1 !important; color: #116329 !important; }
+.st-chip.st-amber  { background: #fff1c2 !important; color: #7a5901 !important; }
+.st-chip.st-blue   { background: #ddf4ff !important; color: #0969da !important; }
+.st-chip.st-yellow { background: #9a6700 !important; color: #ffffff !important; }
+.st-chip.st-gray   { background: #eef1f4 !important; color: #59636e !important; }
+
+.pred-chip {
+  display: inline-block; padding: 2px 8px; border-radius: 6px;
+  font-weight: 700; font-size: 12.5px !important;
+  font-variant-numeric: tabular-nums;
+}
+.pred-chip.pred-up { background: #ffebe9 !important; color: #cf222e !important; }  /* 紅漲 */
+.pred-chip.pred-dn { background: #dafbe1 !important; color: #116329 !important; }  /* 綠跌 */
+
+/* 理由行:加深加大 */
+.canon-table .canon-reason {
+  color: var(--muted) !important; font-size: 12px !important;
+}
+.canon-table .canon-sector { color: var(--muted) !important; font-size: 12px !important; white-space: nowrap; }

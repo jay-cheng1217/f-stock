@@ -1,0 +1,5 @@
+﻿variant,april_trades,control_ma5_exits,rescued_count,rescued_avg_delta_return
+Variant_A_regime_ma20_3pct,30,22,22,-0.001557065556472806
+Variant_B_regime_ma20_5pct,30,22,22,-0.001557065556472806
+Variant_C_regime_20d_return_8pct,30,22,0,0.0
+Variant_D_regime_ma20_5pct_hwm,30,22,22,-0.009888136237788735

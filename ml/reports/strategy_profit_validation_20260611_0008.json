@@ -1,0 +1,82 @@
+{
+  "generated_at": "2026-06-10T23:55:45",
+  "strategy": "chip_momentum_high_top5_liquid_open_ge_10_volume_ge_250k_amount_ge_20m_all",
+  "dataset_path": "F:\\stock\\ml\\models\\dataset_cache_20260610.parquet",
+  "summary_path": "F:\\stock\\ml\\reports\\strategy_profit_search_20260610_2359.json",
+  "monthly_path": "F:\\stock\\ml\\reports\\strategy_profit_search_20260610_2359_best_monthly.csv",
+  "picks_path": "F:\\stock\\ml\\reports\\strategy_profit_search_20260610_2359_best_picks.csv",
+  "raw_k_dir": "F:\\stock\\日K資料",
+  "pick_check": {
+    "passed": true,
+    "recomputed_rows": 145,
+    "reported_rows": 145,
+    "mismatches_preview": []
+  },
+  "monthly_check": {
+    "passed": true,
+    "row_count_match": true,
+    "max_abs_diffs": {
+      "n_picks": 0.0,
+      "net_return": 9.627715291671279e-17,
+      "net_excess_return": 9.367506770274758e-17,
+      "pick_win_rate": 0.0
+    }
+  },
+  "summary_check": {
+    "passed": true,
+    "recomputed": {
+      "full": {
+        "cum_return": 2.9980635659906016,
+        "cum_excess": 0.2988324850009343,
+        "max_drawdown": -0.049679106414823315,
+        "positive_months": 23,
+        "months": 29,
+        "avg_pick_win_rate": 0.6137931034482759
+      },
+      "train": {
+        "cum_return": 1.290466804500435,
+        "cum_excess": 0.5598227994151712,
+        "max_drawdown": -0.049679106414823315,
+        "positive_months": 16,
+        "months": 18,
+        "avg_pick_win_rate": 0.6222222222222223
+      },
+      "holdout": {
+        "cum_return": 0.7455234706458036,
+        "cum_excess": -0.1673204895531022,
+        "max_drawdown": -0.022461762651801,
+        "positive_months": 7,
+        "months": 11,
+        "avg_pick_win_rate": 0.6
+      }
+    },
+    "diffs": {
+      "full_cum_return_pct": 0.0,
+      "full_cum_excess_pct": 0.0,
+      "train_cum_return_pct": 0.0,
+      "holdout_cum_return_pct": 0.0,
+      "max_drawdown_pct": 0.0,
+      "positive_months": 0.0
+    }
+  },
+  "target_check": {
+    "passed": true,
+    "checked_rows": 145,
+    "ok_rows": 145,
+    "max_abs_diff": 2.6247917173094493e-08,
+    "sources": {
+      "dataset_cache": 140,
+      "raw_k": 5
+    },
+    "failures_preview": []
+  },
+  "filter_check": {
+    "passed": true,
+    "months": 29,
+    "rows": 145,
+    "min_open": 17.450000762939453,
+    "min_volume": 297339.0,
+    "min_amount_ma20": 31618668.27631379
+  },
+  "passed": true
+}

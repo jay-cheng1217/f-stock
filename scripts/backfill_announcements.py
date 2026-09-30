@@ -34,7 +34,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # ==============================================================================
 # 設定
 # ==============================================================================
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NEWS_DIR = os.path.join(BASE_DIR, "新聞資料")
 os.makedirs(NEWS_DIR, exist_ok=True)
 

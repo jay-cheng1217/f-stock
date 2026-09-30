@@ -1,0 +1,184 @@
+{
+  "status": "PASS",
+  "generated_at": "2026-09-06T15:09:27.902002+08:00",
+  "build": {
+    "status": "PASS",
+    "started": "2026-09-06T15:06:22.196264+08:00",
+    "seconds": 22.58,
+    "command": "python -B -X utf8 output/tdcc_lineage_20260906/build_dashboard_preview.py",
+    "data_root": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+    "canonical": "F:\\stock\\logs\\entry_list_20260907.json",
+    "derived_root": "F:\\stock\\output\\tdcc_lineage_20260906\\staging",
+    "output": "F:\\stock\\output\\playwright\\tdcc_lineage_dashboard_20260906.html",
+    "bytes": 9364101,
+    "sha256": "c570384149fadd02717370f217049cf58910175454fbcdaa7d90bb8ae18bec38",
+    "input_hashes_unchanged": {
+      "F:\\stock\\logs\\entry_list_20260907.json": "02f657a10432073ac411c75039accd423f776e4289f0970f65774e2a06fdf65e",
+      "F:\\stock\\logs\\entry_watchlist.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "F:\\stock\\ml\\reports\\entry_filter_ledger.csv": "6e0cbd97bed5d5944ab6ae3d4d9004089331c7b92e3e9b912d712ad66ee34519",
+      "F:\\stock\\ml\\reports\\rere_lane_ledger.csv": "7bfb4a565fdd41ac08a87e1aa8ac131d3cddfa00b7e5568137f67eef6d221e10",
+      "F:\\stock\\ml\\reports\\shadow_dataA_ledger.csv": "bfe4f53aff7650df797453ea3d9185c1cd283945b59ba57327631f1465ce624b"
+    },
+    "scope": "Current renderer/consumer code; frozen isolated 9/4 context; root canonical 18 candidates; only TDCC derivative redirected to new validated staging."
+  },
+  "mobile": {
+    "viewport": 390,
+    "scrollWidth": 390,
+    "cardCount": 18,
+    "rereStocks": [
+      "3066 李洲",
+      "3176 基亞",
+      "6472 保瑞",
+      "3605 宏致",
+      "3189 景碩",
+      "2364 倫飛"
+    ],
+    "blocked": [
+      {
+        "stock": "3605 宏致",
+        "opacity": "1",
+        "text": "暫緩 · 有否決條件\n3605 宏致\n電子零組件業\nrere 方法系統篩選 · 60 個交易日觀察 · 只考慮最小試單\n先處理卡上的否決或過期條件，再重新確認型態。\n上次收盤 118 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。\n觀察區間\n118.04-119.77\n高於此價不追\n>119.77\n失效參考價\n92.96\n洗盤轉強型態入列，仍需盤中守住支撐\n模型分數不否決 rere；進場前人工查分點與主力成本\n籌碼提示 · 🔴 跳過:籌碼發散(大戶-2.9pp/散戶+1.0pp)\n尚缺：盤中進區間守穩、人工籌碼確認。\n型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）\n查看數據、完整理由與個股分析"
+      },
+      {
+        "stock": "3189 景碩",
+        "opacity": "1",
+        "text": "暫緩 · 有否決條件\n3189 景碩\n半導體業\nrere 方法系統篩選 · 60 個交易日觀察 · 只考慮最小試單\n先處理卡上的否決或過期條件，再重新確認型態。\n上次收盤 819 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。\n觀察區間\n831.28-832.36\n高於此價不追\n>832.36\n失效參考價\n756.66\n洗盤轉強型態入列，仍需盤中守住支撐\n模型分數不否決 rere；進場前人工查分點與主力成本\n籌碼提示 · 🔴 跳過:籌碼發散(大戶-2.7pp/散戶+2.4pp)\n尚缺：盤中進區間守穩、人工籌碼確認。\n型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）\n查看數據、完整理由與個股分析"
+      },
+      {
+        "stock": "2364 倫飛",
+        "opacity": "1",
+        "text": "暫緩 · 有否決條件\n2364 倫飛\n電腦及週邊設備業\nrere 方法系統篩選 · 60 個交易日觀察 · 只考慮最小試單\n先處理卡上的否決或過期條件，再重新確認型態。\n上次收盤 67.4 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。\n觀察區間\n67.95-68.41\n高於此價不追\n>68.41\n失效參考價\n61.87\n洗盤轉強型態入列，仍需盤中守住支撐\n模型分數不否決 rere；進場前人工查分點與主力成本\n⚠ 流動性不足\n籌碼提示 · 🔴 跳過:籌碼發散(大戶+0.0pp/散戶+2.3pp)\n尚缺：盤中進區間守穩、人工籌碼確認。\n型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）\n查看數據、完整理由與個股分析"
+      }
+    ],
+    "modelNeverVeto": true,
+    "dates": [
+      "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+      "型態截至 2026-09-04 · 模型截至 2026-09-04"
+    ],
+    "whaleDate": true
+  },
+  "desktop": {
+    "viewport": 1440,
+    "scrollWidth": 1440,
+    "cards": 18,
+    "skipOpacity": [
+      "1",
+      "1",
+      "1"
+    ]
+  },
+  "source_status": [
+    {
+      "key": "snapshot",
+      "label": "四面向",
+      "asof": "2026-09-04",
+      "expected": "2026-09-04",
+      "status": "fresh"
+    },
+    {
+      "key": "data_a",
+      "label": "20D模型",
+      "asof": "2026-09-04",
+      "expected": "2026-09-04",
+      "status": "fresh"
+    },
+    {
+      "key": "production",
+      "label": "正式標籤",
+      "asof": "2026-09-04",
+      "expected": "2026-09-04",
+      "status": "fresh"
+    },
+    {
+      "key": "tdcc",
+      "label": "集保週報",
+      "asof": "2026-09-04",
+      "expected": "2026-08-28",
+      "status": "fresh"
+    },
+    {
+      "key": "whale",
+      "label": "大戶雷達",
+      "asof": "2026-09-04",
+      "expected": "2026-08-28",
+      "status": "fresh"
+    }
+  ],
+  "canonical_embedded_order_unchanged": true,
+  "visual_review": "Viewed both desktop/mobile risk cards. Existing skip opacity .55 made risk reasons dim; authorized removal keeps badge/risk frame and restores opacity 1.",
+  "css_change": "Removed only .card.c-skip{opacity:.55}; no data, gate, rank or model changes.",
+  "console": {
+    "errors": 0,
+    "warnings": 0,
+    "evidence": "F:\\stock\\output\\playwright\\tdcc_lineage_console_final.txt"
+  },
+  "screenshots": [
+    "F:\\stock\\output\\playwright\\tdcc_lineage_desktop_20260906.png",
+    "F:\\stock\\output\\playwright\\tdcc_lineage_mobile_20260906.png",
+    "F:\\stock\\output\\playwright\\tdcc_lineage_risks_desktop_20260906.png",
+    "F:\\stock\\output\\playwright\\tdcc_lineage_risk_mobile_20260906.png",
+    "F:\\stock\\output\\playwright\\tdcc_lineage_risks_desktop_dimmed_before_20260906.png",
+    "F:\\stock\\output\\playwright\\tdcc_lineage_risk_mobile_dimmed_before_20260906.png"
+  ],
+  "screenshot_scope": "Header captures precede opacity-only fix; risk-card desktop/mobile captures are final after fix; dimmed files intentionally preserve before state.",
+  "readonly_review": {
+    "side_effect_scope": "Only output/tdcc_lineage_20260906/review_fixtures; all pipeline work units mocked; no jobs/training/email/ledger.",
+    "pipeline_failed_prediction": {
+      "exit_code": 1,
+      "events": [
+        "failed_predict",
+        "run_t1_predict",
+        "run_unified_signals",
+        "run_unified_portfolio",
+        "run_paper_portfolio",
+        "run_agent_arena",
+        "run_research_output_layer",
+        "run_entry_candidate_refresh",
+        "run_v4_rank15_shadow",
+        "run_verify",
+        "run_replay_monitor",
+        "run_email_report",
+        "release"
+      ],
+      "metadata": {
+        "last_run": "2026-09-06 15:03:36",
+        "elapsed_min": 0.0,
+        "steps": {
+          "step_1": "failed",
+          "T+1": "ok",
+          "UnifiedSignals": "ok",
+          "UnifiedPortfolio": "ok",
+          "step_5": "ok",
+          "AgentArena": "ok",
+          "ResearchOutputLayer": "ok",
+          "EntryCandidateRefresh": "ok",
+          "V4Rank15Shadow": "ok",
+          "step_10": "ok",
+          "Replay": "ok",
+          "Email": "ok"
+        },
+        "all_ok": false,
+        "blocked_steps": []
+      },
+      "confirmed_downstream_called": true
+    },
+    "monthly_duplicate_nonfinite_then_valid": {
+      "rows": [
+        "2026-06-01,100",
+        "2026-07-01,nan",
+        "2026-07-01,120"
+      ],
+      "actual_gap": null,
+      "expected": "duplicate-period error, not healthy"
+    }
+  },
+  "review_followup": "Two findings were reported at 15:03; root owns remedies. Root reports explicit dependency repair (46a4dc0c) and separate monthly seen set. These before-fix fixtures are historical evidence, not a claim of unresolved final behavior; no expanded re-review performed.",
+  "not_run": [
+    "SMTP",
+    "publish",
+    "formal UI write",
+    "Windows scheduler trigger",
+    "model/ledger write",
+    "independent commit"
+  ]
+}

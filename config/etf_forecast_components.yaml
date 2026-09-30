@@ -1,0 +1,61 @@
+version: etf_forecast_components_v1
+updated_at: 2026-06-09
+notes:
+  - ETF component proxy is used only for web forecast scenarios when an ETF is outside the direct stock prediction universe.
+  - Component weights are additive metadata, not production entry gates.
+etfs:
+  "0050":
+    name: Yuanta Taiwan 50 ETF
+    method: proxy_top_holdings_plus_residual
+    source_label: ETFInfo public holdings snapshot
+    source_url: https://www.etfinfo.tw/etf/0050/holdings
+    source_as_of: 2026-06-08
+    weights_basis: public top-15 holdings snapshot; residual weight uses ETF recent-return fallback
+    residual_policy: etf_recent_return_fallback
+    min_prediction_coverage: 0.40
+    components:
+      - ticker: "2330"
+        name: TSMC
+        weight: 0.5837
+      - ticker: "2454"
+        name: MediaTek
+        weight: 0.0623
+      - ticker: "2308"
+        name: Delta Electronics
+        weight: 0.0456
+      - ticker: "2317"
+        name: Hon Hai
+        weight: 0.0342
+      - ticker: "3711"
+        name: ASE Technology Holding
+        weight: 0.0185
+      - ticker: "2303"
+        name: UMC
+        weight: 0.0147
+      - ticker: "2383"
+        name: Elite Material
+        weight: 0.0143
+      - ticker: "3037"
+        name: Unimicron
+        weight: 0.0127
+      - ticker: "2345"
+        name: Accton
+        weight: 0.0125
+      - ticker: "2327"
+        name: Yageo
+        weight: 0.0121
+      - ticker: "2891"
+        name: CTBC Financial
+        weight: 0.0121
+      - ticker: "2382"
+        name: Quanta
+        weight: 0.0104
+      - ticker: "2881"
+        name: Fubon Financial
+        weight: 0.0101
+      - ticker: "2360"
+        name: Chroma
+        weight: 0.0094
+      - ticker: "2882"
+        name: Cathay Financial
+        weight: 0.0092

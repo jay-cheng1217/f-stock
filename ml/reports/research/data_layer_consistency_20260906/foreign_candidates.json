@@ -1,0 +1,282 @@
+[
+  {
+    "date": "20220915",
+    "status": "VALIDATED_STAGING_ONLY",
+    "rows": 1954,
+    "target": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\candidates\\外資持股\\20220915.csv",
+    "sha256": "a1c720ddb2327fc02eaf509b49fe0073c28002af5fab543be0de01f7ac9f7b22",
+    "source_before_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\外資持股\\20220915.csv",
+    "source_before_sha256": null,
+    "source_before_rows": 0,
+    "market_validation": [
+      {
+        "rows": 1151,
+        "market": "TWSE",
+        "unknown_rows": 0,
+        "unknown_tickers": [],
+        "max_share_percentage_residual_pp": 0.009998842083815962,
+        "numeric_unit": "shares (named official fields; both markets)",
+        "fields": [
+          "證券代號",
+          "證券名稱",
+          "國際證券編碼",
+          "發行股數",
+          "外資及陸資尚可投資股數",
+          "全體外資及陸資持有股數",
+          "外資及陸資尚可投資比率",
+          "全體外資及陸資持股比率",
+          "外資及陸資共用法令投資上限比率",
+          "陸資法令投資上限比率",
+          "與前日異動原因(註)",
+          "最近一次上市公司申報外資及陸資持股異動日期"
+        ],
+        "raw_sha256": "2a5e3e28ea563d31694fc076c99e950b857441c63c5ddf01e31508d325d00da3"
+      },
+      {
+        "rows": 803,
+        "market": "TPEx",
+        "unknown_rows": 0,
+        "unknown_tickers": [],
+        "max_share_percentage_residual_pp": 0.009972128248793233,
+        "numeric_unit": "shares (named official fields; both markets)",
+        "fields": [
+          "排行",
+          "代號",
+          "名稱",
+          "發行股數(A)",
+          "僑外資及陸資尚可投資股數B=A*F-C",
+          "僑外資及陸資持有股數(C)",
+          "僑外資及陸資尚可投資比率(D=B/A)",
+          "僑外資及陸資持股比率(E=C/A)",
+          "法令投資上限比率(F)",
+          "備註"
+        ],
+        "raw_sha256": "1454dabc5f98dd4831fa4e997854b04e32501d4be66d3d9eea4bad61b40d3db4"
+      }
+    ],
+    "neighbor_coverage": [
+      {
+        "date": "20220914",
+        "rows": 1954,
+        "ticker_overlap_ratio": 1.0,
+        "sha256": "38a26da6368a02a53d0e0b23164ea8220dc9fadc0585c5109dac63fcd76f47c4"
+      },
+      {
+        "date": "20220920",
+        "rows": 1954,
+        "ticker_overlap_ratio": 1.0,
+        "sha256": "8902b2d90defa78474135bc383e53289a65e0c4845a46e372a1a57c832ac755c"
+      }
+    ]
+  },
+  {
+    "date": "20220916",
+    "status": "VALIDATED_STAGING_ONLY",
+    "rows": 1954,
+    "target": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\candidates\\外資持股\\20220916.csv",
+    "sha256": "2ba46c887156813ac9da869eb96fa058286c7a9a32ffcb0ce6c724828e48ddaf",
+    "source_before_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\外資持股\\20220916.csv",
+    "source_before_sha256": null,
+    "source_before_rows": 0,
+    "market_validation": [
+      {
+        "rows": 1151,
+        "market": "TWSE",
+        "unknown_rows": 0,
+        "unknown_tickers": [],
+        "max_share_percentage_residual_pp": 0.009970368515504369,
+        "numeric_unit": "shares (named official fields; both markets)",
+        "fields": [
+          "證券代號",
+          "證券名稱",
+          "國際證券編碼",
+          "發行股數",
+          "外資及陸資尚可投資股數",
+          "全體外資及陸資持有股數",
+          "外資及陸資尚可投資比率",
+          "全體外資及陸資持股比率",
+          "外資及陸資共用法令投資上限比率",
+          "陸資法令投資上限比率",
+          "與前日異動原因(註)",
+          "最近一次上市公司申報外資及陸資持股異動日期"
+        ],
+        "raw_sha256": "1da1b691d589d3324b2692f0f279b4b4fc5c97dea884af2e4e096619168a77e3"
+      },
+      {
+        "rows": 803,
+        "market": "TPEx",
+        "unknown_rows": 0,
+        "unknown_tickers": [],
+        "max_share_percentage_residual_pp": 0.009972128248793233,
+        "numeric_unit": "shares (named official fields; both markets)",
+        "fields": [
+          "排行",
+          "代號",
+          "名稱",
+          "發行股數(A)",
+          "僑外資及陸資尚可投資股數B=A*F-C",
+          "僑外資及陸資持有股數(C)",
+          "僑外資及陸資尚可投資比率(D=B/A)",
+          "僑外資及陸資持股比率(E=C/A)",
+          "法令投資上限比率(F)",
+          "備註"
+        ],
+        "raw_sha256": "cfe77cb5f6d210aed3633f560110bd18021459c801ecd48e16969753440fb3aa"
+      }
+    ],
+    "neighbor_coverage": [
+      {
+        "date": "20220914",
+        "rows": 1954,
+        "ticker_overlap_ratio": 1.0,
+        "sha256": "38a26da6368a02a53d0e0b23164ea8220dc9fadc0585c5109dac63fcd76f47c4"
+      },
+      {
+        "date": "20220920",
+        "rows": 1954,
+        "ticker_overlap_ratio": 1.0,
+        "sha256": "8902b2d90defa78474135bc383e53289a65e0c4845a46e372a1a57c832ac755c"
+      }
+    ]
+  },
+  {
+    "date": "20220919",
+    "status": "VALIDATED_STAGING_ONLY",
+    "rows": 1954,
+    "target": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\candidates\\外資持股\\20220919.csv",
+    "sha256": "5018929317580289b0b399d75bf8fda93096f1f758186f626075a7a2324d627d",
+    "source_before_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\外資持股\\20220919.csv",
+    "source_before_sha256": null,
+    "source_before_rows": 0,
+    "market_validation": [
+      {
+        "rows": 1151,
+        "market": "TWSE",
+        "unknown_rows": 0,
+        "unknown_tickers": [],
+        "max_share_percentage_residual_pp": 0.009984223918575008,
+        "numeric_unit": "shares (named official fields; both markets)",
+        "fields": [
+          "證券代號",
+          "證券名稱",
+          "國際證券編碼",
+          "發行股數",
+          "外資及陸資尚可投資股數",
+          "全體外資及陸資持有股數",
+          "外資及陸資尚可投資比率",
+          "全體外資及陸資持股比率",
+          "外資及陸資共用法令投資上限比率",
+          "陸資法令投資上限比率",
+          "與前日異動原因(註)",
+          "最近一次上市公司申報外資及陸資持股異動日期"
+        ],
+        "raw_sha256": "3472a8388199f2d9246c84cdcaeec26a1d2d07efa6a84adf4a39fff72dcefcdd"
+      },
+      {
+        "rows": 803,
+        "market": "TPEx",
+        "unknown_rows": 0,
+        "unknown_tickers": [],
+        "max_share_percentage_residual_pp": 0.009990162463774155,
+        "numeric_unit": "shares (named official fields; both markets)",
+        "fields": [
+          "排行",
+          "代號",
+          "名稱",
+          "發行股數(A)",
+          "僑外資及陸資尚可投資股數B=A*F-C",
+          "僑外資及陸資持有股數(C)",
+          "僑外資及陸資尚可投資比率(D=B/A)",
+          "僑外資及陸資持股比率(E=C/A)",
+          "法令投資上限比率(F)",
+          "備註"
+        ],
+        "raw_sha256": "ef12ccdd19d4a1183146530c190d6832260aba01936429f41cc3c8b1ecf21a21"
+      }
+    ],
+    "neighbor_coverage": [
+      {
+        "date": "20220914",
+        "rows": 1954,
+        "ticker_overlap_ratio": 1.0,
+        "sha256": "38a26da6368a02a53d0e0b23164ea8220dc9fadc0585c5109dac63fcd76f47c4"
+      },
+      {
+        "date": "20220920",
+        "rows": 1954,
+        "ticker_overlap_ratio": 1.0,
+        "sha256": "8902b2d90defa78474135bc383e53289a65e0c4845a46e372a1a57c832ac755c"
+      }
+    ]
+  },
+  {
+    "date": "20260807",
+    "status": "VALIDATED_STAGING_ONLY",
+    "rows": 2249,
+    "target": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\candidates\\外資持股\\20260807.csv",
+    "sha256": "45dffe727d0559f6d1bf35c760877976338f9e4648f1c020b1e3fc50d8a94a26",
+    "source_before_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\外資持股\\20260807.csv",
+    "source_before_sha256": "30ce1be6f6068b6a58acef36082a05388a1ed7cef0fd1d52371b845d7e47176c",
+    "source_before_rows": 889,
+    "market_validation": [
+      {
+        "rows": 1358,
+        "market": "TWSE",
+        "unknown_rows": 0,
+        "unknown_tickers": [],
+        "max_share_percentage_residual_pp": 0.009998745338208437,
+        "numeric_unit": "shares (named official fields; both markets)",
+        "fields": [
+          "證券代號",
+          "證券名稱",
+          "國際證券編碼",
+          "發行股數",
+          "外資及陸資尚可投資股數",
+          "全體外資及陸資持有股數",
+          "外資及陸資尚可投資比率",
+          "全體外資及陸資持股比率",
+          "外資及陸資共用法令投資上限比率",
+          "陸資法令投資上限比率",
+          "與前日異動原因(註)",
+          "最近一次上市公司申報外資及陸資持股異動日期"
+        ],
+        "raw_sha256": "5e95ae156ed39a61ddc0670fdc56f4c598d7833fa9e0cc8ce56976a7e0bb6a00"
+      },
+      {
+        "rows": 891,
+        "market": "TPEx",
+        "unknown_rows": 0,
+        "unknown_tickers": [],
+        "max_share_percentage_residual_pp": 0.009977532211742357,
+        "numeric_unit": "shares (named official fields; both markets)",
+        "fields": [
+          "排行",
+          "代號",
+          "名稱",
+          "發行股數(A)",
+          "僑外資及陸資尚可投資股數B=A*F-C",
+          "僑外資及陸資持有股數(C)",
+          "僑外資及陸資尚可投資比率(D=B/A)",
+          "僑外資及陸資持股比率(E=C/A)",
+          "法令投資上限比率(F)",
+          "備註"
+        ],
+        "raw_sha256": "353113b841de92ab74314648c6c024b35e5f0bee5b0642d517e2cd39217b3ed0"
+      }
+    ],
+    "neighbor_coverage": [
+      {
+        "date": "20260806",
+        "rows": 2248,
+        "ticker_overlap_ratio": 1.0,
+        "sha256": "15e85775c136968965d7494f10b844f655715c8d2ec2157f895d5d9bc2bea8fb"
+      },
+      {
+        "date": "20260810",
+        "rows": 2250,
+        "ticker_overlap_ratio": 0.9995555555555555,
+        "sha256": "7620b07a70d691058550f85a0852745f2a99b1b57d0d2b91913758756a71a9e3"
+      }
+    ]
+  }
+]

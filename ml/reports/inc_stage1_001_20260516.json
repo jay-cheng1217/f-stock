@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-05-16T15:51:42",
+  "stage1_meta": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+  "old_stage2_meta": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+  "new_stage2_meta": "ml\\models\\lgbm_two_stage_ranker_20260516_180000_inc001_meta.json",
+  "snapshot": "F:\\stock\\ml\\models\\snapshot_cache.pkl",
+  "stored_predictions": "F:\\stock\\ml\\models\\predictions_2026-05-15.csv",
+  "stored_signals": "F:\\stock\\ml\\models\\unified_signals_2026-05-15.csv",
+  "stage1_diff_summary": {
+    "all_predictions": {
+      "rows": 1131,
+      "valid": 1131,
+      "max_abs_diff": 0.16141731108091983,
+      "mean_abs_diff": 0.026573517085624457,
+      "median_abs_diff": 0.023742616767140554,
+      "p95_abs_diff": 0.060004884228201924
+    },
+    "unified_top30": {
+      "rows": 30,
+      "valid": 30,
+      "max_abs_diff": 0.08875178241382453,
+      "mean_abs_diff": 0.03950186659463191,
+      "median_abs_diff": 0.03952084505261415,
+      "p95_abs_diff": 0.08515175434134092
+    }
+  },
+  "rank_summary": {
+    "old_top30_count": 30,
+    "new_top30_count": 30,
+    "overlap": 18,
+    "jaccard": 0.42857142857142855,
+    "rank_spearman_common": 0.27966976264189886,
+    "old_only": [
+      "2351",
+      "2360",
+      "3093",
+      "3189",
+      "3563",
+      "4764",
+      "4971",
+      "6426",
+      "6643",
+      "7734",
+      "7751",
+      "8040"
+    ],
+    "new_only": [
+      "3131",
+      "3167",
+      "3229",
+      "3339",
+      "3555",
+      "3587",
+      "4577",
+      "5475",
+      "6823",
+      "8210",
+      "8271",
+      "8358"
+    ]
+  },
+  "same_snapshot_csv": "F:\\stock\\ml\\reports\\inc_stage1_001_20260516_same_snapshot_top30.csv",
+  "stage1_topdiff_csv": "F:\\stock\\ml\\reports\\inc_stage1_001_20260516_stage1_top30_diff.csv",
+  "report": "F:\\stock\\ml\\reports\\inc_stage1_001_20260516.md"
+}

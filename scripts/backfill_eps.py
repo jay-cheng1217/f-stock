@@ -12,7 +12,7 @@ import re
 import time
 import random
 import argparse
-from datetime import datetime, date
+from datetime import date, timedelta
 
 import pandas as pd
 import requests
@@ -33,12 +33,27 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # ==============================================================================
 # 設定
 # ==============================================================================
-BASE_DIR = r"F:\stock"
+try:
+    from scripts.quarterly_source_contract import verify_market_source, write_verified_quarter
+except ModuleNotFoundError:
+    from quarterly_source_contract import verify_market_source, write_verified_quarter
+
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EPS_DIR = os.path.join(BASE_DIR, "季報財務")
 os.makedirs(EPS_DIR, exist_ok=True)
 
 RATE_LIMIT = 5.0  # seconds between requests
 MAX_RETRIES = 3
+COMPLETENESS_RATIO = 0.8
+FILING_GRACE_DAYS = 3
+
+# 申報截止日所在年度 -> 截止後應完整的財報季度。
+QUARTER_DEADLINES = (
+    ((3, 31), lambda filing_year: (filing_year - 1, 4)),
+    ((5, 15), lambda filing_year: (filing_year, 1)),
+    ((8, 14), lambda filing_year: (filing_year, 2)),
+    ((11, 14), lambda filing_year: (filing_year, 3)),
+)
 
 # MOPS EPS 頁面 (t163sb04 = 每股盈餘彙總表)
 MOPS_URL = "https://mopsov.twse.com.tw/mops/web/ajax_t163sb04"
@@ -159,26 +174,18 @@ def parse_mops_eps_tables(html_text):
 # ==============================================================================
 # 季度工具
 # ==============================================================================
-def get_latest_available_quarter():
-    """
-    根據今天日期判斷最新可用季度
-    季報公布時程: Q1->5月, Q2->8月, Q3->11月, Q4->隔年3月底
-    """
-    today = date.today()
-    y = today.year
-    m = today.month
-
-    if m >= 11:
-        return y, 3
-    elif m >= 8:
-        return y, 2
-    elif m >= 5:
-        return y, 1
-    elif m >= 3:
-        # Q4 部分公司 3月中就公布，嘗試抓取
-        return y - 1, 4
-    else:
-        return y - 1, 3
+def get_latest_available_quarter(today=None):
+    """回傳申報截止加寬限後，應已完整的最新季度。"""
+    today = today or date.today()
+    candidates = []
+    for filing_year in (today.year - 1, today.year):
+        for (month, day), resolve in QUARTER_DEADLINES:
+            due = date(filing_year, month, day) + timedelta(days=FILING_GRACE_DAYS)
+            if due <= today:
+                candidates.append(resolve(filing_year))
+    if not candidates:
+        raise RuntimeError(f"找不到 {today} 以前已到期的財報季度")
+    return max(candidates)
 
 
 def generate_quarters(start_year, start_q, end_year, end_q):
@@ -194,9 +201,65 @@ def generate_quarters(start_year, start_q, end_year, end_q):
     return quarters
 
 
-# ==============================================================================
-# 主程式
-# ==============================================================================
+def _row_count(path):
+    try:
+        with open(path, encoding="utf-8-sig") as fh:
+            return max(sum(1 for _ in fh) - 1, 0)
+    except OSError:
+        return 0
+
+
+def _previous_reference_rows(quarters, index, eps_dir=EPS_DIR):
+    """找目前季度之前最近一個非空季度，作為完整性基準。"""
+    for y, q in reversed(quarters[:index]):
+        rows = _row_count(os.path.join(eps_dir, f"eps_{y}Q{q}.csv"))
+        if rows:
+            return rows
+    return 0
+
+
+def select_pending_quarters(quarters, eps_dir=EPS_DIR):
+    """找缺檔或殘檔；不刪除舊檔，成功抓取後才由原子寫入取代。"""
+    pending = []
+    for index, (y, q) in enumerate(quarters):
+        filepath = os.path.join(eps_dir, f"eps_{y}Q{q}.csv")
+        rows = _row_count(filepath)
+        reference_rows = _previous_reference_rows(quarters, index, eps_dir)
+        if (y, q) == max(quarters) or rows == 0:
+            pending.append((y, q))
+        elif reference_rows and rows < reference_rows * COMPLETENESS_RATIO:
+            print(
+                f"  eps_{y}Q{q}.csv 疑似殘檔({rows} 列 < 前季 {reference_rows} "
+                f"的 {COMPLETENESS_RATIO:.0%}),保留舊檔並重抓"
+            )
+            pending.append((y, q))
+    return pending
+
+
+def combine_complete_markets(market_frames, reference_rows=0):
+    """只接受雙市場完整回應，避免單一來源成功時覆蓋成殘檔。"""
+    required = {"TWSE", "OTC"}
+    available = {
+        market for market, frame in market_frames.items()
+        if frame is not None and not frame.empty
+    }
+    missing = required - available
+    if missing:
+        raise ValueError(f"季度來源不完整，缺少: {', '.join(sorted(missing))}")
+
+    result = pd.concat([market_frames[market] for market in ("TWSE", "OTC")], ignore_index=True)
+    if reference_rows and len(result) < reference_rows * COMPLETENESS_RATIO:
+        raise ValueError(
+            f"季度資料仍疑似殘缺: {len(result)} 列 < 前季 {reference_rows} "
+            f"的 {COMPLETENESS_RATIO:.0%}"
+        )
+    return result
+
+
+def write_quarter_atomic(result, filepath, *, evidence):
+    return write_verified_quarter(result, filepath, evidence=evidence)
+
+
 def main():
     parser = argparse.ArgumentParser(description="回補季報 EPS 資料 (MOPS)")
     parser.add_argument("--start-year", type=int, default=2020,
@@ -215,18 +278,15 @@ def main():
 
     quarters = generate_quarters(args.start_year, args.start_quarter, end_year, end_q)
 
-    # 過濾已下載的季度
-    pending_quarters = []
-    for y, q in quarters:
-        filepath = os.path.join(EPS_DIR, f"eps_{y}Q{q}.csv")
-        if not os.path.exists(filepath):
-            pending_quarters.append((y, q))
+    # 截止日前的早申報資料不納入「最新應完整季度」；歷史殘檔保留到新抓取通過
+    # 雙市場與列數驗證後才取代，避免 source outage 讓資料倒退。
+    pending_quarters = select_pending_quarters(quarters)
 
     print(f"  季度共 {len(quarters)} 個, 待下載 {len(pending_quarters)} 個, 已完成 {len(quarters) - len(pending_quarters)} 個")
 
     if not pending_quarters:
         print("  所有季度皆已下載完畢!")
-        return
+        return 0
 
     success_count = 0
     fail_count = 0
@@ -235,32 +295,30 @@ def main():
     for y, q in tqdm(pending_quarters, desc="EPS 季報"):
         filepath = os.path.join(EPS_DIR, f"eps_{y}Q{q}.csv")
 
-        # 再次檢查
-        if os.path.exists(filepath):
-            continue
-
         roc_year = y - 1911
-        all_data = []
+        market_frames = {}
+        evidence = {}
 
         for typek in ["sii", "otc"]:
-            market_label = "TWSE" if typek == "sii" else "OTC"
-
-            html_text = fetch_mops_eps(roc_year, q, typek)
-            if html_text:
-                df = parse_mops_eps_tables(html_text)
+            market = "TWSE" if typek == "sii" else "OTC"
+            try:
+                html = fetch_mops_eps(roc_year, q, typek)
+                df = parse_mops_eps_tables(html)
                 if not df.empty:
-                    df["Market"] = market_label
-                    all_data.append(df)
-                    tqdm.write(f"    {y}Q{q} ({market_label}): {len(df)} 筆")
-                else:
-                    tqdm.write(f"    {y}Q{q} ({market_label}): 無資料或解析失敗")
-            else:
-                tqdm.write(f"    {y}Q{q} ({market_label}): 抓取失敗")
-
+                    evidence[market] = verify_market_source(
+                        html, df, "eps", y, q, market, SESSION,
+                        latest=(y, q) == (end_year, end_q))
+                    df["Market"] = market
+                    market_frames[market] = df
+                    tqdm.write(f"    {y}Q{q} ({market}): {len(df)} 筆")
+            except Exception as exc:
+                tqdm.write(f"    {y}Q{q} ({market}) source verification failed: {exc}")
             time.sleep(RATE_LIMIT + random.uniform(0, 3))
 
-        if all_data:
-            result = pd.concat(all_data, ignore_index=True)
+        quarter_index = quarters.index((y, q))
+        reference_rows = _previous_reference_rows(quarters, quarter_index)
+        try:
+            result = combine_complete_markets(market_frames, reference_rows)
             result["Year"] = y
             result["Season"] = q
 
@@ -268,15 +326,14 @@ def main():
             cols = ["Ticker", "Name", "EPS_Basic", "Market", "Year", "Season"]
             result = result[cols]
 
-            tmp_path = filepath + ".tmp"
-            result.to_csv(tmp_path, index=False, encoding="utf-8-sig")
-            os.replace(tmp_path, filepath)
+            write_quarter_atomic(result, filepath, evidence=evidence)
 
             success_count += 1
             tqdm.write(f"  {y}Q{q}: {len(result)} 筆已儲存")
-        else:
+        except ValueError as exc:
             fail_count += 1
             failed_quarters.append(f"{y}Q{q}")
+            tqdm.write(f"  {y}Q{q}: {exc}; 保留既有檔案")
 
     # 摘要
     print("\n" + "=" * 60)
@@ -287,6 +344,8 @@ def main():
         print(f"  失敗季度: {', '.join(failed_quarters[:20])}")
     print("=" * 60)
 
+    return 1 if fail_count else 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

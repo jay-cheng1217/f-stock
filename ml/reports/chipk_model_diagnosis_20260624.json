@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-06-25T20:14:10",
+  "prediction_path": "F:\\stock\\ml\\models\\predictions_2026-06-24.csv",
+  "prediction_date": "2026-06-24",
+  "chipk_asof_date": "2026-06-24",
+  "chipk_source_path": "...\\UBSKChart\\2056757959.txt",
+  "chipk_rows": 2376,
+  "chipk_history_available": false,
+  "model_buy_count": 37,
+  "decision_counts": {
+    "model_chipk_watch": 23,
+    "model_chipk_confirmed": 7,
+    "model_chipk_conflict": 7
+  },
+  "bucket_counts": {
+    "neutral": 25,
+    "supportive": 5,
+    "weak": 5,
+    "strong": 2
+  },
+  "pattern_counts": {
+    "mixed_or_unconfirmed": 29,
+    "distribution_pressure": 3,
+    "sustained_accumulation": 2,
+    "short_term_fade": 2,
+    "short_term_chase_trap": 1
+  },
+  "top_n": 30,
+  "top_n_summary": {
+    "support_or_strong_rate": "16.7%",
+    "weak_rate": "13.3%",
+    "avg_chipk_score": 0.4229166666666667
+  }
+}

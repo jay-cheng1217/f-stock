@@ -16,7 +16,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 from ml.config import DAILY_K_DIR, MODEL_DIR
@@ -24,8 +24,9 @@ from ml.config import DAILY_K_DIR, MODEL_DIR
 DEFAULT_DB_PATH = os.path.join(BASE_DIR, "paper_portfolio_t1.db")
 DEFAULT_RULE_VERSION = "t1-v1"
 DEFAULT_TOP_N = 10
-PORTFOLIO_START_DATE = "2026-03-23"
+PORTFOLIO_START_DATE = "2026-04-17"
 HOLD_DAYS = 1
+FRICTION = 0.004  # round-trip friction, same as backtest/web
 
 PREDICTION_FILE_RE = re.compile(r"^predictions_t1_\d{4}-\d{2}-\d{2}\.csv$")
 
@@ -229,7 +230,7 @@ def lock_prediction_run(
 
 
 def refresh_open_positions(conn: sqlite3.Connection, stats: SyncStats) -> None:
-    """Mark T+1 positions using next-day price data (open→close, 1-day hold)."""
+    """Mark T+1 positions: Open[T+1] entry, exit Close[T+1], deduct friction."""
     cache: dict[str, pd.DataFrame | None] = {}
     positions = conn.execute(
         """
@@ -266,7 +267,6 @@ def refresh_open_positions(conn: sqlite3.Connection, stats: SyncStats) -> None:
         if price_df is None or price_df.empty:
             continue
 
-        # Next trading day after prediction_date
         future = price_df[price_df["Date"] > pd.Timestamp(pred_date)].reset_index(drop=True)
         if future.empty:
             continue
@@ -277,12 +277,42 @@ def refresh_open_positions(conn: sqlite3.Connection, stats: SyncStats) -> None:
             continue
 
         entry_date = day1["Date"].date().isoformat()
-        exit_close = float(day1["Close"])
-        intraday_high = float(day1["High"])
-        intraday_low = float(day1["Low"])
-        realized_return_pct = exit_close / entry_open - 1.0
-        max_gain = intraday_high / entry_open - 1.0
-        max_dd = intraday_low / entry_open - 1.0
+
+        if len(future) < HOLD_DAYS:
+            # Holding period not yet complete — mark as open with partial data
+            hold_bars = future.iloc[:len(future)]
+            period_high = float(hold_bars["High"].max())
+            period_low = float(hold_bars["Low"].min())
+            max_gain = period_high / entry_open - 1.0
+            max_dd = period_low / entry_open - 1.0
+            conn.execute(
+                """
+                UPDATE t1_positions
+                SET entry_date = ?,
+                    entry_open = ?,
+                    intraday_high = ?,
+                    intraday_low = ?,
+                    max_intraday_gain_pct = ?,
+                    max_intraday_drawdown_pct = ?,
+                    status = 'open',
+                    updated_at = ?
+                WHERE id = ?
+                """,
+                (entry_date, entry_open, period_high, period_low,
+                 max_gain, max_dd, now, position_id),
+            )
+            stats.refreshed_positions += 1
+            continue
+
+        # Full hold period
+        hold_bars = future.iloc[:HOLD_DAYS]
+        exit_bar = hold_bars.iloc[-1]
+        exit_close = float(exit_bar["Close"])
+        period_high = float(hold_bars["High"].max())
+        period_low = float(hold_bars["Low"].min())
+        realized_return_pct = exit_close / entry_open - 1.0 - FRICTION
+        max_gain = period_high / entry_open - 1.0
+        max_dd = period_low / entry_open - 1.0
         hit_3pct = int(max_gain >= 0.03)
 
         conn.execute(
@@ -303,7 +333,7 @@ def refresh_open_positions(conn: sqlite3.Connection, stats: SyncStats) -> None:
             """,
             (
                 entry_date, entry_open, exit_close,
-                realized_return_pct, intraday_high, intraday_low,
+                realized_return_pct, period_high, period_low,
                 max_gain, max_dd, hit_3pct, now, position_id,
             ),
         )

@@ -1,0 +1,117 @@
+{
+  "generated_at": "2026-05-09T17:44:01",
+  "signal_file": "F:\\stock\\ml\\models\\unified_signals_2026-05-08.csv",
+  "overall": "FAIL",
+  "checks": [
+    {
+      "code": "C1",
+      "name": "MA5 進場品質觀測",
+      "passed": true,
+      "detail": "INFO only: below-MA5 7/7 = 100.00%; below -3.00% 6/7 = 85.71%; deep <= -5.00% 5/7 = 71.43%; asymmetric_v2 handles below-MA5 entries with MA5_BREAK",
+      "data": {
+        "below_ma5_count": 7,
+        "below_guard_count": 6,
+        "deep_below_count": 5,
+        "total": 7,
+        "below_ma5_ratio": 1.0,
+        "below_guard_ratio": 0.8571428571428571,
+        "deep_below_ratio": 0.7142857142857143,
+        "blocking": false,
+        "missing_tickers": []
+      },
+      "severity": "INFO"
+    },
+    {
+      "code": "C2",
+      "name": "Two-Stage rank 完整性",
+      "passed": false,
+      "detail": "NaN 3/7 = 42.86% <= 5%",
+      "data": {
+        "rank_col": "two_stage_rank",
+        "missing": 3,
+        "total": 7,
+        "ratio": 0.42857142857142855
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C3",
+      "name": "OVERHEAT gate 正常",
+      "passed": true,
+      "detail": "0 active signals exceed sector threshold",
+      "data": {
+        "violations": [],
+        "violation_count": 0
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C4",
+      "name": "Guardrail 欄位存在",
+      "passed": true,
+      "detail": "required columns present",
+      "data": {
+        "missing": []
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C5",
+      "name": "ETF 洩漏",
+      "passed": true,
+      "detail": "ETF hits = 0",
+      "data": {
+        "etf_hits": []
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C6",
+      "name": "Production flags",
+      "passed": true,
+      "detail": "effective flags are enabled",
+      "data": {
+        "observed": {
+          "TWO_STAGE_RANKER_ENABLED": "1",
+          "SECTOR_OVERHEAT_THRESHOLDS_ENABLED": "1"
+        }
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C7",
+      "name": "Stage1/Stage2 model meta 鎖定",
+      "passed": true,
+      "detail": "stage1/stage2 meta match CL3 pinned versions",
+      "data": {
+        "observed_stage1": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+        "observed_stage2": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+        "expected_stage1": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+        "expected_stage2": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json"
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C8",
+      "name": "Tests",
+      "passed": true,
+      "detail": "131 passed, 247 warnings in 34.17s",
+      "data": {
+        "returncode": 0,
+        "tail": "........................................................................ [ 54%]\n...........................................................              [100%]\n============================== warnings summary ===============================\ntests/test_model_backtest_router.py: 36 warnings\ntests/test_my_holdings_router.py: 127 warnings\n  C:\\Users\\cheng\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\starlette\\_utils.py:39: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead\n    return asyncio.iscoroutinefunction(obj) or (callable(obj) and asyncio.iscoroutinefunction(obj.__call__))\n\ntests/test_model_backtest_router.py: 12 warnings\ntests/test_my_holdings_router.py: 72 warnings\n  C:\\Users\\cheng\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\fastapi\\routing.py:233: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead\n    is_coroutine = asyncio.iscoroutinefunction(dependant.call)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n131 passed, 247 warnings in 34.17s"
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C9",
+      "name": "DB schema 完整性",
+      "passed": true,
+      "detail": "required unified_positions columns present",
+      "data": {
+        "missing": [],
+        "db_path": "F:\\stock\\paper_portfolio_v2_champion.db"
+      },
+      "severity": "CHECK"
+    }
+  ]
+}

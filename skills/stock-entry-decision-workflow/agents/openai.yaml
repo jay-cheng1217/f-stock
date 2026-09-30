@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stock Entry Decision Workflow"
+  short_description: "Support-entry workflow with ChipK veto"
+  default_prompt: "Use $stock-entry-decision-workflow to evaluate Taiwan stock entry candidates."

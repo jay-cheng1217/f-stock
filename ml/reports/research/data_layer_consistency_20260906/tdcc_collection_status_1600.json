@@ -1,0 +1,524 @@
+{
+  "asof": "2026-09-06T15:58:02.978027",
+  "status": "READ_ONLY_CHECKPOINT_SNAPSHOT",
+  "plan_sha256": "c5df9a6d723986b141dd60ded68c2ee2fbff4e369797aa55f0fc38e38a41a878",
+  "weeks": [
+    {
+      "date": "20251009",
+      "plan_tickers": 3861,
+      "attempted_tickers": 3282,
+      "remaining_unattempted": 579,
+      "statuses": {
+        "VALIDATED": 3264,
+        "SOURCE_NO_DATA": 18
+      },
+      "all_plan_queries_terminal": false,
+      "whole_week_published": false
+    },
+    {
+      "date": "20251023",
+      "plan_tickers": 3863,
+      "attempted_tickers": 4,
+      "remaining_unattempted": 3859,
+      "statuses": {
+        "VALIDATED": 4
+      },
+      "all_plan_queries_terminal": false,
+      "whole_week_published": false
+    },
+    {
+      "date": "20260226",
+      "plan_tickers": 3935,
+      "attempted_tickers": 4,
+      "remaining_unattempted": 3931,
+      "statuses": {
+        "VALIDATED": 4
+      },
+      "all_plan_queries_terminal": false,
+      "whole_week_published": false
+    }
+  ],
+  "absence": [
+    {
+      "date": "20251009",
+      "ticker": "00673O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\00673O_attempt1.html",
+      "raw_sha256": "8ec9ca980087783bb1053103399d24fd46590a55db7e5c36868596cbfeda725e",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA; later-neighbor temporary-code/reverse-split context, exact O-code lifecycle not proven",
+      "source": "https://wwwc.twse.com.tw/zh/ETFortune/announcement?company=A00005&date=20250911&fund=00706L&seq=1&type=all",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "00706O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\00706O_attempt1.html",
+      "raw_sha256": "df176389f2a3a7d8fb95b808cbd43ee074b1510d48453d177e2727960181b3c7",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA; later-neighbor temporary-code/reverse-split context, exact O-code lifecycle not proven",
+      "source": "https://wwwc.twse.com.tw/zh/ETFortune/announcement?company=A00005&date=20250911&fund=00706L&seq=1&type=all",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "009813",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\009813_attempt1.html",
+      "raw_sha256": "7f3b6e42b530fddd86cb441da9196842c91a4ca27d0aa6f9f4455d2d2a484a63",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_BEFORE_LISTING; listing-date context confirmed, but pre-listing TDCC registration is possible",
+      "listing_date": "2025-10-20",
+      "source": "https://www.twse.com.tw/zh/ETFortune/newsDetail/8a8216d6993bf1510199e0a528f7029a",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "1766",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\1766_attempt1.html",
+      "raw_sha256": "6d99b3a04e8c880bbea2c73dc3af7ddac786f952c21698173a06034c0f74d4fe",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "2314O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2314O_attempt1.html",
+      "raw_sha256": "b6f3cfe2141ce1d284dad90c648794b4dc8d9afac3aceca97a0a4a1f4b0eefb7",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "2347",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2347_attempt1.html",
+      "raw_sha256": "7fa047db77c30e6f1c92e16087ab47185e42e38a410dbb5b127684098401409a",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "2352O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2352O_attempt1.html",
+      "raw_sha256": "2eaf5744cd4d9c3b6b473f53c6bc51bef47a44979fdda3ae39952523ce40aa16",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "2489O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2489O_attempt1.html",
+      "raw_sha256": "14c46a147f88d59c369abf1d238f983dae65d0d90d958fdf398e519763a85019",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "2607O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2607O_attempt1.html",
+      "raw_sha256": "ab13138c43e6a380d93b27995829b1cd7c79fda8b04ca1f1867872519a79d4b1",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "3057O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\3057O_attempt1.html",
+      "raw_sha256": "901c30d53287b99e030740acfad7fa9a32cb57292f8d1f6a3a41e3cf45c197d4",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "6167O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6167O_attempt1.html",
+      "raw_sha256": "4fd1bb9e2ff3df1d5614233f15ad8d5a87754fcdc86f3fc57b04529487aafb20",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "6611O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6611O_attempt1.html",
+      "raw_sha256": "9c98e8c333a317a7750d1f58f09a7f77d62612396271542ce7c7168a0534eef2",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "6897",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6897_attempt1.html",
+      "raw_sha256": "f8578564cd02d86b15ca828ffb157d0faefe3608edd6a21691990999e99032aa",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "7793",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7793_attempt1.html",
+      "raw_sha256": "d9f49059902418c0c3cb846b336aff6fac73e36b8bff9238d3cc9ebf9f8d2fee",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "7862",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7862_attempt1.html",
+      "raw_sha256": "c51a39d6d037ae39030ca95e5ee376a5f42ecbb6a1ab4d7824822c8bb7bc61de",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "7866",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7866_attempt1.html",
+      "raw_sha256": "9bb3d8c6e5e160192efc73a49b8afaf32a3e201f7b40ee8844b7a0d20d7fe56b",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "7868",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7868_attempt1.html",
+      "raw_sha256": "1b0ab7d20b9774001c15b30d1441c38bd1b97575423f1d49ea50219c71e60c3e",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    },
+    {
+      "date": "20251009",
+      "ticker": "9924O",
+      "status": "SOURCE_NO_DATA",
+      "http_status": 200,
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\9924O_attempt1.html",
+      "raw_sha256": "eec6ccc13c4eef24a5673161be3b8a443a077d0bc8ccbaee1d875dfc1e39af5e",
+      "attempts": 1,
+      "exact_echoed_official_no_data": true,
+      "frozen_neighbors": [
+        {
+          "date": "20251003",
+          "present": true,
+          "rows": 15,
+          "source_sha256": "0cc2c25f7ffd4a0fab0431d07df99d2012cb93891303a7903b5aae9a5e1e00a1"
+        },
+        {
+          "date": "20251017",
+          "present": false,
+          "rows": 0,
+          "source_sha256": "01f40af76297e66844c9529d727c98a6d5ddc32c2e2e9934ef6ef6bc66d44316"
+        }
+      ],
+      "classification": "OFFICIAL_NO_DATA_EXACT_QUERY; legal eligibility cause unresolved",
+      "disposition": "No retry loop; retain explicit absence evidence; do not fill zero, remove plan code or merge alternative ticker without source proof."
+    }
+  ],
+  "http_events_observed": 2539,
+  "http_status_counts": {
+    "200": 2538,
+    "None": 1
+  },
+  "rate429_or503": 0,
+  "transport_errors": 1,
+  "bulk_route_review": "Inspected official TDCC public form, documented OpenAPI1-5 and data.gov11452 export; no documented date bulk found. Existing authorized FinMind historical bulk probe returned HTTP/API400 register-level denial. Unpublished third-party or unknown endpoints are not claimed exhaustively excluded.",
+  "gates": "Terminal no-data is not a business eligibility determination. Whole-week staging requires complete attempted universe and a source absence manifest; production promotion additionally requires canonical summary and all latest TDCC features A/B."
+}

@@ -1,0 +1,5 @@
+ticker,name,finnhub_symbol,basis,confidence,enabled,notes
+2330,TSMC,TSM,adr,high,1,NYSE ADR high-confidence mapping
+2303,UMC,UMC,adr,high,1,NYSE ADR high-confidence mapping
+3711,ASE Technology,ASX,adr,high,1,NYSE ADR high-confidence mapping
+2412,Chunghwa Telecom,CHT,adr,high,1,NYSE ADR high-confidence mapping

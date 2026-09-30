@@ -1,0 +1,90 @@
+{
+  "validation": {
+    "passed": true,
+    "failures": [],
+    "details": [
+      {
+        "key": "champion_stage1_v26",
+        "meta_path": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+        "model_path": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128.txt",
+        "meta_sha256": "75735092749bea981f4554b6e7435b8d896bbb0d443bf8b93822a391cef8abac",
+        "meta_expected_sha256": "75735092749bea981f4554b6e7435b8d896bbb0d443bf8b93822a391cef8abac",
+        "meta_ok": true,
+        "model_sha256": "17e294e05b2086abc0d3f6a7fcc68e8f9cd8ed42bea6aff154c544e1faa46872",
+        "model_expected_sha256": "17e294e05b2086abc0d3f6a7fcc68e8f9cd8ed42bea6aff154c544e1faa46872",
+        "model_ok": true,
+        "meta_model_file_match": true
+      },
+      {
+        "key": "champion_stage2_v26",
+        "meta_path": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+        "model_path": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500.txt",
+        "meta_sha256": "9c09ea22b3d78662a79175ad4b8455ccf829ad15c0bcdd66d2c0acd411580324",
+        "meta_expected_sha256": "9c09ea22b3d78662a79175ad4b8455ccf829ad15c0bcdd66d2c0acd411580324",
+        "meta_ok": true,
+        "model_sha256": "ca798ff01d61d0c0ea22140c92271a51e611b39c03cf99a2277d9606c65593f0",
+        "model_expected_sha256": "ca798ff01d61d0c0ea22140c92271a51e611b39c03cf99a2277d9606c65593f0",
+        "model_ok": true,
+        "meta_model_file_match": true
+      },
+      {
+        "key": "t1_research_frozen",
+        "meta_path": "F:\\stock\\ml\\models\\lgbm_t1_20260417_191108_meta.json",
+        "model_path": "F:\\stock\\ml\\models\\lgbm_t1_20260417_191108.txt",
+        "meta_sha256": "492e69146c6dfdc5f0a70d2d7fd8ff101c6706055ce93cc4c84c4008094dbafe",
+        "meta_expected_sha256": "492e69146c6dfdc5f0a70d2d7fd8ff101c6706055ce93cc4c84c4008094dbafe",
+        "meta_ok": true,
+        "model_sha256": "f779959c720ffdc3bc9ee4b84828967e89e0d62e563caf74231aec84d0f87ed4",
+        "model_expected_sha256": "f779959c720ffdc3bc9ee4b84828967e89e0d62e563caf74231aec84d0f87ed4",
+        "model_ok": true,
+        "meta_model_file_match": true
+      },
+      {
+        "key": "alpha_classifier_research",
+        "meta_path": "F:\\stock\\ml\\models\\lgbm_alpha_cls_v2_20260422_220036_meta.json",
+        "model_path": "F:\\stock\\ml\\models\\lgbm_alpha_cls_v2_20260422_220036.txt",
+        "meta_sha256": "f7b75303a15d7861a783f742219a3f064103dd835702c1c1c852cca0df504acd",
+        "meta_expected_sha256": "f7b75303a15d7861a783f742219a3f064103dd835702c1c1c852cca0df504acd",
+        "meta_ok": true,
+        "model_sha256": "766f2c52a1d066a68912b9a549c9d13855209e37c987ec9582b5de90942f7306",
+        "model_expected_sha256": "766f2c52a1d066a68912b9a549c9d13855209e37c987ec9582b5de90942f7306",
+        "model_ok": true,
+        "meta_model_file_match": true
+      },
+      {
+        "key": "legacy_v1_reference",
+        "meta_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json",
+        "model_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903.txt",
+        "meta_sha256": "bda3fcc1e5be8fc273708bfc8556ab0a07cc48452f98ba8a78b5e8080bc0f829",
+        "meta_expected_sha256": "bda3fcc1e5be8fc273708bfc8556ab0a07cc48452f98ba8a78b5e8080bc0f829",
+        "meta_ok": true,
+        "model_sha256": "3a10ef2f9f78644ca98e1d2854f9f35a1c81c6241df247a4c672c77514c7d624",
+        "model_expected_sha256": "3a10ef2f9f78644ca98e1d2854f9f35a1c81c6241df247a4c672c77514c7d624",
+        "model_ok": true,
+        "meta_model_file_match": true
+      }
+    ]
+  },
+  "environment": {
+    "V2_MODEL_META": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+    "TWO_STAGE_RANKER_ENABLED": "1",
+    "TWO_STAGE_RANKER_META": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+    "UNIFIED_EXIT_POLICY": "asymmetric_v2",
+    "SECTOR_OVERHEAT_THRESHOLDS_ENABLED": "1",
+    "MODEL_ERA": "v2.6_incident_edition",
+    "TQUANT_REFERENCE_GATE_ENABLED": "1",
+    "TQUANT_REFERENCE_GATE_MIN_CONSENSUS": "strong",
+    "ENTRY_BENCHMARK_GUARD_ENABLED": "1"
+  },
+  "base_meta": "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json",
+  "selection": {
+    "production": {
+      "label": "legacy-v1-reference-20260516",
+      "meta_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json"
+    },
+    "shadow": {
+      "label": "legacy-v1-reference-20260516",
+      "meta_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json"
+    }
+  }
+}

@@ -1,0 +1,1257 @@
+{
+  "checked_at": "2026-09-06T15:22:56.463980",
+  "original_unobserved_buckets": 43,
+  "category_counts": {
+    "OLDER_UNOBSERVED_WITH_TRADING_DAYS": 35,
+    "OLDER_UNOBSERVED_WITH_SETTLEMENT_DAYS": 1,
+    "LEGAL_NO_BUSINESS_DAY_WEEK": 4,
+    "PUBLIC_DATED_QUERY_AVAILABLE": 3
+  },
+  "weeks": [
+    {
+      "week": "2020-01-18/2020-01-24",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 1,
+      "twii_last_session": "2020-01-20",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-02-08/2020-02-14",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2020-02-14",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-02-22/2020-02-28",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2020-02-27",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-03-28/2020-04-03",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2020-04-01",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-04-25/2020-05-01",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2020-04-30",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-06-13/2020-06-19",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2020-06-19",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-06-20/2020-06-26",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2020-06-24",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-09-19/2020-09-25",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2020-09-25",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-09-26/2020-10-02",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2020-09-30",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-10-03/2020-10-09",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2020-10-08",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2020-12-26/2021-01-01",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2020-12-31",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2021-02-06/2021-02-12",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "OLDER_UNOBSERVED_WITH_SETTLEMENT_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "official_calendar_url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20210101&response=json",
+      "calendar_sha256": "cc048d412679032846398c796975bbbb14339e1ad657efbb4c97c252495cc876",
+      "official_week_rows": [
+        [
+          "2021-02-08",
+          "農曆春節前最後交易日",
+          "2月8日市場無交易，僅辦理結算交割作業。"
+        ],
+        [
+          "2021-02-09",
+          "農曆春節前最後交易日",
+          "2月9日市場無交易，僅辦理結算交割作業。"
+        ],
+        [
+          "2021-02-10",
+          "農曆除夕前一日",
+          "2月10日（星期三）調整放假，於2月20日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2021-02-11",
+          "農曆除夕",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-02-12",
+          "農曆春節",
+          "依規定放假1日。"
+        ]
+      ],
+      "settlement_dates": [
+        "2021-02-08",
+        "2021-02-09"
+      ],
+      "expected_last_business_date": "2021-02-09",
+      "classification_basis": "No trading is not no business: settlement days exist. Keep unobserved; expected date is a calendar inference, not a verified archived TDCC publication date."
+    },
+    {
+      "week": "2021-02-13/2021-02-19",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2021-02-19",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2021-03-27/2021-04-02",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2021-04-01",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2021-04-24/2021-04-30",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2021-04-29",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2021-09-04/2021-09-10",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2021-09-10",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2021-12-25/2021-12-31",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2021-12-30",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2022-01-15/2022-01-21",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2022-01-21",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2022-01-29/2022-02-04",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "LEGAL_NO_BUSINESS_DAY_WEEK",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "official_calendar_url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20220101&response=json",
+      "calendar_sha256": "c49edf8212319a24ce1a964e4997b86409971c79cc300bb3e614749ccf7bce8d",
+      "official_week_rows": [
+        [
+          "2022-01-31",
+          "農曆除夕",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-02-01",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-02-02",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-02-03",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-02-04",
+          "農曆春節",
+          "2月4日（星期五）調整放假，於1月22日（星期六）補行上班，但不交易亦不交割。"
+        ]
+      ],
+      "settlement_dates": [],
+      "classification_basis": "All five weekdays officially closed; TDCC defines observation at last business-day close. Legal absence, not a recoverable file gap. Historical conclusion inferred from the official business calendar; no fabricated TDCC response."
+    },
+    {
+      "week": "2022-05-28/2022-06-03",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2022-06-02",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2022-09-03/2022-09-09",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2022-09-08",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2022-12-31/2023-01-06",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2023-01-06",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2023-01-14/2023-01-20",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 2,
+      "twii_last_session": "2023-01-17",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2023-01-21/2023-01-27",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "LEGAL_NO_BUSINESS_DAY_WEEK",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "official_calendar_url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20230101&response=json",
+      "calendar_sha256": "57ac0ea5fdb48cc8dccdc2c691cc3e331f62909d2f63424778aa7a391ca26740",
+      "official_week_rows": [
+        [
+          "2023-01-23",
+          "農曆春節",
+          "依規定於1月22日至1月24日放假3日。\r\n\r\n1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-24",
+          "農曆春節",
+          "依規定於1月22日至1月24日放假3日。\r\n\r\n1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-25",
+          "農曆春節",
+          "1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-26",
+          "農曆春節",
+          "1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-27",
+          "農曆春節",
+          "1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ]
+      ],
+      "settlement_dates": [],
+      "classification_basis": "All five weekdays officially closed; TDCC defines observation at last business-day close. Legal absence, not a recoverable file gap. Historical conclusion inferred from the official business calendar; no fabricated TDCC response."
+    },
+    {
+      "week": "2023-01-28/2023-02-03",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-02-03",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2023-02-11/2023-02-17",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-02-17",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2023-03-18/2023-03-24",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-03-24",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2023-06-10/2023-06-16",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-06-16",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2023-06-17/2023-06-23",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2023-06-21",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2023-09-16/2023-09-22",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2023-09-22",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2023-09-23/2023-09-29",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2023-09-28",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2024-02-03/2024-02-09",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 1,
+      "twii_last_session": "2024-02-05",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2024-02-10/2024-02-16",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 2,
+      "twii_last_session": "2024-02-16",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2024-03-30/2024-04-05",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2024-04-03",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2025-01-25/2025-01-31",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "LEGAL_NO_BUSINESS_DAY_WEEK",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW",
+      "official_calendar_url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20250101&response=json",
+      "calendar_sha256": "5c85396aa2c0bf45add08a257aa6343aac2d48f9d6bb54da17c7f88fefcb71f8",
+      "official_week_rows": [
+        [
+          "2025-01-27",
+          "農曆除夕前一日",
+          "1月27日（星期一）調整放假，於2月8日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2025-01-28",
+          "農曆除夕",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-01-29",
+          "農曆春節",
+          "依規定於1月29日至1月31日放假3日。"
+        ],
+        [
+          "2025-01-30",
+          "農曆春節",
+          "依規定於1月29日至1月31日放假3日。"
+        ],
+        [
+          "2025-01-31",
+          "農曆春節",
+          "依規定於1月29日至1月31日放假3日。"
+        ]
+      ],
+      "settlement_dates": [],
+      "classification_basis": "All five weekdays officially closed; TDCC defines observation at last business-day close. Legal absence, not a recoverable file gap. Historical conclusion inferred from the official business calendar; no fabricated TDCC response."
+    },
+    {
+      "week": "2025-02-01/2025-02-07",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 5,
+      "twii_last_session": "2025-02-07",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2025-02-22/2025-02-28",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2025-02-27",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2025-03-29/2025-04-04",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 3,
+      "twii_last_session": "2025-04-02",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2025-05-24/2025-05-30",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 4,
+      "twii_last_session": "2025-05-29",
+      "category": "OLDER_UNOBSERVED_WITH_TRADING_DAYS",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "OUTSIDE_PUBLIC_ONE_YEAR_WINDOW"
+    },
+    {
+      "week": "2025-10-04/2025-10-10",
+      "raw_present": false,
+      "official_published_date": "20251009",
+      "twii_sessions": 3,
+      "twii_last_session": "2025-10-09",
+      "category": "PUBLIC_DATED_QUERY_AVAILABLE",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "PUBLIC_DATED_QUERY_AVAILABLE"
+    },
+    {
+      "week": "2025-10-18/2025-10-24",
+      "raw_present": false,
+      "official_published_date": "20251023",
+      "twii_sessions": 4,
+      "twii_last_session": "2025-10-23",
+      "category": "PUBLIC_DATED_QUERY_AVAILABLE",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "PUBLIC_DATED_QUERY_AVAILABLE"
+    },
+    {
+      "week": "2026-02-14/2026-02-20",
+      "raw_present": false,
+      "official_published_date": null,
+      "twii_sessions": 0,
+      "twii_last_session": null,
+      "category": "LEGAL_NO_BUSINESS_DAY_WEEK",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "NO_OBSERVATION_IN_CURRENT_OFFICIAL_CALENDAR",
+      "official_calendar_url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20260101&response=json",
+      "calendar_sha256": "7fefe785ea7155a5004a2eb74486ad865ea5c4b5f02ee0cffbbdacb1ca2ea390",
+      "official_week_rows": [
+        [
+          "2026-02-16",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ],
+        [
+          "2026-02-17",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。\r\n\r\n\r\n"
+        ],
+        [
+          "2026-02-18",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ],
+        [
+          "2026-02-19",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ],
+        [
+          "2026-02-20",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ]
+      ],
+      "settlement_dates": [],
+      "classification_basis": "All five weekdays officially closed; TDCC defines observation at last business-day close. Legal absence, not a recoverable file gap. Historical conclusion inferred from the official business calendar; no fabricated TDCC response."
+    },
+    {
+      "week": "2026-02-21/2026-02-27",
+      "raw_present": false,
+      "official_published_date": "20260226",
+      "twii_sessions": 4,
+      "twii_last_session": "2026-02-26",
+      "category": "PUBLIC_DATED_QUERY_AVAILABLE",
+      "caution": "TDCC uses last business/settlement day, not necessarily last trading day. Older no-trade weeks require archived official calendar proof before being called missing or closed.",
+      "original_category": "PUBLIC_DATED_QUERY_AVAILABLE"
+    }
+  ],
+  "calendar_evidence": {
+    "2021": {
+      "url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20210101&response=json",
+      "source_sha256": "cc048d412679032846398c796975bbbb14339e1ad657efbb4c97c252495cc876",
+      "rows": [
+        [
+          "2021-01-01",
+          "中華民國開國紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-01-04",
+          "國曆新年開始交易日",
+          "國曆新年開始交易。"
+        ],
+        [
+          "2021-02-05",
+          "農曆春節前最後交易日",
+          "農曆春節前最後交易。"
+        ],
+        [
+          "2021-02-08",
+          "農曆春節前最後交易日",
+          "2月8日市場無交易，僅辦理結算交割作業。"
+        ],
+        [
+          "2021-02-09",
+          "農曆春節前最後交易日",
+          "2月9日市場無交易，僅辦理結算交割作業。"
+        ],
+        [
+          "2021-02-10",
+          "農曆除夕前一日",
+          "2月10日（星期三）調整放假，於2月20日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2021-02-11",
+          "農曆除夕",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-02-12",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-02-13",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-02-14",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-02-15",
+          "農曆春節",
+          "2月13日及2月14日適逢星期六及日，2月15日（星期一）及2月16日（星期二）補假1日。"
+        ],
+        [
+          "2021-02-16",
+          "農曆春節",
+          "2月13日及2月14日適逢星期六及日，2月15日（星期一）及2月16日（星期二）補假1日。"
+        ],
+        [
+          "2021-02-17",
+          "農曆春節後開始交易日",
+          "農曆春節後開始交易。"
+        ],
+        [
+          "2021-02-28",
+          "和平紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-03-01",
+          "和平紀念日",
+          "2月28日適逢星期日，3月1日（星期一）補假1日。"
+        ],
+        [
+          "2021-04-02",
+          "兒童節 民族掃墓節",
+          "因兒童節與民族掃墓節為同一日(4月4日)且適逢星期日，於前一日4月2日（星期五）放假1日，且4月5日（星期一）補假1日。"
+        ],
+        [
+          "2021-04-03",
+          "兒童節 民族掃墓節",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-04-04",
+          "兒童節 民族掃墓節",
+          "兒童節 民族掃墓節依規定放假1日。"
+        ],
+        [
+          "2021-04-05",
+          "兒童節 民族掃墓節",
+          "因兒童節與民族掃墓節為同一日(4月4日)且適逢星期日，於前一日4月2日（星期五）放假1日，且4月5日（星期一）補假1日。"
+        ],
+        [
+          "2021-04-30",
+          "勞動節",
+          "5月1日適逢星期六，4月30日（星期五）補假1日。"
+        ],
+        [
+          "2021-05-01",
+          "勞動節",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-06-14",
+          "端午節",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-09-20",
+          "中秋節",
+          "9月20日（星期一）調整放假，於9月11日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2021-09-21",
+          "中秋節",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-10-10",
+          "國慶日",
+          "依規定放假1日。"
+        ],
+        [
+          "2021-10-11",
+          "國慶日",
+          "10月10日適逢星期日，10月11日（星期一）補假1日。"
+        ],
+        [
+          "2021-12-31",
+          "中華民國開國紀念日",
+          "111年1月1日適逢星期六，110年12月31日（星期五）補假1日。"
+        ]
+      ]
+    },
+    "2022": {
+      "url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20220101&response=json",
+      "source_sha256": "c49edf8212319a24ce1a964e4997b86409971c79cc300bb3e614749ccf7bce8d",
+      "rows": [
+        [
+          "2022-01-01",
+          "中華民國開國紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-01-03",
+          "國曆新年開始交易日",
+          "國曆新年開始交易。"
+        ],
+        [
+          "2022-01-26",
+          "農曆春節前最後交易日",
+          "農曆春節前最後交易。"
+        ],
+        [
+          "2022-01-27",
+          "農曆春節前最後交易日",
+          "1月27日市場無交易，僅辦理結算交割作業。"
+        ],
+        [
+          "2022-01-28",
+          "農曆春節前最後交易日",
+          "1月28日市場無交易，僅辦理結算交割作業。"
+        ],
+        [
+          "2022-01-31",
+          "農曆除夕",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-02-01",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-02-02",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-02-03",
+          "農曆春節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-02-04",
+          "農曆春節",
+          "2月4日（星期五）調整放假，於1月22日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2022-02-07",
+          "農曆春節後開始交易日",
+          "農曆春節後開始交易。"
+        ],
+        [
+          "2022-02-28",
+          "和平紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-04-04",
+          "兒童節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-04-05",
+          "民族掃墓節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-05-01",
+          "勞動節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-05-02",
+          "勞動節",
+          "5月1日適逢星期日，5月2日（星期一）補假1日。"
+        ],
+        [
+          "2022-06-03",
+          "端午節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-09-09",
+          "中秋節",
+          "9月10日適逢星期六，9月9日（星期五）補假1日。"
+        ],
+        [
+          "2022-09-10",
+          "中秋節",
+          "依規定放假1日。"
+        ],
+        [
+          "2022-10-10",
+          "國慶日",
+          "依規定放假1日。"
+        ]
+      ]
+    },
+    "2023": {
+      "url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20230101&response=json",
+      "source_sha256": "57ac0ea5fdb48cc8dccdc2c691cc3e331f62909d2f63424778aa7a391ca26740",
+      "rows": [
+        [
+          "2023-01-01",
+          "中華民國開國紀念日",
+          "依規定放假1日。\r\n1月1日適逢星期日，於1月2日（星期一）補假1日。"
+        ],
+        [
+          "2023-01-02",
+          "中華民國開國紀念日",
+          "依規定放假1日。\r\n1月1日適逢星期日，於1月2日（星期一）補假1日。"
+        ],
+        [
+          "2023-01-03",
+          "國曆新年開始交易日",
+          "國曆新年開始交易。"
+        ],
+        [
+          "2023-01-17",
+          "農曆春節前最後交易日",
+          "農曆春節前最後交易。\r\n1月18日及1月19日市場無交易，僅辦理結算交割作業。"
+        ],
+        [
+          "2023-01-18",
+          "市場無交易，僅辦理結算交割作業",
+          ""
+        ],
+        [
+          "2023-01-19",
+          "市場無交易，僅辦理結算交割作業",
+          ""
+        ],
+        [
+          "2023-01-20",
+          "農曆除夕前一日",
+          "1月20日（星期五）調整放假，於1月7日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-21",
+          "農曆除夕",
+          "依規定放假1日。"
+        ],
+        [
+          "2023-01-22",
+          "農曆春節",
+          "依規定於1月22日至1月24日放假3日。\r\n\r\n1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-23",
+          "農曆春節",
+          "依規定於1月22日至1月24日放假3日。\r\n\r\n1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-24",
+          "農曆春節",
+          "依規定於1月22日至1月24日放假3日。\r\n\r\n1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-25",
+          "農曆春節",
+          "1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-26",
+          "農曆春節",
+          "1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-27",
+          "農曆春節",
+          "1月21日及1月22日適逢星期六及星期日，於1月25日（星期三）及1月26日（星期四）補假2日。\r\n1月27日（星期五）調整放假，於2月4日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2023-01-30",
+          "農曆春節後開始交易日",
+          "農曆春節後開始交易。"
+        ],
+        [
+          "2023-02-27",
+          "和平紀念日",
+          "2月27日（星期一）調整放假，於2月18日（星期六）補行上班，但不交易亦不交割。\r\n依規定放假1日。\r\n"
+        ],
+        [
+          "2023-02-28",
+          "和平紀念日",
+          "2月27日（星期一）調整放假，於2月18日（星期六）補行上班，但不交易亦不交割。\r\n依規定放假1日。\r\n"
+        ],
+        [
+          "2023-04-03",
+          "兒童節",
+          "4月3日（星期一）調整放假，於3月25日（星期六）補行上班，但不交易亦不交割。\r\n依規定放假1日。"
+        ],
+        [
+          "2023-04-04",
+          "兒童節",
+          "4月3日（星期一）調整放假，於3月25日（星期六）補行上班，但不交易亦不交割。\r\n依規定放假1日。\r\n"
+        ],
+        [
+          "2023-04-05",
+          "民族掃墓節",
+          "依規定放假1日。"
+        ],
+        [
+          "2023-05-01",
+          "勞動節",
+          "依規定放假1日。"
+        ],
+        [
+          "2023-06-22",
+          "端午節",
+          "依規定放假1日。\r\n6月23日（星期五）調整放假，於6月17日（星期六）補行上班，但不交易亦不交割。\r\n"
+        ],
+        [
+          "2023-06-23",
+          "端午節",
+          "依規定放假1日。\r\n6月23日（星期五）調整放假，於6月17日（星期六）補行上班，但不交易亦不交割。\r\n"
+        ],
+        [
+          "2023-09-29",
+          "中秋節",
+          "依規定放假1日。"
+        ],
+        [
+          "2023-10-09",
+          "國慶日",
+          "10月9日（星期一）調整放假，於9月23日（星期六）補行上班，但不交易亦不交割。\r\n依規定放假1日。\r\n"
+        ],
+        [
+          "2023-10-10",
+          "國慶日",
+          "10月9日（星期一）調整放假，於9月23日（星期六）補行上班，但不交易亦不交割。\r\n依規定放假1日。"
+        ]
+      ]
+    },
+    "2025": {
+      "url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20250101&response=json",
+      "source_sha256": "5c85396aa2c0bf45add08a257aa6343aac2d48f9d6bb54da17c7f88fefcb71f8",
+      "rows": [
+        [
+          "2025-01-01",
+          "中華民國開國紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-01-02",
+          "國曆新年開始交易日",
+          "國曆新年開始交易。"
+        ],
+        [
+          "2025-01-22",
+          "農曆春節前最後交易日",
+          "農曆春節前最後交易。"
+        ],
+        [
+          "2025-01-23",
+          "市場無交易，僅辦理結算交割作業",
+          ""
+        ],
+        [
+          "2025-01-24",
+          "市場無交易，僅辦理結算交割作業",
+          ""
+        ],
+        [
+          "2025-01-27",
+          "農曆除夕前一日",
+          "1月27日（星期一）調整放假，於2月8日（星期六）補行上班，但不交易亦不交割。"
+        ],
+        [
+          "2025-01-28",
+          "農曆除夕",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-01-29",
+          "農曆春節",
+          "依規定於1月29日至1月31日放假3日。"
+        ],
+        [
+          "2025-01-30",
+          "農曆春節",
+          "依規定於1月29日至1月31日放假3日。"
+        ],
+        [
+          "2025-01-31",
+          "農曆春節",
+          "依規定於1月29日至1月31日放假3日。"
+        ],
+        [
+          "2025-02-03",
+          "農曆春節後開始交易日",
+          "農曆春節後開始交易。"
+        ],
+        [
+          "2025-02-28",
+          "和平紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-04-03",
+          "兒童節及民族掃墓節",
+          "兒童節與民族掃墓節為4月4日（星期五），依規定於前一日4月3日（星期四）放假。"
+        ],
+        [
+          "2025-04-04",
+          "兒童節及民族掃墓節",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-05-01",
+          "勞動節",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-05-30",
+          "端午節",
+          "端午節為5月31日適逢星期六，依規定於前一日5月30日（星期五）補假。"
+        ],
+        [
+          "2025-05-31",
+          "端午節",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-09-28",
+          "孔子誕辰紀念日/ 教師節",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-09-29",
+          "孔子誕辰紀念日/ 教師節",
+          "孔子誕辰紀念日/教師節為9月28日適逢星期日，依規定於後一日9月29日（星期一）補假。"
+        ],
+        [
+          "2025-10-06",
+          "中秋節",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-10-10",
+          "國慶日",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-10-24",
+          "臺灣光復暨金門古寧頭大捷紀念日",
+          "臺灣光復暨金門古寧頭大捷紀念日為10月25日適逢星期六，依規定於前一日10月24日（星期五）補假。"
+        ],
+        [
+          "2025-10-25",
+          "臺灣光復暨金門古寧頭大捷紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2025-12-25",
+          "行憲紀念日",
+          "依規定放假1日。"
+        ]
+      ]
+    },
+    "2026": {
+      "url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20260101&response=json",
+      "source_sha256": "7fefe785ea7155a5004a2eb74486ad865ea5c4b5f02ee0cffbbdacb1ca2ea390",
+      "rows": [
+        [
+          "2026-01-01",
+          "中華民國開國紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-01-02",
+          "國曆新年開始交易日",
+          "國曆新年開始交易。"
+        ],
+        [
+          "2026-02-11",
+          "農曆春節前最後交易日",
+          "農曆春節前最後交易。\r\n"
+        ],
+        [
+          "2026-02-12",
+          "市場無交易，僅辦理結算交割作業",
+          ""
+        ],
+        [
+          "2026-02-13",
+          "市場無交易，僅辦理結算交割作業",
+          ""
+        ],
+        [
+          "2026-02-15",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ],
+        [
+          "2026-02-16",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ],
+        [
+          "2026-02-17",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。\r\n\r\n\r\n"
+        ],
+        [
+          "2026-02-18",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ],
+        [
+          "2026-02-19",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ],
+        [
+          "2026-02-20",
+          "農曆除夕及春節",
+          "依規定於2月15日至2月19日放假5日。2月15日適逢星期日，於2月20日（星期五）補假。"
+        ],
+        [
+          "2026-02-23",
+          "農曆春節後開始交易日",
+          "農曆春節後開始交易。"
+        ],
+        [
+          "2026-02-27",
+          "和平紀念日",
+          "和平紀念日為2月28日適逢星期六，於2月27日（星期五）補假。"
+        ],
+        [
+          "2026-02-28",
+          "和平紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-04-03",
+          "兒童節及民族掃墓節",
+          "兒童節為4月4日適逢星期六，於4月3日（星期五）補假。"
+        ],
+        [
+          "2026-04-04",
+          "兒童節及民族掃墓節",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-04-05",
+          "兒童節及民族掃墓節",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-04-06",
+          "兒童節及民族掃墓節",
+          "民族掃墓節為4月5日適逢星期日，於4月6日（星期一）補假。"
+        ],
+        [
+          "2026-05-01",
+          "勞動節",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-06-19",
+          "端午節",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-09-25",
+          "中秋節",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-09-28",
+          "孔子誕辰紀念日/ 教師節",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-10-09",
+          "國慶日",
+          "國慶日為10月10日適逢星期六，於10月9日（星期五）補假。"
+        ],
+        [
+          "2026-10-10",
+          "國慶日",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-10-25",
+          "臺灣光復暨金門古寧頭大捷紀念日",
+          "依規定放假1日。"
+        ],
+        [
+          "2026-10-26",
+          "臺灣光復暨金門古寧頭大捷紀念日",
+          "臺灣光復暨金門古寧頭大捷紀念日為10月25日適逢星期日，於10月26日（星期一）補假。"
+        ],
+        [
+          "2026-12-25",
+          "行憲紀念日",
+          "依規定放假1日。"
+        ]
+      ]
+    }
+  },
+  "tdcc_business_day_definition_url": "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock",
+  "calendar_parameter_warning": "Official HTML form exposes name=date. queryYear=110/112 returned current115calendar and was rejected; use date=YYYY0101 and verify response date/queryYear/title.",
+  "data_layer_scope": "Classification report only; unchanged production TDCC raw, summary, feature missing-week semantics, model or ledger.",
+  "historical_access": "Existing configured FinMind token tested2021-09-10:HTTP400/API400, level register, rows0; not a stale assumption. No account change or purchase."
+}

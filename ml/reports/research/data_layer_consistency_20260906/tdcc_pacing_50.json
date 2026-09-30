@@ -1,0 +1,458 @@
+{
+  "status": "RESEARCH_STAGING_ONLY",
+  "weeks": [
+    {
+      "date": "20251009",
+      "target_count": 3861,
+      "validated": 788,
+      "unresolved_attempted": 0,
+      "official_no_data": 7,
+      "remaining": 3073,
+      "complete_for_frozen_universe": false,
+      "production_published": false
+    },
+    {
+      "date": "20251023",
+      "target_count": 3863,
+      "validated": 4,
+      "unresolved_attempted": 0,
+      "official_no_data": 0,
+      "remaining": 3859,
+      "complete_for_frozen_universe": false,
+      "production_published": false
+    },
+    {
+      "date": "20260226",
+      "target_count": 3935,
+      "validated": 4,
+      "unresolved_attempted": 0,
+      "official_no_data": 0,
+      "remaining": 3931,
+      "complete_for_frozen_universe": false,
+      "production_published": false
+    }
+  ],
+  "new_queries": 50,
+  "mean_query_seconds": 0.34838,
+  "delay_seconds": 0.25,
+  "effective_delay_seconds": 0.25,
+  "max_request_starts_per_second": 3,
+  "http_events": [
+    {
+      "method": "GET",
+      "start_monotonic": 229966.0573357,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.518
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229966.8254051,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.239
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229967.3145556,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.049
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229967.614041,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.063
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229967.9278296,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.25
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229968.4285635,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.063
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229968.7421867,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.055
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229969.0477999,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.048
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229969.4297071,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.193
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229969.8728339,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.138
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229970.2618516,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.076
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229970.587975,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.199
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229971.0369957,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.097
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229971.3844444,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.055
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229971.6894006,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.049
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229972.0382072,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.072
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229972.3855064,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.092
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229972.7273961,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.052
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229973.0394838,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.051
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229973.3867289,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.184
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229973.821228,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.091
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229974.1623673,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.053
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229974.4663069,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.047
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229974.8227667,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.075
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229975.1634218,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.048
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229975.467729,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.076
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229975.8241045,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.048
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229976.1645699,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.051
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229976.4692547,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.083
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229976.8254736,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.089
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229977.1658802,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.157
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229977.5731335,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.15
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229977.9736486,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.049
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229978.2731613,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.048
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229978.5742545,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.27
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229979.0943528,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.1
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229979.4449551,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.057
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229979.7517213,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.08
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229980.0955814,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.049
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229980.4461286,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.053
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229980.7529332,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.052
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229981.0969487,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.076
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229981.4476055,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.075
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229981.7727695,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.129
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229982.1514856,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.177
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229982.5783694,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.089
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229982.9175224,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.073
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229983.2405313,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.052
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229983.5796667,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.125
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229983.9545996,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.051
+    },
+    {
+      "method": "POST",
+      "start_monotonic": 229984.256032,
+      "attempt": 1,
+      "http_status": 200,
+      "retry_after": null,
+      "seconds": 0.381
+    }
+  ],
+  "http_request_count": 51,
+  "rate_limit_or_unavailable_responses": 0,
+  "transport_errors": 0,
+  "plan_sha256": "c5df9a6d723986b141dd60ded68c2ee2fbff4e369797aa55f0fc38e38a41a878",
+  "remaining_queries": 10863,
+  "scope": "Frozen union of nearest preceding and following official raw security sets; includes non-model securities. It is an explicit collection universe, not an independently authoritative exact-date listing census.",
+  "promotion": "Never automatic. Partial results and unresolved no-data are not full-market raw. Whole-week publication still requires coverage review, source mapping and latest TDCC feature A/B.",
+  "estimated_remaining_hours_at_observed_rate": 1.80561165
+}

@@ -1,0 +1,108 @@
+{
+  "input_gaps": [],
+  "disposition": {
+    "status": "OK",
+    "complete": true,
+    "blocked_tickers": [
+      "2455",
+      "24552",
+      "24553",
+      "3008",
+      "3324",
+      "33245",
+      "33246",
+      "33247",
+      "3374",
+      "3406",
+      "3450",
+      "3629",
+      "3664",
+      "4908",
+      "4939",
+      "4991",
+      "5314",
+      "6226",
+      "6805",
+      "6933",
+      "704556",
+      "8358"
+    ],
+    "target_date": "2026-09-07",
+    "required_as_of": "2026-09-04",
+    "effective_date": "2026-09-06",
+    "reasons": [],
+    "unsupported_sources": [
+      "attention",
+      "full_delivery",
+      "suspended"
+    ],
+    "scope": "disposition_only",
+    "corrections_applied": 15,
+    "point_in_time_announcements": true
+  },
+  "tables": {
+    "daily_k": 2974036,
+    "revenue": 61854,
+    "financials": 47219,
+    "tdcc": 899102,
+    "indices": 10037,
+    "stock_list": 1953
+  },
+  "daily_duplicates": 0,
+  "latest_daily": "2026-09-04",
+  "feature_groups": [
+    "technical",
+    "institutional",
+    "revenue",
+    "fundamental",
+    "market",
+    "market_regime",
+    "valuation",
+    "eps",
+    "sentiment",
+    "sector",
+    "tdcc",
+    "news",
+    "balance_sheet",
+    "entry",
+    "industry"
+  ],
+  "missing_groups": [],
+  "ingest_meta": [
+    {
+      "table_name": "daily_k",
+      "rows": 2974036,
+      "ingested_at": "2026-09-06 12:55:53.586155",
+      "freshness_value": "2026-09-04",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    },
+    {
+      "table_name": "revenue",
+      "rows": 61854,
+      "ingested_at": "2026-09-06 12:56:57.895634",
+      "freshness_value": "2026-07",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    },
+    {
+      "table_name": "financials",
+      "rows": 47219,
+      "ingested_at": "2026-09-06 12:56:59.253353",
+      "freshness_value": "20262",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    },
+    {
+      "table_name": "tdcc",
+      "rows": 899102,
+      "ingested_at": "2026-09-06 12:56:59.472276",
+      "freshness_value": "20260904",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    },
+    {
+      "table_name": "indices",
+      "rows": 10037,
+      "ingested_at": "2026-09-06 12:56:59.743270",
+      "freshness_value": "2026-09-05",
+      "generation_id": "4768117cb9fe4a6cb9e1322920d04298"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import atexit
+import ctypes
 import json
 import os
 import time
@@ -23,6 +24,28 @@ class LockHandle:
 def _pid_exists(pid: int) -> bool:
     if pid <= 0:
         return False
+
+    if os.name == "nt":
+        # os.kill(pid, 0) maps to TerminateProcess on Windows. Use a read-only
+        # process handle so checking a lock can never kill the lock owner.
+        process_query_limited_information = 0x1000
+        still_active = 259
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        handle = kernel32.OpenProcess(
+            process_query_limited_information,
+            False,
+            pid,
+        )
+        if not handle:
+            # Access denied means the process exists but is protected/elevated.
+            return ctypes.get_last_error() == 5
+        try:
+            exit_code = ctypes.c_ulong()
+            if not kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code)):
+                return True
+            return exit_code.value == still_active
+        finally:
+            kernel32.CloseHandle(handle)
 
     try:
         os.kill(pid, 0)

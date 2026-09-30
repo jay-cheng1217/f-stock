@@ -3,9 +3,9 @@
 從 TDCC 集保股權分散表衍生籌碼集中度特徵，
 並透過 point-in-time join 對齊至日K資料時間軸。
 
-TDCC 每週五更新，資料包含:
-- Retail_Pct: 散戶持股比例 (持股分級 1-12, < 400張)
-- Whale_Pct: 大戶持股比例 (持股分級 12-15, >= 400張)
+TDCC 週末公布週資料，來源日期按官方期別保留；資料包含:
+- Retail_Pct: 散戶持股比例 (持股分級 1-9, < 100張)
+- Whale_Pct: 大戶持股比例 (持股分級 15, >= 1000張)
 - Total_Holders: 總持有人數
 
 特徵邏輯:
@@ -19,6 +19,49 @@ TDCC 每週五更新，資料包含:
 import os
 import pandas as pd
 import numpy as np
+
+
+_TDCC_WEEK_FREQ = "W-FRI"
+
+
+def _reindex_complete_tdcc_weeks(ticker_rows: pd.DataFrame) -> pd.DataFrame:
+    """Insert explicit NaN rows for missing TDCC weeks without moving observations.
+
+    Observed Thursday releases keep their real date. A missing week receives the
+    Friday period end as its effective date, so point-in-time joins become
+    unknown only when that week's release should have arrived.
+    """
+    rows = ticker_rows.copy()
+    rows["tdcc_date"] = pd.to_datetime(rows["tdcc_date"], errors="coerce").dt.normalize()
+    rows = rows.dropna(subset=["tdcc_date"]).sort_values("tdcc_date")
+    if rows.empty:
+        return rows
+
+    rows["_tdcc_week"] = rows["tdcc_date"].dt.to_period(_TDCC_WEEK_FREQ)
+    rows = rows.drop_duplicates("_tdcc_week", keep="last")
+    full_weeks = pd.period_range(
+        rows["_tdcc_week"].min(),
+        rows["_tdcc_week"].max(),
+        freq=_TDCC_WEEK_FREQ,
+    )
+    rows = rows.set_index("_tdcc_week").reindex(full_weeks)
+    observed = rows["tdcc_date"].notna()
+    expected_dates = pd.Series(full_weeks.end_time.normalize(), index=full_weeks)
+    rows["tdcc_date"] = rows["tdcc_date"].where(observed, expected_dates)
+    rows["_tdcc_observed"] = observed.to_numpy(dtype=bool)
+    return rows.reset_index(drop=True)
+
+
+def _fixed_week_slope(values: np.ndarray) -> float:
+    """Slope over fixed weekly positions, preserving gaps as elapsed weeks."""
+    array = np.asarray(values, dtype=np.float64)
+    if array.size < 2 or not np.isfinite(array[-1]):
+        return np.nan
+    valid = np.isfinite(array)
+    if valid.sum() < 2:
+        return np.nan
+    positions = np.arange(array.size, dtype=np.float64)[valid]
+    return float(np.polyfit(positions, array[valid], 1)[0])
 
 
 def compute_tdcc_features(
@@ -64,7 +107,7 @@ def compute_tdcc_features(
             out[col] = np.nan
         return out
 
-    tk = tk.sort_values("tdcc_date").reset_index(drop=True)
+    tk = _reindex_complete_tdcc_weeks(tk)
 
     # --- 基礎欄位 ---
     tk["retail_pct"] = tk["Retail_Pct"].astype(np.float32)
@@ -78,7 +121,7 @@ def compute_tdcc_features(
 
     # --- 持有人數變化率 ---
     holders = tk["Total_Holders"].astype(np.float64)
-    tk["holders_chg_pct"] = holders.pct_change().astype(np.float32)
+    tk["holders_chg_pct"] = holders.pct_change(fill_method=None).astype(np.float32)
 
     # --- 大戶/散戶比 ---
     tk["whale_retail_ratio"] = np.where(
@@ -90,24 +133,28 @@ def compute_tdcc_features(
     # --- 大戶持股 4 週趨勢 (正=持續增持) ---
     tk["whale_trend_4w"] = (
         tk["whale_pct"].rolling(4, min_periods=2).apply(
-            lambda x: np.polyfit(range(len(x)), x, 1)[0] if len(x) >= 2 else np.nan,
-            raw=False,
+            _fixed_week_slope,
+            raw=True,
         ).astype(np.float32)
     )
 
     # --- 大戶連續增持週數 (先行訊號：靜默吸籌偵測) ---
     # whale_pct_chg > 0 的連續週數；遇到下降就歸零
-    chg = tk["whale_pct_chg"].fillna(0)
+    chg = tk["whale_pct_chg"]
     streak = pd.Series(0, index=tk.index, dtype=np.int8)
     for i in range(1, len(streak)):
-        streak.iloc[i] = streak.iloc[i - 1] + 1 if chg.iloc[i] > 0 else 0
+        streak.iloc[i] = (
+            streak.iloc[i - 1] + 1
+            if pd.notna(chg.iloc[i]) and chg.iloc[i] > 0
+            else 0
+        )
     tk["whale_acc_weeks"] = streak.astype(np.float32)
 
     # --- 大戶 8 週趨勢 (中期佈局方向) ---
     tk["whale_trend_8w"] = (
         tk["whale_pct"].rolling(8, min_periods=4).apply(
-            lambda x: np.polyfit(range(len(x)), x, 1)[0] if len(x) >= 4 else np.nan,
-            raw=False,
+            _fixed_week_slope,
+            raw=True,
         ).astype(np.float32)
     )
 
@@ -125,9 +172,10 @@ def compute_tdcc_features(
 
     # --- 散戶大戶背離 (散戶賣+大戶買=籌碼洗清完成) ---
     # 正值越大 = 散戶出、大戶進的力道越強
-    tk["whale_retail_diverge"] = (
-        tk["whale_pct_chg"].fillna(0) - tk["retail_pct_chg"].fillna(0)
-    ).astype(np.float32)
+    whale_retail_diverge = tk["whale_pct_chg"] - tk["retail_pct_chg"]
+    if not whale_retail_diverge.empty:
+        whale_retail_diverge.iloc[0] = 0.0
+    tk["whale_retail_diverge"] = whale_retail_diverge.astype(np.float32)
 
     # --- 散戶出場指標：散戶持股比例的 12 週百分位排名 ---
     # 值越低 (趨近 0) 代表散戶持股創 12 週新低（籌碼洗清訊號）

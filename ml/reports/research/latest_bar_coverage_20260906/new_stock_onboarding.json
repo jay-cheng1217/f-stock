@@ -1,0 +1,134 @@
+{
+  "target_date": "2026-09-04",
+  "companies": 84,
+  "ohlcv_rows": 16024,
+  "ohlcv_source_errors": 0,
+  "ohlcv_key_value_changes_after_enrichment": 0,
+  "seeded_frame_sha256": "e54dc69ff23cf03c1ca59a9506b7a792091cb6f60cf347355502e75b1c17282e",
+  "enriched_frame_sha256": "fcfd55a1fb8e4afa8f70487886a3ea95159d27cfe2c02e8de1f373530c1336f4",
+  "institutional_nonnull_per_column": 14636,
+  "institutional_unknown_per_column": 1388,
+  "margin_nonnull_per_column": 6980,
+  "margin_unknown_per_column": 9044,
+  "eligible_tickers": [
+    "4585",
+    "4590",
+    "6272",
+    "6432",
+    "6620",
+    "6831",
+    "6907",
+    "7610",
+    "7711",
+    "7717",
+    "7750",
+    "7769",
+    "7777",
+    "7780",
+    "7788",
+    "7792",
+    "7795",
+    "7799"
+  ],
+  "eligible_latest_missing": [
+    {
+      "ticker": "7610",
+      "fields": [
+        "Margin_Balance",
+        "Short_Balance"
+      ]
+    }
+  ],
+  "sector_metadata": {
+    "official_source_snapshots": [
+      {
+        "url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2",
+        "path": "output\\new_stock_sources_20260906\\isin_twse_repaired.html",
+        "sha256": "df21c0cb84c0eeb13be346317cd1f3f413af43e6979ef6c807fe6b3969d3ec55",
+        "status_code": 200
+      },
+      {
+        "url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=4",
+        "path": "output\\new_stock_sources_20260906\\isin_tpex_repaired.html",
+        "sha256": "e5e6837b1db8463f6f3037c8f4dd98a12d525c9d37d690ca16d4b11471ae2d2f",
+        "status_code": 200
+      }
+    ],
+    "old_rows": 1924,
+    "added_rows": 39,
+    "new_rows": 1963,
+    "new_source_tickers": 84,
+    "missing_metadata_after": [],
+    "existing_rows_changed": 0,
+    "added_tickers": [
+      "1780",
+      "2072",
+      "2237",
+      "3485",
+      "3718",
+      "4169",
+      "4178",
+      "4195",
+      "4582",
+      "4590",
+      "6028",
+      "6908",
+      "6921",
+      "6945",
+      "6947",
+      "6983",
+      "6986",
+      "7610",
+      "7689",
+      "7730",
+      "7760",
+      "7768",
+      "7772",
+      "7794",
+      "7803",
+      "7811",
+      "7814",
+      "7818",
+      "7819",
+      "7820",
+      "7821",
+      "7822",
+      "7823",
+      "7827",
+      "7828",
+      "7835",
+      "7839",
+      "7842",
+      "7855"
+    ],
+    "original_mapping_sha256": "59628183eb3964793f52c4d3e85bd02eeae1d89b41c0dd656f5c6f1f5e1ad74b",
+    "combined_mapping_sha256": "2c65fc89f27667d8ec2cfa180404400465398eb3484ece10810365a642475236"
+  },
+  "focused_tests_passed": 44,
+  "live_discovery_leaf": {
+    "mode": "actual function with live official company HTTPS requests and validated frozen official 9/4 tapes; clean isolated base, not a production seed",
+    "elapsed_s": 12.872,
+    "status": "pending",
+    "company_count": 1984,
+    "seeded": 1940,
+    "pending": 34,
+    "root": "F:\\stock\\output\\new_stock_discovery_live_leaf_20260906",
+    "network_mocked": false
+  },
+  "staging_paths": {
+    "ohlcv": "output\\new_stock_sources_20260906",
+    "enriched": "output\\new_stock_sources_enriched_v2_20260906"
+  },
+  "new_gap_provenance": {
+    "raw_margin_tpex_20260320": "production cached stat=ok but data=[]; one official query returned889 rows into isolated override; full production impact is a separate follow-up"
+  },
+  "official_7780_halt": {
+    "publication_date": "2025-12-24",
+    "stop_start": "2026-01-09",
+    "stop_end": "2026-01-17",
+    "resumption": "2026-01-19",
+    "source": "https://dsp.twse.com.tw/public/static/downloads/announcement/official/RS-11400247661-1.pdf",
+    "sha256": "53800fe8b073c69ffa100331dd865011e7640e0772295f2645c06d093d152497",
+    "validation": "PDF image page visually read; existing price/label factor0.1 present"
+  }
+}

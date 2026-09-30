@@ -1,0 +1,982 @@
+{
+  "status": "SOURCE_ONLY_CANDIDATE_VALIDATED_NOT_PROMOTED",
+  "date": "2021-05-10",
+  "source_path": "F:\\stock\\估值資料\\valuation_20210510.csv",
+  "source_before_sha256": "4fff924e7084742473c1cfbfe4785f8f053314d25f700db8d50db8c72e26f8fe",
+  "candidate_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\valuation_day_20210510\\valuation_20210510.csv",
+  "candidate_sha256": "6bfcc6faf5b77b29ced51638631e243069fc8958daeaeed1c039f44f4600a27c",
+  "before_rows": 1736,
+  "after_rows": 1735,
+  "deleted_keys": [
+    [
+      "3092",
+      "上市"
+    ]
+  ],
+  "added_keys": [],
+  "changed_numeric_cells": 2546,
+  "changed_tickers": 947,
+  "changes_by_market": {
+    "上市": 2546
+  },
+  "changes_by_field": {
+    "PE_Ratio": 809,
+    "PB_Ratio": 943,
+    "Dividend_Yield": 794
+  },
+  "unknown_to_known": 7,
+  "known_to_official_unknown": 24,
+  "official_sources": [
+    {
+      "market": "上市",
+      "rows": 950,
+      "sha256": "c9214c314a5f67bcf4290737b69e7b396250d94019792669618cbb6fd5dd9c31",
+      "metadata": {
+        "label": "valuation_20210510_TWSE",
+        "url": "https://www.twse.com.tw/rwd/zh/afterTrading/BWIBBU_d?date=20210510&response=json",
+        "method": "GET",
+        "request_body": null,
+        "fetched_at": "2026-09-06T15:28:16.220078",
+        "http_status": 200,
+        "final_url": "https://www.twse.com.tw/rwd/zh/afterTrading/BWIBBU_d?date=20210510&response=json",
+        "bytes": 57843,
+        "transport": "requests",
+        "json_type": "dict",
+        "response_keys": [
+          "stat",
+          "date",
+          "title",
+          "fields",
+          "data",
+          "selectType",
+          "total"
+        ],
+        "response_meta": {
+          "stat": "OK",
+          "date": "20210510",
+          "title": "110年05月10日 個股日本益比、殖利率及股價淨值比",
+          "selectType": "ALL",
+          "total": 950
+        },
+        "fields": [
+          "證券代號",
+          "證券名稱",
+          "收盤價",
+          "殖利率(%)",
+          "股利年度",
+          "本益比",
+          "股價淨值比",
+          "財報年/季"
+        ],
+        "tables": [],
+        "data_rows": 950,
+        "sample": [
+          [
+            "1101",
+            "台泥",
+            "52.90",
+            "6.62",
+            109,
+            "12.51",
+            "1.54",
+            "109/4"
+          ],
+          [
+            "1102",
+            "亞泥",
+            "50.90",
+            "6.97",
+            109,
+            "11.62",
+            "1.16",
+            "109/4"
+          ]
+        ],
+        "sha256": "c9214c314a5f67bcf4290737b69e7b396250d94019792669618cbb6fd5dd9c31"
+      }
+    },
+    {
+      "market": "上櫃",
+      "rows": 785,
+      "sha256": "3ff28a3165fbbe589e4db6fa4094885fe0f3950d64d142ca43d5ba165d8325e8",
+      "metadata": {
+        "label": "valuation_20210510_TPEx",
+        "url": "https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera_result.php?l=zh-tw&d=110/05/10&o=json",
+        "method": "GET",
+        "request_body": null,
+        "fetched_at": "2026-09-06T15:28:16.391618",
+        "http_status": 200,
+        "final_url": "https://www.tpex.org.tw/web/stock/aftertrading/peratio_analysis/pera_result.php?l=zh-tw&d=110/05/10&o=json",
+        "bytes": 55504,
+        "transport": "requests",
+        "json_type": "dict",
+        "response_keys": [
+          "tables",
+          "date",
+          "stat"
+        ],
+        "response_meta": {
+          "date": "20210510",
+          "stat": "ok"
+        },
+        "fields": null,
+        "tables": [
+          {
+            "title": "",
+            "fields": [
+              "股票代號",
+              "公司名稱",
+              "本益比",
+              "每股股利",
+              "股利年度",
+              "殖利率(%)",
+              "股價淨值比"
+            ],
+            "rows": 785
+          }
+        ],
+        "data_rows": 0,
+        "sample": [
+          [
+            "1240",
+            "茂生農經        ",
+            "12.70",
+            "2.50000000",
+            109,
+            "4.43",
+            "1.75"
+          ],
+          [
+            "1258",
+            "其祥-KY         ",
+            "N/A",
+            "0.00000000",
+            109,
+            "0.00",
+            "1.06"
+          ]
+        ],
+        "sha256": "3ff28a3165fbbe589e4db6fa4094885fe0f3950d64d142ca43d5ba165d8325e8"
+      }
+    }
+  ],
+  "latest_feature_ab": {
+    "tickers": 1985,
+    "features": [
+      "pe_ratio",
+      "pb_ratio",
+      "dividend_yield",
+      "pe_percentile_60d",
+      "pb_change_20d"
+    ],
+    "compared_cells": 9925,
+    "changed_cells": 0,
+    "changed_tickers": [],
+    "method": "Canonical valuation function over identical frozen per-ticker as-of trailing60 raw observations, the complete dependency window for latest5features. The only variable is the repaired2021-05-10day. Each latest daily Date is frozen once."
+  },
+  "feature_source_manifest": [
+    {
+      "name": "valuation_20260904.csv",
+      "sha256": "e1ce7d919161df45609f286af41b694777fb8d98261bca8882c182bbfdcc17ec",
+      "retained_rows": 1939
+    },
+    {
+      "name": "valuation_20260903.csv",
+      "sha256": "a8aa0ab1aedbedb62c9ff2d00cb8007b49a7470aa9d9094b874599298f67636d",
+      "retained_rows": 1955
+    },
+    {
+      "name": "valuation_20260902.csv",
+      "sha256": "08b9f1bba90a832ef68c20f77c7ef7604d28c87159fd9bf876b6014bcc87adef",
+      "retained_rows": 1961
+    },
+    {
+      "name": "valuation_20260901.csv",
+      "sha256": "e2195c6c3d7570cfac677ac1eac5c41d588300333179c5e54f99e0c590567eaa",
+      "retained_rows": 1966
+    },
+    {
+      "name": "valuation_20260831.csv",
+      "sha256": "eb14ba649dc1f979d8cbf4620ae50c35f609972863bc91cbb9e2c8847fd2fb9f",
+      "retained_rows": 1966
+    },
+    {
+      "name": "valuation_20260828.csv",
+      "sha256": "220b8ad55d18ad0e0554b822fb3ce64e444667711c94c664f872f9a88597c50b",
+      "retained_rows": 1965
+    },
+    {
+      "name": "valuation_20260827.csv",
+      "sha256": "d086afe60ea789ecded909c16c51b588cb1c81d895f055c222382e679b7d83c1",
+      "retained_rows": 1966
+    },
+    {
+      "name": "valuation_20260826.csv",
+      "sha256": "790cb8759ec055ea6a1c6d76446ba4de2dc6ad889bc7651f186ae08e0b756e07",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260825.csv",
+      "sha256": "dbdc63b280b50a39366eafa64088ce20a000e160e58344b04a6b6ea0cc1b4b1a",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260824.csv",
+      "sha256": "b33313102cde387e19e631e3d651dbde9b636e55e5647ad0e99f0638af6e17c6",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260821.csv",
+      "sha256": "1f56ed9dd875ba9091b2ec1b45b783bf01c4f35826cd1811e8a7ab1066bf181f",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260820.csv",
+      "sha256": "e1dd9eeb9104b23a02499d2cfecf483712177b3a2701f1c26e1c2fd11557cdb1",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260819.csv",
+      "sha256": "a52d1f6ef7a48252de5ca284ea1617fc4db806d5bde617c13b9a59c483b0f4b2",
+      "retained_rows": 1970
+    },
+    {
+      "name": "valuation_20260818.csv",
+      "sha256": "695e24ce411d65ad0644a8c0c26eda27a15a87cb45bfc9da164b5f7cabfecf16",
+      "retained_rows": 1971
+    },
+    {
+      "name": "valuation_20260817.csv",
+      "sha256": "82faf0c406c7ae970ef693d8674987461f57be3baa53192fb90c601cb10b4449",
+      "retained_rows": 1972
+    },
+    {
+      "name": "valuation_20260814.csv",
+      "sha256": "fa337a339e3fc74973ff6b67b3aca597b717f8e2d3a7ca6c15857f6cef4f8cd1",
+      "retained_rows": 1972
+    },
+    {
+      "name": "valuation_20260813.csv",
+      "sha256": "ba840eb8883e37ba3c45b8a678be968856b84a6d7480942ffa3d8399ca42064e",
+      "retained_rows": 1972
+    },
+    {
+      "name": "valuation_20260812.csv",
+      "sha256": "34744ee170f4d10518b2747f6c4a27abdd161888cc9745ca272e48f0ad04c669",
+      "retained_rows": 1973
+    },
+    {
+      "name": "valuation_20260811.csv",
+      "sha256": "62a2c3f8658a33f2c6565016efcf7e75c6129a6ed148759b60c905a0ac196fcf",
+      "retained_rows": 1973
+    },
+    {
+      "name": "valuation_20260810.csv",
+      "sha256": "8c34bd36df3dbbb358015d2387e3c1fc1166f215ae4368b032f70bd3f9403650",
+      "retained_rows": 1972
+    },
+    {
+      "name": "valuation_20260807.csv",
+      "sha256": "9b507e35b9081a0faea3d4896d4127818fedcb88cc553edc7e459c3e7a701b58",
+      "retained_rows": 1970
+    },
+    {
+      "name": "valuation_20260806.csv",
+      "sha256": "769e6c9fa469c53f06e1a79c8834a7810de6456d8968566fa88e44104b221102",
+      "retained_rows": 1970
+    },
+    {
+      "name": "valuation_20260805.csv",
+      "sha256": "1d8d59663ca6898ee4174ded42ccb2aadaabe0d10560dd5c60b792709e74fa73",
+      "retained_rows": 1970
+    },
+    {
+      "name": "valuation_20260804.csv",
+      "sha256": "e5c3ca361115998d06b10dcd0de859dc2d12f9c5df21ca866799028fc3e6a2e0",
+      "retained_rows": 1970
+    },
+    {
+      "name": "valuation_20260803.csv",
+      "sha256": "55639754df195764ec50acdf41bb7db13345464a93e7d5087b456eba12d0f794",
+      "retained_rows": 1970
+    },
+    {
+      "name": "valuation_20260731.csv",
+      "sha256": "09402171cd8bc8c6e455ced4f69926e9b935ec39591c6b19f7c33b402a7fac07",
+      "retained_rows": 1969
+    },
+    {
+      "name": "valuation_20260730.csv",
+      "sha256": "72118bc68d6444211a6359d3b77bd4fe5916e3dc590ec972e7315b3f68f23b96",
+      "retained_rows": 1969
+    },
+    {
+      "name": "valuation_20260729.csv",
+      "sha256": "61f859fee4c749cad1a50c94a49291a516b11c5da219cfacaa8f7292fc281e64",
+      "retained_rows": 1970
+    },
+    {
+      "name": "valuation_20260728.csv",
+      "sha256": "c4a429d7e310b630bfffe7b160af693f17c08620c289ec421f411000e43198ca",
+      "retained_rows": 1970
+    },
+    {
+      "name": "valuation_20260727.csv",
+      "sha256": "1f74814feb01f5a72d54315b8ec6724692467bb9115596ab2cee5d962acb6ba5",
+      "retained_rows": 1969
+    },
+    {
+      "name": "valuation_20260724.csv",
+      "sha256": "51c854c7acc63a4c610cef139c248f7d568f35d653997caa13257282d73f6688",
+      "retained_rows": 1969
+    },
+    {
+      "name": "valuation_20260723.csv",
+      "sha256": "80cb2281868c697167c9e427f94c1725f8279c20f9d2bb594d5d8009ed4da060",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260722.csv",
+      "sha256": "7f464888857744643ba59c582f1740c49bd1ca57d407d9f8f349414cdb50ba10",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260721.csv",
+      "sha256": "266718fc659b1378094874aa37c6b2b9265400bcc064fc286797fca0baf94e1a",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260720.csv",
+      "sha256": "f9e9017182ee4da5007ac22c188863ceadefacaff219aa6ac6aa6df5a5434282",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260717.csv",
+      "sha256": "0caa0844957d76b68a22975cbac43d0b6d408faaab6e0c5737be9a82949b814b",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260716.csv",
+      "sha256": "29f05bf8f6083a81a731f67e73175d0bc22c3648f18a4314d176f9531b46fee8",
+      "retained_rows": 1968
+    },
+    {
+      "name": "valuation_20260715.csv",
+      "sha256": "2242cec13d0a2f67dc4aad21f11afdf5deba829c97b0f45e4edae6bafc646b94",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260714.csv",
+      "sha256": "6487d95516fdc55ddd7b44843e3356d23272edd78a4f825a21b8c1c01a5970d9",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260713.csv",
+      "sha256": "2e949687c7832b3f7540337a4f053b5289f0773e5f1ea4228fc49b9073b1bc04",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260709.csv",
+      "sha256": "9829fab19ef784dadbf4b0353e4fe1eac937abcc83ebc34ea50c8599b6d84ff0",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260708.csv",
+      "sha256": "a7e6da99b9d24df1c14f92ce659ca2d5c12ccd7d0b22edca5b6c638a72a7d9fb",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260707.csv",
+      "sha256": "e217aee032c7cdea755aa553f2812e8490e4baadf96848c38b6b8dc0f91ad528",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260706.csv",
+      "sha256": "7fc4e5d63ba4e8cb18cd4850654e1acedce2ae532fb35e7e91b4037b3e8ffc95",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260703.csv",
+      "sha256": "46aac235de7fddc53c78df544ddb44f0adf61a50073e1c93b5c8b3170632e9e9",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260702.csv",
+      "sha256": "534b72dede2efb9d84565501c0a29a2762973d5739cefb39409808b99adca0fb",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260701.csv",
+      "sha256": "3b343f4b317ed0bf95e6cacb7701bc399bd2745c3d3c437fd9b5f1aaa9d87fee",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260630.csv",
+      "sha256": "defb1105a1ce0e7fc739e8255b5c488fe80988e793d2f73f44fe815af700bd2e",
+      "retained_rows": 1967
+    },
+    {
+      "name": "valuation_20260629.csv",
+      "sha256": "a47659e00ca480a584372b04401a1aa569d9ee2ec64f879c56d3954c6c0123fe",
+      "retained_rows": 1966
+    },
+    {
+      "name": "valuation_20260626.csv",
+      "sha256": "dc1bde4003e0ca9d66975e8ef1b0a67418338de226fe65ed8d70b59167aff871",
+      "retained_rows": 1965
+    },
+    {
+      "name": "valuation_20260625.csv",
+      "sha256": "80a3c4709b954d47a3f30003e5d8ee8e53b2e1ed719c0bdc2bc9fea151dff859",
+      "retained_rows": 1964
+    },
+    {
+      "name": "valuation_20260624.csv",
+      "sha256": "babe1a2bcdbcecb25761686d2f069a158dc104301e7b1a7654aa22f47da23aa7",
+      "retained_rows": 1964
+    },
+    {
+      "name": "valuation_20260623.csv",
+      "sha256": "122b5daab5eae47db5b111fbd040ab9b5526fe2ce8f1848bea161159e58944d5",
+      "retained_rows": 1964
+    },
+    {
+      "name": "valuation_20260622.csv",
+      "sha256": "769352b1b842a6f7ee4d3639fc467540ba26401fa43e0ffbb93e5f4002a0e4c6",
+      "retained_rows": 1965
+    },
+    {
+      "name": "valuation_20260618.csv",
+      "sha256": "ec7f0ebe7b9a052368c075d9680523f3300c4fe49741cbdb3719b8babefe287a",
+      "retained_rows": 1965
+    },
+    {
+      "name": "valuation_20260617.csv",
+      "sha256": "0a1eb464005640b48b937a9d57b85551fe48236e02779a0f9f9e4283146a0c1e",
+      "retained_rows": 1964
+    },
+    {
+      "name": "valuation_20260616.csv",
+      "sha256": "0562b8c6cad66ba13265c334e89af9c65f43f373ab8a7e278d846bf771a0ff9d",
+      "retained_rows": 1964
+    },
+    {
+      "name": "valuation_20260615.csv",
+      "sha256": "531712718f89adb631394286c6349a720fabb987fb410acbb91ef446c443cab6",
+      "retained_rows": 1964
+    },
+    {
+      "name": "valuation_20260612.csv",
+      "sha256": "becce17b066bb4ecc172145043f89d80652f1a1e50774c92e7e621e587a9b4eb",
+      "retained_rows": 1963
+    },
+    {
+      "name": "valuation_20260611.csv",
+      "sha256": "e988ba790b99d418857c6e30bb0aff8f16421110706f84814b2dabee203da3fb",
+      "retained_rows": 1963
+    },
+    {
+      "name": "valuation_20260610.csv",
+      "sha256": "6a99cc5fb1256912f46359c4b57bc464eaa451e1db7a6dc40efee6db55a29764",
+      "retained_rows": 44
+    },
+    {
+      "name": "valuation_20260609.csv",
+      "sha256": "4c45196d4df123f8ce183a03a7066541d5658e2812303c7c01971d7c8019619f",
+      "retained_rows": 28
+    },
+    {
+      "name": "valuation_20260608.csv",
+      "sha256": "160331ac328187ecdf28252a10b191d1d50c135f8c7b7772d2a24b6efd378f51",
+      "retained_rows": 22
+    },
+    {
+      "name": "valuation_20260605.csv",
+      "sha256": "14d9db7a60064c8de42aed01a2bab42f3abe70caec4f117ccf266aa99b5134ad",
+      "retained_rows": 17
+    },
+    {
+      "name": "valuation_20260604.csv",
+      "sha256": "88602d5f3596459b846be0093ac32a3749e8f45623995e76bc1b9910e56dc39a",
+      "retained_rows": 17
+    },
+    {
+      "name": "valuation_20260603.csv",
+      "sha256": "c94cd36fca97687eda1f4ce5e479e3ec88fdd5a855e9923ca6f06c7bc0e2588c",
+      "retained_rows": 15
+    },
+    {
+      "name": "valuation_20260602.csv",
+      "sha256": "a85f119e0cd43d6550170965d3430c5e9c69d14a21cb262d59afa489fe23296c",
+      "retained_rows": 13
+    },
+    {
+      "name": "valuation_20260601.csv",
+      "sha256": "e64c33636703c43bbdb23692aa378868b79db486f7df30804227199631b19643",
+      "retained_rows": 5
+    },
+    {
+      "name": "valuation_20260529.csv",
+      "sha256": "a427a5db69070152b3fed6b904036091e7d10c6153fa02dce787b936c68f6609",
+      "retained_rows": 5
+    },
+    {
+      "name": "valuation_20260528.csv",
+      "sha256": "d63b9487ba798e35c44daebf79fa06ad3ca20aa0c05dadb15da855ac4a85ad9d",
+      "retained_rows": 4
+    },
+    {
+      "name": "valuation_20260527.csv",
+      "sha256": "f7f84adf614206d6c2da5a5dd7f8fd06d45168bc1ad2dca233c3afe6379217a0",
+      "retained_rows": 3
+    },
+    {
+      "name": "valuation_20260526.csv",
+      "sha256": "b2a4b7fed9ca3730a7bfdc96e4f93a4a1779df13b6ecbbf252bc16b03e0cf350",
+      "retained_rows": 3
+    },
+    {
+      "name": "valuation_20260525.csv",
+      "sha256": "73a0f1879798034bc584a5d126555958a57e85d491df76594b91c196d8b3dbf4",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260522.csv",
+      "sha256": "966263ef68d9b39192a0e9afd90902bc5e7c55ffae5f363474c627313cef769c",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260521.csv",
+      "sha256": "a2c80542338eb4ef912b50c90ea1788d90a1e2981ee1ac12b2e4d17001af791f",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260520.csv",
+      "sha256": "111287cb9ba5a9675a1cba1193ad761eff287fdad38d1e89bc6abfad293b6189",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260519.csv",
+      "sha256": "d19beb16b44569b868fdc6dfa374dc846a90ad595e7ac77166b3f85ac00db295",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260518.csv",
+      "sha256": "8d35f488d0cd4cbbc27328665f9a7235735eab45d18c562580daf6ef760c6cff",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260515.csv",
+      "sha256": "208e2a6eea4998f352d64cf4a279b99737c9b3740e83c45c72cd72be065c4cde",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260514.csv",
+      "sha256": "31023cca050fdfc6827a16d42c693dcabd6d22174c4569451d3036f7eb6b1918",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260513.csv",
+      "sha256": "6c1a8abb47c226c012667e13b0fab012892a8e957e70f8e57a0f902b786f3ee2",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260512.csv",
+      "sha256": "6e1d027ce30bd5cf28e236f4edb79e9f98ddbb7178e941be8c8f761a4346fb5b",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260511.csv",
+      "sha256": "a8deb5a514b73b6cf1f091556c93bf3f1eb739eefb38e3f56435ddfd8f8a6e05",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260508.csv",
+      "sha256": "68ba3c17f90eb6b96d459fc5e6c77617aa493593cedc7cc8febbe23e0fd442ce",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260507.csv",
+      "sha256": "73bd059b9f812c0500c4a8b0626c38eb19e8b466a1ead2d53931137fb58f00a3",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260506.csv",
+      "sha256": "c5579a503f3228254429048d8a1e81081573d18dcbd03b357c14c2999ff36cb3",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260505.csv",
+      "sha256": "57bb0eb29f3072b724cce29bda62d2e10b4b691b5f0d513c8a2cd838a826240b",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260504.csv",
+      "sha256": "a10162af4faaf1d4fd42144104d8d1199e51e250cd6c88dbb1e0b41f3da735c2",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260430.csv",
+      "sha256": "dac9fb8bb81ee26d852b176892d0cef9fad62dcc995b262ecee337d848aee1a9",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260429.csv",
+      "sha256": "e220823b93cbbb3b40eadb0c5edf91e6b426ae72c8976e15f7e6d0315992586f",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260428.csv",
+      "sha256": "2a67ee38240c15098473ba7444e9f489fd7b202e41e51f71b3dd6d74ef850f2e",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260427.csv",
+      "sha256": "4b202d61be15afbe5af5b64c932cc0772fec48e8d301c20cb2ba63a050ad740b",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260424.csv",
+      "sha256": "81898684787441c684374caf447e6107f114ffc7c015cbf20da8beb748dbb812",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260423.csv",
+      "sha256": "7bfd04a9cd0dda3d1b9ca0295bbeea26d31ac6fcb070dbb9269a4a104e4fb6ca",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260422.csv",
+      "sha256": "646975e1aefc39273c72c01cb64c8abb6677eb947fe4313513f871a1aa10457b",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260413.csv",
+      "sha256": "80fd1a2f34f74300d22144cbc37d36ed561f9c9465307dfc031159a9608ca0cb",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260410.csv",
+      "sha256": "5d5e6603c650be45dc8d0a4b166478e19a65d879d9afbe5d7d9bf6a96c507ed8",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260409.csv",
+      "sha256": "9715c0bccd4ddc39d9292a34e03393d27d2547c536aa32bb3d0347b970fa1a4e",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260408.csv",
+      "sha256": "58e3bd0794c2707a7981895d6c42b04e8adda42adf2d4446fc1d53078cb65a3a",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260407.csv",
+      "sha256": "c0a6c6897166aeca90e6dfcb697ffcd0ca7332b0fd48bea006303b17d0b4a2ca",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260402.csv",
+      "sha256": "9fb07ad91e9d60e546da5f140a75df3a180d77f986d040dee5ac565806cd151a",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260401.csv",
+      "sha256": "762714e250c94026e83c6c6ab463ab8a657545eed33817ac216e59b574e4be7d",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260331.csv",
+      "sha256": "7036ac030adbed43d54a90c63abce21ca51b64e62a4a5dbe1611cc9a726da709",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260330.csv",
+      "sha256": "54c895f177f19982b4aa4d047a1c063b258e45ea4b4d113037968cc856cbbe08",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260327.csv",
+      "sha256": "e148cdf49683f8b4d080ffb61e34bd88eed13fbdc4a421c8070525b52f39af33",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260326.csv",
+      "sha256": "57bf1c67530affc70b67c0ed831aeabcb1adc72035ce453461c94c2d752622e2",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260325.csv",
+      "sha256": "0fcf94625e6b7240a9bc2f679bb91dd006055d0f2a75edded33a9ad906b09fa3",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260324.csv",
+      "sha256": "baf7d564bfb0d9f71a34f517fd31013b92e948c19e590ec69fbc7e47757dff4e",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260323.csv",
+      "sha256": "12e383c47f2e30ab53ce6e0481f080fd77d304fb568a5027b58e63f37cf1b423",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260320.csv",
+      "sha256": "077a23ccd1b0dd7d0c58fb8acd7a0be72c4586861a39265de812fca23dd2c90c",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260319.csv",
+      "sha256": "be8ccc16778732ef4e74b59761014851bf7dd33f33da960a30162122acc92f9e",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260318.csv",
+      "sha256": "d4fe58f3129c06ba7007d9d7e74153dcf45e66b6c9b9e5d4221445a2ca105d78",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260317.csv",
+      "sha256": "d8583649b3cd28f14d85dcf64a8a5b9712437784d0a7cc0afefc9c3c7d2c9f60",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260316.csv",
+      "sha256": "250e153a115179459fee3c5b43212e6ccdf8d55b9ad54735872fbc1b7f17af02",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260313.csv",
+      "sha256": "2120032cf1ae500b7c1fdb47c540b2c492ce6675cb7f531489dfb511533ea6a8",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260312.csv",
+      "sha256": "9f66cc2a383bfee6feb4fc3b69e534f04c6f73f85545a6cf16e572ff1979df33",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260311.csv",
+      "sha256": "ea4091e06ecc5bbc983af914722c754e321f5008461eb2d2e0844d41db0cd54e",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260310.csv",
+      "sha256": "254f5aecc43fb00d3a18ab927e35d58eef55143405db871eac0a6febcd53bac4",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260309.csv",
+      "sha256": "74a22ab9014cf5c11c074ce7cee89710ee00abf759286b2b6384802684637e08",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260306.csv",
+      "sha256": "67a636ea1afdabe1a2b8f0ee3dde9bca5672bb69e86746702b49d678a734259d",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260305.csv",
+      "sha256": "24b57e56b568eb0a8dea297cdbe4edefe8478ebae3a261452b5bdcb2b672535d",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260304.csv",
+      "sha256": "7489da6226f1b02a823df976d1cca129ae07a73b7a637829adcdd96f954b23f9",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260303.csv",
+      "sha256": "40de9ee648c25942090dc052fa358e15e4d89fd1169b03000bfed328344d0230",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260302.csv",
+      "sha256": "0832be19bc6a937f60168bab8e026344114e4b79bc34ff046de1e5b222ab2252",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260226.csv",
+      "sha256": "07120fbd3cc460d67e846b3ed5fa177ed22cc571d2462e02c07aed2eec0d30fb",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260225.csv",
+      "sha256": "f6d3eb74efb95328a5c12035de4d0c35dc6ae33db58805611a9f4b56122c23fd",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260224.csv",
+      "sha256": "7c1426b5dffe0f78f10ba3d9295569b5451942c1b8906f7ef50eeed359ce61d6",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260223.csv",
+      "sha256": "53960beca6a274205d476ec73a475ab61aa5b030284343b952315f5a7164f94a",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260211.csv",
+      "sha256": "bc0e6500b40dda5b046ba44617c01666c059dd8b19d1f7a1314ebbf0b47f6613",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260210.csv",
+      "sha256": "4cd80865bd2b770fb0d66183636fe290057663703a8397fbb7ff84caecca914c",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260209.csv",
+      "sha256": "eceebb1992b72aa941c022694dd3c8fcbfb72b1cc872a2c6144357b2ad2cb29e",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260206.csv",
+      "sha256": "5985f1d3b896b1917a0a933483927b286cc708269a49ba0373da75f3144925ff",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260205.csv",
+      "sha256": "473b2ff5c5f20fc1346ff3be403d76796475b19ee436500e3fc4ae0501d914a9",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260204.csv",
+      "sha256": "de4a7690a51392b17950c12f2a1553c4ba7b520c0376d6dd564ba3eb0170254b",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260203.csv",
+      "sha256": "c93820fa58cf8aa286ea995397ba1995b78f8139367dfd556be3322aa5ccf0e7",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260202.csv",
+      "sha256": "53c592bbb474775f1ae91377a865246c1821d9b236197310898aee7e0aea59b4",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260130.csv",
+      "sha256": "513bd5879dcfd9ab3f00bbb08483b2d890138293389affa0c7c6fff239848ea2",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260129.csv",
+      "sha256": "8ba371f3b82ab4f8730c621d710d9ae4e6d6dfb7798bbad4311863f42e76b115",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260128.csv",
+      "sha256": "b5eee8354b574893fbf4a02de8c39b520ab8e44eff566a60ac9e71cc4b732982",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260127.csv",
+      "sha256": "8d4e80995ad459e5a4ea0d68e9e7a47f7a353f82d814b12b6432a912637b1093",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260126.csv",
+      "sha256": "65c174a9d47b87971ef412d4d031fc92ab8c97c8f8bc79a080dcf7a71b88234f",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260123.csv",
+      "sha256": "ddbd9acc3355fe0d528c250cb48d7a00e7cf638dcea34c8107a7a9afea69fd0d",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260122.csv",
+      "sha256": "372c3f37d28b02cad981330c7987e3f9a45578a4d6d552028bab58b9dd969c27",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260121.csv",
+      "sha256": "a0f242fbccb6ff257e5b6c03ea7950f117bae910d7458a3781a6a52385888095",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260120.csv",
+      "sha256": "40e2426cac1819a148bf76113d7a28d4838e3772def5e3ae30d14c94f8cf521c",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260119.csv",
+      "sha256": "159f0e6e9081fe81182a1219e88694417f3763559e19675aa02fe143957a71bf",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260116.csv",
+      "sha256": "32086be8a19103cb2341759324bb38063ae092de04bdc08506a602259e990699",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260115.csv",
+      "sha256": "7d206401581250feff9a5cc7b783470ef693ae9da79e70880bb286dbd68a114b",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260114.csv",
+      "sha256": "32864510cc60c416341329accbe82de6dff3ab3fcebd24f3ca6ecf574fb1edcb",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260113.csv",
+      "sha256": "39a613f489e8f149f6297122efa984c87584ff4d98f0bb21257b53c9a309a25f",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260112.csv",
+      "sha256": "c293b7a53bcf451d55b6391abbb9eed7772c8a7938dca6942999c29944b34698",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260109.csv",
+      "sha256": "43bb19d21c541a1572b30ca4b0852c3177594f492ee0604b8d40193a69e595a7",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260108.csv",
+      "sha256": "1416fa6c09d447bd72e84c8849ba09612653a62c9640f43a193a1d26ae62a001",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260107.csv",
+      "sha256": "cb93fdea14d6ea67afae3f66d210a1c2cdd22f76a86a9f4c967395f146c4770d",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260106.csv",
+      "sha256": "2999bc4c8010fde669b634d8b90f1a0bd2d10c0d4ef14e7f367d44ce99b05412",
+      "retained_rows": 2
+    },
+    {
+      "name": "valuation_20260105.csv",
+      "sha256": "6ae9fd9fbecf9c381a4116da18107bcaea41e1d42e2431a3ddcc88a9dfebabcc",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20260102.csv",
+      "sha256": "bb9ed007c7697cc9f44e2dad6a97bbdb08ce4d0c3e3f08bb3f5df012920ad74f",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20251231.csv",
+      "sha256": "97952b0fe4798c7f602edc0c279e3f77b90d0686a1b41c3dff64c1010e0aebca",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20251230.csv",
+      "sha256": "192a89562ef07d53cbd21d2a975f3b80082ea72501142c4745b46637569610ef",
+      "retained_rows": 1
+    },
+    {
+      "name": "valuation_20251229.csv",
+      "sha256": "e2ea6d5941687f5ad98a46aa31d8385e4d13aa19d4d198d1b06e6864e36e70c2",
+      "retained_rows": 1
+    }
+  ],
+  "old_origin": "The original request/response provenance has not established why the local TWSE values differ. Do not assert a vendor revision, cache issue, or wrong requested date without evidence.",
+  "promotion": "Parent compare-and-swap CURRENT before SHA. No source overwrite, cache invalidation, model training, database or ledger write performed here.",
+  "limits": "Full day official numeric reconstruction, not only duplicate removal. Latest feature equality is tested; historical full-universe rolling changes and historical model predictions are not claimed unchanged. The earlier3092-only A/B is insufficient for this expanded candidate."
+}

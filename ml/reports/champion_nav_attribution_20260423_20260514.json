@@ -1,0 +1,83 @@
+{
+  "start_date": "2026-04-23",
+  "end_date": "2026-05-14",
+  "champion_db_path": "F:\\stock\\paper_portfolio_v2_champion.db",
+  "nav": {
+    "return_pct": -0.025505894974755486,
+    "daily_rows": 15,
+    "marked_days": 15,
+    "cash_only_days": 0,
+    "avg_gross_exposure": 1.631633430082559,
+    "realized_pnl_pct": -0.047990474522638334,
+    "unrealized_pnl_pct": 0.02248457954788286,
+    "open_mtm_pct": 0.11374627035468592,
+    "cash_drag_vs_twii_pct": -0.00015615604470310912,
+    "execution_pnl_pct": 0.12793110997874596,
+    "exit_pnl_pct": -0.047990474522638334
+  },
+  "benchmarks": {
+    "twii_return_pct": 0.1070580068695206,
+    "strategy_fit_return_pct": 0.04456018847276802,
+    "sector_proxy_return_pct": 0.04456018847276802
+  },
+  "attribution": {
+    "allocation_effect_pct": 0.04199746323397168,
+    "selection_effect_pct": -0.11206354668149514,
+    "gross_exposure_cash_residual_pct": 0.041578632267813595,
+    "allocation_plus_selection_pct": -0.07006608344752346,
+    "champion_vs_sector_proxy_alpha_pct": -0.0700660834475235,
+    "reconciliation_error_pct": 4.163336342344337e-17,
+    "reconciliation_pass": true
+  },
+  "ledger_reconciliation": {
+    "nav_return_pct": -0.025505894974755486,
+    "ledger_realized_pnl_pct": -0.1392521653294414,
+    "ledger_open_mtm_pct": 0.11374627035468593,
+    "ledger_total_pnl_pct": -0.025505894974755472,
+    "reconciliation_error_pct": -1.3877787807814457e-17,
+    "reconciliation_pass": true
+  },
+  "open_winners": [
+    {
+      "ticker": "8027",
+      "status": "stopped_out",
+      "mark_date": "2026-04-23",
+      "close_return_pct": -0.06557377049180324,
+      "target_weight": 0.0625,
+      "weighted_open_mtm_pct": -0.0040983606557377025
+    },
+    {
+      "ticker": "8027",
+      "status": "open",
+      "mark_date": "2026-05-14",
+      "close_return_pct": 0.7226753670473083,
+      "target_weight": 0.0526315789473684,
+      "weighted_open_mtm_pct": 0.03803554563406884
+    },
+    {
+      "ticker": "6426",
+      "status": "open",
+      "mark_date": "2026-05-14",
+      "close_return_pct": 0.24153498871331824,
+      "target_weight": 0.11467105263157895,
+      "weighted_open_mtm_pct": 0.027697071403112745
+    },
+    {
+      "ticker": "5228",
+      "status": "open",
+      "mark_date": "2026-05-14",
+      "close_return_pct": 0.2565707084919171,
+      "target_weight": 0.0312875386996904,
+      "weighted_open_mtm_pct": 0.00802746597114784
+    },
+    {
+      "ticker": "3450",
+      "status": "open",
+      "mark_date": "2026-05-14",
+      "close_return_pct": 0.12234042553191493,
+      "target_weight": 0.03,
+      "weighted_open_mtm_pct": 0.0036702127659574476
+    }
+  ],
+  "week1_reference": null
+}

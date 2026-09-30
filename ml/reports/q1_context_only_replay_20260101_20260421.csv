@@ -1,0 +1,3 @@
+exit_policy,signal_files,positions,filled_positions,closed_or_stopped_positions,open_positions,missed_entries,avg_entry_slippage_pct,avg_filled_hold_days,capital_weighted_hold_days,capital_turnover_20d_multiple,realized_win_rate_pct,mtm_capital_weighted_return_pct,twii_same_window_return_pct,mtm_alpha_vs_twii_pct,exit_day_max_drawdown_pct
+baseline_with_ma20,22,114,114,76,38,0,1.27,6.36,8.25,2.42,52.63,2.53,12.43,-9.91,-37.57
+ma5_break_plus_hwm_8pct,22,124,124,93,31,0,1.04,3.34,4.10,4.88,39.78,4.38,12.43,-8.06,-10.60

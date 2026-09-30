@@ -1,0 +1,16 @@
+{
+  "label": "valuation_20210510_wrong_day_repair",
+  "evidence": [
+    {"path": "F:/stock/ml/reports/research/data_layer_consistency_20260906/valuation_20210510_repair.json", "sha256": "0ff77f2afe3f1dfd738cad6cdd67d46f9be671191ad44f6fe8c03f9fe072c711"},
+    {"path": "F:/stock/ml/reports/research/data_layer_consistency_20260906/valuation_20210510_date_lineage.json", "sha256": "93daaa98e0f9fee213cb4b9ac06e4e4cc2d51f8545fce3600ab357716662e5c8"},
+    {"path": "F:/stock/ml/reports/research/data_layer_consistency_20260906/valuation_fetch_contract_acceptance.json", "sha256": "9dd51b7d0381ca35fccb4e697bbd3ce7c79eaa77c963cb6e2b6e10430b570c0e"}
+  ],
+  "files": [
+    {
+      "source": "F:/stock/output/pipeline_acceptance_20260906/workspace/output/historical_gaps_20260906/valuation_day_20210510/valuation_20210510.csv",
+      "target": "估值資料/valuation_20210510.csv",
+      "before_sha256": "4fff924e7084742473c1cfbfe4785f8f053314d25f700db8d50db8c72e26f8fe",
+      "after_sha256": "6bfcc6faf5b77b29ced51638631e243069fc8958daeaeed1c039f44f4600a27c"
+    }
+  ]
+}

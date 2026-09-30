@@ -1,7 +1,7 @@
 {
-  "name": "台股分析平台",
-  "short_name": "台股分析",
-  "description": "台股 AI 預測與投資組合管理",
+  "name": "Two-Stage Champion War Room",
+  "short_name": "Champion",
+  "description": "Two-Stage Champion 策略戰情室與持股管理",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f1923",

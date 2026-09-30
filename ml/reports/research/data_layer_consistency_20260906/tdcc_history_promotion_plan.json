@@ -1,0 +1,75 @@
+{
+  "label": "tdcc_history_three_weeks_20260906",
+  "evidence": [
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\reports\\research\\data_layer_consistency_20260906\\tdcc_history_completion.json",
+      "sha256": "31606bf452da450d603f9511272fef6e9b11ce9ffdf583cbdc1ca9b0fabe8516"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_feature_ab_2031\\result.json",
+      "sha256": "421b8bc5f3f5095ddcae64ba9e8f03ef91385941e647fba6cba9be05cf718f76"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized\\reference.json",
+      "sha256": "046bb4268eeecee5bd3516b497afbf3920b52208cac693d5959869a98f63d6a6"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\reports\\research\\data_layer_consistency_20260906\\tdcc_normalization_backend.json",
+      "sha256": "b03f40c7d2595ef8e5cf9cd1078168a1689d2fb97bed9ee1442e7b5e317ecee3"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\targeted_recheck_2134.json",
+      "sha256": "a118ccb877faab1dc2604a6ede34f895d26afbf3f08b4733ca956cf8c9931a13"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\independent_no_data_confirmation_2134.json",
+      "sha256": "8ae7bf6f8c96cf73b0dbaaec461c13f543466b1f5c396ad9f2fdf040a77be55c"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\plan_snapshot.json",
+      "sha256": "c5df9a6d723986b141dd60ded68c2ee2fbff4e369797aa55f0fc38e38a41a878"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\progress_snapshot.json",
+      "sha256": "92810bc21bcc89293abc0a1de18287592fd34650bde1d2d3ef88d6d6e42a64ed"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\20251009_manifest.json",
+      "sha256": "ebdbe79cab3c572995aac565c899f5353844057e0b7aef831a1e1180760857d7"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\20251023_manifest.json",
+      "sha256": "b6ef86707a36ff3259f3f1f8bf0b2fa9a79f983a9a00be2fe95e537c5575f0f5"
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\20260226_manifest.json",
+      "sha256": "ab80f0911a01ac819fe529225ac53ae038409f1e41b381d380027365b1b7c989"
+    }
+  ],
+  "files": [
+    {
+      "source": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_feature_ab_2031\\new_raw\\tdcc_20251009.csv",
+      "target": "集保分散/tdcc_20251009.csv",
+      "before_sha256": null,
+      "after_sha256": "070caa3c540cc4c6490a0c3e423d479dd6b83cb93df5863f6ac153f8f12c14fb"
+    },
+    {
+      "source": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_feature_ab_2031\\new_raw\\tdcc_20251023.csv",
+      "target": "集保分散/tdcc_20251023.csv",
+      "before_sha256": null,
+      "after_sha256": "21ce88a46800f1e877debf7fefe8ab594f0208d8140bff417352c3dc58ea4d35"
+    },
+    {
+      "source": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_feature_ab_2031\\new_raw\\tdcc_20260226.csv",
+      "target": "集保分散/tdcc_20260226.csv",
+      "before_sha256": null,
+      "after_sha256": "ba20b5b671140a673e0a625c99d5a2a5f45206a5de7118e0159fadc041435fe4"
+    },
+    {
+      "source": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_feature_ab_2031\\summary_after.csv",
+      "target": "集保分散/tdcc_summary.csv",
+      "before_sha256": "8154a3a61fba91553c2293f188dbbb12d53f5a0d675af7835e583591a55b58ea",
+      "after_sha256": "01ce584e7666c6e34d6ca38214cf4e656fb22c3f969ad37f8d85343061b34a81"
+    }
+  ]
+}

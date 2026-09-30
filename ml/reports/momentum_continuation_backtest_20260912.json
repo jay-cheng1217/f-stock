@@ -1,0 +1,137 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20260912"
+  },
+  "rows": 1285582,
+  "setup_count": 6175,
+  "filled_count": 5356,
+  "missed_gap_up_count": 1334,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5356,
+      "mean_return": -0.008864628541363606,
+      "median_return": -0.0122328733962721,
+      "win_rate": 0.34410007468259896,
+      "p25": -0.03301759470654983,
+      "p75": 0.009461538461538414
+    },
+    {
+      "hold_days": 2,
+      "n": 5348,
+      "mean_return": -0.008009710489979685,
+      "median_return": -0.015276727160426547,
+      "win_rate": 0.3771503365744203,
+      "p25": -0.045725117819513494,
+      "p75": 0.020155589802863864
+    },
+    {
+      "hold_days": 3,
+      "n": 5340,
+      "mean_return": -0.007380463951073266,
+      "median_return": -0.01799300699300704,
+      "win_rate": 0.38277153558052435,
+      "p25": -0.05560101450424035,
+      "p75": 0.028017492711370277
+    },
+    {
+      "hold_days": 5,
+      "n": 5321,
+      "mean_return": -0.004896040521592907,
+      "median_return": -0.02066666666666672,
+      "win_rate": 0.39710580717910166,
+      "p25": -0.0698978583196046,
+      "p75": 0.0395584235999078
+    },
+    {
+      "hold_days": 10,
+      "n": 5272,
+      "mean_return": 0.0002910612513986721,
+      "median_return": -0.02322916583592227,
+      "win_rate": 0.4140743550834598,
+      "p25": -0.0934405802861685,
+      "p75": 0.0644341917561379
+    },
+    {
+      "hold_days": 20,
+      "n": 5177,
+      "mean_return": 0.008942112793231776,
+      "median_return": -0.03625806451612901,
+      "win_rate": 0.41336681475758164,
+      "p25": -0.12722791712104686,
+      "p75": 0.09885006195786872
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-09-11",
+      "ticker": "6179",
+      "name": "亞通",
+      "sector": "其他業",
+      "Close": 35.75,
+      "momentum_score": 0.693272,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 34.53645,
+      "momentum_entry_limit": 35.75,
+      "momentum_entry_high": 36.28625,
+      "price_vs_ma5": 0.0299625468,
+      "price_vs_ma20": 0.1942542175,
+      "price_vs_ma60": 0.3171883005,
+      "volume_ratio_20d": 2.8247471606,
+      "RSI_14": 69.88801428,
+      "MACDh_12_26_9": 0.7998094189,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-09-11",
+      "ticker": "2221",
+      "name": "大甲",
+      "sector": "其他業",
+      "Close": 95.4,
+      "momentum_score": 0.628429,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 92.061,
+      "momentum_entry_limit": 95.4,
+      "momentum_entry_high": 96.831,
+      "price_vs_ma5": 0.0548429898,
+      "price_vs_ma20": 0.2714914034,
+      "price_vs_ma60": 0.6725046615,
+      "volume_ratio_20d": 2.9718675326,
+      "RSI_14": 77.666712123,
+      "MACDh_12_26_9": 1.4483249559,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-09-11",
+      "ticker": "2801",
+      "name": "彰銀",
+      "sector": "金融保險業",
+      "Close": 27.9,
+      "momentum_score": 0.56186,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 26.93465,
+      "momentum_entry_limit": 27.9,
+      "momentum_entry_high": 28.3185,
+      "price_vs_ma5": 0.0306612486,
+      "price_vs_ma20": 0.1042944785,
+      "price_vs_ma60": 0.1820202064,
+      "volume_ratio_20d": 1.7036713359,
+      "RSI_14": 81.8697754993,
+      "MACDh_12_26_9": 0.2138525995,
+      "missed_gap_up": false
+    }
+  ]
+}

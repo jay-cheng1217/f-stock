@@ -1,0 +1,90 @@
+{
+  "generated_at": "2026-05-01T02:17:55.073793+00:00",
+  "start": "2026-04-23",
+  "end": "2026-04-29",
+  "db_path": "F:\\stock\\paper_portfolio_v2_champion.db",
+  "closed_only": false,
+  "position_count": 32,
+  "status_counts": {
+    "closed": 22,
+    "open": 7,
+    "stopped_out": 3
+  },
+  "closure_status_counts": {
+    "mark_to_market": 7,
+    "realized": 25
+  },
+  "files": [
+    {
+      "closure_date": "2026-04-24",
+      "rows": 2,
+      "path": "F:\\stock\\ml\\reports\\closures\\20260424.parquet"
+    },
+    {
+      "closure_date": "2026-04-27",
+      "rows": 18,
+      "path": "F:\\stock\\ml\\reports\\closures\\20260427.parquet"
+    },
+    {
+      "closure_date": "2026-04-28",
+      "rows": 1,
+      "path": "F:\\stock\\ml\\reports\\closures\\20260428.parquet"
+    },
+    {
+      "closure_date": "2026-04-29",
+      "rows": 3,
+      "path": "F:\\stock\\ml\\reports\\closures\\20260429.parquet"
+    },
+    {
+      "closure_date": "2026-04-30",
+      "rows": 8,
+      "path": "F:\\stock\\ml\\reports\\closures\\20260430.parquet"
+    }
+  ],
+  "schema_columns": [
+    "position_id",
+    "prediction_date",
+    "ticker",
+    "sector",
+    "status",
+    "closure_status",
+    "closure_date",
+    "closure_date_source",
+    "entry_signal_type",
+    "current_signal_type",
+    "target_units",
+    "target_weight",
+    "planned_entry_ref_price",
+    "entry_date",
+    "entry_price",
+    "exit_date",
+    "exit_price",
+    "exit_reason",
+    "realized_return_pct",
+    "max_drawdown_pct",
+    "max_drawdown_date",
+    "max_drawdown_low",
+    "days_observed",
+    "last_mark_date",
+    "snapshot_date",
+    "snapshot_close",
+    "order_type",
+    "fill_status",
+    "fill_price",
+    "entry_slippage_pct",
+    "exit_policy",
+    "hold_days_target",
+    "signals_file_path",
+    "signals_sha256",
+    "rule_version",
+    "raw_features_json",
+    "marks_json",
+    "opened_by_run_id",
+    "last_run_id",
+    "last_signal_date",
+    "upgrade_count",
+    "upgraded_at",
+    "created_at",
+    "updated_at"
+  ]
+}

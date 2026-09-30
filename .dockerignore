@@ -1,25 +1,97 @@
-__pycache__/
-*.pyc
-*.pyo
+# ============================================================================
+# .dockerignore — 把資料/快取/IDE/log 排除在 image 外
+# 沒有這個檔，COPY . . 會把 stock.duckdb、所有 CSV、日K資料/ 數 GB 包進 image。
+# ============================================================================
 
+# Git / IDE
+.git/
+.gitignore
+.gitattributes
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Virtualenvs
 .venv/
 venv/
 env/
 
-.git/
-.vscode/
-.idea/
+# Local config (token、SMTP 等不該進 image，container 起時靠 env / mount 注入)
+.env
+.env.*
 
+# Logs / temp
 *.log
-*.csv
-*.xlsx
-*.parquet
-*.pkl
-*.joblib
-*.db
-
-data/
-output/
-outputs/
 logs/
-notebooks/
+tmp/
+temp/
+*.bak
+*.bak_*
+
+# DuckDB / SQLite ledgers
+stock.duckdb
+stock.duckdb.wal
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Market data (image 應靠掛 volume / external storage 取得；不該預打包)
+日K資料/
+估值資料/
+原始融資資料/
+外資持股/
+大盤指數/
+季報財務/
+新聞資料/
+月營收/
+月營收 - 複製/
+法人快取/
+清理後資料/
+資產負債/
+集保分散/
+
+# Trained model binaries / 預測 / 報表
+ml/models/lgbm_*.txt
+ml/models/*.parquet
+ml/models/*.pkl
+ml/models/predictions_*.csv
+ml/models/predictions_t1_*.csv
+ml/models/unified_signals_*.csv
+ml/models/pipeline_status.json
+ml/models/latest_snapshot_cache*
+ml/reports/archive/
+ml/reports/*_latest*
+ml/reports/backtest_detail_*.csv
+ml/reports/feature_importance_*.csv
+
+# Pipeline runtime data
+disposition_active.csv
+ml/data/disposition_periods.csv
+
+# Windows-only launchers / 排程腳本（image 是 Linux）
+*.bat
+*.ps1
+
+# Docs / 一次性筆記（保留 README/CLAUDE.md）
+*.md
+!README.md
+!CLAUDE.md
+
+# OS-generated
+.DS_Store
+Thumbs.db

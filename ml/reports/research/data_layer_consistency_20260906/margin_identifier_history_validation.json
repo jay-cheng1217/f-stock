@@ -1,0 +1,319 @@
+{
+  "status": "STAGED_NOT_PROMOTED",
+  "daily_files": 34,
+  "daily_changed_cells": 53099,
+  "merged_before_rows": 3014577,
+  "merged_after_rows": 3025294,
+  "feature_ab": [
+    {
+      "ticker": "0050",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 2,
+      "historical_changed_rows": 1617,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "0051",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 1,
+      "historical_changed_rows": 1513,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "0052",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 2,
+      "historical_changed_rows": 1617,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "0053",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 1,
+      "historical_changed_rows": 1289,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "0055",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 2,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "0056",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 6,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "0057",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 114,
+      "last_affected_date": "2026-09-03"
+    },
+    {
+      "ticker": "0061",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 1,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "006203",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 4,
+      "historical_changed_rows": 461,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "006204",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 676,
+      "last_affected_date": "2025-11-07"
+    },
+    {
+      "ticker": "006205",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 4,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "006206",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 4,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "006207",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 4,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "006208",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 6,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00636",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 4,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00639",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 6,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00643",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 1,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00645",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 1,
+      "historical_changed_rows": 1599,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00646",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 2,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00652",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 4,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00657",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 903,
+      "last_affected_date": "2026-08-31"
+    },
+    {
+      "ticker": "00660",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 920,
+      "last_affected_date": "2026-08-18"
+    },
+    {
+      "ticker": "00661",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 1,
+      "historical_changed_rows": 1031,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00662",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 6,
+      "historical_changed_rows": 1622,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00668",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 4,
+      "historical_changed_rows": 1591,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "00678",
+      "stock_universe": false,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 4,
+      "historical_changed_rows": 1593,
+      "last_affected_date": "2026-09-04"
+    },
+    {
+      "ticker": "6201",
+      "stock_universe": true,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 13,
+      "last_affected_date": "2026-04-27"
+    },
+    {
+      "ticker": "6203",
+      "stock_universe": true,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 78,
+      "last_affected_date": "2026-07-28"
+    },
+    {
+      "ticker": "6204",
+      "stock_universe": true,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 78,
+      "last_affected_date": "2026-07-28"
+    },
+    {
+      "ticker": "6205",
+      "stock_universe": true,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 29,
+      "last_affected_date": "2026-05-15"
+    },
+    {
+      "ticker": "6206",
+      "stock_universe": true,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 29,
+      "last_affected_date": "2026-05-15"
+    },
+    {
+      "ticker": "6207",
+      "stock_universe": true,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 78,
+      "last_affected_date": "2026-07-28"
+    },
+    {
+      "ticker": "6208",
+      "stock_universe": true,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 78,
+      "last_affected_date": "2026-07-28"
+    },
+    {
+      "ticker": "9802",
+      "stock_universe": true,
+      "latest_date": "2026-09-04",
+      "columns_compared": 46,
+      "latest_changed_cells": 0,
+      "historical_changed_rows": 29,
+      "last_affected_date": "2026-05-15"
+    }
+  ],
+  "latest_stock_universe_changes": [],
+  "non_margin_value_changes": 0,
+  "merged_unrelated_value_changes": 0,
+  "scope": "Only audited identifier keys and existing observed price bars; no training or strategy changes"
+}

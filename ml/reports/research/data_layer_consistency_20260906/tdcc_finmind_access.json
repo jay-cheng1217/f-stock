@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-09-06T15:13:57.873095",
+  "dataset": "TaiwanStockHoldingSharesPer",
+  "requested_date": "2021-09-10",
+  "scope": "Single exact-date whole-market query; no purchase or account change",
+  "token_configured": true,
+  "endpoint": "https://api.finmindtrade.com/api/v4/data",
+  "http_status": 400,
+  "api_status": 400,
+  "message": "Your level is register. Please update your user level. Detail information:https://finmindtrade.com/analysis/#/Sponsor/sponsor",
+  "rows": 0,
+  "response_dates": [],
+  "tickers": 0,
+  "status": "ACCESS_OR_DATA_UNAVAILABLE",
+  "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\finmind\\tdcc_20210910.json",
+  "sha256": "2fc70cce8b66e4c1a7a7598af8f0527af1e12a46c56d9d94260ade07d45acf77",
+  "seconds": 0.405
+}

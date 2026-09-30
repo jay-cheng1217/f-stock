@@ -1,0 +1,61 @@
+{
+  "status": "OK",
+  "as_of_date": "20260924",
+  "previous_date": "20260918",
+  "generated_at": "2026-09-30T07:03:15.942115+08:00",
+  "sources": {
+    "previous": {
+      "path": "F:\\stock\\集保分散\\tdcc_20260918.csv",
+      "sha256": "05f4599c63acdcc35c432cdf5f921f43288cc11b7857fadd0ced768a717152c4",
+      "date": "20260918",
+      "raw_rows": 69139,
+      "raw_tickers": 4067,
+      "four_digit_rows": 50388,
+      "four_digit_tickers": 2964,
+      "required_levels_per_ticker": 15
+    },
+    "current": {
+      "path": "F:\\stock\\集保分散\\tdcc_20260924.csv",
+      "sha256": "c0bfb6e0f274765c4cb0378ecb1bae311c98eb7ad58e098e2de14bfa0b785a41",
+      "date": "20260924",
+      "raw_rows": 69156,
+      "raw_tickers": 4068,
+      "four_digit_rows": 50405,
+      "four_digit_tickers": 2965,
+      "required_levels_per_ticker": 15
+    },
+    "paired_tickers": 2963,
+    "pair_coverage": 0.9993254637436763,
+    "current_only_tickers": [
+      "6536",
+      "7950"
+    ],
+    "previous_only_tickers": [
+      "4118"
+    ]
+  },
+  "definition": {
+    "whale_levels": [
+      15
+    ],
+    "retail_levels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "min_whale_delta_pp": 3.0,
+    "retail_delta_less_than": 0
+  },
+  "named_radar_rows": 22,
+  "outputs": {
+    "ml/data/tdcc_whale_snapshot.csv": "cc51d167750794c617dfd4dd393d62e78e98f733657f2f3b33767176e4cffe5e",
+    "ml/data/tdcc_whale_deltas.csv": "09c3e228d96e753d4b67cff665d09ce911319fb44b078237b9560ee3bfeecd4d",
+    "logs/tdcc_whale_delta_20260924.csv": "4a9f6d435ed4e6c91bb0b8f8b2771d415ccb5aa381a86897db19bc2c981fd922"
+  }
+}

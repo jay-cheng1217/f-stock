@@ -1,0 +1,137 @@
+[
+  {
+    "ticker": "2107",
+    "asset_type": "stock",
+    "universe_type": "stock",
+    "signal": "EXIT",
+    "bucket": "red",
+    "action_group": "cut_or_exit_review",
+    "review_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "v2_alpha_model_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "rule_pool": "prediction_explain_plus_guardrails",
+    "daily_k_status": "ok",
+    "latest_date": "2026-05-15",
+    "latest_close": 25.2,
+    "ret_20d_pct": -3.45,
+    "price_vs_ma20_pct": -3.02,
+    "reason_codes": [
+      "BELOW_BREAKEVEN",
+      "LOW_LIQUIDITY"
+    ],
+    "warning_codes": [],
+    "prediction_available": true,
+    "prediction_explain_available": true
+  },
+  {
+    "ticker": "2382",
+    "asset_type": "stock",
+    "universe_type": "stock",
+    "signal": "EXIT",
+    "bucket": "red",
+    "action_group": "cut_or_exit_review",
+    "review_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "v2_alpha_model_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "rule_pool": "prediction_explain_plus_guardrails",
+    "daily_k_status": "ok",
+    "latest_date": "2026-05-15",
+    "latest_close": 306.0,
+    "ret_20d_pct": -3.92,
+    "price_vs_ma20_pct": -7.1,
+    "reason_codes": [
+      "BELOW_BREAKEVEN"
+    ],
+    "warning_codes": [],
+    "prediction_available": true,
+    "prediction_explain_available": true
+  },
+  {
+    "ticker": "3229",
+    "asset_type": "stock",
+    "universe_type": "stock",
+    "signal": "EXIT",
+    "bucket": "red",
+    "action_group": "cut_or_exit_review",
+    "review_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "v2_alpha_model_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "rule_pool": "prediction_explain_plus_guardrails",
+    "daily_k_status": "ok",
+    "latest_date": "2026-05-15",
+    "latest_close": 36.35,
+    "ret_20d_pct": 30.05,
+    "price_vs_ma20_pct": -8.98,
+    "reason_codes": [
+      "BELOW_BREAKEVEN"
+    ],
+    "warning_codes": [],
+    "prediction_available": true,
+    "prediction_explain_available": true
+  },
+  {
+    "ticker": "5292",
+    "asset_type": "stock",
+    "universe_type": "stock",
+    "signal": "EXIT",
+    "bucket": "red",
+    "action_group": "cut_or_exit_review",
+    "review_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "v2_alpha_model_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "rule_pool": "prediction_explain_plus_guardrails",
+    "daily_k_status": "ok",
+    "latest_date": "2026-05-15",
+    "latest_close": 227.0,
+    "ret_20d_pct": -0.22,
+    "price_vs_ma20_pct": -4.98,
+    "reason_codes": [
+      "LOW_LIQUIDITY"
+    ],
+    "warning_codes": [],
+    "prediction_available": true,
+    "prediction_explain_available": true
+  },
+  {
+    "ticker": "8027",
+    "asset_type": "stock",
+    "universe_type": "stock",
+    "signal": "EXIT",
+    "bucket": "red",
+    "action_group": "cut_or_exit_review",
+    "review_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "v2_alpha_model_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "rule_pool": "prediction_explain_plus_guardrails",
+    "daily_k_status": "ok",
+    "latest_date": "2026-05-15",
+    "latest_close": 247.0,
+    "ret_20d_pct": 69.76,
+    "price_vs_ma20_pct": 29.34,
+    "reason_codes": [
+      "PREDICTION_EXPLAIN_HARD_GUARD"
+    ],
+    "warning_codes": [],
+    "prediction_available": true,
+    "prediction_explain_available": true
+  },
+  {
+    "ticker": "8341",
+    "asset_type": "stock",
+    "universe_type": "stock",
+    "signal": "EXIT",
+    "bucket": "red",
+    "action_group": "cut_or_exit_review",
+    "review_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "v2_alpha_model_status": "STOCK_V2_ALPHA_MODEL_ENABLED",
+    "rule_pool": "prediction_explain_plus_guardrails",
+    "daily_k_status": "ok",
+    "latest_date": "2026-05-15",
+    "latest_close": 76.5,
+    "ret_20d_pct": 0.13,
+    "price_vs_ma20_pct": 1.51,
+    "reason_codes": [
+      "STOP_LOSS_10PCT",
+      "BELOW_BREAKEVEN",
+      "LOW_LIQUIDITY"
+    ],
+    "warning_codes": [],
+    "prediction_available": true,
+    "prediction_explain_available": true
+  }
+]

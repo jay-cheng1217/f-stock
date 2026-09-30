@@ -1,0 +1,35 @@
+{
+  "prediction_rows": 1080,
+  "dataA_rows": 1080,
+  "unified_rows": 1,
+  "raw_rows": 1080,
+  "raw_date_counts": {
+    "2026-09-04": 1076,
+    "2026-08-26": 2,
+    "2026-08-21": 1,
+    "2026-09-02": 1
+  },
+  "candidate_rows": 18,
+  "candidate_source_dates": [
+    "2026-09-04"
+  ],
+  "candidate_model_dates": [
+    "2026-09-04"
+  ],
+  "candidate_kinds": {
+    "go": 11,
+    "small": 7
+  },
+  "rere_tickers": [
+    "3605",
+    "3189",
+    "3066",
+    "2364",
+    "3176",
+    "6472"
+  ],
+  "output_gaps": [],
+  "html_bytes": 9362910,
+  "html_sha256": "2ba17f662e6c828ef3b4141789bc2244d20e48ae4aa9853aa94dc85e802b7807",
+  "html_hash_scope": "UTF-8 text after universal-newline decoding; artifact_manifest supplies exact file-byte hashes"
+}

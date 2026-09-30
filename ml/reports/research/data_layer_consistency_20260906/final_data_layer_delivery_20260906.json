@@ -1,0 +1,461 @@
+{
+  "status": "PASS_DATA_AND_CONSUMER_CONSISTENCY_FIXED_ARTIFACT_PENDING",
+  "observed_at": "2026-09-07T00:09:11.166162+08:00",
+  "source_close": "2026-09-04",
+  "plan_trade_date": "2026-09-07",
+  "source_and_db_delivery": {
+    "path": "F:\\stock\\ml\\reports\\research\\data_layer_consistency_20260906\\source_and_db_delivery.json",
+    "bytes": 11169,
+    "sha256": "3573652c91787d70c377d0238e3f97d82bc9b14cec95c821d3e983998c278796"
+  },
+  "db_acceptance": {
+    "receipt": {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_db_after_ingest_20260906.json",
+      "bytes": 462865,
+      "sha256": "e8abe1923a3ea9a9b8eec24bf6de77e148ce6d549c7eb61de5c106014a05800b"
+    },
+    "status": "PASS",
+    "checks": {
+      "source_is_previous_trade_close": true,
+      "source_errors_zero": true,
+      "source_duplicates_zero": true,
+      "source_latest_market_date": true,
+      "five_ingest_generations_and_counts": true,
+      "stock_list_unique": true,
+      "source_db_daily_rows_equal": true,
+      "daily_duplicate_zero": true,
+      "latest_source_db_ohlcv_exact": true,
+      "twii_source_date": true,
+      "source_files_stable_through_audit": true,
+      "source_file_set_stable_through_audit": true,
+      "db_file_stable_through_audit": true
+    },
+    "started_at": "2026-09-06T22:08:40.389050+08:00",
+    "completed_at": "2026-09-06T22:08:54.517080+08:00"
+  },
+  "formal_20d_pinned": {
+    "receipt": {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_20d_inference_pinned_20260906.json",
+      "bytes": 1842774,
+      "sha256": "080fc9eefbfee41eb1167287fe05030e92095785b4f596a97ba28c5318677d37"
+    },
+    "status": "FORMAL_INFERENCE_VERIFIED_EXACT_E"
+  },
+  "prior_downstream": {
+    "receipt": {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_pinned_20260906\\summary.json",
+      "bytes": 2054,
+      "sha256": "64c658dcac5990f85794325a49a21f31862563d0091043babd2f156b4550d7bd"
+    },
+    "status": "FAIL",
+    "steps": [
+      {
+        "step": "preflight",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_pinned_20260906\\00_preflight.finished.json"
+      },
+      {
+        "step": "t1",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_pinned_20260906\\01_t1.finished.json"
+      },
+      {
+        "step": "dataa",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_pinned_20260906\\02_dataa.finished.json"
+      },
+      {
+        "step": "unified",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_pinned_20260906\\03_unified.finished.json"
+      },
+      {
+        "step": "canonical",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_pinned_20260906\\04_canonical.finished.json"
+      },
+      {
+        "step": "html",
+        "status": "FAIL",
+        "exit_code": 1,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_pinned_20260906\\05_html.finished.json"
+      }
+    ],
+    "failed_step": "html",
+    "error": "RuntimeError: Step html failed; inspect its separate logs and receipt"
+  },
+  "prior_html_resume": {
+    "receipt": {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_html_resume_20260906\\summary.json",
+      "bytes": 2294,
+      "sha256": "adcc5feb7edf3bc3e45ecb2792323fec7271c7b98793e0f4b2430eecf3123477"
+    },
+    "status": "PASS",
+    "prior_passed_steps": [
+      "preflight",
+      "t1",
+      "dataa",
+      "unified",
+      "canonical"
+    ],
+    "new_steps": [
+      {
+        "step": "html",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_html_resume_20260906\\00_html.finished.json"
+      },
+      {
+        "step": "audit",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_html_resume_20260906\\01_audit.finished.json"
+      }
+    ]
+  },
+  "final_certified_run": {
+    "receipt": {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_certified_entry_20260906\\summary.json",
+      "bytes": 2649,
+      "sha256": "93dcfb66a78904b855721773f3a7a7d01f458a8287a3844832c989c4c324200e"
+    },
+    "status": "PASS",
+    "started_at": "2026-09-06T23:56:07.247690+08:00",
+    "completed_at": "2026-09-06T23:58:06.246196+08:00",
+    "steps": [
+      {
+        "step": "preflight",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_certified_entry_20260906\\00_preflight.finished.json"
+      },
+      {
+        "step": "canonical",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_certified_entry_20260906\\01_canonical.finished.json"
+      },
+      {
+        "step": "html",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_certified_entry_20260906\\02_html.finished.json"
+      },
+      {
+        "step": "audit",
+        "status": "PASS",
+        "exit_code": 0,
+        "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_certified_entry_20260906\\03_audit.finished.json"
+      }
+    ],
+    "scope": "Single certified canonical generation, HTML, read-only outputs audit. Existing model scores and all old receipts remain unchanged."
+  },
+  "final_outputs_audit": {
+    "receipt": {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_certified_entry_20260906\\formal_outputs_after_rebuild.json",
+      "bytes": 6127672,
+      "sha256": "e4e20f499850fe001a6e26400c1882ae417cb323f34f6a63c4cef968276b81ee"
+    },
+    "status": "PASS",
+    "started_at": "2026-09-06T23:57:42.191269+08:00",
+    "completed_at": "2026-09-06T23:58:05.644205+08:00",
+    "checks": {
+      "source_is_previous_trade_close": true,
+      "certified_snapshot_lineage": true,
+      "snapshot_has_expected_close_date": true,
+      "source_errors_zero": true,
+      "source_duplicates_zero": true,
+      "source_latest_market_date": true,
+      "snapshot_source_own_date_exact": true,
+      "snapshot_source_latest_exact": true,
+      "production_prediction_lineage": true,
+      "production_snapshot_identities": true,
+      "production_artifact_date": true,
+      "dataA_prediction_lineage": true,
+      "dataA_snapshot_identities": true,
+      "dataA_artifact_date": true,
+      "entry_plan_lineage": true,
+      "entry_source_date": true,
+      "entry_trade_date": true,
+      "entry_model_filename_date": true,
+      "entry_source_keys": true,
+      "html_trade_date": true,
+      "html_every_candidate_exact_identity": true,
+      "source_files_stable_through_audit": true,
+      "source_file_set_stable_through_audit": true
+    },
+    "limitations": [
+      "Older per-company dates are preserved and reported, not automatically certified as official halts",
+      "This is current-snapshot consistency, not historical announcement-time availability or strategy performance"
+    ]
+  },
+  "canonical_comparison": {
+    "actual_rows": 18,
+    "expected_rows": 18,
+    "actual_rere": [
+      "3605",
+      "3189",
+      "3066",
+      "2364",
+      "3176",
+      "6472"
+    ],
+    "expected_rere": [
+      "3605",
+      "3189",
+      "3066",
+      "2364",
+      "3176",
+      "6472"
+    ],
+    "row_order_exact": true,
+    "rere_order_exact": true,
+    "semantic_changes": [],
+    "expected_receipt": {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\reports\\research\\source_universe_ab_20260906\\history_E\\canonical_entry_candidates_E.json",
+      "exists": true,
+      "bytes": 14777,
+      "mtime_ns": 1788703224469291600,
+      "sha256": "d4af92a16199377da0d51adaedc30261ec9399caf29b882b6d6dd53103711c7b"
+    }
+  },
+  "canonical_lineage": {
+    "schema": 1,
+    "scope": "successful_live_entry_generation",
+    "run_id": "6fd8edfce9f7400581242a7436714d6e",
+    "as_of_date": "2026-09-04",
+    "trade_date": "2026-09-07",
+    "result_sha256": "16a7887c3e521d8e8d02c21fcd4e81610cb81cf99489761fb67f7d926ea1d636",
+    "payload_sha256": "03eeb5043a475c95a8bea2572a30effb496c2641b669c7a85bcceca0101a75f8"
+  },
+  "actual_ui": {
+    "path": "F:\\stock\\ml\\reports\\research\\data_layer_consistency_20260906\\final_certified_entry_ui_20260906.json",
+    "bytes": 7245,
+    "sha256": "522592bdd027548a1baf763857b8661dd3b2b98575806d7b364354e7231cb962"
+  },
+  "actual_web": {
+    "receipt": {
+      "path": "F:\\stock\\ml\\reports\\research\\data_layer_consistency_20260906\\final_web_acceptance_v4_20260906.json",
+      "bytes": 26548,
+      "sha256": "b966d1afca795fa50c80d008f18abbf9c58a092d47bc680acf554dee9c3c8fdb"
+    },
+    "status": "PASS",
+    "started_at": "2026-09-07T00:08:01.1171161+08:00",
+    "completed_at": "2026-09-07T00:08:20.1883874+08:00",
+    "listener": {
+      "pid": 15672,
+      "name": "python",
+      "started_at": "2026-09-07T00:05:37.7358395+08:00"
+    },
+    "frontend": {
+      "path": "F:\\stock\\frontend\\index.html",
+      "source_sha256": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af",
+      "served_sha256": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af",
+      "has_static_canonical_fallback": false
+    },
+    "requests": [
+      {
+        "name": "frontend_index",
+        "route": "/",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 0.064,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\frontend_index.html",
+        "response_sha256": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af"
+      },
+      {
+        "name": "health_check",
+        "route": "/api/health_check",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 0.026,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\health_check.json",
+        "response_sha256": "83f06e06a7be469fdac5db9d33310d014f638f3b5c4320b1f44f318b76e7caa3"
+      },
+      {
+        "name": "pipeline_status",
+        "route": "/api/pipeline/status",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 0.294,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\pipeline_status.json",
+        "response_sha256": "2d8e5f9c8b19086d7bce3681c1d824c6a7677c4b18ebabb63b1ea3e545697d8f"
+      },
+      {
+        "name": "predictions_latest_top30",
+        "route": "/api/predictions/latest?top_n=30",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 1.092,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\predictions_latest_top30.json",
+        "response_sha256": "9a9c6745f4aaaf84ff78bb82a213c6c741667ae266f73fee108bb3f1142ccff0"
+      },
+      {
+        "name": "explain_2603",
+        "route": "/api/predictions/2603/explain",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 3.379,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\explain_2603.json",
+        "response_sha256": "c0d85cc6f196a0a60b2a36ca3e65fa63645e6728b0e0795701bd3aabb696b861"
+      },
+      {
+        "name": "explain_3605",
+        "route": "/api/predictions/3605/explain",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 3.604,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\explain_3605.json",
+        "response_sha256": "caafe40f02df655c7e0a7a6c8603cda481fcc4e69db589f501e49f38f42401f3"
+      },
+      {
+        "name": "explain_2330",
+        "route": "/api/predictions/2330/explain",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 3.917,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\explain_2330.json",
+        "response_sha256": "d07f3a72105d9f02a6b1ea296821337681f377916d3f8e51103ef42285aaa29e"
+      },
+      {
+        "name": "explain_6949",
+        "route": "/api/predictions/6949/explain",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 2.546,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\explain_6949.json",
+        "response_sha256": "1fa8a11a626c98bbb2d00ced07aa2a17bc98f082f2395e11fab1e1b9e0ec3a08"
+      },
+      {
+        "name": "canonical_entry",
+        "route": "/api/entry/canonical",
+        "method": "GET",
+        "http_status": 200,
+        "seconds": 2.878,
+        "response_path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_web_http_v4\\canonical_entry.json",
+        "response_sha256": "923e1fbbd45eb86c7d0da639462271d00e57f529dd5d78c3afe99098b316e0e7"
+      }
+    ],
+    "failures": []
+  },
+  "external_web": {
+    "receipt": {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\final_remote_http_v3_20260906.json",
+      "bytes": 540,
+      "sha256": "d72ab073246bed5b113157323ab81e63aed778e7fcd2c9d7c845869bd358f4f4"
+    },
+    "checked_at": "2026-09-07T00:06:00.6712503+08:00",
+    "url": "https://humanities-interests-kerry-routes.trycloudflare.com",
+    "status_code": 200,
+    "exact_frontend": true
+  },
+  "protected": {
+    "receipt": {
+      "path": "F:\\stock\\ml\\reports\\research\\data_layer_consistency_20260906\\protected_artifact_final_acceptance_20260906.json",
+      "bytes": 22776,
+      "sha256": "3bebd3c2eab5506f4f58bde62c47a09d00e983a817982ceb3cc3fbcddb3a833e"
+    },
+    "status": "PASS",
+    "observed_at": "2026-09-07T00:09:00.169780+08:00",
+    "protected_count": 66,
+    "core_strategy_AST": {
+      "generate": true,
+      "_technical": true,
+      "_pattern_ok": true,
+      "_rere_lane_ok": true,
+      "_apply_data_quality": true
+    }
+  },
+  "joint_tests": {
+    "status": "PASS",
+    "tests_passed": 220,
+    "duration_seconds": 48.47,
+    "command": "python -B -X utf8 -m pytest tests/test_entry_artifact_lineage.py tests/test_dataa_prediction_provenance.py tests/test_generate_entry_candidates.py tests/test_formal_data_consistency.py tests/test_formal_prediction_provenance.py tests/test_strategy_pipeline_integrity.py tests/test_shadow_dataA_contract.py tests/test_entry_dashboard_lineage.py tests/test_entry_dashboard_freshness.py tests/test_entry_dashboard_cards.py tests/test_web_prediction_runtime.py tests/test_prediction_context_cache_transition.py tests/test_prediction_provenance.py tests/test_snapshot_lineage.py tests/test_entry_frontend_lineage.py -q",
+    "note": "Actual joint process exit code 0; includes date-default compatibility, renderer production fallback and actual frontend JS. Tracker sidecar dispatch has two additional independent temporary fixtures, reported separately."
+  },
+  "preserved_web_failures": [
+    {
+      "path": "F:\\stock\\ml\\reports\\research\\data_layer_consistency_20260906\\final_web_acceptance_20260906.json",
+      "bytes": 18640,
+      "sha256": "fa1083d15b3c996ed39c8b4ef4284b2d81ef72dbafd95696f155773cb0c2d368"
+    },
+    {
+      "path": "F:\\stock\\ml\\reports\\research\\data_layer_consistency_20260906\\final_web_acceptance_v2_20260906.json",
+      "bytes": 28261,
+      "sha256": "a87be69ef75951f39e012da8b431ecaad6b60280d102d773a863872239255ca7"
+    },
+    {
+      "path": "F:\\stock\\ml\\reports\\research\\data_layer_consistency_20260906\\final_web_acceptance_v3_20260906.json",
+      "bytes": 26756,
+      "sha256": "558e994230bbe016396232596929c0860b120a847e899c8af39cd31940687136"
+    }
+  ],
+  "published_local_artifacts": [
+    {
+      "path": "F:\\stock\\frontend\\static\\entry_canonical.json",
+      "bytes": 12866,
+      "sha256": "d5cf77a5cbc9a09c4be7e73f4ea7e94d768492265d7d747376a9b2995b5ad8f5"
+    },
+    {
+      "path": "F:\\stock\\frontend\\static\\entry_canonical.json.manifest.json",
+      "bytes": 1767716,
+      "sha256": "9431921c8ef6ac1a8b0ca0fa3f99853991d724da075731162366cd1648d26de3"
+    },
+    {
+      "path": "F:\\stock\\logs\\entry_list_20260907.json",
+      "bytes": 12866,
+      "sha256": "d5cf77a5cbc9a09c4be7e73f4ea7e94d768492265d7d747376a9b2995b5ad8f5"
+    },
+    {
+      "path": "F:\\stock\\logs\\entry_list_20260907.json.manifest.json",
+      "bytes": 1767716,
+      "sha256": "9431921c8ef6ac1a8b0ca0fa3f99853991d724da075731162366cd1648d26de3"
+    },
+    {
+      "path": "F:\\stock\\ml\\reports\\entry_dashboard_latest.html",
+      "bytes": 9489910,
+      "sha256": "c951a38444bd5ac1ee24e1c2863528787faa27cb258d2b6d7a9102d4089787a9"
+    },
+    {
+      "path": "F:\\stock\\frontend\\index.html",
+      "bytes": 397555,
+      "sha256": "691865fc1facf4ef433095f48092819823eb79ed9cf47d27f6ea90b7f64415af"
+    },
+    {
+      "path": "F:\\stock\\ml\\models\\predictions_2026-09-04.csv",
+      "bytes": 3420741,
+      "sha256": "850b627d22431b48ad8fab04b2179df426d141cc929cd42a351fa83f882c4624"
+    },
+    {
+      "path": "F:\\stock\\ml\\models\\predictions_2026-09-04.csv.manifest.json",
+      "bytes": 1747390,
+      "sha256": "dea85ee2bb61c2414eb2f0419be2a3391b45e52ba65c9f95d66f451d2bdb3fcf"
+    },
+    {
+      "path": "F:\\stock\\ml\\models\\dataA_predictions_2026-09-04.csv",
+      "bytes": 49695,
+      "sha256": "25d5ec540b2501a8e359767ec8b82a0f7b31fc1bcc1980a613941b12c7319f1a"
+    },
+    {
+      "path": "F:\\stock\\ml\\models\\dataA_predictions_2026-09-04.csv.manifest.json",
+      "bytes": 3644423,
+      "sha256": "de2c5a0dc4ed0c3e7ef8b8fb0a10343e7d35e2ee85fcb5c38d9a340aadd61f99"
+    }
+  ],
+  "fixed_artifact": {
+    "url": "https://claude.ai/code/artifact/8705d1fe-77ce-411e-a162-895c7c8fb22b",
+    "status": "PENDING_ORIGINAL_URL_REDEPLOY",
+    "published_this_run": false
+  },
+  "limits": [
+    "Fixed-snapshot sensitivity/equivalence is not historical investment performance or calibration proof.",
+    "TDCC retains 36 unresolved historical weeks and 50 explicitly observed official no-data responses.",
+    "No retraining, model-selection/pin/strategy-weight/entry-exit changes or operational ledger evaluation.",
+    "Raw source quick reuse checks follow documented file-set/size/mtime contracts; not a claim of adversarial same-stat tamper detection."
+  ]
+}

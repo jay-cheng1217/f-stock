@@ -18,6 +18,7 @@ from ml.config import MODEL_DIR
 from ml.dataset_t1 import build_latest_t1_snapshot
 from ml.features.key_levels import compute_key_levels
 from ml.features.sector import load_sector_mapping
+from ml.t1_production_gate import evaluate_t1_production_gate
 
 T1_LONG_UPPER_WICK_CUTOFF = 0.04
 T1_BREAKOUT_STRETCH_CUTOFF = 0.08
@@ -39,6 +40,8 @@ T1_MARKET_CIRCUIT_BREAKER = -0.015   # 大盤跌 > 1.5% 熔斷，不出手
 T1_MDD_HALT_PCT = 0.10              # 帳本 MDD > 10% 熔斷
 T1_CONSECUTIVE_LOSS_HALT = 5         # 連續 5 日虧損熔斷
 T1_PORTFOLIO_DB = os.path.join(os.path.dirname(os.path.dirname(__file__)), "paper_portfolio_t1.db")
+T1_LEDGER_RESTART_DATE = "2026-04-17"  # 1D direction model clean start
+VOLUME_SHARES_PER_LOT = 1000.0
 
 T1_SNAPSHOT_CACHE_PATH = os.path.join(MODEL_DIR, "snapshot_t1_cache.pkl")
 
@@ -60,6 +63,40 @@ def _safe_print(text: str) -> None:
         print(safe_text)
 
 
+def _snapshot_numeric(snapshot: pd.DataFrame, col: str) -> pd.Series:
+    if col in snapshot.columns:
+        return pd.to_numeric(snapshot[col], errors="coerce")
+    return pd.Series(np.nan, index=snapshot.index, dtype="float64")
+
+
+def _attach_liquidity_artifacts(pred_df: pd.DataFrame, snapshot: pd.DataFrame) -> pd.DataFrame:
+    """Attach liquidity context for downstream gates.
+
+    Volume artifacts are in board lots (1 lot = 1,000 shares). Amount artifacts
+    are estimated TWD traded value.
+    """
+    out = pred_df.copy()
+    close = pd.to_numeric(out["close"], errors="coerce")
+    volume_today_shares = _snapshot_numeric(snapshot, "Volume")
+    avg_5d_volume_shares = _snapshot_numeric(snapshot, "VOL_MA_5")
+    avg_20d_volume_shares = _snapshot_numeric(snapshot, "VOL_MA_20")
+
+    if avg_5d_volume_shares.isna().all() and "t1_volume_burst_5d" in snapshot.columns:
+        vol_burst = _snapshot_numeric(snapshot, "t1_volume_burst_5d").fillna(1.0).clip(lower=0.01)
+        avg_5d_volume_shares = volume_today_shares / vol_burst
+
+    avg_5d_amount = _snapshot_numeric(snapshot, "AMOUNT_MA_5")
+    avg_20d_amount = _snapshot_numeric(snapshot, "AMOUNT_MA_20")
+    avg_5d_amount = avg_5d_amount.where(avg_5d_amount.notna(), avg_5d_volume_shares * close)
+    avg_20d_amount = avg_20d_amount.where(avg_20d_amount.notna(), avg_20d_volume_shares * close)
+
+    out["avg_5d_volume"] = (avg_5d_volume_shares / VOLUME_SHARES_PER_LOT).astype(np.float32)
+    out["avg_20d_volume"] = (avg_20d_volume_shares / VOLUME_SHARES_PER_LOT).astype(np.float32)
+    out["avg_5d_amount"] = avg_5d_amount.astype(np.float64)
+    out["avg_20d_amount"] = avg_20d_amount.astype(np.float64)
+    return out
+
+
 def _check_portfolio_mdd_halt() -> tuple[bool, str]:
     """檢查帳本是否觸發 MDD 或連續虧損熔斷。"""
     if not os.path.exists(T1_PORTFOLIO_DB):
@@ -69,8 +106,10 @@ def _check_portfolio_mdd_halt() -> tuple[bool, str]:
         df = pd.read_sql_query(
             "SELECT prediction_date, realized_return_pct "
             "FROM t1_positions WHERE status = 'closed' AND realized_return_pct IS NOT NULL "
+            "AND prediction_date >= ? "
             "ORDER BY prediction_date",
             conn,
+            params=(T1_LEDGER_RESTART_DATE,),
         )
         conn.close()
     except Exception:
@@ -358,6 +397,11 @@ def build_live_t1_prediction_df(
     pred_df["selection_rank"] = pd.Series(pd.NA, index=pred_df.index, dtype="Int64")
     pred_df["position_weight"] = np.nan
     pred_df["veto_reason"] = ""
+    production_gate = evaluate_t1_production_gate()
+    gate_closed = bool(production_gate.get("closed"))
+    gate_reason = str(production_gate.get("reason") or "")
+    pred_df["production_gate_status"] = str(production_gate.get("status") or "UNKNOWN")
+    pred_df["production_gate_reason"] = gate_reason
 
     # --- [防護0] MDD / 連續虧損熔斷 ---
     mdd_halted, mdd_reason = _check_portfolio_mdd_halt()
@@ -366,10 +410,8 @@ def build_live_t1_prediction_df(
     twii_ret = snapshot["twii_return_1d"].iloc[0] if "twii_return_1d" in snapshot.columns else 0.0
     market_halted = (twii_ret <= T1_MARKET_CIRCUIT_BREAKER) if pd.notna(twii_ret) else False
 
-    # --- [防護2] 流動性門檻：5日均成交額 > T1_MIN_AVG_AMOUNT ---
-    vol_burst = pd.to_numeric(snapshot.get("t1_volume_burst_5d"), errors="coerce").fillna(1.0).clip(lower=0.01)
-    avg_5d_vol = pd.to_numeric(snapshot["Volume"], errors="coerce") / vol_burst
-    pred_df["avg_5d_amount"] = avg_5d_vol * pred_df["close"]
+    # --- [防護2] 流動性 artifact：成交量用張，成交額用台幣估算 ---
+    pred_df = _attach_liquidity_artifacts(pred_df, snapshot)
 
     # --- [防護3] 載入 20D 預測 ---
     d20_pred_file = _find_latest_20d_prediction(pred_df["date"].iloc[0] if not pred_df.empty else "")
@@ -393,7 +435,10 @@ def build_live_t1_prediction_df(
     pred_df.loc[~liquidity_ok, "veto_reason"] = pred_df.loc[~liquidity_ok, "veto_reason"] + "流動性不足 "
     pred_df.loc[d20_veto, "veto_reason"] = pred_df.loc[d20_veto, "veto_reason"] + "20D看空 "
 
-    if mdd_halted:
+    if gate_closed:
+        pred_df["veto_reason"] = f"T1_GATE_CLOSED({gate_reason}) " + pred_df["veto_reason"]
+        pred_df["recommendation"] = "觀望"
+    elif mdd_halted:
         # MDD 熔斷：全數不選
         pred_df["veto_reason"] = f"帳本熔斷({mdd_reason}) " + pred_df["veto_reason"]
     elif market_halted:
@@ -449,8 +494,13 @@ def build_live_t1_prediction_df(
         "stop_loss",
         "friction",
         "position_weight",
+        "avg_5d_volume",
+        "avg_20d_volume",
         "avg_5d_amount",
+        "avg_20d_amount",
         "veto_reason",
+        "production_gate_status",
+        "production_gate_reason",
     ]
     out_cols.extend(
         col
@@ -608,6 +658,11 @@ def main() -> int:
         f"market_halted={'YES' if mkt_halted else 'no'} | "
         f"mdd_halted={'YES' if mdd_halted else 'no'}"
     )
+    if "production_gate_status" in pred_df.columns and not pred_df.empty:
+        gate_status = str(pred_df["production_gate_status"].iloc[0])
+        if gate_status == "CLOSED":
+            gate_reason = str(pred_df.get("production_gate_reason", pd.Series([""])).iloc[0])
+            _safe_print(f"  Production gate: CLOSED | {gate_reason}")
     if selected_count > 0:
         sel = pred_df[pred_df["selected_for_trade"] == True]
         weights = sel["position_weight"]

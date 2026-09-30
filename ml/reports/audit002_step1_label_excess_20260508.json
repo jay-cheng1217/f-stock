@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-05-08T21:05:00+08:00",
+  "audit": "AUDIT-002 Step 1",
+  "scope": "label excess return verification",
+  "verdict": "already_excess_label_step1_does_not_fix_ic",
+  "evidence": {
+    "target_builder": "ml/target.py computes trade_excess_return_20d = trade_return_20d - twii_20d_return",
+    "training_target": "scripts/train_v2.py target_col = trade_excess_return_20d",
+    "latest_model_meta": "ml/models/lgbm_v2_20260508_200128_meta.json",
+    "latest_model_target": "trade_excess_return_20d",
+    "dataset_formula_check_max_date_std": 2.9354174e-08,
+    "walk_forward_backtest": "ml/reports/v2_backtest_20260508_200128.csv",
+    "fold_top30_artifact": "ml/reports/v2_fold_top30_20260508_200128.csv"
+  },
+  "metrics": {
+    "universe_mean_ic": 0.04312090339404595,
+    "universe_ic_t_stat": 2.4270798766531803,
+    "top30_internal_ic_mean": -0.03505174107251766,
+    "top30_internal_ic_t_stat": -0.7293671673149851
+  },
+  "hurdles": {
+    "universe_mean_ic_gt_0_05": false,
+    "universe_t_stat_gt_2": true,
+    "top30_ic_gt_0": false
+  },
+  "next_step": "AUDIT-002 Step 2 feature-level IC cleanup"
+}

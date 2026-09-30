@@ -1,0 +1,1212 @@
+{
+  "generated_at": "2026-05-12T13:07:34.388272+00:00",
+  "window": "2024-01 ~ 2026-04",
+  "fold_artifact": "F:\\stock\\ml\\reports\\audit002_step5_grid_search_20260509_N75_bins5_fold_top30.csv",
+  "summary": [
+    {
+      "variant": "Control",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.02295393711787255,
+      "monthly_avg_alpha": 0.015718367013005212,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.120625564702319,
+      "calmar": 4.0681844446193,
+      "avg_hold_days": 4.886904761904762,
+      "turnover_proxy": 30.0,
+      "repeat_entry_count": 394,
+      "ma5_exit_count": 704,
+      "win_rate": 0.4488095238095238
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "months": 28,
+      "trades": 802,
+      "monthly_avg_return": 0.02225203281656952,
+      "monthly_avg_alpha": 0.015241160330025956,
+      "mdd": -0.07694460074872489,
+      "sharpe": 2.1364933690448216,
+      "calmar": 3.928206518716283,
+      "avg_hold_days": 4.882793017456359,
+      "turnover_proxy": 28.642857142857142,
+      "repeat_entry_count": 356,
+      "ma5_exit_count": 674,
+      "win_rate": 0.4488778054862843
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "months": 28,
+      "trades": 770,
+      "monthly_avg_return": 0.02203894329271952,
+      "monthly_avg_alpha": 0.014744195589488607,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.080256527322343,
+      "calmar": 3.8859196861565835,
+      "avg_hold_days": 4.876623376623376,
+      "turnover_proxy": 27.5,
+      "repeat_entry_count": 324,
+      "ma5_exit_count": 649,
+      "win_rate": 0.44675324675324674
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "months": 28,
+      "trades": 792,
+      "monthly_avg_return": 0.02258432352087064,
+      "monthly_avg_alpha": 0.015301083267992819,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.137342008776544,
+      "calmar": 3.9943421776675607,
+      "avg_hold_days": 4.887626262626263,
+      "turnover_proxy": 28.285714285714285,
+      "repeat_entry_count": 346,
+      "ma5_exit_count": 665,
+      "win_rate": 0.45075757575757575
+    }
+  ],
+  "monthly": [
+    {
+      "variant": "Control",
+      "month": "2024-01",
+      "basket_return": 0.016245693369527785,
+      "basket_alpha": -0.00624731870017794,
+      "avg_hold_days": 4.6,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-02",
+      "basket_return": 0.009528192139272891,
+      "basket_alpha": -0.021203570227915268,
+      "avg_hold_days": 6.033333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-03",
+      "basket_return": 0.031901004956838466,
+      "basket_alpha": 0.023556289980452998,
+      "avg_hold_days": 5.4,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-04",
+      "basket_return": 0.03334404452282159,
+      "basket_alpha": 0.011810972907573106,
+      "avg_hold_days": 5.6,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-05",
+      "basket_return": 0.05965854191192583,
+      "basket_alpha": 0.04277569477644287,
+      "avg_hold_days": 6.233333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-06",
+      "basket_return": 0.003635396847209867,
+      "basket_alpha": -0.006061284192953805,
+      "avg_hold_days": 4.533333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-07",
+      "basket_return": -0.06507892211620714,
+      "basket_alpha": 0.029603955249871947,
+      "avg_hold_days": 3.1333333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-08",
+      "basket_return": -0.012691636666675447,
+      "basket_alpha": 0.007609312180944946,
+      "avg_hold_days": 3.7,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-09",
+      "basket_return": 0.0196220472823068,
+      "basket_alpha": 0.0057416245981893954,
+      "avg_hold_days": 6.733333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-10",
+      "basket_return": 0.03544820299937953,
+      "basket_alpha": 0.02544445443491193,
+      "avg_hold_days": 4.166666666666667,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-11",
+      "basket_return": 0.026950350362195362,
+      "basket_alpha": 0.010512950601504135,
+      "avg_hold_days": 5.4,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2024-12",
+      "basket_return": 0.012252429556209424,
+      "basket_alpha": 0.003618596893605212,
+      "avg_hold_days": 4.633333333333334,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-01",
+      "basket_return": 0.0573897074378049,
+      "basket_alpha": 0.04343345971626466,
+      "avg_hold_days": 5.033333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-02",
+      "basket_return": -0.01093809016782146,
+      "basket_alpha": -0.002193997999918873,
+      "avg_hold_days": 3.1666666666666665,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-03",
+      "basket_return": -0.027006103535180705,
+      "basket_alpha": 0.006604888354386015,
+      "avg_hold_days": 2.3666666666666667,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-04",
+      "basket_return": -0.02074276352215472,
+      "basket_alpha": -0.012579265179414512,
+      "avg_hold_days": 4.033333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-05",
+      "basket_return": 0.019243863007605458,
+      "basket_alpha": -8.264754578167777e-05,
+      "avg_hold_days": 4.5,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-06",
+      "basket_return": 0.016564872713187153,
+      "basket_alpha": 0.013130534877149602,
+      "avg_hold_days": 4.866666666666666,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-07",
+      "basket_return": 0.0870691104084805,
+      "basket_alpha": 0.0662469891533972,
+      "avg_hold_days": 6.966666666666667,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-08",
+      "basket_return": 0.000519911286497606,
+      "basket_alpha": -0.011591387036348133,
+      "avg_hold_days": 4.766666666666667,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-09",
+      "basket_return": 0.06710883608327263,
+      "basket_alpha": 0.033506931786703505,
+      "avg_hold_days": 5.8,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-10",
+      "basket_return": -0.01678578722815235,
+      "basket_alpha": -0.0015636497907730918,
+      "avg_hold_days": 3.933333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-11",
+      "basket_return": 0.04147860074262775,
+      "basket_alpha": 0.021400863938901372,
+      "avg_hold_days": 6.1,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2025-12",
+      "basket_return": 0.043382659901902994,
+      "basket_alpha": -0.0004419193710724634,
+      "avg_hold_days": 6.3,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2026-01",
+      "basket_return": 0.03963961020257159,
+      "basket_alpha": 0.016979210279640732,
+      "avg_hold_days": 3.6333333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2026-02",
+      "basket_return": -0.0027088354130046584,
+      "basket_alpha": 0.04485526396892379,
+      "avg_hold_days": 3.433333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2026-03",
+      "basket_return": 0.11325179923447663,
+      "basket_alpha": 0.0816793571265898,
+      "avg_hold_days": 5.366666666666666,
+      "trades": 30
+    },
+    {
+      "variant": "Control",
+      "month": "2026-04",
+      "basket_return": 0.06442750298351309,
+      "basket_alpha": 0.013567965583048458,
+      "avg_hold_days": 6.4,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-01",
+      "basket_return": 0.016245693369527785,
+      "basket_alpha": -0.00624731870017794,
+      "avg_hold_days": 4.6,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-02",
+      "basket_return": 0.011374890888427407,
+      "basket_alpha": -0.018518897150850307,
+      "avg_hold_days": 6.12,
+      "trades": 25
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-03",
+      "basket_return": 0.03279820142075809,
+      "basket_alpha": 0.024618851832166416,
+      "avg_hold_days": 5.517241379310345,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-04",
+      "basket_return": 0.03334404452282159,
+      "basket_alpha": 0.011810972907573106,
+      "avg_hold_days": 5.6,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-05",
+      "basket_return": 0.062198491119567705,
+      "basket_alpha": 0.044650412916305025,
+      "avg_hold_days": 6.344827586206897,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-06",
+      "basket_return": 0.003635396847209867,
+      "basket_alpha": -0.006061284192953805,
+      "avg_hold_days": 4.533333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-07",
+      "basket_return": -0.06507892211620714,
+      "basket_alpha": 0.029603955249871947,
+      "avg_hold_days": 3.1333333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-08",
+      "basket_return": -0.012691636666675447,
+      "basket_alpha": 0.007609312180944946,
+      "avg_hold_days": 3.7,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-09",
+      "basket_return": 0.0196220472823068,
+      "basket_alpha": 0.0057416245981893954,
+      "avg_hold_days": 6.733333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-10",
+      "basket_return": 0.03658613810509106,
+      "basket_alpha": 0.026731979991421566,
+      "avg_hold_days": 4.206896551724138,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-11",
+      "basket_return": 0.026950350362195362,
+      "basket_alpha": 0.010512950601504135,
+      "avg_hold_days": 5.4,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2024-12",
+      "basket_return": 0.01340088040172871,
+      "basket_alpha": 0.004584473319746127,
+      "avg_hold_days": 4.724137931034483,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-01",
+      "basket_return": 0.06063841548273048,
+      "basket_alpha": 0.04599766904248803,
+      "avg_hold_days": 5.25,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-02",
+      "basket_return": -0.007160410313857212,
+      "basket_alpha": 0.0017080232257904488,
+      "avg_hold_days": 3.25,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-03",
+      "basket_return": -0.027006103535180705,
+      "basket_alpha": 0.006604888354386015,
+      "avg_hold_days": 2.3666666666666667,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-04",
+      "basket_return": -0.02074276352215472,
+      "basket_alpha": -0.012579265179414512,
+      "avg_hold_days": 4.033333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-05",
+      "basket_return": 0.020683307875004706,
+      "basket_alpha": 0.0008943112703355912,
+      "avg_hold_days": 4.586206896551724,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-06",
+      "basket_return": 0.017494027644648275,
+      "basket_alpha": 0.013977988226728976,
+      "avg_hold_days": 4.9655172413793105,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-07",
+      "basket_return": 0.08147123276393622,
+      "basket_alpha": 0.061883196713706616,
+      "avg_hold_days": 6.518518518518518,
+      "trades": 27
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-08",
+      "basket_return": 0.0032143911981054726,
+      "basket_alpha": -0.010263596061002756,
+      "avg_hold_days": 5.038461538461538,
+      "trades": 26
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-09",
+      "basket_return": 0.06445173526802685,
+      "basket_alpha": 0.0314068622560522,
+      "avg_hold_days": 5.689655172413793,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-10",
+      "basket_return": -0.01678578722815235,
+      "basket_alpha": -0.0015636497907730918,
+      "avg_hold_days": 3.933333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-11",
+      "basket_return": 0.04147860074262775,
+      "basket_alpha": 0.021400863938901372,
+      "avg_hold_days": 6.1,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2025-12",
+      "basket_return": 0.043382659901902994,
+      "basket_alpha": -0.0004419193710724634,
+      "avg_hold_days": 6.3,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2026-01",
+      "basket_return": 0.03963961020257159,
+      "basket_alpha": 0.016979210279640732,
+      "avg_hold_days": 3.6333333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2026-02",
+      "basket_return": 0.0021596139444226004,
+      "basket_alpha": 0.050022822101843396,
+      "avg_hold_days": 3.5833333333333335,
+      "trades": 24
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2026-03",
+      "basket_return": 0.11325179923447663,
+      "basket_alpha": 0.0816793571265898,
+      "avg_hold_days": 5.366666666666666,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "month": "2026-04",
+      "basket_return": 0.028501013668086234,
+      "basket_alpha": -0.01599130644721417,
+      "avg_hold_days": 5.904761904761905,
+      "trades": 21
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-01",
+      "basket_return": 0.016245693369527785,
+      "basket_alpha": -0.00624731870017794,
+      "avg_hold_days": 4.6,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-02",
+      "basket_return": 0.011490266982995746,
+      "basket_alpha": -0.022085536951241345,
+      "avg_hold_days": 5.7272727272727275,
+      "trades": 22
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-03",
+      "basket_return": 0.014827209588122735,
+      "basket_alpha": 0.006288420881457355,
+      "avg_hold_days": 5.222222222222222,
+      "trades": 27
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-04",
+      "basket_return": 0.03565736652886375,
+      "basket_alpha": 0.013565730736014667,
+      "avg_hold_days": 5.724137931034483,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-05",
+      "basket_return": 0.07035390694859525,
+      "basket_alpha": 0.052256634433208965,
+      "avg_hold_days": 6.538461538461538,
+      "trades": 26
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-06",
+      "basket_return": 0.002132206749801815,
+      "basket_alpha": -0.007205018767773923,
+      "avg_hold_days": 4.551724137931035,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-07",
+      "basket_return": -0.06507892211620714,
+      "basket_alpha": 0.029603955249871947,
+      "avg_hold_days": 3.1333333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-08",
+      "basket_return": -0.012691636666675447,
+      "basket_alpha": 0.007609312180944946,
+      "avg_hold_days": 3.7,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-09",
+      "basket_return": 0.0196220472823068,
+      "basket_alpha": 0.0057416245981893954,
+      "avg_hold_days": 6.733333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-10",
+      "basket_return": 0.03471925026345496,
+      "basket_alpha": 0.02588500940048224,
+      "avg_hold_days": 4.148148148148148,
+      "trades": 27
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-11",
+      "basket_return": 0.025836710009835527,
+      "basket_alpha": 0.009645885120540921,
+      "avg_hold_days": 5.379310344827586,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2024-12",
+      "basket_return": 0.003890792576408072,
+      "basket_alpha": -0.005300082224498011,
+      "avg_hold_days": 4.285714285714286,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-01",
+      "basket_return": 0.06063841548273048,
+      "basket_alpha": 0.04599766904248803,
+      "avg_hold_days": 5.25,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-02",
+      "basket_return": -0.009275164191606589,
+      "basket_alpha": 0.0003695791252477515,
+      "avg_hold_days": 3.2916666666666665,
+      "trades": 24
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-03",
+      "basket_return": -0.024333900208807626,
+      "basket_alpha": 0.006604888354386015,
+      "avg_hold_days": 2.413793103448276,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-04",
+      "basket_return": -0.02074276352215472,
+      "basket_alpha": -0.012579265179414512,
+      "avg_hold_days": 4.033333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-05",
+      "basket_return": 0.020674367881904937,
+      "basket_alpha": 0.00042325074561264217,
+      "avg_hold_days": 4.64,
+      "trades": 25
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-06",
+      "basket_return": 0.02185095720338571,
+      "basket_alpha": 0.018011404849868694,
+      "avg_hold_days": 4.964285714285714,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-07",
+      "basket_return": 0.08147123276393622,
+      "basket_alpha": 0.061883196713706616,
+      "avg_hold_days": 6.518518518518518,
+      "trades": 27
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-08",
+      "basket_return": 0.0032143911981054726,
+      "basket_alpha": -0.010263596061002756,
+      "avg_hold_days": 5.038461538461538,
+      "trades": 26
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-09",
+      "basket_return": 0.06837027901731117,
+      "basket_alpha": 0.035630781955637195,
+      "avg_hold_days": 5.714285714285714,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-10",
+      "basket_return": -0.014702267687532454,
+      "basket_alpha": 0.00046572539855846315,
+      "avg_hold_days": 3.8518518518518516,
+      "trades": 27
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-11",
+      "basket_return": 0.04147860074262775,
+      "basket_alpha": 0.021400863938901372,
+      "avg_hold_days": 6.1,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2025-12",
+      "basket_return": 0.047758053232944235,
+      "basket_alpha": 0.002641144899286772,
+      "avg_hold_days": 6.607142857142857,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2026-01",
+      "basket_return": 0.03977089191928674,
+      "basket_alpha": 0.01678234398416643,
+      "avg_hold_days": 3.75,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2026-02",
+      "basket_return": 0.0021596139444226004,
+      "basket_alpha": 0.050022822101843396,
+      "avg_hold_days": 3.5833333333333335,
+      "trades": 24
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2026-03",
+      "basket_return": 0.11325179923447663,
+      "basket_alpha": 0.0816793571265898,
+      "avg_hold_days": 5.366666666666666,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "month": "2026-04",
+      "basket_return": 0.028501013668086234,
+      "basket_alpha": -0.01599130644721417,
+      "avg_hold_days": 5.904761904761905,
+      "trades": 21
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-01",
+      "basket_return": 0.016245693369527785,
+      "basket_alpha": -0.00624731870017794,
+      "avg_hold_days": 4.6,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-02",
+      "basket_return": 0.011645414549960754,
+      "basket_alpha": -0.02222524469199781,
+      "avg_hold_days": 5.84,
+      "trades": 25
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-03",
+      "basket_return": 0.031901004956838466,
+      "basket_alpha": 0.023556289980452998,
+      "avg_hold_days": 5.4,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-04",
+      "basket_return": 0.03565736652886375,
+      "basket_alpha": 0.013565730736014667,
+      "avg_hold_days": 5.724137931034483,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-05",
+      "basket_return": 0.06875400606206268,
+      "basket_alpha": 0.05069769221233749,
+      "avg_hold_days": 6.444444444444445,
+      "trades": 27
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-06",
+      "basket_return": 0.003635396847209867,
+      "basket_alpha": -0.006061284192953805,
+      "avg_hold_days": 4.533333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-07",
+      "basket_return": -0.06507892211620714,
+      "basket_alpha": 0.029603955249871947,
+      "avg_hold_days": 3.1333333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-08",
+      "basket_return": -0.012691636666675447,
+      "basket_alpha": 0.007609312180944946,
+      "avg_hold_days": 3.7,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-09",
+      "basket_return": 0.0196220472823068,
+      "basket_alpha": 0.0057416245981893954,
+      "avg_hold_days": 6.733333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-10",
+      "basket_return": 0.04093438926864322,
+      "basket_alpha": 0.031240506637971687,
+      "avg_hold_days": 4.25,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-11",
+      "basket_return": 0.025836710009835527,
+      "basket_alpha": 0.009645885120540921,
+      "avg_hold_days": 5.379310344827586,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2024-12",
+      "basket_return": 0.003890792576408072,
+      "basket_alpha": -0.005300082224498011,
+      "avg_hold_days": 4.285714285714286,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-01",
+      "basket_return": 0.06063841548273048,
+      "basket_alpha": 0.04599766904248803,
+      "avg_hold_days": 5.25,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-02",
+      "basket_return": -0.008334190240972969,
+      "basket_alpha": 0.0010509311135592585,
+      "avg_hold_days": 3.259259259259259,
+      "trades": 27
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-03",
+      "basket_return": -0.027006103535180705,
+      "basket_alpha": 0.006604888354386015,
+      "avg_hold_days": 2.3666666666666667,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-04",
+      "basket_return": -0.02074276352215472,
+      "basket_alpha": -0.012579265179414512,
+      "avg_hold_days": 4.033333333333333,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-05",
+      "basket_return": 0.019013813803871182,
+      "basket_alpha": -0.0006858917143410162,
+      "avg_hold_days": 4.538461538461538,
+      "trades": 26
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-06",
+      "basket_return": 0.02185095720338571,
+      "basket_alpha": 0.018011404849868694,
+      "avg_hold_days": 4.964285714285714,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-07",
+      "basket_return": 0.07314359383949394,
+      "basket_alpha": 0.05286331162878577,
+      "avg_hold_days": 6.517241379310345,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-08",
+      "basket_return": 0.0037491706745409786,
+      "basket_alpha": -0.00939027819781992,
+      "avg_hold_days": 4.964285714285714,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-09",
+      "basket_return": 0.07098388180034874,
+      "basket_alpha": 0.03765761527356665,
+      "avg_hold_days": 5.827586206896552,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-10",
+      "basket_return": -0.01480247897576261,
+      "basket_alpha": 0.0006529442132789984,
+      "avg_hold_days": 3.923076923076923,
+      "trades": 26
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-11",
+      "basket_return": 0.04147860074262775,
+      "basket_alpha": 0.021400863938901372,
+      "avg_hold_days": 6.1,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2025-12",
+      "basket_return": 0.04547186488707098,
+      "basket_alpha": 0.001023402619283522,
+      "avg_hold_days": 6.448275862068965,
+      "trades": 29
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2026-01",
+      "basket_return": 0.03977089191928674,
+      "basket_alpha": 0.01678234398416643,
+      "avg_hold_days": 3.75,
+      "trades": 28
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2026-02",
+      "basket_return": -0.002757688487750438,
+      "basket_alpha": 0.04577392923877668,
+      "avg_hold_days": 3.56,
+      "trades": 25
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2026-03",
+      "basket_return": 0.11325179923447663,
+      "basket_alpha": 0.0816793571265898,
+      "avg_hold_days": 5.366666666666666,
+      "trades": 30
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "month": "2026-04",
+      "basket_return": 0.03629903108959193,
+      "basket_alpha": -0.01023996169497332,
+      "avg_hold_days": 6.043478260869565,
+      "trades": 23
+    }
+  ],
+  "cl3": {
+    "Cooldown_10TD_AllExits": {
+      "alpha_delta": -0.0004772066829792556,
+      "mdd_delta": -1.1102230246251565e-16,
+      "sharpe_regression": 0.0,
+      "calmar_regression": 0.03440795957227452,
+      "checks": {
+        "alpha_sacrifice_lte_0.5pp": {
+          "pass": true,
+          "value": -0.0004772066829792556,
+          "threshold": -0.005
+        },
+        "mdd_not_worse": {
+          "pass": true,
+          "value": -1.1102230246251565e-16,
+          "threshold": -0.001
+        },
+        "sharpe_regression_lte_5pct": {
+          "pass": true,
+          "value": 0.0,
+          "threshold": 0.05
+        },
+        "calmar_regression_lte_5pct": {
+          "pass": true,
+          "value": 0.03440795957227452,
+          "threshold": 0.05
+        }
+      },
+      "overall_pass": true
+    },
+    "Cooldown_15TD_AllExits": {
+      "alpha_delta": -0.0009741714235166048,
+      "mdd_delta": 0.0,
+      "sharpe_regression": 0.019036381552649476,
+      "calmar_regression": 0.04480248153541448,
+      "checks": {
+        "alpha_sacrifice_lte_0.5pp": {
+          "pass": true,
+          "value": -0.0009741714235166048,
+          "threshold": -0.005
+        },
+        "mdd_not_worse": {
+          "pass": true,
+          "value": 0.0,
+          "threshold": -0.001
+        },
+        "sharpe_regression_lte_5pct": {
+          "pass": true,
+          "value": 0.019036381552649476,
+          "threshold": 0.05
+        },
+        "calmar_regression_lte_5pct": {
+          "pass": true,
+          "value": 0.04480248153541448,
+          "threshold": 0.05
+        }
+      },
+      "overall_pass": true
+    },
+    "Cooldown_15TD_MA5Only": {
+      "alpha_delta": -0.000417283745012393,
+      "mdd_delta": 0.0,
+      "sharpe_regression": 0.0,
+      "calmar_regression": 0.01815116004619832,
+      "checks": {
+        "alpha_sacrifice_lte_0.5pp": {
+          "pass": true,
+          "value": -0.000417283745012393,
+          "threshold": -0.005
+        },
+        "mdd_not_worse": {
+          "pass": true,
+          "value": 0.0,
+          "threshold": -0.001
+        },
+        "sharpe_regression_lte_5pct": {
+          "pass": true,
+          "value": 0.0,
+          "threshold": 0.05
+        },
+        "calmar_regression_lte_5pct": {
+          "pass": true,
+          "value": 0.01815116004619832,
+          "threshold": 0.05
+        }
+      },
+      "overall_pass": true
+    }
+  },
+  "blocked_summary": [
+    {
+      "variant": "Cooldown_10TD_AllExits",
+      "blocked_n": 38,
+      "forward_5d": 0.023365981605293754,
+      "forward_10d": 0.0538890561007594,
+      "forward_20d": 0.10234513961462163,
+      "positive_20d": 0.631578947368421
+    },
+    {
+      "variant": "Cooldown_15TD_AllExits",
+      "blocked_n": 70,
+      "forward_5d": 0.018593859802923534,
+      "forward_10d": 0.04467836351671621,
+      "forward_20d": 0.08152481698671471,
+      "positive_20d": 0.6
+    },
+    {
+      "variant": "Cooldown_15TD_MA5Only",
+      "blocked_n": 48,
+      "forward_5d": 0.0033692030113940236,
+      "forward_10d": 0.03641999198832598,
+      "forward_20d": 0.06675539692694377,
+      "positive_20d": 0.5416666666666666
+    }
+  ],
+  "case_replay": [
+    {
+      "ticker": "3491",
+      "variant": "Control",
+      "trades": 1,
+      "compound_return": 0.008183306055646433,
+      "avg_return": 0.008183306055646433,
+      "ma5_exits": 1
+    },
+    {
+      "ticker": "3491",
+      "variant": "Cooldown_10TD_AllExits",
+      "trades": 1,
+      "compound_return": 0.008183306055646433,
+      "avg_return": 0.008183306055646433,
+      "ma5_exits": 1
+    },
+    {
+      "ticker": "3491",
+      "variant": "Cooldown_15TD_AllExits",
+      "trades": 1,
+      "compound_return": 0.008183306055646433,
+      "avg_return": 0.008183306055646433,
+      "ma5_exits": 1
+    },
+    {
+      "ticker": "3491",
+      "variant": "Cooldown_15TD_MA5Only",
+      "trades": 1,
+      "compound_return": 0.008183306055646433,
+      "avg_return": 0.008183306055646433,
+      "ma5_exits": 1
+    },
+    {
+      "ticker": "3131",
+      "variant": "Control",
+      "trades": 3,
+      "compound_return": 0.1989535205896391,
+      "avg_return": 0.0654562424026146,
+      "ma5_exits": 3
+    },
+    {
+      "ticker": "3131",
+      "variant": "Cooldown_10TD_AllExits",
+      "trades": 3,
+      "compound_return": 0.1989535205896391,
+      "avg_return": 0.0654562424026146,
+      "ma5_exits": 3
+    },
+    {
+      "ticker": "3131",
+      "variant": "Cooldown_15TD_AllExits",
+      "trades": 3,
+      "compound_return": 0.1989535205896391,
+      "avg_return": 0.0654562424026146,
+      "ma5_exits": 3
+    },
+    {
+      "ticker": "3131",
+      "variant": "Cooldown_15TD_MA5Only",
+      "trades": 3,
+      "compound_return": 0.1989535205896391,
+      "avg_return": 0.0654562424026146,
+      "ma5_exits": 3
+    },
+    {
+      "ticker": "6568",
+      "variant": "Control",
+      "trades": 1,
+      "compound_return": 0.051948051948051965,
+      "avg_return": 0.051948051948051965,
+      "ma5_exits": 0
+    },
+    {
+      "ticker": "6568",
+      "variant": "Cooldown_10TD_AllExits",
+      "trades": 1,
+      "compound_return": 0.051948051948051965,
+      "avg_return": 0.051948051948051965,
+      "ma5_exits": 0
+    },
+    {
+      "ticker": "6568",
+      "variant": "Cooldown_15TD_AllExits",
+      "trades": 1,
+      "compound_return": 0.051948051948051965,
+      "avg_return": 0.051948051948051965,
+      "ma5_exits": 0
+    },
+    {
+      "ticker": "6568",
+      "variant": "Cooldown_15TD_MA5Only",
+      "trades": 1,
+      "compound_return": 0.051948051948051965,
+      "avg_return": 0.051948051948051965,
+      "ma5_exits": 0
+    },
+    {
+      "ticker": "6588",
+      "variant": "Control",
+      "trades": 1,
+      "compound_return": 0.1583011583011582,
+      "avg_return": 0.1583011583011582,
+      "ma5_exits": 1
+    },
+    {
+      "ticker": "6588",
+      "variant": "Cooldown_10TD_AllExits",
+      "trades": 1,
+      "compound_return": 0.1583011583011582,
+      "avg_return": 0.1583011583011582,
+      "ma5_exits": 1
+    },
+    {
+      "ticker": "6588",
+      "variant": "Cooldown_15TD_AllExits",
+      "trades": 1,
+      "compound_return": 0.1583011583011582,
+      "avg_return": 0.1583011583011582,
+      "ma5_exits": 1
+    },
+    {
+      "ticker": "6588",
+      "variant": "Cooldown_15TD_MA5Only",
+      "trades": 1,
+      "compound_return": 0.1583011583011582,
+      "avg_return": 0.1583011583011582,
+      "ma5_exits": 1
+    }
+  ],
+  "trades": 3204,
+  "blocked": 156
+}

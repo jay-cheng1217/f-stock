@@ -1,0 +1,2498 @@
+{
+  "status": "PASS_REAL_SOURCE_EXACT_AND_FIXTURES",
+  "samples": 414,
+  "timing_seconds": {
+    "legacy_double_html_parser": 17.16034599969862,
+    "single_lxml": 7.624520800047321
+  },
+  "collector_sha256": "3babb904052aef51c539d324bb410c922b182c0585e195e5361ee2393052233e",
+  "normalizer_sha256": "24d63db0ee0a054c5b64fcd6ea9c533e91c8892f7e0a1a2969b98a08adb55038",
+  "fixture_sha256": "f3be16d21eca1b101234ed114f5f92fe3ef53b94ed137d9d69287e35ed887ed0",
+  "sources": [
+    {
+      "date": "20251009",
+      "ticker": "000218",
+      "raw_sha256": "08f34265f493f7c9fda50bab3d711bcfa041301f291dd6ae42d53a53d5cf30bd",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "0050",
+      "raw_sha256": "4c025679a0f847fcf7e897d9d3bc012ce40ee5411bb18ae4f9f387d5183ba7e9",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "0056",
+      "raw_sha256": "11aa66baebb629bbf14f8bdc42750e663c5c93dc54eafa6ef17d3f8e2a5dde05",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00646",
+      "raw_sha256": "b734d0c6990da2ec63d3aab774b59e9918dcbac7ed91395c352960c4dacbb3c0",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00663L",
+      "raw_sha256": "0bd0af1e14fd1de76872d3a1d1dd67619102ab76347a96a39d97e22babd0142c",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00675L",
+      "raw_sha256": "63e544f0e93ae3685ec8ae69fc07a849aa4ff591b283056c8a3b5227c45a9a70",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00687B",
+      "raw_sha256": "c172fdd0ea1775880f8c0a9399c8f9414cb0a61d66fefd92cf55191d64adcd31",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00711B",
+      "raw_sha256": "f08feaacfed4f617ba932cbbeb5dc9d46d82623d5a7fbd220c343601f2ac1d7d",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00712",
+      "raw_sha256": "4bd7d951ef2eeafb3f681a2e887b9ca96e41483af97dc1d9dd96d61529a13514",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00713",
+      "raw_sha256": "b6cafb713809dfb315a64257d94099a13e152d6f83fcecbf59c9ad475ee923ac",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00714",
+      "raw_sha256": "e8a8f6758d4208b5df63ebe0de93ade631b22c362a1f7d0f578efaf427e54641",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "00751B",
+      "raw_sha256": "94334796a4fafb64fdc11e80fd8791ad0995e16b91e5b4819f4078838dfd4d06",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00795B",
+      "raw_sha256": "a784e7ce87c495c69d8f37b2c174029c3f981b4a0528c77a168b2d8f1ce871e3",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00884B",
+      "raw_sha256": "18910664648f5fc6dbb7b3ef4a2627a86df8974f8805fdb8817929aeba85271d",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "00902",
+      "raw_sha256": "2b66a78b73d149a252e42a1fa7835c4ba1754b1cadd48c4cc9ce32b2a8958794",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00904",
+      "raw_sha256": "45a4c64df1cef04f15a605cce1c08022b6021e8aa77b0fb309bf00df7bbea070",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00915",
+      "raw_sha256": "13a02bbb4d5c8a23817439933f7d8b4743cfa51484c63c9227d0204d37069ecc",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00919",
+      "raw_sha256": "7fb82e5b0ad8f3e06c18d4be4066e7bdb64c4fbd13e04ecc9f88b114cd3b2524",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00927",
+      "raw_sha256": "caf4e9246941a13e32c35049a7af4126697e3f71f6553d7012dab692828da2a4",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00929",
+      "raw_sha256": "5b53288ee61df8ea38911dd6f00b62c4ec8d210b41c68fd183b4be599d064d52",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00937B",
+      "raw_sha256": "461ba8e1d78d35b421f98db49d4a28762ac91681c88b62aa472a258bd967da76",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00947",
+      "raw_sha256": "de482c32facc0eeca6085472a2195c5140c9e0a2f213522d93f3181b5cebb096",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00950B",
+      "raw_sha256": "c59b043dc74365931acb2a69785a2fccfbf4867bf4fc56e6f90b267510491228",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00966B",
+      "raw_sha256": "02b7ad51cab3f101a4e2bcd862980d703e481e84ee17fa2882bd10b118ab76c0",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "00980T",
+      "raw_sha256": "83b2e8cd9e42226aa013c7cb28bb0a53dfe07fad7f05398cab8517c067476b27",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "00984A",
+      "raw_sha256": "2b3dccbab25ab3bd36de5fa97e9daa0bde05a6f71e002b472966774d26766c84",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "1303",
+      "raw_sha256": "1945fffeb018600dae75b9eaedf086489d19cbc546ad2b74a436d97d2ae96f83",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "1340",
+      "raw_sha256": "5482e51b723d6b3693d5122417f6270b00f22faef9b5a8adc6b076fc4ac7caa3",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "1504",
+      "raw_sha256": "a6546fce056fbc54f3afabaeac994cf29acb370fa6e62b8f5213e2e1a1c986a9",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "1536",
+      "raw_sha256": "5ae769d0e6aa58549255395c7f6c77abe9fd18b097d2cc2f0931801cafae487f",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "1557",
+      "raw_sha256": "33cd9ea324691d08b30f7429f882a6971d7dffd05509d90e4e0904452f4d3b4b",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "1603",
+      "raw_sha256": "44580da6aa215c3c88c4dfec60fd1d13ed9b77e47d76db660599b4be7cea2347",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "1605",
+      "raw_sha256": "1c445f24a0467b044609d5438b32a827faea4158c4ae5f7f069a3b324ddf4052",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "1799",
+      "raw_sha256": "facaa03942ab0f28485ae76e5ded379b1386b858419b745b0975ee1a6619e1f5",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "1802",
+      "raw_sha256": "3404deb03872652e52da57b038d3c215f6684c3275030a4d9ffa33f2c4058832",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "1815",
+      "raw_sha256": "d2a6b11d186a05cb923e8c643eb8ad87851d16e9be7391b6535eac0999098922",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2070",
+      "raw_sha256": "6da4af460154281ea9bd993fea20f7d8cb2de684dbef7dda430497aec7e0c087",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2243",
+      "raw_sha256": "6e0ec3709efd86131de791b95a56b421874c4ad6a51dc7fe7a67e781895eb7d6",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "2303",
+      "raw_sha256": "a076e8ac80005fc31e2d7f26325ca116767629eea98029cf1b282c586837fa36",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2308",
+      "raw_sha256": "848e169c3914690da20e02df35cd088b90a93f9ae47256e7ee08221aa47b5edb",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2317",
+      "raw_sha256": "a89e83287c99979e04764428cca6cde370aa16b6c1cdae614328f7b57971e9c0",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2344",
+      "raw_sha256": "8a73b6adaf175c986d3ac75a9f75cf3b8d6cc5666a2e07ba2a92e6981e2aa7eb",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2345",
+      "raw_sha256": "a7f01ede7153e38642f854d4d65a3e2ecd6511e9b02629abfeffd7340bee742f",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2356",
+      "raw_sha256": "69de1921c12fa4df86d3222c0310ac73fbd022bae78ccc432037a7cc4d3ccfef",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2365",
+      "raw_sha256": "d4f0e44bb21c9235409c7c65bf9df14fb351cfc41d7f26184f92acd25b9cfa03",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2409",
+      "raw_sha256": "d2f71d809917633e49b25d1bcb1fb2ab354212b687dc14e572db7ceb1a67f6ae",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2412",
+      "raw_sha256": "b841316896a43ac203b35d8672fc76ac33cbf6a9f80c7471da2e2848b3ddd6f1",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "2439",
+      "raw_sha256": "2bbce1edc352d84dee95db5dee7209b642b61bab96dd34b593e7cb910ebeedda",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2538",
+      "raw_sha256": "bea010f49ee1cb0b98e647ece76bdc6e204beb6e19d9ae84014a5d20d0a3ad7d",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "2609",
+      "raw_sha256": "15ccdc11c177106ee01e7e7b7b6d4f315da7fb97ce1a274e70ad74cb3fa324a9",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2820",
+      "raw_sha256": "342437c8328457a76f8eebd5370e7b81506d465c9bd596763269c1343c9e89aa",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "2834",
+      "raw_sha256": "f2c6514f36e19b0ca0c6713c1be8e984c6f42a4a3944cb3a2f2126d3704696ec",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2836",
+      "raw_sha256": "8f7a7001404827abc8380aad4a59d2b07f9bdc1ff672ba8db1a3debcb63b3533",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "2883B",
+      "raw_sha256": "f0d27baf7b09fdacf29a347a4c0c547aea49a3a96df13c93825ee7d3d3f40253",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3017",
+      "raw_sha256": "4eae2bd3ae8a77d63619e29b86e0b276f7b2a2463593d83aace0a548f101f6e3",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3026",
+      "raw_sha256": "1aaf6fe0e5d515ce8c43263f99fe64778a02681f779b71f67aaac299850a6634",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3027",
+      "raw_sha256": "cbf5d07b1b9d7ff2a4cdb73c7cb90f315f74f6861af3d80a39098d57ce7e4e2c",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "3056",
+      "raw_sha256": "4f94e6e32a9f47c5d0a5e090760045d6e5b367bc027cbc790861f51525d8118f",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3149",
+      "raw_sha256": "e7fb0b0ff579731e7d88afe667c3f1c9823bf21738ade4afcdcffbf60f7b9efe",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3166",
+      "raw_sha256": "e9f4589afeeedf0649fa0f447a0d1e508ce0454c74c9e1a5dd9d661f00676407",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "3189",
+      "raw_sha256": "6547cbf1749840dfefca22e0e9fc464cfa62f26aea73449a697faa9269bc3504",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3227",
+      "raw_sha256": "1dac5b10650a949e7ebe973c6d0e46e9465d643f5349cfe42e2465ea71276e70",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3330",
+      "raw_sha256": "fbf344ffc722887db6ca723b444221a76e82ee5605581741e682a46cc7da4959",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "3508",
+      "raw_sha256": "132f654d7e5866a45f1a5238fe3f50416dca9e18d4eab8a665e763b7813bd48c",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "3515",
+      "raw_sha256": "605d1db80fb1785cfd81d9a2cf1be8710c39c1353e5a648ef743b7be9f6cde34",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3637",
+      "raw_sha256": "b79aaaf870049c2a4c02882dffcc582e0e6c4687684b4756e00fc9b3f26b79a9",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "3706",
+      "raw_sha256": "b8bf96d1166172004eed35a299938575d554e7e68b9022b15d3a3ea8af2dd36a",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "3715",
+      "raw_sha256": "6e3be0b3e87cd301890e18ea137282d0999233ae3a32651e52a3ab448de8bf9e",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "4128",
+      "raw_sha256": "51382a372f2d85ca75251d017c6d78d1e3f07bc832cbbbd7604fc6b3512f9f37",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "4155",
+      "raw_sha256": "9407ca7fa26759c4a463d53ef11286814abd748e7d533f5136cd161190b9516f",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "4303",
+      "raw_sha256": "610ae05da7f6f73f35ff4ea1a9327b8de82f7d5ec7327a69a9041557d5b9ff86",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "4523",
+      "raw_sha256": "92d8eb27ae00b12fe34be6038b8a4b952b0e45b758ac3c64c00105a173e071a1",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "4557",
+      "raw_sha256": "5757825fa7759b7747af1971c439d2954b2b93d376b65162f03f1a4b79567d41",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "4807",
+      "raw_sha256": "5f8202b7307937b69dd2be33adbd8654e66ac310c6e3eb444b2a2b2d8bcf3f7a",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "4904",
+      "raw_sha256": "9af8e93e8828026695d524872584712d287aa22c115a4a34c840bbd5858519cd",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "4915",
+      "raw_sha256": "0e7614f7efa6092db3dd4468b008ef872d7f436107a4d049955a970ac2d621ad",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "4977",
+      "raw_sha256": "4ae1983ac101f8bfbc43dcf948bb8e2f673823de65df29eeb3d403058c586dd8",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "5240",
+      "raw_sha256": "ae32f36a1f86e094ea632d52154b6534aae04a06fa58f98e7ddff85b6e021ca3",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "5289",
+      "raw_sha256": "47d0851d7f1b8d4e517243956ebd2c7cadd0631cc07b1b54a8e7aa0e00216f97",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "5467",
+      "raw_sha256": "b6e89ff2cd581f40634bbfc026affab66705257396f330a4b1788f5e45d9c5c3",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "5880",
+      "raw_sha256": "d91499e57a1dfc1720776d6aa6b7e6c02ef38a2271156b33a107f3c6e32f47d3",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "6109",
+      "raw_sha256": "2fb21a1f016c018bb90a8750765f777096e2a0d0182c5f568909d6e9566807cb",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "6121",
+      "raw_sha256": "d4f86560b13d5d769572fd185179326dc5bf3a89538620bc3153951608122306",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "6214",
+      "raw_sha256": "1b2c5cb8bf0914793075d7cf6c663922ebe0ef526d176018977c2c7734a8ba81",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "6217",
+      "raw_sha256": "d3c9470c0b362609be6874e70d4268cd09de68d3a946afceaf4bf16bf326f0e4",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "6432",
+      "raw_sha256": "13f3d2af8fabbd516732230ae686edafc5caf34e32a0c3d610de005936cb2a99",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "6531",
+      "raw_sha256": "ccf4bc96b5c04b332d8c175db959d733a40021a8b7c70c308dbd888334fc05e9",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "6564",
+      "raw_sha256": "6b665143fadcb0d63d4c94744796a2a1d9f2574e40915ae59d37d8224aea3f93",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "6643",
+      "raw_sha256": "22bd6d1de616aa92dbe63e995663c6617c96a017c004f6fec21cb81a42325e1b",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "6674",
+      "raw_sha256": "566c8aa402c57105ac72c35860b9e404e1e40802961484601e0973accd29f48e",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "6770",
+      "raw_sha256": "cf4025bd767ebcca22e46b1ccccfb6e70a437c03619544ecd5fbd6501541d035",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "6794",
+      "raw_sha256": "3a671cdaa41b510e07ec0f498096c1af7241e589822e0274932a99039d5b6795",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "6805",
+      "raw_sha256": "b5c166aa4139825c5f87b92856cdd47b91327462bd42394402ac6695c9b52ee0",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "6911",
+      "raw_sha256": "f5ec6bcdf17fe4f4434c6119d246dea6f22676c9688c2481aafef0673d41dc62",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "6944",
+      "raw_sha256": "669bc57f26fc453ae3a0d97b96f00519c6fb12c680214dd80b7cd3644a140884",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "7584",
+      "raw_sha256": "f6b12dfbf7ba6f5d6eec4d4f79a9c3c6cb3ebfae191dd88330c2355ccbb847b0",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "7750",
+      "raw_sha256": "78f61533db5ee4b2a196896c12b9e14e3c36c113117349c6be0b56ccba0c3306",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "7806",
+      "raw_sha256": "cfc219c4a8aa7c40c960f633043ebb76a389fd343d501c066d2f105f58cd8b00",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "8046",
+      "raw_sha256": "42c803e429c54e42e9f7578d6b9eb8d72343bbd71ab3a4dbdd5c65fe189cee30",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "8057",
+      "raw_sha256": "b2e09f1b12684bb0df03823a31b33da2389becec7b349c17a0f1e6dd2ca38d0b",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "8070",
+      "raw_sha256": "0089d6d5464d70a5e49d2b92289edab25b42f1d162d3555544d2a2bbc41dfcde",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "8110",
+      "raw_sha256": "42d1805be2f922a06f2a2f8cc403763950c4a8e9872c4235949dda4b17d260c4",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "8271",
+      "raw_sha256": "7c32570ed41629333152b82f38063c97eb7f5729f5aa3c00130278fe1d9371a5",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "8287",
+      "raw_sha256": "af64597f75442168f92261ebd72f19f4053e0bb84217beea0a6488db4e40d1bf",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "8299",
+      "raw_sha256": "98e1014b2e5506ab66211013488f4b253f8f596db8dc5ee07c36d5b07c050a71",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "8358",
+      "raw_sha256": "e9a567aa38c7bf56956ad35fa4f44cd80890b4093513fda462805093a8abcc33",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "8908",
+      "raw_sha256": "6a2ae73abd7a81986e952033b1f339e11a5cb744c527e978893dc8c7376227dd",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "9105",
+      "raw_sha256": "67aba0149b44a640fc6a27c9d2f9afafa0f6aad5421963926b267cb64dca5cfb",
+      "rows": 17
+    },
+    {
+      "date": "20251009",
+      "ticker": "Y5810A",
+      "raw_sha256": "da2f5f3508b09535547bfaf4d3418aaf33817c316d3915faed9f753f4001532d",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "YGH3",
+      "raw_sha256": "9d1e199b91c5128ec0c518820fbf841be428b3983190e0d760ee668fbf32690c",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "YHQ9",
+      "raw_sha256": "46bfa1086aeba3d7379e0658991259b1f7a4856207f7692e6a5999c2ac7c56b6",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "YJN5",
+      "raw_sha256": "5cd125655f487a232c8c0b98b281438d876a9b0c7ee8052c3d1b9fab54ce33bd",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "YKK1",
+      "raw_sha256": "d285222430af76c50270b029d684ea01df508df7cf8017df6dfaacb4164d25e4",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLD9",
+      "raw_sha256": "5617669390053667137c7cd64caefd0d71a3b005b1f87c3744a7132dac12e8d4",
+      "rows": 16
+    },
+    {
+      "date": "20251009",
+      "ticker": "YY0080",
+      "raw_sha256": "c049908b69bfcaa3c0b45ccb6f53a2632b35268e37b8ea1a5e3ad37d6d327205",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "000218",
+      "raw_sha256": "78d2240029ba9ab2b9d3c6ea32944bfb344d69e04d7200036a3231d3918c0beb",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "0050",
+      "raw_sha256": "b9c5ec705f3d9b9e8ca0b2eb36e6797f1b7b2b00932c185758b8580f01c2a283",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "0056",
+      "raw_sha256": "93e000102c91016b30d77d0806ab2b6447ff2b053b0e249e60474b6ee10267f3",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00670L",
+      "raw_sha256": "ffc6f9301dbbca3550172be5b8bb99f39eea5b26b319aafb8d7522094e9dac07",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00679B",
+      "raw_sha256": "f03394ccb96caee914f5fd445b354936c989d98256086c305c6aa30a1f5961b5",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00708L",
+      "raw_sha256": "58f12f0d7d19c96796a22d294e90dc992f7fa26fbca2a0b0c87c458df1ff0510",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00713",
+      "raw_sha256": "c3195ca4fdeed11c277b765d023c216919b090504b3f42c5a0e02fee0d4b648e",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00714",
+      "raw_sha256": "9d5df9a27ebfbf6d600c3a0760aa61e95e25dbea4aa6676a5b6d9be51e7737ad",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "00757",
+      "raw_sha256": "9ba33e8ba3d4a1ae4ddd215f94ceb80bc7391493004bd7a98c5e2d4871fc3643",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00852L",
+      "raw_sha256": "d3e89b605ad6c0708e42a23bc032b91814e4235c679b5f2549a7510a82a20daf",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00878",
+      "raw_sha256": "5160c45615bca03a514402c907ec040f3bf34dab8882b561f00d83b1706d4cc3",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00885",
+      "raw_sha256": "8bf67927a0d13c5a8e1ccbd4159b10019ab0cf5437fa25b880b533d452bb3c12",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "00888",
+      "raw_sha256": "37f46744327da8ff7394c7e83434c8f02d60f6907f4bb75bba60352598709f33",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00904",
+      "raw_sha256": "d6c68e81afe60ed18917b23942a24df9c570de5ba4dacb8cb8371d76f4e880e2",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00909",
+      "raw_sha256": "7a527694510955cbf79652c5622c0772b232cf7562ae32e40f7295e6cb7c1da1",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00942B",
+      "raw_sha256": "732333962b5b4680a13324ee16079a137369ce8e612b2fbf8f6ccb887285b68e",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "00948B",
+      "raw_sha256": "c4eff78eb20d7cf7f6d2e4dbb60df948e372dbdcb3f7952f6e83ed2453387f18",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "009810",
+      "raw_sha256": "f39ff12ed5f555cf4372176f90ffacadd3b662b02eecabc3531527d8296a8553",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "00985A",
+      "raw_sha256": "7656254b6d98741392803d1cdc14ba65197aeb55bf2bdf555b032e907125f66f",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "1339",
+      "raw_sha256": "62a915d0ba8ffd55a9bbc3fe95d77bdaa033f2c27fb81596f3f2f9fdbabb21cb",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "1466",
+      "raw_sha256": "bc0ffbd98aa15cdc47857e7aefa7fc0d12e23e7cbf5bfd47d764387c1019814a",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "1514",
+      "raw_sha256": "79f5d86ba4acf97f729a01310690f251bd74764b30a2c952fe390d87995ff549",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "1522",
+      "raw_sha256": "3ec4acaf88ad69d5a46c47c9345459dfe01009dcce12298557f93c6fbd769210",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "1524",
+      "raw_sha256": "96d30e3ca32c1784395bb4311019c164f9401bc570b66fb552e4d8edcfc02d8a",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "1553",
+      "raw_sha256": "513c3cc6753ec0a08eee2f95e46c17ce70ecb4eca71fcdd60b8b2f053e468a75",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "1569",
+      "raw_sha256": "84f74f722251539d1ee25ce873e4f4ecec23a00df1954c8bbb1280483d502ca9",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "1711",
+      "raw_sha256": "5fa9ea14ee83a5d21752a6e22056dc6c0853ffa9250202e47c3c4df4fc09135a",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "1796",
+      "raw_sha256": "8682230bd2e1635bd5086705955d9bf2d07ec584ccab0b475402335e8a53272e",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "2239",
+      "raw_sha256": "e83fa0bc7200a003ad3e21cb8b20b54084825ed5d6744319f4549d6fa6b29a39",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "2313",
+      "raw_sha256": "5641a0a6b53385b1f5d1a5d007222926f709da9dd7dd4957e5e7361e46fbed66",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2317",
+      "raw_sha256": "f859b5403a4827a43512bb8871144439c91c6c326f208c533810da565913d82f",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2342",
+      "raw_sha256": "43d0839999f646ee1ae50cae1bf200678209068a5a2fe60c4651f4278a2108e8",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2397",
+      "raw_sha256": "faa4dc11dd673b9a4c8d417564f4b5a046f987539c3c04c0512686bbe48f5ac2",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2408",
+      "raw_sha256": "dda3378d0d6bfc916aebe7d4b3c9c9dd7a9a0202d1280f778a743d131b8e6289",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2409",
+      "raw_sha256": "7790a04e96f80b817b997001e4efa24a2cfb4a509d82a00fed1331901f0893f0",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "2412",
+      "raw_sha256": "c9fab77e50241927611beb48ffdfaa8c02504e7d0e1701eebed29e2b56291131",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2421",
+      "raw_sha256": "b42fde3759c7e30539580c21b78cbf2cad92774334885075efa839d9c10662f4",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2429",
+      "raw_sha256": "17c089cd05cabb261c98a6cd1e591a4792f9596b53f1d577432137a4df08aaee",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2472",
+      "raw_sha256": "48ded649dedaa5f089f2abf63bd9d6e5e48701bc4613e2b3c5a98b93f481f373",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2481",
+      "raw_sha256": "3443ca65c5d8f682908de7986efe491ffed9ff5fd88252f4f417118d29cf44af",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2537",
+      "raw_sha256": "40d9bc0a4eda0fc9d8261132f3a4cb655a6ca30a932ca8e9af714dcdea1e37a5",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "2610",
+      "raw_sha256": "9a6135670afb901a095e9d3c848fe90f1d049d2b884d2f5400072cb1041f1645",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2618",
+      "raw_sha256": "dbab9902a0385774060b1755a7b70031a23ad1a705f3a24f5e6a149ca5993aab",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2634",
+      "raw_sha256": "2f454e2a3bdf0d41697577f4d752ab65cfdfa16a8985f55fa6b9d70fd24dba3a",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2727",
+      "raw_sha256": "108d3457d8da1c78177acfc0a0bd7a4dbfddeb2f96d7fec4dd39da40db654563",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2755",
+      "raw_sha256": "f044b8c63d1bc5d6a7b3afbeddfdc615e84f83564c5f24e9d5e5fb2fefecc342",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2812",
+      "raw_sha256": "3008cb9d1e232330f7e8f1ebad60115873258d42207b710469a51a2f893f5062",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "2816",
+      "raw_sha256": "934c49e749033fc8ed188b8ad820456984d68f469e67123606b8275b1ad563a1",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2834",
+      "raw_sha256": "bd10463e94904b6023ffb44ad4a7288629eff783edb0bb9056acd72da2f7b3a0",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "2883",
+      "raw_sha256": "88c5e0fb4e409dc6635e215670a02b9107bae30ec36c92cd2a06cd963e2d5951",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3026",
+      "raw_sha256": "2184d1817876f6475ca683ddb25dd9c86e5962300348ca0a562866263067a068",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3035",
+      "raw_sha256": "ded2ac731769b1601450947e3f69107bae85dec134bf267c30cfac790a14b4a0",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3056",
+      "raw_sha256": "62f5644d3b4dad844968dd2a74216f425e9aa2479be46b97db39cb52e7e55094",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3090",
+      "raw_sha256": "44e5c26ff081c20639aab56f8da3064effca8b3aa22f6a24ac3c0abf87f6883f",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3166",
+      "raw_sha256": "a337ba6c7f61c19117c73bc731aae3ad230aa94ac0fc188506074ee8492df659",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "3189",
+      "raw_sha256": "f26b3dca8972fd104443ed2f4d83feac5cfc3f304da048f56a71ffbecce0098a",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3231",
+      "raw_sha256": "04f9eef576b87180d183cd8b4d7542c93ffef2845933f1fb10ddb13c098d700d",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3260",
+      "raw_sha256": "b3ba13071a6ebaee71c558ead0ed46b85d71cf694cde4d52a6d3405620950465",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3306",
+      "raw_sha256": "3de1ae68334a5aa6903e1d3968a9e23781e5476a4cfea8f7900a0807738b0cd3",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3328",
+      "raw_sha256": "72d24c2292a9a77bef205d2c217b8e42f01850a5e9fb303a685b2df49d10caa6",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "3416",
+      "raw_sha256": "e2df16292def2d1a9a64c9454532350f2b1d7e326e9eb069bc68317a2d742ae4",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3443",
+      "raw_sha256": "fc091cc5ba32b807cd6e0374e44a8c58e3224f254fbc23de73bc0768ee29835c",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3508",
+      "raw_sha256": "ec85a9c180fc1f2752a63b3209656da0e9c059f8e5ae764f0d38f1f347f151ac",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "3543",
+      "raw_sha256": "d4201834a6b7052aa319855ba434a85125fd77721a4a8945965b90d673ba36be",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3563",
+      "raw_sha256": "2a10eab055616516d4556c7a8ec1ac6b0c0b2e41ec5167f93993b85e17f63820",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "3637",
+      "raw_sha256": "fe1f2b096b37a4a0ce758b816a06ba89b35db6b699e9a153388a7ab537e801de",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "3707",
+      "raw_sha256": "0007b2a703eb3719950e52753ea304a68a129ac5c47b424861bc3f0819a93573",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "4156",
+      "raw_sha256": "584dc9d8795dec46f4ff7a540a76c825f52d99f79175ce0e400e2a2b101c4898",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "4558",
+      "raw_sha256": "418250a18cda07594b425b3083759912fce8b20cc35e29634c7823bbfddf3daf",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "4807",
+      "raw_sha256": "9fb409682a606e6e4cf11394ea7bec283d7170e24968f2ebedfcd9b794257d84",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "4904",
+      "raw_sha256": "d64e8121d8e5702fdde2baa73917eb4a8f8658a6ac9ecf056c347419c7936b3d",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "4916",
+      "raw_sha256": "f743174b9d31f3412fa55c6205bd9b35bb0a451685b15549e429b7e7d30fd1eb",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "4958",
+      "raw_sha256": "8f6b8c8df1039215fca27ce711fc54bf40bec2e8478a0a058902fd09bce782b6",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "5243",
+      "raw_sha256": "2e03bf7c5a573e74d4ea1065c8452582723150678fb83e082ac4b760216b155e",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "5434",
+      "raw_sha256": "795ce2b7efde17aa75fe07a2022159f26244d0401572865485a8be1574cf11fd",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "5468",
+      "raw_sha256": "fea780f2d3c9f8392336e9583da86e78bec9ad67a92d6f0e26edb497ce68987a",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "5483",
+      "raw_sha256": "3fe8c55ae799fae02cb354c31eb4bc11d3811ed0e891a3421896a540cf6c8201",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "5498",
+      "raw_sha256": "61de1f5401c9811533b256a74de8be45f4461982ed28895829ef2788c24a6fd6",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6026",
+      "raw_sha256": "b711c3bde4fa3389fa41ce3b2cfc90cdcc6929931244ff63e59958083c667996",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6111",
+      "raw_sha256": "b64b1623f5d507bc02db7f08478929468b86bf83c4e3b2285a779a8068c4e7e7",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "6139",
+      "raw_sha256": "e3f317abb976e6c05ac84581a4aed5cdba5dc6875be459f56ce829df47d33f9d",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6173",
+      "raw_sha256": "9ee21fd6356ac03757eedd92d4457f5693ec384c3fe52bb98e44d7a495b36ea0",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6176",
+      "raw_sha256": "de093a893c02e45ea86fceb132a25abf85bdeb30a19487b6bccab40332c5581f",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6216",
+      "raw_sha256": "5b77b2fe57abaeb3244cad716a37ee7997c42a18f43fda91eee98fb575f77df4",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "6282",
+      "raw_sha256": "e951eeb3130eb4e4ec7957fc4ea2817bdf0481765b8ddb34ee43807eb6f0ca59",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6435",
+      "raw_sha256": "0df540ef6c064802dcd54b8b117c1166c48d04cbe9a60432ca3ebc91f33071a9",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "6505",
+      "raw_sha256": "00ff777ee0626888891ac32e01acdb9596db4ea1d45e74fa794dd892ef822ab5",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6567",
+      "raw_sha256": "b453d40f250c412991d08e5cc8807394c24192886bfb833ccf771d48bc554f75",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "6643",
+      "raw_sha256": "deb367bc16adff9f6a2bb337633e2d32b4ec1193565b77ce59fa40bbab2d58a8",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6679",
+      "raw_sha256": "4c5a405a581c5fb70a4688b7a05b88871fbaf7ee444397d2924225ee0ca0341f",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "6798",
+      "raw_sha256": "6878cc73f834600869045085d94db9a6fc0b152e22a1033866b33af181286201",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "6862",
+      "raw_sha256": "edb66d1f4ca73dfae73e38c1d075b9e92cc060d2e89d9f537d6a777024f4987c",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "6914",
+      "raw_sha256": "891a478204a93854c89b0ac6d4091244ef792cce1a45da0695f9ab1471a61174",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "7610",
+      "raw_sha256": "c4692b37b8b4e71483bda4727941e37ea40209be9189844e0580cfbbdaee5e19",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "7812",
+      "raw_sha256": "9cd6566d29781b07ae34300290b1d49af70aaa1911f0464ab5f5956ea60daabd",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "8043",
+      "raw_sha256": "ae71e4813db26879a69092415694b99b26944ea6a2178bbf6eacaef0ba210c5c",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "8057",
+      "raw_sha256": "9b94d4ba636653f057b14e9542bceaf8fa879a02badf9af015381fb649f278f7",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "8131",
+      "raw_sha256": "4d56b2b3de6c24fe2f0953af5335dc8418a84c09597eb6a4036209e367dc3254",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "8261",
+      "raw_sha256": "c1a87e08b5eff0fea307aa84d742f1814b9e2a1693974e024fa36f343e47c981",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "8289",
+      "raw_sha256": "8d8fdfc3519df50efdba2f631f30961a83da782a654b640a9d87e3df8108ecbe",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "8422",
+      "raw_sha256": "ffea1d9863fca6f40c20d030e87da5e11ac00e75ebff2abb2a7dd00980a6cd04",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "8499",
+      "raw_sha256": "01ee0fdc00f15aa449281410ca6af11b3fe877b29d506f13605743dc41a3a760",
+      "rows": 17
+    },
+    {
+      "date": "20251023",
+      "ticker": "8916",
+      "raw_sha256": "b1f25e8532c08088cac8e8f49f40477bd320a24c5085ff7b9af0b3890798024c",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "YCJ1AA",
+      "raw_sha256": "efee6a921efdc2c165a7218074874e8e52cfe1103950b64863caab46d0ea9749",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "YGH5",
+      "raw_sha256": "8fa411b2394494bd564807bdc716fe518b4af99a24c53d0f69a6b363cfc099ad",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "YHR8",
+      "raw_sha256": "4f847e968375ccd7c3c47206f797ea5a5388de4babdf5941fe063472fd99653b",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "YJP1",
+      "raw_sha256": "2878f5646bd40249ca37e994885c33da6c93a19a0dba80e5a2e9ededf8fb595c",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "YKK4",
+      "raw_sha256": "c482dfe97a13613beb4a27320d4c164c400f6d6e6680eb76aefe37d4bce5fec3",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLE7",
+      "raw_sha256": "bc588e6a6c1106fa65067703bd44e0f97a3c0d11590126eb16c6d481cac37d57",
+      "rows": 16
+    },
+    {
+      "date": "20251023",
+      "ticker": "YY0080",
+      "raw_sha256": "e51eb07557e7cdfdab0e9f1013cb201018c5749fb13c19b803dc6b712ff6877e",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "000218",
+      "raw_sha256": "f47adbe84ba7f53bdc1c3c2fb9c0d6c81b16db6d44c13f9870efcceb401256c2",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "0050",
+      "raw_sha256": "fc847090179252e8764f013e4ffdeebc61f105406dd88a68527513e0119606b5",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "0052",
+      "raw_sha256": "5ed3c43ec5d43ea4a49d1088d7b9ffad55ab71cd9d9943c8c21bde9393ba56cc",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "0056",
+      "raw_sha256": "59f1d1b959b32d0fb0e7560a1f84333cdd3fc45aea4f15ab915a2a1a42b4d354",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "006208",
+      "raw_sha256": "0585b3aecbf00e627e808112c8a49fdf13b68966c0b1e959637ee51230c6fd1a",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00652",
+      "raw_sha256": "a50b1b5d4c4205453a5d3f307f2e8f400b96a025ed1698333ce093cac63c601d",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00679B",
+      "raw_sha256": "3d765dd64599bb91f38aad27b130e14382147530efe0142d016aff6ff8abe886",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00680L",
+      "raw_sha256": "2bbc07b3504d0cff6ae318c178236be72b7cf0755e1a7e5991cef3b16a489471",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00687B",
+      "raw_sha256": "4d8d7e7ae7d1bc58ef942c1ea55f167aa5b95c63645f120c154baa4757a0f0cb",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00688L",
+      "raw_sha256": "e11bebf475ef62ee775160aa06bd28ca2679530ffe2d654662337d1cd7623640",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00706L",
+      "raw_sha256": "c08675f386a59399c8730c91824e0bee175864af4b81994c2c93d6f283ca9b73",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00708L",
+      "raw_sha256": "f92548c60ab7f8b2dbf2a789e8163160c58692ab7fb98d08858900d9be3bf44b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00713",
+      "raw_sha256": "8705481033024316967d8a976bcb913e578b80bbd0f72e69fa79ad0c2ee443e7",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00715L",
+      "raw_sha256": "d9c488239330f173c9c5d961c64ac6c12176e67b9aa857fd96284c17d3b720d6",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00717",
+      "raw_sha256": "f17fe3d3a2115c9df9ae15eaf3e00eaa60158f8b7186e6360e44c8aeb3f8006a",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "00764B",
+      "raw_sha256": "58101c25417fee05e88c2d601224fa0a7594db1a3547eece03758f278d870047",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00795B",
+      "raw_sha256": "554fdc0891f3d50d7f82a6d9aa1e53090527ed2146a4695c255c29101a4e8979",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00878",
+      "raw_sha256": "9869c049b066673b6eee7898888ae068a0130ff94c8aa81391e778b4ab5b23a4",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00881",
+      "raw_sha256": "3aa099a67b011378cd38ede9adc436448cc8c54eb85e8d066cd37cd58b4c4c15",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00890B",
+      "raw_sha256": "0f4ee5fff470fae5d17e9bd02dd26835733fe86a0b2f61287c7e8bb02ff0703b",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "00891",
+      "raw_sha256": "5a9e21541325e621107b49d45c448c5c5dc4abc31d1a75e36cfbb456e664eddb",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00900",
+      "raw_sha256": "ec020227f6963a6005e9f022ffa6c182693b4b616fa52c17eed4c6114b49b6e0",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00915",
+      "raw_sha256": "500b9b18db77c3428f2ade85710048127d7ef689825312a69db6c8778443804e",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00918",
+      "raw_sha256": "5067217851122330ec3a9ad18e8430cfaa9f1ef4193adb0a95f7a0b333e5babb",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00919",
+      "raw_sha256": "9b517e90a7717eadc2acf645d53b8f6ac830d06e4543dcf26353a1691cea3d58",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00921",
+      "raw_sha256": "24f15aa9d56be5c41ac3200d49db6a12ff9b272bc7aefcb8024d4017345ca4dd",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00923",
+      "raw_sha256": "edaafa3c0ebace499acd1e5b40e858abfb55f873421471608e38ce3d0924fa7c",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00929",
+      "raw_sha256": "4000269054643a2e8a4d3f73c7c062c0c65b17fdb197e71148b884bd6c5451ae",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00933B",
+      "raw_sha256": "013803286cef8f8e7ff8029c99f0df8f96913e45128dad6d0bf739cc69577f20",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00940",
+      "raw_sha256": "7af1037b9448c63fb62f79fa68601509be6036ba4f8fb3fd4408227baa102f82",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00965",
+      "raw_sha256": "a31f2023967164c02a212399f91ab653f093462af289e9bef0f46ecbe7c0ca9b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "009802",
+      "raw_sha256": "ac685d05d8ef83436c445e6da0419dbfa6adec47827aa8ade7f754271c4ef40b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00980A",
+      "raw_sha256": "e68cfa953e21fa81e4fabb18e6d447da262fbcff4e664f35fd4c43d407bf7eea",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "009813",
+      "raw_sha256": "0d6983525f16f5fa86f020ca3eac0cf614fd9f2d154f80c1efac9676e6edf6bd",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "009816",
+      "raw_sha256": "ce7f7dc064eeadcee95f1f5c7d2e3fc7fe150879e5afd546be06cf162072d6ac",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "009817",
+      "raw_sha256": "64f363a03d22724b321e3e9c22b66b6e13ffe742d5e83e6fa3a75beb3a082068",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "00981A",
+      "raw_sha256": "cfaee216d0ed0f3f7f3e2c940561ac974eb66bfcc42bdc1dbebee91a38dd8380",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00982A",
+      "raw_sha256": "72cb8a73941566df172f9e4d42e3ee6c48d69e2445cb5501eb1e9caa0a987671",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "00991A",
+      "raw_sha256": "42075bb5c59cc420db6afe7ed0a273c30e23b42ba80692c7c8304ce66713c402",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "1303",
+      "raw_sha256": "3c33adab0270b229c4729720413d1ca0b9a8a7f2bb43aae11c79164fba0426db",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "1316",
+      "raw_sha256": "d21f3e1fb2e1d3e123005fe36db845d7e967d262074ffdb48202d7d6b72dcf36",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "1323",
+      "raw_sha256": "25631413ebd9d750b6086c257d87fde43600d581c59bd8dc57d9d0e35df18525",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "1326",
+      "raw_sha256": "d2c84720aa76ddbf8b548db883f1a9f3601cfde0124109512c0e73d1ccdde2e1",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "1459",
+      "raw_sha256": "1b47c60c5c8dc30581ab0f00b94ecd23a758d3aa9b91f876385757d77c787936",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "1519",
+      "raw_sha256": "777f9bbcd6719c4031ffc3622f9339bc483aefdbcfa1d393cd1b06b53f1d6a29",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "1537",
+      "raw_sha256": "3b9749348298d0e96e738c290d15563c6edcc6f350755587ddea83c35b72f1a1",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "1711",
+      "raw_sha256": "20facaac42d8f237220333c557e6d2b6d131fe4239cde5e3fdf887c2fd665f48",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "1789",
+      "raw_sha256": "432a73266cfc457e85bbcbd6065eedbac384038460b449873f1ade3107f6f108",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "1802",
+      "raw_sha256": "478f3a9e684663cc70460fd3068a0dedf7a6ee8e3a3397d603dd7b321932b758",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "1815",
+      "raw_sha256": "579cd5b4a3905d1a03a8efc2f7fbcc2594497cca5c5915668351898cbb54abdd",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2236",
+      "raw_sha256": "565fc5f1bbbf732784e7e47bc00084f8bf28ab5f9725d5991d018c7220e40368",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "2308",
+      "raw_sha256": "c8a0160fbaa2dcb1bb3e6213d99f871e4bb89552fa5a2482ba726da4b7f21416",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2312",
+      "raw_sha256": "1c6fb72d811653eab48e7bd67bb70db34e372bff3e1e8926348e09e205a62fb9",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2313",
+      "raw_sha256": "aa6666e6c78945029b2a7c566bf49a5dda3927884aba426cee61e9517f62eacd",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2317",
+      "raw_sha256": "984912995ce0d5dea96986e49530476d8dc4f5161e2ef94bc19506194f18d70b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2327",
+      "raw_sha256": "6c236dd258c4dec4ce09433d717eece750aa58e4eb0a92ec5568ab2f6a432cea",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2330",
+      "raw_sha256": "cfeb84093635fbb1a54672c732f2e71fa5617a75253a491e3b82454ce3c22e0e",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2338",
+      "raw_sha256": "e968c0999e88effc98b3978ac326da37fe74755f49a9a248005c9fa6f902f045",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2344",
+      "raw_sha256": "52b07ed1315d7eee518c61af1f974c7cb68b3f78b2b9d6a49db1955ccff3754c",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2347",
+      "raw_sha256": "0d37803e7bcf54db855d747ed584707eabb08e60d4ce4475ced10ce9798261f2",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2349",
+      "raw_sha256": "2f18c8b374752ac467cf05a944c4363ee16ec1270338ca2e34cb421c009a3a97",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2353",
+      "raw_sha256": "8e10076f5f2aea871fa5322daadbff20b702b2590c09c24ec0ba0858b5184618",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2356",
+      "raw_sha256": "8132550fd00248ef9b3a6ca2fdc8ee8c5173dcab441da3384faef94ae0b3f8a6",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2367",
+      "raw_sha256": "d15f39d7e80946c8cfb6ab4e08c760e822d03d81eb144425d7ee8ea5fc6070a7",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2374",
+      "raw_sha256": "59e8b19d0d9513b84224372a40a0435e40b5f1114167d0e25ffe1f3c22ae2649",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2376",
+      "raw_sha256": "b2b86ee597d3d97960f9d05a7af52609c0b9f4c57ef14a24cb66962f2c790e52",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2382",
+      "raw_sha256": "d0556a26b917e4b815d0ea5fc5148748f10ebffcaed6ce29f6a87107455ef49a",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2395",
+      "raw_sha256": "24af38845cf1850a419c58c6a17c1c462cc39e802cb078f2aa7a8aa4efd2239a",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2404",
+      "raw_sha256": "4b59902e5205f0965d5b1c2ff3c858ad877fd44a9a98b7472c03fb7ffd102762",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2408",
+      "raw_sha256": "c2fcb70aa47684207b4f717acec0cbd73c417d687ffe40e639242ff5558e724f",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2409",
+      "raw_sha256": "ffb13df445fdf8095e18af7ddaa2304aeb216b446aaba7d5163ce0e785d70449",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2410",
+      "raw_sha256": "269718590dbb60581b428c87f4616ccd9ab26d96abcf378c3fd16fe8b67a06a6",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "2436",
+      "raw_sha256": "ef8f49c0dc734da6e51fe642869871f05212e3fc2c7a404fa68f622636fe8915",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2442",
+      "raw_sha256": "50860e7b7a5966adab0ef61c4e7d02c4f14a3f23fa9894536f80eb91315084fb",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2485",
+      "raw_sha256": "e12f85d0f75fd2e3ea46fe6432c5104334f45e71c005ff72f08de417f0b297f8",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2489",
+      "raw_sha256": "aa9f63fefc14688d5f6c0311b498e84a13bf30b4d516252217e07984ea15ac3f",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2492",
+      "raw_sha256": "aae31019edce33c9bf6c720515cf82786a5f0184163167ba8da12b079dc45f4f",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2540",
+      "raw_sha256": "31efaae40e819d326b30e05aff390bfbdc6f51b0f7ff58efe068bb08b3187e72",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "2603",
+      "raw_sha256": "cd625097e01a0bb6b68211ac195334f6a3f17bb54367fe2c461d824813310b70",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2605",
+      "raw_sha256": "d87219cd2427ffd1c5db9fa0a8a318361ddbd2cbbbdac1e7e3ef22e1d511f62c",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2606",
+      "raw_sha256": "ae376bd703909f12fb4be8ae4ecdf50147f1a544fcd8e6c4ebbdfc297719dfba",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2637",
+      "raw_sha256": "5bebb95b5cd3145c7d43da33f396b03b3098b1a3f6cb3f5950859fb624199b0d",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2729",
+      "raw_sha256": "a771db53feecfa2e54bc600be6fa41ab36553984c82c5a303f965d42e2ee5be7",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2812",
+      "raw_sha256": "311b9da80044abd72f29385dedb51538d172008c8f906521c314b18d959299b3",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2831",
+      "raw_sha256": "32d2fa6feb94aa2271812d88e69ad4215f220258c00bb7dacc7dc834b7c4a0b8",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "2885",
+      "raw_sha256": "88376d9046c0b03be97b76efff6f46756119a1032d7fc5435cd7a9b7ed32e20a",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2886",
+      "raw_sha256": "78b677615f9895f9116fce2f4ccfe4f772dad772fab4fc4453badbbdf5a0c63f",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "2890",
+      "raw_sha256": "b875f020ff90c75ee89c4e55edc030309b164349b275753ecfdbaccd971136e5",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3019",
+      "raw_sha256": "a8cc005e8d315ae32514bd156eb8fad5d234d509dec89a601669b6f89c717258",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3026",
+      "raw_sha256": "df6a54d2ca6b890e19b3e00f6098dd7cf0f2f050af992602670365a531300663",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3032",
+      "raw_sha256": "5aa806579bf139906f88c81601f6477bf74f8b456c2d039ceb1c1a9f375ec69a",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3033",
+      "raw_sha256": "e92e2333dc2456df6ff526365eb24de3077e4c2d129f082644066ade7fe0c41e",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "3048",
+      "raw_sha256": "8d4bd2c87da610539c189355cf2317e063a5f315ede5c01ca3bd773592314cdf",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3105",
+      "raw_sha256": "fed72d895f8e77b25d78f92dd781d4fe70b47f6ffd6345c8db618455cf9391af",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3149",
+      "raw_sha256": "c90f3092498cfdc4e54af33c4512d06cb2d46f487736391ff9091634ba94888e",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3184",
+      "raw_sha256": "1ecf3fe6d7da97f0c2b29d18529041ae1c638f7f35ae7e0e615b8804e7deb639",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "3189",
+      "raw_sha256": "744c2684281f05c50b6850cea229f3c13ebadba998e51b1e438a933e2914560f",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3231",
+      "raw_sha256": "0152af400a53a9000641928b298465c39352dd5f40421bb0f256300599ae43fd",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3308",
+      "raw_sha256": "91fb3dcbd9f4db33c848f3e03e0d2c1008ba0825efe0f904aae764a0975db98e",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3346",
+      "raw_sha256": "7299a95fef5a1609c8396221d3f8afe5ba5c995b2e09dfffcc919ee03bd4e097",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "3357",
+      "raw_sha256": "7691db716899832855c0199bb45148506b19e247eb1c9ccb3d7ebd28025dc69c",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3450",
+      "raw_sha256": "97c3e947a521686456736a9932cb600e6b2f9bf5bf45d33a54b555ea7b1d186f",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3481",
+      "raw_sha256": "d30912877f773fc827bb36d7426318d42b9d65758cf63c9153770dfabc6c1ee1",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3489",
+      "raw_sha256": "984555202b28d27a2cb007c9333a198f1f840c9d17c6171ff60af8b42a0a0980",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3523",
+      "raw_sha256": "2c6ab412ca2fbcf4a80d1468f9030d382416d1788b3dd98689d78c4b6326f3b1",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "3529",
+      "raw_sha256": "95fb90a7d0ad1b515eddc281a27b6cd946e1117b5c5ae5e2de3ba72d1e12b619",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3535",
+      "raw_sha256": "02da7136907bb34a62c0091d0cbf70d3df6b2bfa156b5b3ed11435ed66242830",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3543",
+      "raw_sha256": "cbe0dd672e6a458a9348ff653b5d76bf5627b6e4c1f71821b66bcdf43790c9e2",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3551",
+      "raw_sha256": "42aac259248ff21b7942fd9b9f2e002639c38305d46bd0691afffab4ee74d967",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3576",
+      "raw_sha256": "394b9d51b79e57088df0c040e046bb885b5335f21e3621c6fec9be9d218790b4",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3581",
+      "raw_sha256": "581ac9eb593a707fb7578f63472523be5e8e0d9db49d9f6b09383f1b37d06afa",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3587",
+      "raw_sha256": "ff92ee59f2ca8d2dcc72c1c59cb27a8577acc028f7f16bee99835026c0a22ceb",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3615",
+      "raw_sha256": "66be6bbe65443b6f064d60a3de055f001e0ca0181e2ca3943db90825902eacdc",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3624",
+      "raw_sha256": "33b38947cff4aa2be28aad9951cde0e96f65ff1a0c263e5b5db6032d3066dda4",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3662",
+      "raw_sha256": "80cc19a0dc731a01f93ad12b8c4d675b27fecff06bc0e3129cbbfd27a5bca787",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "3691",
+      "raw_sha256": "5112bc55638a357bf25221e9f06f34ba08b495d448313c89c61362cdd0511726",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3706",
+      "raw_sha256": "654fb703c55e7e7c1c43289c4f83af78b2ed3c007d01e1a1a0c6f53aadcc8fb6",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "3711",
+      "raw_sha256": "1d2491e955f1f45d7f0847e31028ce46a9f168dc0f2565cd3383ee74d4feccaf",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4177",
+      "raw_sha256": "94fc6b02475a22d41954b89343fd9e2bcc975a0904f69fa14342ec698dc039b1",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "4564",
+      "raw_sha256": "4a4e8d77879588829a5da218f41eef8d356843537e479b41fb46cdde65646705",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4578",
+      "raw_sha256": "047b7384ea5057cd6d307f4994351b8d58be12b3c27eb9003f46162ba8fc7457",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "4722",
+      "raw_sha256": "c31c857fd6edd3481a9ad4e4060203d4646e47dd38b1c0e6f74033e65707d74e",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4749",
+      "raw_sha256": "50f1ad97ea4334c8dac122ffc26a44eb3fce2bf4784d758c1fbdd6f5e08648da",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4763",
+      "raw_sha256": "15a2c0bd3380860b27601677156bd1455aa7d636ab3060644ac7451118be8e50",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4909",
+      "raw_sha256": "ae7f44a00bc0223a1938bb06427e7fff96fad690ac8ca12949bf41230a9cc64f",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4927",
+      "raw_sha256": "07903211a5ab0280637028357c8aef60d845a9eccf5fd3d7f20cbcb277895a5e",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4931",
+      "raw_sha256": "38e614f43b181db9a7e7085901c3f9222d38fb2a83ed137d3e6475453b22e474",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4949",
+      "raw_sha256": "b05b4cca3ed72e40c193b65b57b27b5c16d3203f6089571ef070d267f4d046e2",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "4979",
+      "raw_sha256": "71b3178c8cf2a1e85704b624d36ab61fa18954c87e87dadfc0bce41d10f646f8",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "4989",
+      "raw_sha256": "9c24100dccaaa90d89f1a78f63f341cae0655b215329925054e5fc2f958cc3b3",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5225",
+      "raw_sha256": "bca88c7bf99ce9b623f7998810f81f174d5011ad0820a5a4bddb71d1ab1a64ba",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5234",
+      "raw_sha256": "df6abfb1b9b64edec0681b84ba4e30bf28fedcb44cebf66d401552d5baf5ebd4",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5243",
+      "raw_sha256": "a07f5c084b416c09c81cd1a6abb65c6fe885f4dced31eec0236d7bb3b1710eb7",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5244",
+      "raw_sha256": "ff0b3a5a6be1836cbe76efb7e8700241c4e9093e69c56fbac371b5da98ff6441",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5276",
+      "raw_sha256": "bc4c9e44cba479f86ddafc664cfe6e7785d43019d56b9d273074f38e22a283a5",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "5289",
+      "raw_sha256": "444eec3fd4218a4e3667f33b554223fe2c749f2318811d7544a1cde44718f655",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5291",
+      "raw_sha256": "8494afa6bdd5660825b7f074beaeb65b15863da7add8d5686fde03c17bbaf5ef",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5314",
+      "raw_sha256": "2c6bd582d81edf9f96c8cfd4a9dc085d1c75249a504f66b8c2ccaa645861a0b6",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5328",
+      "raw_sha256": "e930848d5c1de4c7bafd20b92de693e6f469a777de3e8a323590114e19301458",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5388",
+      "raw_sha256": "ea04a27bea1b94e5d7e60981e238ed87e8b0dfc290edb31b251307bb2b7e3a7b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5439",
+      "raw_sha256": "b630a6fee86d93f4133136b3452d4913d77a54862f174a0cc5a9abe6a66be9e7",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5469",
+      "raw_sha256": "92876100cb90f055cb385f6a2edbd4db6893d2edde16b35f1ed644319a9a2561",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5475",
+      "raw_sha256": "f9a66d8f2df6cb9c6020c6ef00796e44636cc44606fa7b59c3bc9f0d68ea0abc",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "5516",
+      "raw_sha256": "7fda1277c132d96a3cf53daeb35785d44e298daabd520fad1bec479f2f17b24c",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "5607",
+      "raw_sha256": "699b8c22e6ab6ec06f60dc97de1b6c1bb39fa43f3476fc40fd8114ba0a06ba3d",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6138",
+      "raw_sha256": "25d7c9cb8d2e2ee11af635035d8b69ec2a546b0babd0f5d88f0043467cb9301e",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6140",
+      "raw_sha256": "b15125c0903b7dababbacb8041ad1e669779710291fe2fe319b66d1729a15e83",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "6187",
+      "raw_sha256": "1a63c23740cbfb06ced080e73b98df05264bfd6f5ccb969f8defe2a9a825e91b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6188",
+      "raw_sha256": "807197020cb92ee2d5113a10de32c8da4145bd6b0b5ad6b0fb7b0fe62cd71327",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6191",
+      "raw_sha256": "88c8cadd01f10f332f1c6d4c034588cbf8c8bdedb08ded346d804bb2c177d93c",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6213",
+      "raw_sha256": "4b7ef751286a4dce6a567a440ff961e9a4dc0efd220188bef25f1f1871150981",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6239",
+      "raw_sha256": "07affa6b631a78502dd1e12527f334739d3e951a351544698c82beae8916770b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6249",
+      "raw_sha256": "e8d82ac75a2719ab5b9521be25559af42b02b038cd1459dc8fb2cfb8e1f4f3cb",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "6271",
+      "raw_sha256": "bea51051a29e2e03ba0f30f92e248afbf0a2e59fa94604a097a5b1f54f9373e3",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6282",
+      "raw_sha256": "3f05a14de46d5533092ec89e1d338f9d7f59795964453f69a6cb2016c3bcde24",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6285",
+      "raw_sha256": "b44b185bc47caaaa54b6f3f657a465a1374bfb8ac0e7db8d0f1715b0647d2295",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6443",
+      "raw_sha256": "2a10a9e5a021ba475e280fcbc7d0fc667e3b675ceb4681d1e6b66e0c9e052a6c",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6483",
+      "raw_sha256": "e51c1696da34d1275cdca8da78e9b1a0fe69cd59d37fcdd5933d3af4538ece33",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "6494",
+      "raw_sha256": "4a4727a7df17d52d9e3f3c77da0113c873007b9dde23f2c598bbaa3f535d15da",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6505",
+      "raw_sha256": "aeb5f543811440ed4000d9f076edf2d992b93535f10b7835cfb127bbcc7a4a73",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6515",
+      "raw_sha256": "7cec96a7fdb768cfe720572632687193270a7e759c1999068d2a4158c1ebcad2",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6602",
+      "raw_sha256": "88628bde53ed507a353e253e79bd72575cbfcad66e08a92029ca8998b67503ae",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "6706",
+      "raw_sha256": "aa6ab36a851e58511216321b0ba35a519f64fcd61eebd82dadefa8ba3a10ec50",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6725",
+      "raw_sha256": "e0dbd221d0089a63119658849038912dfadb2484fb3e0e846dfbe596b1dc144a",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "6770",
+      "raw_sha256": "421433d40e6e49451ce9536c2f8b0a50d938a374556cf7c9426515ea01dd965b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6805",
+      "raw_sha256": "e12efd05cee09236bb8d588d0cfef01ba3ead91b7cb2d08214f424821e23aa83",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6830",
+      "raw_sha256": "222478ad0e37ef91c5befcdaac2e44cd1c93726d0e97befb2154e7c75466e32f",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6844",
+      "raw_sha256": "db24fbe5807f323ae565972c99b8c55aa4f486684f5f7a224e311cc7f9b32fc8",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "6877",
+      "raw_sha256": "7a6d47b7f62d5e11565e195f3d3b4001b51bec212d349dd6ce3adc3c2ef2e2b8",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "6958A",
+      "raw_sha256": "b60ad1f2fba199c128da509b220a6fbec9035dc25c823d3aacea0d493b157a85",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "7742",
+      "raw_sha256": "5ba4801cd90fe49af2da25089fc22de8511d8565e153c18992304aed339a9713",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "7856",
+      "raw_sha256": "d98bdd142b043fa456562fc58fc27529883c3f7f908edfdfed447c59bb3ac6bd",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "8028",
+      "raw_sha256": "e5e3fd82b1cadad9af658097effa6164be69f76e74c3c4fe3c6e7501a43bac10",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "8067",
+      "raw_sha256": "3da70e0c90411d0e4642281fcc6076f5629730ec1facb09014787d21ecfa5070",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "8096",
+      "raw_sha256": "29a9d392111bd699b1b4db5e3d4f828d01b829bb8d065b9df297a5998e0440d6",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "8131",
+      "raw_sha256": "a8ae800bf13f1cc8120c10726ef46ab18374a156b260f03c3364b13a149c7b65",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "8345",
+      "raw_sha256": "2f43be1773e3f8876e05a35f14ff822c16b6467c9866c67bdef3e7de2f3de882",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "8358",
+      "raw_sha256": "a4c98a2dc033c0831383e3a4c7ad2f053d77e2042bd5e5b2d51a0054dab6c12d",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "8422",
+      "raw_sha256": "967f486de38382ad3822a2ddfc421ec5e1b227d9a076906ddec71e862950c2f5",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "8438",
+      "raw_sha256": "4b62be09d6a0b7bf7d0eb4dfebdb0481339c6e1d59472cfd4d406c51913d4cfd",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "8932",
+      "raw_sha256": "41519c1d938e45a015363528d9a46c45fc1b437cf5e526cabde48cfaa30a1a2f",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "9906",
+      "raw_sha256": "492a0971a7d0e6fb590199c7895a86389ec34d8cd1d192ac4c02c83d5204423b",
+      "rows": 17
+    },
+    {
+      "date": "20260226",
+      "ticker": "YES8",
+      "raw_sha256": "707ed23876d7bf305ba1121525be337c721c6716f71f34b55f80d33722b0cf80",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "YGP7",
+      "raw_sha256": "320fdf75a9202015110ef36d9c599aa8a942bfee51e8f2e91359e09393c433a5",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "YHV7",
+      "raw_sha256": "4ed0157002ee00e116d5e697065ed3cc5c99dbc9a1511b9c463fbe198bb501c5",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "YJT9",
+      "raw_sha256": "4e52b46ff9f5a72a0a5dce5033b6c442334766636187755d8b39945270c1caf0",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "YKS2",
+      "raw_sha256": "6e9a899a8cd224fcbbbbd4672cf85cd02aa1d1c9b40eff768d95c1b49850fb17",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLL8",
+      "raw_sha256": "c67f754f0003ab5699f53937ed1e17d99d1598e7039ab7490d972ef4104bfe19",
+      "rows": 16
+    },
+    {
+      "date": "20260226",
+      "ticker": "YY0080",
+      "raw_sha256": "1777c77458698a63bf0e4dd341b4dbb09cd139230844e1d61cde9d08547a00c0",
+      "rows": 16
+    }
+  ],
+  "scope": "Offline HTML parser reuse/backend optimization only; every identity,level,total,percentage check retained. No inference/strategy logic or official network traffic."
+}

@@ -1,0 +1,179 @@
+{
+  "status": "pass_for_review",
+  "start_date": "2026-05-11",
+  "end_date": "2026-05-15",
+  "method": "fixed 50/50 market-plus-sector constrained holding-level mock",
+  "observation_count": 132,
+  "effective_observation_count": 132,
+  "position_count": 51,
+  "ticker_count": 45,
+  "sector_count": 8,
+  "sector_groups": [
+    "OTHER",
+    "光電業",
+    "半導體業",
+    "電子零組件業"
+  ],
+  "parameter_count": 6,
+  "parameter_limit": 26,
+  "missing_data": {
+    "market_factor_rows": 0,
+    "sector_factor_rows": 0,
+    "sector_return_source": "holding ticker equal-weight daily K proxy",
+    "sector_return_rows": 40,
+    "sector_count": 8
+  },
+  "totals": {
+    "weighted_holding_return_pct": 0.058977864710440524,
+    "weighted_factor_return_pct": -0.0013767421232939569,
+    "residual_after_factor_pct": 0.060354606833734496,
+    "abs_residual_after_factor_pct": 0.060354606833734496
+  },
+  "bootstrap": {
+    "draws": 1000,
+    "residual_after_factor_pct": {
+      "median": 0.060354606833734475,
+      "p05": 0.02983044456539745,
+      "p95": 0.09583003639897841,
+      "sign_stability": 1.0
+    },
+    "market_component_pct": {
+      "median": -0.0051340560329377624,
+      "p05": -0.01768216365808943,
+      "p95": 0.007414051592213911,
+      "sign_stability": 0.848
+    },
+    "sector_component_pct": {
+      "median": 0.0037573139096438047,
+      "p05": -0.025196302711964984,
+      "p95": 0.03541687055209545,
+      "sign_stability": 0.617
+    }
+  },
+  "factor_contributions": [
+    {
+      "factor": "market_0_5_load",
+      "contribution_pct": -0.0051340560329377624,
+      "active_exposure_pct": 0.4735009711779449,
+      "description": "0.5 * TWII daily return"
+    },
+    {
+      "factor": "sector_total_0_5_load",
+      "contribution_pct": 0.003757313909643804,
+      "active_exposure_pct": 0.4735009711779449,
+      "description": "0.5 * held-ticker equal-weight sector proxy"
+    },
+    {
+      "factor": "sector_group_OTHER",
+      "contribution_pct": 0.0048172646980556705,
+      "active_exposure_pct": 0.21660221740011792,
+      "description": "sector component contribution for this locked sector group"
+    },
+    {
+      "factor": "sector_group_光電業",
+      "contribution_pct": 0.004587870555258248,
+      "active_exposure_pct": 0.08330714009287925,
+      "description": "sector component contribution for this locked sector group"
+    },
+    {
+      "factor": "sector_group_半導體業",
+      "contribution_pct": -0.0022201320821141728,
+      "active_exposure_pct": 0.09305666233598703,
+      "description": "sector component contribution for this locked sector group"
+    },
+    {
+      "factor": "sector_group_電子零組件業",
+      "contribution_pct": -0.003427689261555939,
+      "active_exposure_pct": 0.08053495134896065,
+      "description": "sector component contribution for this locked sector group"
+    }
+  ],
+  "top_ticker_residuals": [
+    {
+      "ticker": "6419",
+      "weighted_factor_residual_pct": 0.033972847585799396
+    },
+    {
+      "ticker": "8027",
+      "weighted_factor_residual_pct": 0.011797838775377007
+    },
+    {
+      "ticker": "3006",
+      "weighted_factor_residual_pct": 0.008370740924144601
+    },
+    {
+      "ticker": "5228",
+      "weighted_factor_residual_pct": 0.007973147855917864
+    },
+    {
+      "ticker": "5475",
+      "weighted_factor_residual_pct": 0.0058163958901579
+    },
+    {
+      "ticker": "4540",
+      "weighted_factor_residual_pct": 0.0036099567010784614
+    },
+    {
+      "ticker": "6426",
+      "weighted_factor_residual_pct": -0.0025514930008032058
+    },
+    {
+      "ticker": "6903",
+      "weighted_factor_residual_pct": -0.0023416855428943393
+    },
+    {
+      "ticker": "4768",
+      "weighted_factor_residual_pct": 0.0020263531469352624
+    },
+    {
+      "ticker": "3576",
+      "weighted_factor_residual_pct": -0.0020131620620896366
+    }
+  ],
+  "daily": [
+    {
+      "date": "2026-05-11",
+      "weighted_return_pct": 0.017028542353441364,
+      "weighted_factor_return_pct": 0.015645630609383603,
+      "weighted_factor_residual_pct": 0.0013829117440577608,
+      "weighted_market_component_pct": 0.0022368073793009873,
+      "weighted_sector_component_pct": 0.013408823230082616
+    },
+    {
+      "date": "2026-05-12",
+      "weighted_return_pct": 0.01818163839607232,
+      "weighted_factor_return_pct": 0.011590454282309634,
+      "weighted_factor_residual_pct": 0.006591184113762688,
+      "weighted_market_component_pct": 0.0010444867162805998,
+      "weighted_sector_component_pct": 0.010545967566029036
+    },
+    {
+      "date": "2026-05-13",
+      "weighted_return_pct": 0.014661548127446876,
+      "weighted_factor_return_pct": -0.01369551669768761,
+      "weighted_factor_residual_pct": 0.028357064825134483,
+      "weighted_market_component_pct": -0.0059792350879843146,
+      "weighted_sector_component_pct": -0.007716281609703295
+    },
+    {
+      "date": "2026-05-14",
+      "weighted_return_pct": 0.020834427450391088,
+      "weighted_factor_return_pct": 0.004572066132917705,
+      "weighted_factor_residual_pct": 0.01626236131747338,
+      "weighted_market_component_pct": 0.004459835960798126,
+      "weighted_sector_component_pct": 0.00011223017211957977
+    },
+    {
+      "date": "2026-05-15",
+      "weighted_return_pct": -0.011728291616911123,
+      "weighted_factor_return_pct": -0.01948937645021729,
+      "weighted_factor_residual_pct": 0.007761084833306169,
+      "weighted_market_component_pct": -0.00689595100133316,
+      "weighted_sector_component_pct": -0.012593425448884131
+    }
+  ],
+  "kill_reasons": [],
+  "can_distinguish_factor_from_residual": true,
+  "title": "RD-005 Residual Deepdive Formal Closure Analysis (2026-05-17)",
+  "production_impact": "none; diagnostic-only formal closure-window analysis"
+}

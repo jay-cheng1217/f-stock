@@ -1,0 +1,156 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20260810"
+  },
+  "rows": 1222807,
+  "setup_count": 5932,
+  "filled_count": 5129,
+  "missed_gap_up_count": 1290,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5129,
+      "mean_return": -0.008997385827577054,
+      "median_return": -0.012462623413258208,
+      "win_rate": 0.3404172353285241,
+      "p25": -0.033015544041450795,
+      "p75": 0.009297872340425565
+    },
+    {
+      "hold_days": 2,
+      "n": 5121,
+      "mean_return": -0.007934639410943965,
+      "median_return": -0.015398963730569922,
+      "win_rate": 0.376879515719586,
+      "p25": -0.04566666666666652,
+      "p75": 0.02022145328719716
+    },
+    {
+      "hold_days": 3,
+      "n": 5116,
+      "mean_return": -0.007201297239961827,
+      "median_return": -0.01777155172413791,
+      "win_rate": 0.38408913213448004,
+      "p25": -0.05545348090465724,
+      "p75": 0.028258064516129004
+    },
+    {
+      "hold_days": 5,
+      "n": 5110,
+      "mean_return": -0.004581557254168956,
+      "median_return": -0.020519903937122438,
+      "win_rate": 0.3990215264187867,
+      "p25": -0.06982040917340365,
+      "p75": 0.039963571889103766
+    },
+    {
+      "hold_days": 10,
+      "n": 5091,
+      "mean_return": 0.00047114463186408964,
+      "median_return": -0.02347148817802513,
+      "win_rate": 0.41484973482616383,
+      "p25": -0.09332802979011506,
+      "p75": 0.06480102315826608
+    },
+    {
+      "hold_days": 20,
+      "n": 5013,
+      "mean_return": 0.010708493789873626,
+      "median_return": -0.03391452991452992,
+      "win_rate": 0.4197087572311989,
+      "p25": -0.12595121951219512,
+      "p75": 0.10206060606060596
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-08-07",
+      "ticker": "3022",
+      "name": "威強電",
+      "sector": "電腦及週邊設備業",
+      "Close": 103.0,
+      "momentum_score": 0.647431,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 99.395,
+      "momentum_entry_limit": 103.0,
+      "momentum_entry_high": 104.545,
+      "price_vs_ma5": 0.0640495868,
+      "price_vs_ma20": 0.1514169135,
+      "price_vs_ma60": 0.2417617746,
+      "volume_ratio_20d": 2.0915874281,
+      "RSI_14": 67.8633469708,
+      "MACDh_12_26_9": 1.2687811051,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-08-07",
+      "ticker": "2425",
+      "name": "承啟",
+      "sector": "電腦及週邊設備業",
+      "Close": 52.9,
+      "momentum_score": 0.614071,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 51.0485,
+      "momentum_entry_limit": 52.9,
+      "momentum_entry_high": 53.6935,
+      "price_vs_ma5": 0.0637442188,
+      "price_vs_ma20": 0.162765139,
+      "price_vs_ma60": 0.3181219289,
+      "volume_ratio_20d": 2.2381355022,
+      "RSI_14": 68.1070908517,
+      "MACDh_12_26_9": 0.5191642009,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-08-07",
+      "ticker": "9921",
+      "name": "巨大",
+      "sector": "運動休閒",
+      "Close": 92.4,
+      "momentum_score": 0.571138,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 89.166,
+      "momentum_entry_limit": 92.4,
+      "momentum_entry_high": 93.786,
+      "price_vs_ma5": 0.0603626348,
+      "price_vs_ma20": 0.0824108241,
+      "price_vs_ma60": 0.1973047685,
+      "volume_ratio_20d": 0.9162332364,
+      "RSI_14": 68.6175661024,
+      "MACDh_12_26_9": 0.2023524258,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-08-07",
+      "ticker": "4907",
+      "name": "富宇",
+      "sector": "建材營造業",
+      "Close": 47.6,
+      "momentum_score": 0.537074,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 45.934,
+      "momentum_entry_limit": 47.6,
+      "momentum_entry_high": 48.314,
+      "price_vs_ma5": 0.0537967678,
+      "price_vs_ma20": 0.1342785655,
+      "price_vs_ma60": 0.182461806,
+      "volume_ratio_20d": 4.0201638311,
+      "RSI_14": 75.4607050812,
+      "MACDh_12_26_9": 0.5649563278,
+      "missed_gap_up": false
+    }
+  ]
+}

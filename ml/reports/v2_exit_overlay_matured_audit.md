@@ -1,0 +1,27 @@
+# V2 Exit Overlay Backtest Audit
+
+- Generated: `2026-04-21 22:43:44`
+- Branch: `research/v2-exit-overlay`
+- Prediction date range: `2026-03-11` to `2026-03-18`
+- Overall: `WARN`
+
+| Check | Status | Value | Threshold | Details |
+|---|---:|---:|---:|---|
+| entry_after_prediction | PASS | 0 | 0 | Entry date must be strictly after prediction date. |
+| exit_not_before_entry | PASS | 0 | 0 | Exit date must not be earlier than entry date. |
+| overlay_trade_count_consistency | PASS | 120..120 | same count across overlays | Different counts usually mean incomplete price windows or skipped simulations. |
+| duplicate_symbol_per_signal_day | PASS | 0 | 0 | Each selected ticker should appear once per prediction date before overlay expansion. |
+| simulated_top_n_fill | PASS | 30..30 | 30 | Uses the final selector output with usable future OHLC data; fewer names reduce comparability. |
+| skipped_trade_simulations | PASS | 0 | 0 | Skipped rows are usually missing price history or incomplete non-MTM windows. |
+| open_mtm_rate | PASS | 0.0 | <= 0.10 | High MTM means the report is a live mark-to-market view, not a fully closed trade study. |
+| extreme_signal_basket_return | WARN | 0.252325 | <= 0.25 | fixed20 on 2026-03-11 had basket_return=0.252325. |
+| gap_exit_rate | PASS | 0.180833 | <= 0.30 | Large gap exit share makes daily-bar TP/SL execution assumptions more sensitive. |
+| same_day_tp_sl_ambiguity | PASS | 0.0 | <= 0.01 | Policy used: stop_first. |
+| max_period_sector_share | WARN | 0.75 | <= 0.40 | Period-level concentration can stay high even when each day is sector-capped. |
+
+## Output Files
+
+- Equity curve CSV: `F:\stock\ml\reports\v2_exit_overlay_matured_equity_curve.csv`
+- Rank breakdown CSV: `F:\stock\ml\reports\v2_exit_overlay_matured_by_rank.csv`
+- Sector breakdown CSV: `F:\stock\ml\reports\v2_exit_overlay_matured_by_sector.csv`
+- Trade detail CSV: `F:\stock\ml\reports\v2_exit_overlay_matured_trades.csv`

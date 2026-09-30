@@ -35,6 +35,13 @@ import urllib3
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
+from ml.universe import ETF_TICKERS, get_etf_listing_start_dates, load_retired_tickers
+from scripts.taiwan_trading_calendar import (
+    is_taiwan_trading_day,
+    iter_taiwan_trading_days,
+    previous_taiwan_trading_day,
+)
+
 # --- SSL ---
 try:
     import truststore
@@ -46,7 +53,15 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # ==============================================================================
 # 路徑設定
 # ==============================================================================
-BASE_DIR = r"F:\stock"
+# 優先吃 STOCK_BASE_DIR env var；否則用本檔所在目錄。
+try:
+    from scripts.quarterly_source_contract import verify_market_source, write_verified_quarter
+except ModuleNotFoundError:
+    from quarterly_source_contract import verify_market_source, write_verified_quarter
+
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(
+    os.path.abspath(__file__)
+)
 DAILY_K_DIR = os.path.join(BASE_DIR, "日K資料")
 FUND_CACHE_DIR = os.path.join(BASE_DIR, "法人快取")
 RAW_MARGIN_DIR = os.path.join(BASE_DIR, "原始融資資料")
@@ -61,6 +76,7 @@ FOREIGN_OWN_DIR = os.path.join(BASE_DIR, "外資持股")
 
 CLEANED_MARGIN_FILE = os.path.join(CLEANED_DATA_DIR, "cleaned_all_margin_data.csv")
 MARGIN_MERGE_STATUS_FILE = os.path.join(CLEANED_DATA_DIR, "margin_merge_status.json")
+MIN_MARGIN_MARKET_ROWS = 50
 
 for d in [DAILY_K_DIR, FUND_CACHE_DIR, RAW_MARGIN_DIR, CLEANED_DATA_DIR, REVENUE_DIR,
           FINANCIAL_DIR, TDCC_DIR, INDEX_DIR, FOREIGN_OWN_DIR]:
@@ -68,13 +84,40 @@ for d in [DAILY_K_DIR, FUND_CACHE_DIR, RAW_MARGIN_DIR, CLEANED_DATA_DIR, REVENUE
 
 TODAY = date.today()
 REQUEST_PAUSE = 0.4
+DEFAULT_ETF_TICKERS = sorted(ETF_TICKERS)
+ETF_BACKFILL_START_DATE = date(2003, 6, 1)
+ETF_STOCK_DAY_URL = "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY"
+TWSE_TAIEX_HIST_URL = "https://www.twse.com.tw/rwd/zh/TAIEX/MI_5MINS_HIST"
+FINMIND_URL = "https://api.finmindtrade.com/api/v4/data"
+ETF_LISTING_START_DATES = get_etf_listing_start_dates()
 
 
 def get_previous_trading_day():
-    d = TODAY - timedelta(days=1)
-    while d.weekday() >= 5:
-        d -= timedelta(days=1)
-    return d
+    return previous_taiwan_trading_day(TODAY)
+
+
+def get_latest_twse_data_date():
+    if is_taiwan_trading_day(TODAY) and datetime.now().hour >= 18:
+        return TODAY
+    return get_previous_trading_day()
+
+
+def _resolve_revenue_update_window(today=None, retry_only=False):
+    """Return whether monthly revenue should run and the month window to scan."""
+    today_dt = today or datetime.today()
+    if isinstance(today_dt, date) and not isinstance(today_dt, datetime):
+        today_dt = datetime.combine(today_dt, datetime.min.time())
+
+    end_date = today_dt.replace(day=1) - relativedelta(days=1)
+    if retry_only:
+        return True, datetime(2025, 9, 1), end_date, "retry"
+
+    # MOPS monthly revenue is due around the 10th; avoid no-data storms on days 1-10.
+    if 11 <= today_dt.day <= 15:
+        start_date = end_date.replace(day=1) - relativedelta(months=1)
+        return True, start_date, end_date, "monthly_publish_window"
+
+    return False, None, end_date, "outside_monthly_publish_window"
 
 
 def _load_market_lookup():
@@ -182,21 +225,403 @@ def build_session():
 SESSION = build_session()
 
 
+def _fast_get(url, *, timeout=10, **kwargs):
+    """Use a no-retry request for nightly single-day endpoints."""
+    headers = dict(SESSION.headers)
+    headers.update(kwargs.pop("headers", {}) or {})
+    kwargs.setdefault("verify", SESSION.verify)
+    return requests.get(url, headers=headers, timeout=timeout, **kwargs)
+
+
+def _decode_csv_response(
+    response,
+    fallback_encodings=("utf-8-sig", "cp950", "big5", "big5hkscs"),
+):
+    """Decode exchange CSV bytes without trusting requests' text fallback."""
+    tried = []
+    if response.encoding:
+        tried.append(response.encoding)
+    tried.extend(enc for enc in fallback_encodings if enc not in tried)
+
+    for encoding in tried:
+        try:
+            return response.content.decode(encoding)
+        except (LookupError, UnicodeDecodeError):
+            continue
+    return response.content.decode("utf-8", errors="replace")
+
+
+def _month_starts(start_date, end_date):
+    cur = date(start_date.year, start_date.month, 1)
+    end_month = date(end_date.year, end_date.month, 1)
+    while cur <= end_month:
+        yield cur
+        if cur.month == 12:
+            cur = date(cur.year + 1, 1, 1)
+        else:
+            cur = date(cur.year, cur.month + 1, 1)
+
+
+def _parse_twse_stock_day_date(raw):
+    parts = str(raw).strip().split("/")
+    if len(parts) != 3:
+        raise ValueError(f"unexpected TWSE date: {raw}")
+    year = int(parts[0])
+    if year < 1911:
+        year += 1911
+    return date(year, int(parts[1]), int(parts[2])).isoformat()
+
+
+def _parse_stock_day_number(raw):
+    text = str(raw).replace(",", "").replace("--", "").strip()
+    if not text:
+        return np.nan
+    return pd.to_numeric(text, errors="coerce")
+
+
+def _parse_twse_stock_day_rows(rows):
+    parsed = []
+    for row in rows or []:
+        if len(row) < 7:
+            continue
+        open_price = _parse_stock_day_number(row[3])
+        high_price = _parse_stock_day_number(row[4])
+        low_price = _parse_stock_day_number(row[5])
+        close_price = _parse_stock_day_number(row[6])
+        if pd.isna(open_price) or pd.isna(high_price) or pd.isna(low_price) or pd.isna(close_price):
+            continue
+        volume = _parse_stock_day_number(row[1])
+        parsed.append(
+            {
+                "Date": _parse_twse_stock_day_date(row[0]),
+                "Open": float(open_price),
+                "High": float(high_price),
+                "Low": float(low_price),
+                "Close": float(close_price),
+                "Volume": 0 if pd.isna(volume) else int(volume),
+            }
+        )
+    return parsed
+
+
+def _parse_finmind_stock_price_rows(rows):
+    parsed = []
+    for row in rows or []:
+        open_price = _parse_stock_day_number(row.get("open"))
+        high_price = _parse_stock_day_number(row.get("max"))
+        low_price = _parse_stock_day_number(row.get("min"))
+        close_price = _parse_stock_day_number(row.get("close"))
+        volume = _parse_stock_day_number(row.get("Trading_Volume"))
+        if pd.isna(open_price) or pd.isna(high_price) or pd.isna(low_price) or pd.isna(close_price):
+            continue
+        parsed.append(
+            {
+                "Date": str(row.get("date")),
+                "Open": float(open_price),
+                "High": float(high_price),
+                "Low": float(low_price),
+                "Close": float(close_price),
+                "Volume": 0 if pd.isna(volume) else int(volume),
+            }
+        )
+    return parsed
+
+
+def _fetch_twse_stock_day_month(ticker, month_start):
+    params = {
+        "response": "json",
+        "date": month_start.strftime("%Y%m%d"),
+        "stockNo": ticker,
+    }
+    r = SESSION.get(ETF_STOCK_DAY_URL, params=params, timeout=30)
+    r.raise_for_status()
+    if r.status_code != 200:
+        raise RuntimeError(f"TWSE STOCK_DAY status={r.status_code}")
+    try:
+        data = r.json()
+    except ValueError:
+        return []
+    if data.get("stat") != "OK":
+        return []
+    return _parse_twse_stock_day_rows(data.get("data"))
+
+
+def _fetch_finmind_stock_price_range(ticker, start_date, end_date):
+    params = {
+        "dataset": "TaiwanStockPrice",
+        "data_id": ticker,
+        "start_date": start_date.isoformat(),
+        "end_date": end_date.isoformat(),
+    }
+    token = os.environ.get("FINMIND_TOKEN", "").strip()
+    if token:
+        params["token"] = token
+    r = SESSION.get(FINMIND_URL, params=params, timeout=60)
+    r.raise_for_status()
+    data = r.json()
+    if int(data.get("status") or 0) != 200:
+        raise RuntimeError(f"FinMind status={data.get('status')} msg={data.get('msg')}")
+    return _parse_finmind_stock_price_rows(data.get("data"))
+
+
+def _resolve_etf_backfill_start(path, ticker=None):
+    path = os.fspath(path)
+    if not os.path.exists(path):
+        return ETF_LISTING_START_DATES.get(str(ticker).upper(), ETF_BACKFILL_START_DATE)
+    try:
+        df = pd.read_csv(path, dtype={"Date": str}, usecols=["Date"])
+        dates = pd.to_datetime(df["Date"], errors="coerce").dropna()
+        if dates.empty:
+            return ETF_BACKFILL_START_DATE
+        latest = dates.max().date()
+        return date(latest.year, latest.month, 1)
+    except Exception:
+        return ETF_BACKFILL_START_DATE
+
+
+def _merge_daily_k_rows(path, rows):
+    path = os.fspath(path)
+    if not rows:
+        if os.path.exists(path):
+            try:
+                df_existing = pd.read_csv(path, dtype={"Date": str}, usecols=["Date"])
+                dates = pd.to_datetime(df_existing["Date"], errors="coerce").dropna()
+                latest = dates.max().date().isoformat() if not dates.empty else None
+                return 0, latest
+            except Exception:
+                return 0, None
+        return 0, None
+    df_new = pd.DataFrame(rows)
+    if os.path.exists(path) and os.path.getsize(path) > 0:
+        try:
+            df_old = pd.read_csv(path, dtype={"Date": str}, encoding="utf-8-sig")
+        except Exception:
+            df_old = pd.DataFrame()
+    else:
+        df_old = pd.DataFrame()
+
+    df_out = pd.concat([df_old, df_new], ignore_index=True)
+    df_out["Date"] = pd.to_datetime(df_out["Date"], errors="coerce")
+    df_out = df_out.dropna(subset=["Date"]).sort_values("Date")
+    before = len(df_old.drop_duplicates(subset=["Date"])) if "Date" in df_old.columns else 0
+    df_out["Date"] = df_out["Date"].dt.strftime("%Y-%m-%d")
+    df_out = df_out.drop_duplicates(subset=["Date"], keep="last")
+
+    core_cols = ["Date", "Open", "High", "Low", "Close", "Volume"]
+    ordered_cols = [col for col in core_cols if col in df_out.columns]
+    ordered_cols.extend([col for col in df_out.columns if col not in ordered_cols])
+    df_out = df_out[ordered_cols]
+
+    tmp_path = path + ".tmp"
+    df_out.to_csv(tmp_path, index=False, encoding="utf-8-sig")
+    os.replace(tmp_path, path)
+    latest_date = df_out["Date"].max() if not df_out.empty else None
+    return max(0, len(df_out) - before), latest_date
+
+
+def _existing_etf_daily_k_tickers(daily_k_dir=None):
+    """Return ETF tickers that already have local daily-K CSV files.
+
+    Nightly Step 1 should keep existing ETF data fresh, but must not expand to
+    the full dynamic ETF universe. Full ETF universe backfill is intentionally
+    reserved for the explicit --backfill-etfs command or on-demand holdings
+    flows.
+    """
+    daily_k_dir = daily_k_dir or DAILY_K_DIR
+    try:
+        filenames = os.listdir(daily_k_dir)
+    except FileNotFoundError:
+        return []
+
+    retired_tickers = load_retired_tickers()
+    tickers = []
+    for filename in filenames:
+        if not filename.lower().endswith(".csv"):
+            continue
+        ticker = os.path.splitext(filename)[0].upper()
+        path = os.path.join(daily_k_dir, filename)
+        if (
+            ticker in ETF_TICKERS
+            and ticker not in retired_tickers
+            and os.path.isfile(path)
+            and os.path.getsize(path) > 0
+        ):
+            tickers.append(ticker)
+    return sorted(tickers)
+
+
+def update_existing_etf_daily_k():
+    tickers = _existing_etf_daily_k_tickers()
+    if not tickers:
+        print("\n" + "=" * 60)
+        print("Step 1a: 更新 ETF 日K資料 (TWSE primary)")
+        print("=" * 60)
+        print("  skip: no local ETF daily-K CSV files to refresh")
+        return []
+    return backfill_etf_daily_k(tickers)
+
+
+def backfill_etf_daily_k(tickers=None, end_date=None, pause=1.2, source="auto"):
+    retired_tickers = load_retired_tickers()
+    raw_tickers = [str(ticker).upper() for ticker in (tickers or DEFAULT_ETF_TICKERS)]
+    skipped_retired = sorted(ticker for ticker in raw_tickers if ticker in retired_tickers)
+    tickers = [ticker for ticker in raw_tickers if ticker not in retired_tickers]
+    end_date = end_date or get_latest_twse_data_date()
+    print("\n" + "=" * 60)
+    print("Step 1a: 更新 ETF 日K資料 (TWSE primary)")
+    print("=" * 60)
+    if skipped_retired:
+        print(f"  skip retired ETF tickers: {', '.join(skipped_retired)}")
+    print(f"  ETF: {len(tickers)} 檔, 目標日期: {end_date}")
+
+    results = []
+    for ticker in tqdm(tickers, desc="ETF日K"):
+        path = os.path.join(DAILY_K_DIR, f"{ticker}.csv")
+        _, existing_latest = _merge_daily_k_rows(path, [])
+        existing_latest_date = None
+        if existing_latest:
+            try:
+                existing_latest_date = date.fromisoformat(str(existing_latest))
+            except ValueError:
+                existing_latest_date = None
+        if existing_latest_date and existing_latest_date >= end_date:
+            results.append(
+                {
+                    "ticker": ticker,
+                    "status": "latest",
+                    "rows_fetched": 0,
+                    "rows_added": 0,
+                    "latest_date": existing_latest,
+                    "source": "local",
+                    "error": None,
+                }
+            )
+            continue
+        start_date = _resolve_etf_backfill_start(path, ticker)
+        rows = []
+        status = "ok"
+        error = None
+        used_source = "twse" if source == "auto" else source
+        for month_start in _month_starts(start_date, end_date):
+            try:
+                if source == "finmind":
+                    rows = _fetch_finmind_stock_price_range(ticker, start_date, end_date)
+                    used_source = "finmind"
+                    break
+                rows.extend(_fetch_twse_stock_day_month(ticker, month_start))
+            except Exception as exc:
+                if source == "auto":
+                    try:
+                        rows = _fetch_finmind_stock_price_range(ticker, start_date, end_date)
+                        used_source = "finmind"
+                        status = "ok"
+                        error = None
+                    except Exception as fallback_exc:
+                        status = "error"
+                        error = f"TWSE {exc}; FinMind {fallback_exc}"
+                        tqdm.write(f"  {ticker}: 失敗 {error[:120]}")
+                    break
+                status = "error"
+                error = str(exc)
+                tqdm.write(f"  {ticker} {month_start:%Y-%m}: 失敗 {error[:80]}")
+                break
+            time.sleep(pause)
+        added, latest_date = _merge_daily_k_rows(path, rows)
+        if not rows and status == "ok":
+            status = "no_data"
+        results.append(
+            {
+                "ticker": ticker,
+                "status": status,
+                "rows_fetched": len(rows),
+                "rows_added": added,
+                "latest_date": latest_date,
+                "source": used_source,
+                "error": error,
+            }
+        )
+
+    ok = sum(1 for row in results if row["status"] in {"ok", "no_data", "latest"} and row["latest_date"])
+    failed = [row for row in results if row["status"] == "error" or not row["latest_date"]]
+    sources = {}
+    for row in results:
+        sources[row["source"]] = sources.get(row["source"], 0) + 1
+    print(f"  完成 ETF 日K: ok={ok}, failed={len(failed)}")
+    print("  來源: " + ", ".join(f"{source}={count}" for source, count in sorted(sources.items())))
+    if failed:
+        print("  失敗/無資料: " + ", ".join(row["ticker"] for row in failed[:20]))
+    return results
+
+
 # ==============================================================================
 # Step 1: 日K資料更新 (yfinance)
 # ==============================================================================
+def _drop_fake_flat_bars(df_new, today=None):
+    """移除 Yahoo 假K棒：(1) 休市日占位棒＝零量且四價全平；(2) 非交易日或未來日期棒。
+
+    2026-07-10 颱風假事故：yfinance 回傳 1161 檔零量平價棒污染日K，(1) 擋在寫入前。
+    2026-09-21 事故：yfinance 對冷門上櫃股(5276/5878)回傳日期落在週日 9/20 的即時報價棒，
+    有量且非平價逃過 (1)，官方校驗對非交易日 fail closed 擊落整條 Phase-1 鏈，故加 (2)。
+    """
+    required = {"Open", "High", "Low", "Close", "Volume"}
+    if not required.issubset(df_new.columns) or df_new.empty:
+        return df_new
+    today = today or TODAY
+    vol = pd.to_numeric(df_new["Volume"], errors="coerce").fillna(0)
+    o = pd.to_numeric(df_new["Open"], errors="coerce")
+    h = pd.to_numeric(df_new["High"], errors="coerce")
+    l = pd.to_numeric(df_new["Low"], errors="coerce")
+    c = pd.to_numeric(df_new["Close"], errors="coerce")
+    fake = (vol == 0) & (o == h) & (h == l) & (l == c)
+    if "Date" in df_new.columns:
+        dates = pd.to_datetime(df_new["Date"], errors="coerce")
+        bad_day = pd.Series(
+            [pd.isna(d) or d.date() > today or not is_taiwan_trading_day(d.date()) for d in dates],
+            index=df_new.index,
+        )
+        fake = fake | bad_day
+    return df_new[~fake]
+
+
 def step1_update_daily_k():
     import yfinance as yf
+    from scripts.listed_company_discovery import discover_and_seed_listed_companies
 
     print("\n" + "=" * 60)
     print("Step 1/7: 更新日K資料 (yfinance)")
     print("=" * 60)
 
-    tickers = sorted([
+    # Discover official companies before enumerating local files; otherwise new
+    # listing codes can never enter the source tree. Seed only real current bars.
+    discovery = discover_and_seed_listed_companies(
+        base_dir=BASE_DIR,
+        target_date=get_latest_twse_data_date().isoformat(),
+        knowledge_date=TODAY.isoformat(),
+        retired_tickers=load_retired_tickers(),
+        etf_tickers=ETF_TICKERS,
+    )
+    print(f"  官方公司清單: {discovery['company_count']}，新增真實日K: {len(discovery['seeded'])}，"
+          f"待官方有效OHLC: {len(discovery['pending'])}")
+    if discovery["pending"]:
+        print("  [DATA GAPS] 新股待確認: " + ", ".join(
+            f"{row['ticker']}({row['reason']})" for row in discovery["pending"]))
+
+    update_existing_etf_daily_k()
+
+    retired_tickers = load_retired_tickers()
+    all_tickers = [
         os.path.splitext(f)[0]
         for f in os.listdir(DAILY_K_DIR)
-        if f.endswith(".csv") and os.path.splitext(f)[0].isdigit()
-    ])
+        if (
+            f.endswith(".csv")
+            and os.path.splitext(f)[0].isdigit()
+            and os.path.splitext(f)[0] not in DEFAULT_ETF_TICKERS
+        )
+    ]
+    skipped_retired = sorted(ticker for ticker in all_tickers if ticker in retired_tickers)
+    tickers = sorted(ticker for ticker in all_tickers if ticker not in retired_tickers)
+    if skipped_retired:
+        print(f"  skip retired tickers: {', '.join(skipped_retired)}")
     print(f"本地 CSV 共 {len(tickers)} 檔")
 
     updated = latest = failed = 0
@@ -272,6 +697,12 @@ def step1_update_daily_k():
                     last_err = None
                     break
 
+                df_new = _drop_fake_flat_bars(df_new)
+                if df_new.empty:
+                    latest += 1
+                    last_err = None
+                    break
+
                 df_combined = pd.concat([df_old, df_new], ignore_index=True)
                 df_combined["Date"] = pd.to_datetime(df_combined["Date"], errors="coerce")
                 df_combined = df_combined.dropna(subset=["Date"])
@@ -323,13 +754,27 @@ def _find_missing_dates(directory, prefix, suffix, end_date, lookback_days=60,
                 existing.add(datetime.strptime(d_str, "%Y%m%d").date())
             except Exception:
                 pass
-    missing = []
-    d = start
-    while d <= end_date:
-        if d.weekday() < 5 and d not in existing:
-            missing.append(d)
-        d += timedelta(days=1)
-    return missing
+    return [d for d in iter_taiwan_trading_days(start, end_date) if d not in existing]
+
+
+def _find_missing_fund_dates(directory, end_date, lookback_days=60):
+    """Return trading dates missing either TWSE or TPEx institutional cache."""
+    twse_missing = _find_missing_dates(
+        directory,
+        "fund_",
+        ".csv",
+        end_date,
+        lookback_days=lookback_days,
+        exclude_prefix="fund_tpex",
+    )
+    tpex_missing = _find_missing_dates(
+        directory,
+        "fund_tpex_",
+        ".csv",
+        end_date,
+        lookback_days=lookback_days,
+    )
+    return sorted(set(twse_missing) | set(tpex_missing))
 
 
 def _detect_fund_last_date():
@@ -355,33 +800,39 @@ def _fetch_twse_fund(date_str_8):
         return "exists"
     url = f"https://www.twse.com.tw/fund/T86?response=csv&date={date_str_8}&selectType=ALL"
     try:
-        r = SESSION.get(url, timeout=20)
-        raw = r.text
-        lines = [line for line in raw.split("\n") if "證券代號" in line or "證券名稱" in line]
-        if not lines:
+        r = _fast_get(url, timeout=10)
+        r.raise_for_status()
+        raw = _decode_csv_response(r)
+        raw_lines = raw.splitlines()
+        header_idx = next(
+            (
+                i for i, line in enumerate(raw_lines)
+                if "證券代號" in line and "證券名稱" in line
+            ),
+            None,
+        )
+        if header_idx is None:
             return "no_data"
-        header_line = lines[0]
-        content = []
-        header_found = False
-        for line in raw.split("\n"):
-            if header_found:
-                content.append(line)
-            elif line.strip() == header_line.strip():
-                header_found = True
-                content.append(line)
-        raw2 = "\n".join(content)
-        df = pd.read_csv(StringIO(raw2))
+        raw2 = "\n".join(raw_lines[header_idx:])
+        df = pd.read_csv(StringIO(raw2), dtype=str)
         df.columns = [c.replace("\ufeff", "").strip() for c in df.columns]
-        if "證券代號" not in df.columns:
+        if len(df.columns) <= 11:
             return "no_data"
-        df = df[df["證券代號"].astype(str).str.isnumeric()]
-        df = df.rename(columns={
-            "證券代號": "Ticker",
-            "外陸資買賣超股數(不含外資自營商)": "Foreign_BuySell",
-            "投信買賣超股數": "Trust_BuySell",
-            "自營商買賣超股數": "Dealer_BuySell",
+        df = pd.DataFrame({
+            "Ticker": (
+                df.iloc[:, 0]
+                .astype(str)
+                .str.replace("=", "", regex=False)
+                .str.replace('"', "", regex=False)
+                .str.strip()
+            ),
+            "Foreign_BuySell": df.iloc[:, 4],
+            "Trust_BuySell": df.iloc[:, 10],
+            "Dealer_BuySell": df.iloc[:, 11],
         })
-        df = df[["Ticker", "Foreign_BuySell", "Trust_BuySell", "Dealer_BuySell"]]
+        df = df[df["Ticker"].astype(str).str.fullmatch(r"\d{4}", na=False)].copy()
+        if df.empty:
+            return "no_data"
         df["Date"] = f"{date_str_8[:4]}-{date_str_8[4:6]}-{date_str_8[6:]}"
         for col in ["Foreign_BuySell", "Trust_BuySell", "Dealer_BuySell"]:
             df[col] = pd.to_numeric(df[col].astype(str).str.replace(",", ""), errors="coerce").fillna(0)
@@ -406,21 +857,27 @@ def _fetch_tpex_fund(date_str):
     url = "https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_result.php"
     params = {"l": "zh-tw", "d": tpex_date_str, "_": str(int(time.time() * 1000))}
     try:
-        r = SESSION.get(url, params=params, timeout=20)
+        r = _fast_get(url, params=params, timeout=10)
         data = r.json()
         df = None
-        if isinstance(data, dict) and data.get("aaData"):
-            tmp = pd.DataFrame(data["aaData"])
-            df = tmp[[0, 4, 7, 8]].copy()
-            df.columns = ["Ticker", "Foreign_BuySell", "Trust_BuySell", "Dealer_BuySell"]
-        elif isinstance(data, dict) and data.get("tables") and data["tables"][0].get("data"):
-            tmp = pd.DataFrame(data["tables"][0]["data"])
-            sel = tmp[[0, 4, 7, 10, 13]].copy()
+        # TPEX 3itrade_hedge 24 欄佈局(三欄一組 買/賣/淨):
+        #   2-4 外資不含自營 | 5-7 外資自營 | 8-10 外資合計 | 11-13 投信
+        #   14-16 自營自行 | 17-19 自營避險 | 20-22 自營合計 | 23 三大合計
+        # 2026-07-02 修正:舊碼把 col7(外資自營淨,常年0)當投信、col10+13(外資合計+投信)
+        # 當自營 → 上櫃股 Trust/Dealer 兩欄歷史全錯(原相投信連買7天被記成0)。
+        # 正確:Foreign=col4(不含自營,與歷史連續)、Trust=col13、Dealer=col16+col19。
+        def _map_24col(tmp: "pd.DataFrame") -> "pd.DataFrame":
+            sel = tmp[[0, 4, 13, 16, 19]].copy()
             sel.columns = ["Ticker", "Foreign_BuySell", "Trust_BuySell", "Dealer_Prop", "Dealer_Hedge"]
             for c in ["Foreign_BuySell", "Trust_BuySell", "Dealer_Prop", "Dealer_Hedge"]:
                 sel[c] = pd.to_numeric(sel[c].astype(str).str.replace(",", ""), errors="coerce").fillna(0)
             sel["Dealer_BuySell"] = sel["Dealer_Prop"] + sel["Dealer_Hedge"]
-            df = sel[["Ticker", "Foreign_BuySell", "Trust_BuySell", "Dealer_BuySell"]]
+            return sel[["Ticker", "Foreign_BuySell", "Trust_BuySell", "Dealer_BuySell"]]
+
+        if isinstance(data, dict) and data.get("aaData"):
+            df = _map_24col(pd.DataFrame(data["aaData"]))
+        elif isinstance(data, dict) and data.get("tables") and data["tables"][0].get("data"):
+            df = _map_24col(pd.DataFrame(data["tables"][0]["data"]))
         else:
             return "no_data"
 
@@ -442,13 +899,12 @@ def step2_update_fund_data():
 
     # 18:00 後法人資料通常已公布，嘗試抓今天的
     now = datetime.now()
-    if now.hour >= 18 and TODAY.weekday() < 5 and TODAY > end:
+    if now.hour >= 18 and is_taiwan_trading_day(TODAY) and TODAY > end:
         end = TODAY
         print(f"  (18:00後，嘗試包含今日 {TODAY} 法人資料)")
 
     # 缺口偵測：掃描近 60 天，找遺漏的交易日
-    missing = _find_missing_dates(FUND_CACHE_DIR, "fund_", ".csv", end,
-                                  lookback_days=60, exclude_prefix="fund_tpex")
+    missing = _find_missing_fund_dates(FUND_CACHE_DIR, end, lookback_days=60)
     if not missing:
         print("  法人資料已是最新（含缺口檢查）")
         return
@@ -470,13 +926,14 @@ def step2_update_fund_data():
         # 近 3 天：僅在 error（網路/例外）時重試；no_data 表示假日或真無資料，不重試
         if d >= TODAY - timedelta(days=3):
             for attempt in range(3):
-                needs_retry = (r1 == "error") or (r2 == "error")
+                retry_statuses = {"error", "no_data"}
+                needs_retry = (r1 in retry_statuses) or (r2 in retry_statuses)
                 if not needs_retry:
                     break
                 time.sleep(2 ** (attempt + 1))
-                if r1 == "error":
+                if r1 in retry_statuses:
                     r1 = _fetch_twse_fund(d8)
-                if r2 == "error":
+                if r2 in retry_statuses:
                     r2 = _fetch_tpex_fund(d_str)
         if "ok" in (r1, r2):
             ok += 1
@@ -504,8 +961,45 @@ def _detect_margin_last_date():
         return date(2020, 1, 1)
 
 
+def _margin_raw_file_valid(path, market, day):
+    if not os.path.exists(path):
+        return False
+    date_str = day.strftime("%Y-%m-%d")
+    if market == "TWSE":
+        frame = _clean_twse_margin(path, date_str)
+    else:
+        frame = _clean_tpex_margin(path, date_str)
+    return len(frame) >= MIN_MARGIN_MARKET_ROWS
+
+
+def _find_missing_margin_dates(directory, end_date, lookback_days=60):
+    start = end_date - timedelta(days=lookback_days)
+    missing = []
+    for day in iter_taiwan_trading_days(start, end_date):
+        ymd = day.strftime("%Y%m%d")
+        twse = os.path.join(directory, f"raw_margin_twse_{ymd}.csv")
+        tpex = os.path.join(directory, f"raw_margin_tpex_{ymd}.json")
+        if not _margin_raw_file_valid(twse, "TWSE", day) or not _margin_raw_file_valid(tpex, "TPEx", day):
+            missing.append(day)
+    return missing
+
+
+def _write_raw_margin_atomic(content, save_path, market, day, encoding):
+    tmp_path = save_path + ".tmp"
+    try:
+        with open(tmp_path, "w", encoding=encoding) as handle:
+            handle.write(content)
+        if not _margin_raw_file_valid(tmp_path, market, day):
+            return False
+        os.replace(tmp_path, save_path)
+        return True
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+
+
 def _download_twse_margin(d, save_path):
-    if os.path.exists(save_path):
+    if _margin_raw_file_valid(save_path, "TWSE", d):
         return "exists"
     date_str = d.strftime("%Y%m%d")
     url = f"https://www.twse.com.tw/exchangeReport/MI_MARGN?response=csv&date={date_str}&selectType=ALL"
@@ -513,28 +1007,36 @@ def _download_twse_margin(d, save_path):
         r = SESSION.get(url, timeout=20)
         txt = r.text.strip()
         if r.status_code == 200 and len(txt) > 500:
-            with open(save_path, "w", encoding="utf-8") as f:
-                f.write(txt)
-            return "ok"
+            if _write_raw_margin_atomic(txt, save_path, "TWSE", d, "utf-8"):
+                return "ok"
+            return "error"
         return "no_data"
     except Exception:
         return "error"
 
 
 def _download_tpex_margin(d, save_path):
-    if os.path.exists(save_path):
+    if _margin_raw_file_valid(save_path, "TPEx", d):
         return "exists"
     roc_year = d.year - 1911
     tpex_date_str = f"{roc_year}/{d.strftime('%m/%d')}"
-    url = "https://www.tpex.org.tw/web/stock/margin_trading/margin_balance/margin_bal_result.php"
-    params = {"l": "zh-tw", "d": tpex_date_str, "_": str(int(time.time() * 1000))}
+    # 2026-05 TPEx 網站改版:舊 /web/ 端點回空殼 JSON(stat ok 但 data=[]),
+    # 造成上櫃融資券凍結 46 個交易日無人發現。新端點 + 內容驗證(不可只看長度)。
+    url = "https://www.tpex.org.tw/www/zh-tw/margin/balance"
+    params = {"date": tpex_date_str, "response": "json"}
     try:
         r = SESSION.get(url, params=params, timeout=20)
         txt = r.text.strip()
-        if txt and len(txt) > 100:
-            with open(save_path, "w", encoding="utf-8-sig") as f:
-                f.write(txt)
-            return "ok"
+        try:
+            payload = json.loads(txt)
+            tables = payload.get("tables") or []
+            has_rows = any(t.get("data") for t in tables if isinstance(t, dict))
+        except (ValueError, AttributeError):
+            has_rows = False
+        if has_rows:
+            if _write_raw_margin_atomic(txt, save_path, "TPEx", d, "utf-8-sig"):
+                return "ok"
+            return "error"
         return "no_data"
     except Exception:
         return "error"
@@ -547,15 +1049,16 @@ def step3_update_margin_data():
 
     end = get_previous_trading_day()
 
-    # 18:00 後融資券資料通常已公布，嘗試抓今天的
+    # 官方融資券約 21:00 才公布。Phase-1 跑 19:30 時當日資料尚未存在,
+    # 抓不到是**正常**不是失敗(當日份由 Phase-2 早晨 margin backfill 補齊)。
+    # 這裡仍嘗試當日(若官方提早發布就順便抓到),但當日失敗不得阻斷 pipeline。
     now = datetime.now()
-    if now.hour >= 18 and TODAY.weekday() < 5 and TODAY > end:
+    if now.hour >= 18 and is_taiwan_trading_day(TODAY) and TODAY > end:
         end = TODAY
-        print(f"  (18:00後，嘗試包含今日 {TODAY} 融資券資料)")
+        print(f"  (18:00後，嘗試包含今日 {TODAY} 融資券資料;未公布屬正常)")
 
     # 缺口偵測：掃描近 60 天，找遺漏的交易日
-    missing = _find_missing_dates(RAW_MARGIN_DIR, "raw_margin_twse_", ".csv", end,
-                                  lookback_days=60)
+    missing = _find_missing_margin_dates(RAW_MARGIN_DIR, end, lookback_days=60)
     if not missing:
         print("  融資券原始檔已是最新（含缺口檢查），檢查總表是否同步...")
         last_date = _detect_margin_last_date()
@@ -569,6 +1072,8 @@ def step3_update_margin_data():
     print(f"  下載範圍: {missing[0]} ~ {missing[-1]} ({len(missing)} 天)")
 
     ok = 0
+    failed_dates = []
+    pending_today = []
     for d in tqdm(missing, desc="融資券下載"):
         ymd = d.strftime("%Y%m%d")
         twse_path = os.path.join(RAW_MARGIN_DIR, f"raw_margin_twse_{ymd}.csv")
@@ -586,14 +1091,26 @@ def step3_update_margin_data():
                     r1 = _download_twse_margin(d, twse_path)
                 if r2 == "error":
                     r2 = _download_tpex_margin(d, tpex_path)
-        if "ok" in (r1, r2):
+        source_ok = {r1, r2} <= {"ok", "exists"}
+        if source_ok:
             ok += 1
+        elif d >= TODAY:
+            # 當日份:官方 ~21:00 才發布,Phase-1(19:30)抓不到屬正常時序,
+            # 不列為失敗;Phase-2 早晨 margin backfill 會補齊。
+            pending_today.append(f"{d.isoformat()}(TWSE={r1},TPEx={r2})")
+        else:
+            # 歷史缺口抓不到才是真問題(來源改版/端點壞掉),必須大聲失敗
+            failed_dates.append(f"{d.isoformat()}(TWSE={r1},TPEx={r2})")
         time.sleep(0.35)
 
     print(f"  新增: {ok} 天")
+    if pending_today:
+        print(f"  當日融資尚未公布(官方約21:00)，Phase-2 早晨補抓: {', '.join(pending_today)}")
 
     # 清理 + 合併到總表（從最早缺口開始）
     _clean_and_merge_margin(missing[0], end)
+    if failed_dates:
+        raise RuntimeError("融資券來源不完整: " + ", ".join(failed_dates[:10]))
 
 
 TARGET_COLUMNS = ["Date", "Ticker", "Margin_Balance", "Short_Balance"]
@@ -617,7 +1134,9 @@ def _clean_twse_margin(file_path, date_str):
         if not all(c in df.columns for c in required):
             return pd.DataFrame(columns=TARGET_COLUMNS)
         df["代號"] = df["代號"].astype(str).str.replace('=', '').str.replace('"', '').str.strip()
-        df = df[df["代號"].str.match(r"^\d{4,6}$", na=False)]
+        # Exchange identifiers include ETF suffixes (e.g. 00632R); preserve
+        # identifiers here. Model/universe security filters are separate.
+        df = df[df["代號"].str.match(r"^\d{4,6}[A-Z]?$", na=False)]
         df = df[required].copy()
         df.columns = ["Ticker", "Margin_Balance", "Short_Balance"]
         df["Date"] = date_str
@@ -639,10 +1158,10 @@ def _clean_tpex_margin(file_path, date_str):
         data = json.loads(content)
         if "tables" in data and data.get("tables") and data["tables"][0].get("data"):
             df_raw = pd.DataFrame(data["tables"][0]["data"])
-            df_sel = df_raw.iloc[:, [0, 6, 14]]
+            df_sel = df_raw.iloc[:, [0, 6, 14]].copy()
         elif "aaData" in data and data.get("aaData"):
             df_raw = pd.DataFrame(data["aaData"])
-            df_sel = df_raw.iloc[:, [0, 6, 12]]
+            df_sel = df_raw.iloc[:, [0, 6, 12]].copy()
         else:
             return pd.DataFrame(columns=TARGET_COLUMNS)
         df_sel.columns = ["Ticker", "Margin_Balance", "Short_Balance"]
@@ -654,6 +1173,50 @@ def _clean_tpex_margin(file_path, date_str):
         return pd.DataFrame(columns=TARGET_COLUMNS)
 
 
+def _read_margin_merge_status():
+    try:
+        with open(MARGIN_MERGE_STATUS_FILE, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        return payload if isinstance(payload, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _write_margin_merge_status(payload):
+    tmp_path = MARGIN_MERGE_STATUS_FILE + ".tmp"
+    try:
+        with open(tmp_path, "w", encoding="utf-8") as handle:
+            json.dump(payload, handle, ensure_ascii=False)
+        os.replace(tmp_path, MARGIN_MERGE_STATUS_FILE)
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+
+
+def _mark_margin_dirty(day):
+    payload = _read_margin_merge_status()
+    current = payload.get("pending_remerge_from")
+    candidate = day.isoformat() if isinstance(day, date) else str(day)[:10]
+    if not current or candidate < str(current)[:10]:
+        payload["pending_remerge_from"] = candidate
+    _write_margin_merge_status(payload)
+
+
+def _resolve_margin_merge_start(last_merged, pending_remerge):
+    candidates = []
+    if last_merged:
+        try:
+            candidates.append((datetime.strptime(str(last_merged)[:10], "%Y-%m-%d").date() + timedelta(days=1)).isoformat())
+        except ValueError:
+            pass
+    if pending_remerge:
+        try:
+            candidates.append(datetime.strptime(str(pending_remerge)[:10], "%Y-%m-%d").date().isoformat())
+        except ValueError:
+            pass
+    return min(candidates) if candidates else None
+
+
 def _clean_and_merge_margin(start, end):
     """清理新的融資券原始資料並合併到總表"""
     print("  清理並合併融資券資料...")
@@ -662,34 +1225,63 @@ def _clean_and_merge_margin(start, end):
     old_dates = set()
     if os.path.exists(CLEANED_MARGIN_FILE):
         try:
-            df_old = pd.read_csv(CLEANED_MARGIN_FILE, usecols=TARGET_COLUMNS)
+            # Security codes are identifiers: 006203 must never become OTC 6203.
+            df_old = pd.read_csv(
+                CLEANED_MARGIN_FILE, usecols=TARGET_COLUMNS,
+                dtype={"Ticker": str, "Date": str},
+            )
             if "Date" in df_old.columns and not df_old.empty:
                 old_dates = set(df_old["Date"].astype(str).unique())
         except Exception:
             df_old = None
 
+    # 2026-07 修正:不可用「日期已存在」跳過——TWSE 已入而 TPEx 殘缺的日期會永遠
+    # 修不好(上櫃融資凍結 46 日事故)。改為整段重清,靠 drop_duplicates keep=last 幂等。
     dates = pd.date_range(start=start, end=end)
-    dates_to_clean = [d.strftime("%Y-%m-%d") for d in dates if d.strftime("%Y-%m-%d") not in old_dates]
+    dates_to_clean = [d.strftime("%Y-%m-%d") for d in dates]
 
     if not dates_to_clean:
         print("  融資券總表已是最新")
         return
 
     all_new = []
+    complete_dates = []
     for iso in dates_to_clean:
         ymd = iso.replace("-", "")
         df_twse = _clean_twse_margin(os.path.join(RAW_MARGIN_DIR, f"raw_margin_twse_{ymd}.csv"), iso)
         df_tpex = _clean_tpex_margin(os.path.join(RAW_MARGIN_DIR, f"raw_margin_tpex_{ymd}.json"), iso)
+        if len(df_twse) < MIN_MARGIN_MARKET_ROWS or len(df_tpex) < MIN_MARGIN_MARKET_ROWS:
+            print(
+                f"  跳過 {iso}: 融資券來源不完整 "
+                f"(TWSE={len(df_twse)}, TPEx={len(df_tpex)})"
+            )
+            continue
         all_new.append(df_twse)
         all_new.append(df_tpex)
+        complete_dates.append(iso)
+
+    if not complete_dates:
+        print("  沒有雙市場完整日期可合併，保留既有融資券總表")
+        return
 
     base = df_old if df_old is not None else pd.DataFrame(columns=TARGET_COLUMNS)
+    if not base.empty:
+        base = base[~base["Date"].astype(str).isin(complete_dates)].copy()
     df_new = pd.concat(all_new, ignore_index=True) if all_new else pd.DataFrame(columns=TARGET_COLUMNS)
     out = pd.concat([base, df_new], ignore_index=True)
     if not out.empty:
+        # Ticker 正規化為 str:舊表 pandas 讀成 int、新資料為 str 時去重 key 對不上會產生重複列
+        out["Ticker"] = out["Ticker"].astype(str).str.strip()
         out.drop_duplicates(subset=["Date", "Ticker"], keep="last", inplace=True)
         out.sort_values(by=["Ticker", "Date"], inplace=True)
-    out.to_csv(CLEANED_MARGIN_FILE, index=False, encoding="utf-8-sig")
+    tmp_path = CLEANED_MARGIN_FILE + ".tmp"
+    try:
+        out.to_csv(tmp_path, index=False, encoding="utf-8-sig")
+        os.replace(tmp_path, CLEANED_MARGIN_FILE)
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+    _mark_margin_dirty(datetime.strptime(min(complete_dates), "%Y-%m-%d").date())
     print(f"  融資券總表更新完成，共 {len(out):,} 筆")
 
 
@@ -734,7 +1326,11 @@ def step4_merge_fund_into_daily_k():
     cache_dates_by_market = _fund_cache_dates_by_market()
     print(f"  法人資料: {len(fund_data):,} 筆, {len(grouped):,} 支股票")
 
-    stock_files = [f for f in os.listdir(DAILY_K_DIR) if f.endswith(".csv")]
+    retired_tickers = load_retired_tickers()
+    stock_files = [
+        f for f in os.listdir(DAILY_K_DIR)
+        if f.endswith(".csv") and os.path.splitext(f)[0] not in retired_tickers
+    ]
     updated = skipped = 0
     zero_filled_cells = 0
     for fn in tqdm(stock_files, desc="合併法人→日K"):
@@ -779,16 +1375,16 @@ def step5_merge_margin_into_daily_k():
     all_margin = pd.read_csv(CLEANED_MARGIN_FILE, dtype={"Ticker": str, "Date": str}, encoding="utf-8-sig")
 
     # 增量: 只合併上次之後的
-    start_date_for_merge = None
-    try:
-        with open(MARGIN_MERGE_STATUS_FILE, "r", encoding="utf-8") as f:
-            status = json.load(f)
-            last = status.get("last_merged_date")
-            if last:
-                last_dt = datetime.strptime(last, "%Y-%m-%d").date()
-                start_date_for_merge = (last_dt + timedelta(days=1)).strftime("%Y-%m-%d")
-                print(f"  上次合併至: {last}, 本次從 {start_date_for_merge} 起")
-    except Exception:
+    status = _read_margin_merge_status()
+    last = status.get("last_merged_date")
+    pending_remerge = status.get("pending_remerge_from")
+    start_date_for_merge = _resolve_margin_merge_start(last, pending_remerge)
+    if start_date_for_merge:
+        print(
+            f"  上次合併至: {last or '無'}, 歷史補洞起點: {pending_remerge or '無'}, "
+            f"本次從 {start_date_for_merge} 起"
+        )
+    else:
         print("  首次合併")
 
     if start_date_for_merge:
@@ -803,7 +1399,11 @@ def step5_merge_margin_into_daily_k():
     grp = data_to_merge.groupby("Ticker")
     tickers_to_merge = set(grp.groups.keys())
 
-    stock_files = [f for f in os.listdir(DAILY_K_DIR) if f.endswith(".csv")]
+    retired_tickers = load_retired_tickers()
+    stock_files = [
+        f for f in os.listdir(DAILY_K_DIR)
+        if f.endswith(".csv") and os.path.splitext(f)[0] not in retired_tickers
+    ]
     updated = skipped = 0
 
     for fn in tqdm(stock_files, desc="合併融資券→日K"):
@@ -826,9 +1426,8 @@ def step5_merge_margin_into_daily_k():
         except Exception:
             skipped += 1
 
-    latest_date = data_to_merge["Date"].max()
-    with open(MARGIN_MERGE_STATUS_FILE, "w", encoding="utf-8") as f:
-        json.dump({"last_merged_date": latest_date}, f, ensure_ascii=False)
+    latest_date = all_margin["Date"].max()
+    _write_margin_merge_status({"last_merged_date": latest_date})
 
     print(f"  更新: {updated}, 略過: {skipped}, 合併至: {latest_date}")
 
@@ -1018,21 +1617,15 @@ def step6_update_revenue(retry_only=False):
     print("Step 6/7: 更新月營收" + (" (重試模式)" if retry_only else ""))
     print("=" * 60)
 
-    today_day = datetime.today().day
-    end_date = datetime.today().replace(day=1) - relativedelta(days=1)
-
-    # 每月 11~15 號才做完整掃描（營收公布截止日後）
-    # 其他日子只檢查最近一個月，大幅減少無意義請求
-    if not retry_only and today_day > 15:
-        print("  今日非營收公布期 (每月1~15日)，跳過月營收更新")
+    should_run, start_date, end_date, reason = _resolve_revenue_update_window(
+        retry_only=retry_only
+    )
+    if not should_run:
+        print("  今日非營收公布期 (每月11~15日)，跳過月營收更新")
         return
 
-    if not retry_only and 1 <= today_day <= 15:
-        # 只掃最近 2 個月
-        start_date = end_date.replace(day=1) - relativedelta(months=1)
+    if reason == "monthly_publish_window":
         print(f"  營收公布期，只檢查近 2 個月: {start_date.strftime('%Y-%m')} ~ {end_date.strftime('%Y-%m')}")
-    else:
-        start_date = datetime(2020, 1, 1) if not retry_only else datetime(2025, 9, 1)
 
     def month_range(s, e):
         cur = s.replace(day=1)
@@ -1044,10 +1637,15 @@ def step6_update_revenue(retry_only=False):
     all_months = list(month_range(start_date, end_date))
 
     # 找出需要更新的股票
+    retired_tickers = load_retired_tickers()
     all_tickers = sorted([
         os.path.splitext(f)[0]
         for f in os.listdir(DAILY_K_DIR)
-        if f.endswith(".csv") and os.path.splitext(f)[0].isdigit()
+        if (
+            f.endswith(".csv")
+            and os.path.splitext(f)[0].isdigit()
+            and os.path.splitext(f)[0] not in retired_tickers
+        )
     ])
 
     if retry_only:
@@ -1177,7 +1775,11 @@ def step7_calc_indicators():
     print("Step 7/7: 重算技術指標")
     print("=" * 60)
 
-    csv_files = [f for f in os.listdir(DAILY_K_DIR) if f.endswith(".csv")]
+    retired_tickers = load_retired_tickers()
+    csv_files = [
+        f for f in os.listdir(DAILY_K_DIR)
+        if f.endswith(".csv") and os.path.splitext(f)[0] not in retired_tickers
+    ]
     processed = skipped = 0
 
     for fn in tqdm(csv_files, desc="技術指標"):
@@ -1198,9 +1800,6 @@ def step7_calc_indicators():
                 skipped += 1
                 continue
 
-            c = df["Close"]
-            h, l, v = df["High"], df["Low"], df["Volume"]
-
             # 刪除舊指標欄位再重算
             indicator_cols = [
                 "MA_5", "MA_20", "MA_60", "RSI_6", "RSI_14",
@@ -1209,30 +1808,13 @@ def step7_calc_indicators():
                 "K", "D", "ATR_14", "VOL_MA_5", "VOL_MA_20",
             ]
             df.drop(columns=[x for x in indicator_cols if x in df.columns], errors="ignore", inplace=True)
+            from ml.features.technical import compute_classic_technical_indicators
 
-            df["MA_5"] = c.rolling(5).mean()
-            df["MA_20"] = c.rolling(20).mean()
-            df["MA_60"] = c.rolling(60).mean()
-            df["RSI_6"] = _rsi(c, 6)
-            df["RSI_14"] = _rsi(c, 14)
-            ma20 = c.rolling(20).mean()
-            std20 = c.rolling(20).std()
-            df["BBM_20_2.0"] = ma20
-            df["BBU_20_2.0"] = ma20 + 2 * std20
-            df["BBL_20_2.0"] = ma20 - 2 * std20
-            ema12 = c.ewm(span=12, adjust=False).mean()
-            ema26 = c.ewm(span=26, adjust=False).mean()
-            macd = ema12 - ema26
-            signal = macd.ewm(span=9, adjust=False).mean()
-            df["MACD_12_26_9"] = macd
-            df["MACDs_12_26_9"] = signal
-            df["MACDh_12_26_9"] = macd - signal
-            k, d = _stoch_kd(h, l, c)
-            df["K"] = k
-            df["D"] = d
-            df["ATR_14"] = _atr(h, l, c)
-            df["VOL_MA_5"] = v.rolling(5).mean()
-            df["VOL_MA_20"] = v.rolling(20).mean()
+            ticker = os.path.splitext(fn)[0]
+            technical = compute_classic_technical_indicators(df, ticker=ticker)
+            for column in indicator_cols:
+                if column in technical.columns:
+                    df[column] = technical[column]
 
             df.replace([np.inf, -np.inf], np.nan, inplace=True)
             df.to_csv(path, index=False)
@@ -1300,61 +1882,140 @@ def _parse_mops_ratio_tables(html_text):
     return df
 
 
+FINANCIAL_COMPLETENESS_RATIO = 0.8
+FINANCIAL_FILING_GRACE_DAYS = 3
+FINANCIAL_QUARTER_DEADLINES = (
+    ((3, 31), lambda filing_year: (filing_year - 1, 4)),
+    ((5, 15), lambda filing_year: (filing_year, 1)),
+    ((8, 14), lambda filing_year: (filing_year, 2)),
+    ((11, 14), lambda filing_year: (filing_year, 3)),
+)
+
+
+def _latest_available_financial_quarter(today=None):
+    today = today or TODAY
+    candidates = []
+    for filing_year in (today.year - 1, today.year):
+        for (month, day), resolve in FINANCIAL_QUARTER_DEADLINES:
+            due = date(filing_year, month, day) + timedelta(days=FINANCIAL_FILING_GRACE_DAYS)
+            if due <= today:
+                candidates.append(resolve(filing_year))
+    if not candidates:
+        raise RuntimeError(f"no filed financial quarter is available for {today}")
+    return max(candidates)
+
+
+def _financial_quarters(start_year, end_year, end_q):
+    quarters = []
+    for year in range(start_year, end_year + 1):
+        for quarter in range(1, 5):
+            if year == end_year and quarter > end_q:
+                break
+            quarters.append((year, quarter))
+    return quarters
+
+
+def _financial_row_count(path):
+    try:
+        with open(path, encoding="utf-8-sig") as handle:
+            return max(sum(1 for _ in handle) - 1, 0)
+    except OSError:
+        return 0
+
+
+def _previous_financial_reference_rows(quarters, index, directory=FINANCIAL_DIR):
+    for year, quarter in reversed(quarters[:index]):
+        rows = _financial_row_count(
+            os.path.join(directory, f"financial_{year}Q{quarter}.csv")
+        )
+        if rows:
+            return rows
+    return 0
+
+
+def _select_pending_financial_quarters(quarters, directory=FINANCIAL_DIR):
+    pending = []
+    for index, (year, quarter) in enumerate(quarters):
+        path = os.path.join(directory, f"financial_{year}Q{quarter}.csv")
+        rows = _financial_row_count(path)
+        reference_rows = _previous_financial_reference_rows(quarters, index, directory)
+        if (year, quarter) == max(quarters) or rows == 0 or (
+            reference_rows and rows < reference_rows * FINANCIAL_COMPLETENESS_RATIO
+        ):
+            pending.append((year, quarter))
+    return pending
+
+
+def _combine_complete_financial_markets(market_frames, reference_rows=0):
+    required = {"TWSE", "OTC"}
+    available = {
+        market for market, frame in market_frames.items()
+        if frame is not None and not frame.empty
+    }
+    missing = required - available
+    if missing:
+        raise ValueError(f"missing financial source: {', '.join(sorted(missing))}")
+
+    result = pd.concat([market_frames[market] for market in ("TWSE", "OTC")], ignore_index=True)
+    if reference_rows and len(result) < reference_rows * FINANCIAL_COMPLETENESS_RATIO:
+        raise ValueError(
+            f"incomplete financial replacement: {len(result)} rows < "
+            f"previous {reference_rows} rows x {FINANCIAL_COMPLETENESS_RATIO:.0%}"
+        )
+    return result
+
+
+def _write_financial_atomic(result, filepath, *, evidence):
+    return write_verified_quarter(result, filepath, evidence=evidence)
+
+
 def step8_update_financial():
     print("\n" + "=" * 60)
     print("Step 8/10: 更新季報財務數據 (MOPS)")
     print("=" * 60)
 
-    # 決定季度範圍: 2020Q1 ~ 最近可用季度
-    # 季報公布時程: Q1→5月, Q2→8月, Q3→11月, Q4→隔年3月底
-    latest_year = TODAY.year
-    latest_month = TODAY.month
-    if latest_month >= 11:
-        end_year, end_q = latest_year, 3
-    elif latest_month >= 8:
-        end_year, end_q = latest_year, 2
-    elif latest_month >= 5:
-        end_year, end_q = latest_year, 1
-    elif latest_month >= 3:
-        end_year, end_q = latest_year - 1, 4  # 3月起嘗試抓 Q4
-    else:
-        end_year, end_q = latest_year - 1, 3
-
-    quarters = []
-    for y in range(2020, end_year + 1):
-        for q in range(1, 5):
-            if y == end_year and q > end_q:
-                break
-            quarters.append((y, q))
+    end_year, end_q = _latest_available_financial_quarter()
+    quarters = _financial_quarters(2020, end_year, end_q)
+    pending = _select_pending_financial_quarters(quarters)
 
     total_new = 0
-    for year, season in tqdm(quarters, desc="季報財務"):
+    failures = []
+    for year, season in tqdm(pending, desc="季報財務"):
         filepath = os.path.join(FINANCIAL_DIR, f"financial_{year}Q{season}.csv")
-        if os.path.exists(filepath):
-            continue
-
         roc_year = year - 1911
-        all_data = []
+        market_frames = {}
+        evidence = {}
         for typek in ["sii", "otc"]:
+            market = "TWSE" if typek == "sii" else "OTC"
             try:
                 html_text = _fetch_mops_batch(roc_year, season, typek)
                 df = _parse_mops_ratio_tables(html_text)
                 if not df.empty:
-                    df["Market"] = "TWSE" if typek == "sii" else "OTC"
-                    all_data.append(df)
+                    evidence[market] = verify_market_source(
+                        html_text, df, "financial", year, season, market, SESSION,
+                        latest=(year, season) == (end_year, end_q))
+                    df["Market"] = market
+                    market_frames[market] = df
                 time.sleep(random.uniform(3, 6))
             except Exception as e:
                 tqdm.write(f"  {year}Q{season} ({typek}) 失敗: {e}")
 
-        if all_data:
-            result = pd.concat(all_data, ignore_index=True)
+        quarter_index = quarters.index((year, season))
+        reference_rows = _previous_financial_reference_rows(quarters, quarter_index)
+        try:
+            result = _combine_complete_financial_markets(market_frames, reference_rows)
             result["Year"] = year
             result["Season"] = season
-            result.to_csv(filepath, index=False, encoding="utf-8-sig")
+            _write_financial_atomic(result, filepath, evidence=evidence)
             total_new += 1
             tqdm.write(f"  {year}Q{season}: {len(result)} 筆")
+        except ValueError as exc:
+            failures.append(f"{year}Q{season}")
+            tqdm.write(f"  {year}Q{season}: {exc}; existing file preserved")
 
     print(f"  新增: {total_new} 季")
+    if failures:
+        raise RuntimeError(f"financial refresh incomplete: {', '.join(failures)}")
 
 
 # ==============================================================================
@@ -1365,32 +2026,13 @@ def step9_update_tdcc():
     print("Step 9/10: 更新集保股權分散表 (TDCC)")
     print("=" * 60)
 
-    url = "https://smart.tdcc.com.tw/opendata/getOD.ashx?id=1-5"
-    try:
-        r = SESSION.get(url, timeout=60)
-        r.raise_for_status()
-        df = pd.read_csv(StringIO(r.text))
+    # The canonical fetcher validates every response, including an existing week,
+    # and owns summary rebuilding after successful raw-source validation.
+    from scripts.fetch_tdcc_weekly import fetch_and_save
 
-        if df.empty:
-            print("  無資料")
-            return
-
-        # 第一欄是日期
-        date_col = df.columns[0]
-        latest_date = str(df[date_col].iloc[0]).replace("/", "").replace("-", "")
-
-        filepath = os.path.join(TDCC_DIR, f"tdcc_{latest_date}.csv")
-        if os.path.exists(filepath):
-            print(f"  已有最新集保資料 ({latest_date})")
-        else:
-            df.to_csv(filepath, index=False, encoding="utf-8-sig")
-            print(f"  已下載: tdcc_{latest_date}.csv ({len(df):,} 筆)")
-
-    except Exception as e:
-        print(f"  下載失敗: {e}")
-
-    # 每次都重算摘要 (確保修正後的邏輯生效)
-    _summarize_tdcc()
+    if fetch_and_save() is not True:
+        raise RuntimeError("TDCC latest weekly source refresh failed; existing summary is not evidence of success")
+    return True
 
 
 def _summarize_tdcc():
@@ -1409,38 +2051,51 @@ def _summarize_tdcc():
             if len(df.columns) < 6:
                 continue
 
-            date_col = df.columns[0]   # 資料日期
-            ticker_col = df.columns[1]  # 證券代號
-            level_col = df.columns[2]   # 持股分級
-            count_col = df.columns[3]   # 人數
-            shares_col = df.columns[4]  # 股數
-            pct_col = df.columns[5]     # 佔比%
+            # 依欄名標準化(tdcc_20260313.csv 曾出現欄序錯亂,位置索引會產生垃圾列)
+            name_map = {}
+            for c in df.columns:
+                cs = str(c).strip()
+                if "日期" in cs:
+                    name_map["date"] = c
+                elif "代號" in cs:
+                    name_map["ticker"] = c
+                elif "分級" in cs:
+                    name_map["level"] = c
+                elif "人數" in cs:
+                    name_map["count"] = c
+                elif "比例" in cs or "%" in cs:
+                    name_map["pct"] = c
+            if len(name_map) < 5:  # 欄名對不齊時退回位置索引(標準檔序)
+                cols = list(df.columns)
+                name_map = {"date": cols[0], "ticker": cols[1], "level": cols[2],
+                            "count": cols[3], "pct": cols[5]}
+            date_col, ticker_col = name_map["date"], name_map["ticker"]
+            level_col, count_col, pct_col = name_map["level"], name_map["count"], name_map["pct"]
 
             df[pct_col] = pd.to_numeric(df[pct_col], errors="coerce").fillna(0)
-            df[level_col] = df[level_col].astype(str).str.strip()
+            # 持股分級必須轉「數值」排序/篩選:2026-07 修正前用字串排序(1,10,11,...,2,3...),
+            # 導致六年 summary 的 Retail/Whale 實際加總到錯誤級距(冒牌大戶%事故)
+            df[level_col] = pd.to_numeric(df[level_col], errors="coerce")
 
-            # 持股分級 (TDCC 標準 17 級):
-            #   1-15: 實際持股分級 (1=1-999股 ... 15=1,000,001股以上)
-            #   16: 自行保管
-            #   17: 合計 (固定100%)
-            # 散戶: Level 1-3 (< 10,000股 = < 10張)
-            # 大戶: Level 12-15 (>= 400,001股 = >= 400張)
-            # 只使用 Level 1-15，排除 16(自行保管) 和 17(合計)
-            df_actual = df[df[level_col].astype(int) <= 15].copy()
+            # 持股分級 (TDCC 官方 17 級):
+            #   1-15: 實際持股分級 (1=1-999股, 9=50-100張, 15=1,000,001股以上=千張)
+            #   16: 差異數調整、17: 合計 → 排除
+            # 口徑(2026-07-16 PM 核定,與 dashboard 大戶週增雷達、rere 側寫一致):
+            #   散戶 Retail_Pct = Level 1-9  (< 100 張)
+            #   大戶 Whale_Pct  = Level 15   (>= 1000 張,千張大戶)
+            df_actual = df[df[level_col].between(1, 15)].copy()
             grouped = df_actual.groupby([date_col, ticker_col])
 
             for (dt, ticker), g in grouped:
-                g = g.sort_values(level_col)
-                pcts = g[pct_col].tolist()
-
-                retail_pct = sum(pcts[:3]) if len(pcts) >= 3 else 0
-                whale_pct = sum(pcts[11:15]) if len(pcts) >= 15 else sum(pcts[-4:]) if len(pcts) >= 4 else 0
+                lv = g[level_col]
+                retail_pct = g.loc[lv.between(1, 9), pct_col].sum()
+                whale_pct = g.loc[lv == 15, pct_col].sum()
 
                 all_summaries.append({
                     "Date": str(dt),
                     "Ticker": str(ticker).strip(),
-                    "Retail_Pct": round(retail_pct, 2),
-                    "Whale_Pct": round(whale_pct, 2),
+                    "Retail_Pct": round(float(retail_pct), 2),
+                    "Whale_Pct": round(float(whale_pct), 2),
                     "Total_Holders": g[count_col].sum() if count_col in g.columns else 0,
                 })
         except Exception:
@@ -1457,6 +2112,83 @@ def _summarize_tdcc():
 # ==============================================================================
 # Step 10: 大盤指數 + 國際指標
 # ==============================================================================
+def _parse_twse_roc_date(value):
+    parts = str(value).strip().split("/")
+    if len(parts) != 3:
+        raise ValueError(f"invalid TWSE ROC date: {value!r}")
+    return date(int(parts[0]) + 1911, int(parts[1]), int(parts[2]))
+
+
+def _parse_twse_taiex_history_payload(payload):
+    rows = []
+    if not isinstance(payload, dict) or payload.get("stat") != "OK":
+        return rows
+    for row in payload.get("data") or []:
+        if len(row) < 5:
+            continue
+        try:
+            dt = _parse_twse_roc_date(row[0])
+            rows.append(
+                {
+                    "Date": dt.strftime("%Y-%m-%d"),
+                    "Close": _parse_twse_number(row[4]),
+                    "High": _parse_twse_number(row[2]),
+                    "Low": _parse_twse_number(row[3]),
+                    "Open": _parse_twse_number(row[1]),
+                    "Volume": 0,
+                }
+            )
+        except Exception:
+            continue
+    return rows
+
+
+def _fetch_twse_taiex_history_month(month_date):
+    params = {
+        "date": month_date.strftime("%Y%m%d"),
+        "response": "json",
+    }
+    r = SESSION.get(TWSE_TAIEX_HIST_URL, params=params, timeout=30)
+    r.raise_for_status()
+    return _parse_twse_taiex_history_payload(r.json())
+
+
+def _update_twse_taiex_index(filepath):
+    start_dt = date(2020, 1, 1)
+    df_old = pd.DataFrame()
+    if os.path.exists(filepath):
+        try:
+            df_old = pd.read_csv(filepath, dtype={"Date": str})
+            last = pd.to_datetime(df_old["Date"], errors="coerce").max().date()
+            start_dt = last - timedelta(days=3)
+        except Exception:
+            df_old = pd.DataFrame()
+
+    end_dt = get_latest_twse_data_date()
+    rows = []
+    for month_start in _month_starts(start_dt, end_dt):
+        rows.extend(_fetch_twse_taiex_history_month(month_start))
+        time.sleep(0.2)
+
+    if not rows:
+        return None
+
+    df_new = pd.DataFrame(rows)
+    df_new["Date"] = pd.to_datetime(df_new["Date"], errors="coerce")
+    df_new = df_new.dropna(subset=["Date"])
+    df_new = df_new[(df_new["Date"].dt.date >= start_dt) & (df_new["Date"].dt.date <= end_dt)]
+    if df_new.empty:
+        return None
+    df_new["Date"] = df_new["Date"].dt.strftime("%Y-%m-%d")
+
+    df = pd.concat([df_old, df_new], ignore_index=True) if not df_old.empty else df_new
+    df = df.drop_duplicates(subset=["Date"], keep="last").sort_values("Date")
+    ordered = ["Date", "Close", "High", "Low", "Open", "Volume"]
+    df = df[[col for col in ordered if col in df.columns]]
+    df.to_csv(filepath, index=False, encoding="utf-8-sig")
+    return str(df["Date"].max())
+
+
 def step10_update_indices():
     import yfinance as yf
 
@@ -1475,6 +2207,19 @@ def step10_update_indices():
     for symbol, name in indices.items():
         safe_name = symbol.replace("^", "").replace("=", "")
         filepath = os.path.join(INDEX_DIR, f"index_{safe_name}.csv")
+
+        if symbol == "^TWII":
+            try:
+                latest = _update_twse_taiex_index(filepath)
+                if latest:
+                    print(f"  {name}: 更新至 {latest} (TWSE official)")
+                else:
+                    print(f"  {name}: 無新資料 (TWSE official)")
+                time.sleep(0.5)
+            except Exception as e:
+                print(f"  {name}: 官方來源失敗，改用 yfinance ({e})")
+            else:
+                continue
 
         # 美股指數永遠重抓最後 3 天（覆蓋盤中不完整資料）
         start_dt = date(2020, 1, 1)
@@ -1533,7 +2278,7 @@ def step11_update_foreign_ownership():
     dates_to_fetch = []
     for i in range(7):
         d = TODAY - timedelta(days=i)
-        if d.weekday() < 5:
+        if is_taiwan_trading_day(d):
             dates_to_fetch.append(d)
         if len(dates_to_fetch) >= 5:
             break
@@ -1542,10 +2287,17 @@ def step11_update_foreign_ownership():
         fname = dt.strftime("%Y%m%d") + ".csv"
         fpath = os.path.join(FOREIGN_OWN_DIR, fname)
         if os.path.exists(fpath):
-            sz = os.path.getsize(fpath)
-            if sz > 1000:
-                print(f"  {dt}: 已存在 ({sz:,} bytes)")
+            # 完整檔應含上市+上櫃(~2200 列)。只看檔案大小會把「TPEx-only 殘缺檔」
+            # (~890 列,28KB)當完成,外資持股曾因此凍結兩個月(2026-05-12 事故)。
+            try:
+                with open(fpath, encoding="utf-8-sig") as _fh:
+                    row_cnt = max(sum(1 for _ in _fh) - 1, 0)
+            except OSError:
+                row_cnt = 0
+            if row_cnt >= 1500:
+                print(f"  {dt}: 已存在 ({row_cnt:,} 列)")
                 continue
+            print(f"  {dt}: 殘缺檔({row_cnt} 列),重抓", end=" ")
 
         print(f"  {dt}: 下載中...", end=" ")
         rows = []
@@ -1573,7 +2325,9 @@ def step11_update_foreign_ownership():
 
 def _parse_twse_number(s):
     """清除逗號，轉 float；失敗回 NaN。"""
-    if not s or s == "--" or s == "N/A":
+    # Official JSON may use numeric 0.0 for a displayed 0.00% holding ratio.
+    # Zero is observed data; a truthiness check silently turned it into unknown.
+    if s is None or (isinstance(s, str) and s.strip() in ("", "--", "N/A")):
         return np.nan
     try:
         return float(str(s).replace(",", "").replace("%", "").strip())
@@ -1652,8 +2406,20 @@ def main():
                         help="只執行指定步驟 (1-11)")
     parser.add_argument("--skip-revenue", action="store_true",
                         help="跳過月營收更新 (較慢)")
+    parser.add_argument("--skip-snapshot-cache", action="store_true",
+                        help="跳過選用的 ML 推論快照暖 cache")
     parser.add_argument("--retry-revenue", action="store_true",
                         help="只重試月營收未補齊的股票 (2025-09起)")
+    parser.add_argument("--monthly-revenue", action="store_true",
+                        help="只跑月營收 (自動 gate 在每月11-15公布視窗,供排程用)")
+    parser.add_argument("--backfill-etfs", action="store_true",
+                        help="只回補/更新預設 ETF 日K資料 (TWSE STOCK_DAY)")
+    parser.add_argument("--etf-tickers", nargs="*", default=None,
+                        help="搭配 --backfill-etfs 指定 ETF ticker 子集合")
+    parser.add_argument("--etf-pause-sec", type=float, default=1.2,
+                        help="ETF TWSE STOCK_DAY 每月請求間隔秒數")
+    parser.add_argument("--etf-source", choices=["auto", "twse", "finmind"], default="auto",
+                        help="ETF 日K來源: auto=TWSE primary + FinMind fallback")
     args = parser.parse_args()
 
     print("=" * 60)
@@ -1681,6 +2447,15 @@ def main():
         step6_update_revenue(retry_only=True)
         return
 
+    if args.monthly_revenue:
+        # 排程用:只跑月營收,step6 內部自動 gate 在 11-15 公布視窗,其餘日子跳過
+        step6_update_revenue(retry_only=False)
+        return
+
+    if args.backfill_etfs:
+        backfill_etf_daily_k(args.etf_tickers, pause=args.etf_pause_sec, source=args.etf_source)
+        return
+
     if args.step:
         name, func = steps[args.step]
         print(f"\n只執行 Step {args.step}: {name}")
@@ -1697,23 +2472,28 @@ def main():
         print(f"  全部更新完成！耗時 {elapsed / 60:.1f} 分鐘")
         print("=" * 60)
 
-        # 自動重建 ML snapshot cache
-        print("\n  重建 ML 推論快照...")
-        try:
-            from ml.dataset import build_latest_snapshot
-            snapshot = build_latest_snapshot(verbose=True)
-            snapshot_path = os.path.join(BASE_DIR, "ml", "models", "snapshot_cache.pkl")
-            snapshot.to_pickle(snapshot_path)
-            # 清除舊的 server-side cache，強制下次載入新的
-            for old in [
-                os.path.join(BASE_DIR, "ml", "models", "latest_snapshot_cache.pkl"),
-                os.path.join(BASE_DIR, "ml", "models", "latest_snapshot_cache_meta.json"),
-            ]:
-                if os.path.exists(old):
-                    os.remove(old)
-            print(f"  ML 快照已更新: {len(snapshot)} 檔股票")
-        except Exception as e:
-            print(f"  ML 快照重建失敗: {e}")
+        # This is a warm-cache optimization, not a data freshness requirement.
+        # Scheduled nightly runs skip it so Phase-1 cannot fail after data
+        # refresh is complete just because feature-frame warming is slow.
+        if args.skip_snapshot_cache:
+            print("\n  跳過 ML 推論快照暖 cache (--skip-snapshot-cache)")
+        else:
+            print("\n  重建 ML 推論快照...")
+            try:
+                from ml.dataset import build_latest_snapshot
+                snapshot = build_latest_snapshot(verbose=True)
+                snapshot_path = os.path.join(BASE_DIR, "ml", "models", "snapshot_cache.pkl")
+                snapshot.to_pickle(snapshot_path)
+                # 清除舊的 server-side cache，強制下次載入新的
+                for old in [
+                    os.path.join(BASE_DIR, "ml", "models", "latest_snapshot_cache.pkl"),
+                    os.path.join(BASE_DIR, "ml", "models", "latest_snapshot_cache_meta.json"),
+                ]:
+                    if os.path.exists(old):
+                        os.remove(old)
+                print(f"  ML 快照已更新: {len(snapshot)} 檔股票")
+            except Exception as e:
+                print(f"  ML 快照重建失敗: {e}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,142 @@
+{
+  "period": "2026-09-06 source universe / Q2 / historical BS / TDCC fixed-snapshot verification",
+  "scope": "subagent entry_cards only; root owns serial commits and broader period whitelist",
+  "files": [
+    {
+      "path": "scripts/source_universe_attribution.py",
+      "sha256": "3de5755af5c2d0e8db433b982ca68f2969ab66b031310e386f4f4df9004cbe11",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_baseline_compare.py",
+      "sha256": "45f135d7ddd0f10521615d9cc74e254794a756b24f887cadef63b15f7ebad1c4",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_canonical_ab.py",
+      "sha256": "49f998abe7debca8f89b1606bbf974aa5fa0d42655c835594a53c36352540f8c",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_canonical_C.py",
+      "sha256": "0d5a4655a12e64f9226061cb3b140d262ce2720c074b2a2914ee4d70b2a9d768",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_classic_stage.py",
+      "sha256": "ce4df2aeb0e4784c93141cc3d68a9bc91867ebdbbd4ea7c11fc93f72d2ebd554",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_formal_bridge.py",
+      "sha256": "1e67663da139f9815eda9f760ce4a20c19d607a6173845ac7192610c378d2b82",
+      "category": "production-adjacent provenance/cutover infrastructure; explicit reviewed publish only",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_history_E.py",
+      "sha256": "ebd6acde4fac37f0180eb293b9b7c787f25f9230fff7ce812e928519d7178338",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_q2_attribution.py",
+      "sha256": "492a104c8147c9c389a2f40d3d50031355d18ab708ded1dcb6222f498f776af5",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_q2_branch.py",
+      "sha256": "4ec61c002adf0787e97dba66742dd22bb432942665d4fec20be17b64b6fab296",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_retained_eligibility.py",
+      "sha256": "0cf3c7409f79d66f5debd0e57297dce081e78eae58bcb1df21dc9438d78780d6",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_snapshot_ab.py",
+      "sha256": "4c105423c175b1db4eca6721ecb3a8f53ac49a9f1408bf0d65ead78fc33de53a",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_tdcc_final.py",
+      "sha256": "b59bb847ba7c2ea8808b2963c9ef8323d77dbff899c2b700ca81be10ec0d7ebe",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "scripts/source_universe_verified_rerun.py",
+      "sha256": "b63a39f1338c114bd3f21b56e32de6ce62d27034cb3be1eda9574a8037649080",
+      "category": "research-only fixed-source sensitivity harness; physical guarded workspace required or read-only research report",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "tests/test_source_universe_formal_bridge.py",
+      "sha256": "8df45ad2aef70a611ac7c2a8e4165c38d77fe0298650660f89d1e4532a3cfd6b",
+      "category": "focused regression/fixture tests",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "tests/test_source_universe_snapshot_ab.py",
+      "sha256": "c2ef9c1d6dd9fe39b6ff12613975824220c1c234aa01b09a8a9d413d19923b7c",
+      "category": "focused regression/fixture tests",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/source_universe_sensitivity_final.json",
+      "sha256": "7c9a73afe3222dabd97a081d62d44c410aca31234eeaf8b0e4cf2712b306e592",
+      "category": "research-only closure artifact; source sensitivity and explicit calibration limits",
+      "production_numeric_rule_change": false
+    },
+    {
+      "path": "ml/reports/research/data_layer_consistency_20260906/source_universe_sensitivity_final.md",
+      "sha256": "897fde824a97e8117d021c48515cc6e3c997e257c4e9d493cd1aa5ccd61351fd",
+      "category": "research-only closure artifact; source sensitivity and explicit calibration limits",
+      "production_numeric_rule_change": false
+    }
+  ],
+  "not_stage": [
+    "protected model binaries/metadata/selection/pins",
+    "formal snapshot_cache.pkl and large output research snapshots",
+    "user-existing dirty dashboards, ledgers and unrelated generated files"
+  ],
+  "actual_formal_action": {
+    "status": "FORMAL_SNAPSHOT_PUBLISHED_AND_FRAME_EXACT_PREDICTION_PENDING",
+    "observed_at": "2026-09-06T22:25:27.238126",
+    "rows": 1098,
+    "columns": 302,
+    "pd_assert_frame_equal_check_exact": true,
+    "research_sha256": "66a3f1fe25da3d551b4b65df812e4eed80f138706607d361005cdccd881212a0",
+    "formal_sha256": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+    "publication_receipt": {
+      "status": "SNAPSHOT_PUBLISHED_PREDICTION_NOT_RUN",
+      "path": "F:\\stock\\ml\\models\\snapshot_cache.pkl",
+      "sha256": "8091e4acfbeafc794df9966bed1ed84251f55db293154655a1e7b3e0f6148e1a",
+      "audit_sha256": "19319deb02d7b5d50779f31c1c37ca9323daf8689bcc563672a769b7de0d569d",
+      "time": "2026-09-06T22:23:42.877458"
+    },
+    "note": "Different pickle serialization bytes; full values/index/columns/dtypes exact. Snapshot publication does not certify an older prediction CSV. Root must run current pinned inference and new P2 output certificate."
+  },
+  "pending_gate": "New current pinned prediction and P2 success certificate must be verified by root; snapshot adoption alone is not end-to-end close",
+  "test_commands": [
+    {
+      "command": "python -B -X utf8 -m pytest tests/test_source_universe_snapshot_ab.py -q",
+      "result": "3 passed earlier"
+    },
+    {
+      "command": "python -B -X utf8 -m pytest tests/test_source_universe_formal_bridge.py -q",
+      "result": "5 passed in0.46s"
+    }
+  ],
+  "commit_policy": "Root integrates, commits and reports hash/status; subagent performed no git staging or commit."
+}

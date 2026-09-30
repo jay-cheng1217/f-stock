@@ -1,0 +1,202 @@
+{
+  "summary": {
+    "generated_at": "2026-04-23T01:47:50.645461+00:00",
+    "exit_policy": "ma5_break_plus_hwm_8pct",
+    "signal_start": "2026-03-24",
+    "signal_end": "2026-04-21",
+    "replay_start": "2026-04-10",
+    "replay_end": "2026-04-22",
+    "signal_file_count": 19,
+    "position_count": 72,
+    "status_counts": {
+      "closed": 39,
+      "open": 33
+    },
+    "entry_signal_type_counts": {
+      "20D_only": 72
+    },
+    "current_signal_type_counts": {
+      "20D_only": 72
+    },
+    "fill_status_counts": {
+      "FILLED": 72
+    },
+    "order_type_counts": {
+      "INTRADAY_CHASE": 38,
+      "OPEN": 34
+    },
+    "exit_reason_counts": {
+      "MA5_BREAK": 39,
+      "NULL": 33
+    },
+    "filled_position_count": 72,
+    "closed_position_count": 39,
+    "open_position_count": 33,
+    "missed_entry_count": 0,
+    "avg_entry_slippage_pct": 0.018820024244697833,
+    "avg_filled_hold_days": 3.013888888888889,
+    "capital_weighted_hold_days": 5.108549163419666,
+    "capital_turnover_20d_multiple": 3.9150058774440737,
+    "profit_giveback_sample_count": 35,
+    "avg_profit_giveback_pct": 0.02684889910517443,
+    "avg_profit_giveback_ratio_pct": 0.6871629734379984,
+    "capital_weighted_profit_giveback_pct": 0.04892561792052447,
+    "realized_avg_return_pct": -0.004205652112570874,
+    "realized_median_return_pct": -0.003401373563511889,
+    "realized_win_rate_pct": 0.38461538461538464,
+    "realized_capital_weighted_return_pct": 0.02681202764548043,
+    "mtm_capital_weighted_return_pct": 0.11857487835214778,
+    "mtm_cash_return_contribution_pct": 0.3105295283615971,
+    "open_avg_unrealized_return_pct": 0.05797434287469343,
+    "open_capital_weighted_unrealized_return_pct": 0.26712494339169274,
+    "twii": {
+      "start_date": "2026-04-10",
+      "end_date": "2026-04-22",
+      "start_close": 35417.828125,
+      "end_close": 37878.46875,
+      "return_pct": 0.0694746334054046,
+      "reason": null
+    },
+    "realized_alpha_vs_twii_pct": -0.04266260575992417,
+    "mtm_alpha_vs_twii_pct": 0.04910024494674317,
+    "exit_day_compounded_return_pct": 0.1570965100715518,
+    "exit_day_max_drawdown_pct": -0.028976881253845677,
+    "exit_day_count": 7
+  },
+  "replay_result": {
+    "db_path": "C:\\Users\\cheng\\AppData\\Local\\Temp\\unified_execution_replay_oyelf2z_\\unified_execution_replay.db",
+    "signal_files": [
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-24.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-25.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-26.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-27.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-30.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-31.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-01.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-02.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-07.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-08.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-09.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-10.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-13.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-14.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-15.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-16.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-17.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-20.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-21.csv"
+    ],
+    "processed_dates": [
+      "2026-03-24",
+      "2026-03-25",
+      "2026-03-26",
+      "2026-03-27",
+      "2026-03-30",
+      "2026-03-31",
+      "2026-04-01",
+      "2026-04-02",
+      "2026-04-07",
+      "2026-04-08",
+      "2026-04-09",
+      "2026-04-10",
+      "2026-04-13",
+      "2026-04-14",
+      "2026-04-15",
+      "2026-04-16",
+      "2026-04-17",
+      "2026-04-20",
+      "2026-04-21"
+    ],
+    "new_runs": 19,
+    "skipped_runs": 0,
+    "new_positions": 72,
+    "upgraded_positions": 0,
+    "refreshed_positions": 137,
+    "marks_upserted": 615,
+    "cash_deployed": 2.6188475390156056,
+    "exit_policy_name": "ma5_break_plus_hwm_8pct",
+    "portfolio_start_date": "2026-03-24",
+    "summary": {
+      "total_runs": 19,
+      "total_positions": 72,
+      "pending_positions": 0,
+      "open_positions": 33,
+      "closed_positions": 39,
+      "stopped_out_positions": 0,
+      "missed_entry_positions": 0,
+      "invested_capital": 0.9999999999999999,
+      "available_cash": 1.1102230246251565e-16,
+      "avg_realized_return_pct": -0.004205652112570874,
+      "avg_max_drawdown_pct": -0.03508386249722397,
+      "total_marks": 217
+    }
+  },
+  "signal_files": [
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-24.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-25.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-26.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-27.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-30.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-03-31.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-01.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-02.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-07.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-08.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-09.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-10.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-13.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-14.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-15.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-16.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-17.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-20.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_ext_2026-04-21.csv"
+  ],
+  "positions_csv": "ml\\reports\\extended_replay_overlay_v1_20260324_20260421\\ma5_break_plus_hwm_8pct\\unified_execution_replay_positions_latest.csv",
+  "daily_exit_curve": [
+    {
+      "exit_date": "2026-04-14",
+      "position_count": 1,
+      "avg_return_pct": -0.004728150509379692,
+      "weighted_return_pct": -0.004728150509379692
+    },
+    {
+      "exit_date": "2026-04-15",
+      "position_count": 8,
+      "avg_return_pct": -0.027169743523680026,
+      "weighted_return_pct": -0.028976881253845718
+    },
+    {
+      "exit_date": "2026-04-16",
+      "position_count": 5,
+      "avg_return_pct": 0.021811879370579556,
+      "weighted_return_pct": 0.1391942368036257
+    },
+    {
+      "exit_date": "2026-04-17",
+      "position_count": 2,
+      "avg_return_pct": 0.02427138522288963,
+      "weighted_return_pct": 0.02421703988214479
+    },
+    {
+      "exit_date": "2026-04-20",
+      "position_count": 2,
+      "avg_return_pct": 0.0004696448320810065,
+      "weighted_return_pct": 0.012282107889904227
+    },
+    {
+      "exit_date": "2026-04-21",
+      "position_count": 8,
+      "avg_return_pct": -0.01194469638451176,
+      "weighted_return_pct": 0.013156329744329343
+    },
+    {
+      "exit_date": "2026-04-22",
+      "position_count": 13,
+      "avg_return_pct": -0.00037832458293762805,
+      "weighted_return_pct": 0.0005308734933973766
+    }
+  ],
+  "exit_policy": "ma5_break_plus_hwm_8pct",
+  "db_path": null
+}

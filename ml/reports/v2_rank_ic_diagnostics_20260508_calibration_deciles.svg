@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#222}
+.title{font-size:20px;font-weight:700}
+.axis{stroke:#333;stroke-width:1}
+.grid{stroke:#ddd;stroke-width:1}
+.tick{font-size:11px;fill:#555}
+.legend{font-size:12px}
+</style>
+<rect x="0" y="0" width="960" height="540" fill="white"/>
+<text class="title" x="480.0" y="28" text-anchor="middle">Prediction Calibration by Predicted Return Decile (Fold Top30)</text>
+<line class="axis" x1="72" y1="435" x2="910" y2="435"/>
+<line class="axis" x1="72" y1="58" x2="72" y2="435"/>
+<line class="grid" x1="72" y1="435.0" x2="910" y2="435.0"/>
+<text class="tick" x="64" y="439.0" text-anchor="end">-5.45</text>
+<line class="grid" x1="72" y1="359.6" x2="910" y2="359.6"/>
+<text class="tick" x="64" y="363.6" text-anchor="end">-0.81</text>
+<line class="grid" x1="72" y1="284.2" x2="910" y2="284.2"/>
+<text class="tick" x="64" y="288.2" text-anchor="end">3.84</text>
+<line class="grid" x1="72" y1="208.8" x2="910" y2="208.8"/>
+<text class="tick" x="64" y="212.8" text-anchor="end">8.49</text>
+<line class="grid" x1="72" y1="133.4" x2="910" y2="133.4"/>
+<text class="tick" x="64" y="137.4" text-anchor="end">13.14</text>
+<line class="grid" x1="72" y1="58.0" x2="910" y2="58.0"/>
+<text class="tick" x="64" y="62.0" text-anchor="end">17.79</text>
+<text class="tick" x="18" y="246.5" text-anchor="middle" transform="rotate(-90 18 246.5)">20D return (%)</text>
+<line x1="72" y1="346.5" x2="910" y2="346.5" stroke="#333" stroke-width="1"/>
+<polyline points="72.0,388.2 165.1,369.0 258.2,398.5 351.3,346.6 444.4,284.4 537.6,281.1 630.7,397.5 723.8,390.7 816.9,330.1 910.0,254.7" fill="none" stroke="#1f77b4" stroke-width="2.8"/>
+<circle cx="72.0" cy="388.2" r="4" fill="#1f77b4"/>
+<circle cx="165.1" cy="369.0" r="4" fill="#1f77b4"/>
+<circle cx="258.2" cy="398.5" r="4" fill="#1f77b4"/>
+<circle cx="351.3" cy="346.6" r="4" fill="#1f77b4"/>
+<circle cx="444.4" cy="284.4" r="4" fill="#1f77b4"/>
+<circle cx="537.6" cy="281.1" r="4" fill="#1f77b4"/>
+<circle cx="630.7" cy="397.5" r="4" fill="#1f77b4"/>
+<circle cx="723.8" cy="390.7" r="4" fill="#1f77b4"/>
+<circle cx="816.9" cy="330.1" r="4" fill="#1f77b4"/>
+<circle cx="910.0" cy="254.7" r="4" fill="#1f77b4"/>
+<polyline points="72.0,289.2 165.1,354.0 258.2,326.8 351.3,291.5 444.4,248.9 537.6,224.4 630.7,333.0 723.8,339.7 816.9,280.0 910.0,94.5" fill="none" stroke="#2ca02c" stroke-width="2.8"/>
+<circle cx="72.0" cy="289.2" r="4" fill="#2ca02c"/>
+<circle cx="165.1" cy="354.0" r="4" fill="#2ca02c"/>
+<circle cx="258.2" cy="326.8" r="4" fill="#2ca02c"/>
+<circle cx="351.3" cy="291.5" r="4" fill="#2ca02c"/>
+<circle cx="444.4" cy="248.9" r="4" fill="#2ca02c"/>
+<circle cx="537.6" cy="224.4" r="4" fill="#2ca02c"/>
+<circle cx="630.7" cy="333.0" r="4" fill="#2ca02c"/>
+<circle cx="723.8" cy="339.7" r="4" fill="#2ca02c"/>
+<circle cx="816.9" cy="280.0" r="4" fill="#2ca02c"/>
+<circle cx="910.0" cy="94.5" r="4" fill="#2ca02c"/>
+<polyline points="72.0,357.4 165.1,347.1 258.2,341.1 351.3,335.3 444.4,330.8 537.6,322.4 630.7,312.2 723.8,296.5 816.9,272.0 910.0,208.1" fill="none" stroke="#ff7f0e" stroke-width="2.8"/>
+<circle cx="72.0" cy="357.4" r="4" fill="#ff7f0e"/>
+<circle cx="165.1" cy="347.1" r="4" fill="#ff7f0e"/>
+<circle cx="258.2" cy="341.1" r="4" fill="#ff7f0e"/>
+<circle cx="351.3" cy="335.3" r="4" fill="#ff7f0e"/>
+<circle cx="444.4" cy="330.8" r="4" fill="#ff7f0e"/>
+<circle cx="537.6" cy="322.4" r="4" fill="#ff7f0e"/>
+<circle cx="630.7" cy="312.2" r="4" fill="#ff7f0e"/>
+<circle cx="723.8" cy="296.5" r="4" fill="#ff7f0e"/>
+<circle cx="816.9" cy="272.0" r="4" fill="#ff7f0e"/>
+<circle cx="910.0" cy="208.1" r="4" fill="#ff7f0e"/>
+<text class="tick" x="72.0" y="457" text-anchor="middle">1</text>
+<text class="tick" x="165.1" y="457" text-anchor="middle">2</text>
+<text class="tick" x="258.2" y="457" text-anchor="middle">3</text>
+<text class="tick" x="351.3" y="457" text-anchor="middle">4</text>
+<text class="tick" x="444.4" y="457" text-anchor="middle">5</text>
+<text class="tick" x="537.6" y="457" text-anchor="middle">6</text>
+<text class="tick" x="630.7" y="457" text-anchor="middle">7</text>
+<text class="tick" x="723.8" y="457" text-anchor="middle">8</text>
+<text class="tick" x="816.9" y="457" text-anchor="middle">9</text>
+<text class="tick" x="910.0" y="457" text-anchor="middle">10</text>
+<text class="tick" x="491.0" y="516" text-anchor="middle">Predicted return decile, low to high</text>
+<rect x="90" y="78" width="12" height="12" fill="#1f77b4"/>
+<text class="legend" x="108" y="88">Actual excess return</text>
+<rect x="90" y="96" width="12" height="12" fill="#2ca02c"/>
+<text class="legend" x="108" y="106">Actual raw return</text>
+<rect x="90" y="114" width="12" height="12" fill="#ff7f0e"/>
+<text class="legend" x="108" y="124">Predicted excess return</text>
+</svg>

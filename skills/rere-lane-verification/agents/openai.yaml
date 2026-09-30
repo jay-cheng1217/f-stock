@@ -1,0 +1,4 @@
+interface:
+  display_name: "rere Lane Verification"
+  short_description: "Forward-verify rere lane vs backtest baseline"
+  default_prompt: "Use $rere-lane-verification to check the rere lane forward-verification ledger and report progress vs the +9.4%/50.6% baseline."

@@ -1,0 +1,39 @@
+{
+  "dataset_path": "F:\\stock\\ml\\models\\dataset_cache_20260610.parquet",
+  "start_date": "2024-01-01",
+  "holdout_start_month": "2025-07",
+  "friction_pct": 0.4,
+  "profit_threshold_pct": 70.0,
+  "strategies_evaluated": 3785,
+  "best_strategy": {
+    "strategy": "chip_momentum_high_top5_liquid_open_ge_10_volume_ge_250k_amount_ge_20m_all",
+    "full_cum_return_pct": 299.80635659906017,
+    "full_cum_excess_pct": 29.88324850009343,
+    "train_cum_return_pct": 129.0466804500435,
+    "train_cum_excess_pct": 55.98227994151712,
+    "holdout_cum_return_pct": 74.55234706458036,
+    "holdout_cum_excess_pct": -16.73204895531022,
+    "avg_monthly_net_return_pct": 5.267470983412279,
+    "avg_monthly_net_excess_pct": 1.3071513746800865,
+    "max_drawdown_pct": -4.967910641482332,
+    "positive_months": 23,
+    "months": 29,
+    "avg_pick_win_rate_pct": 61.37931034482759,
+    "avg_open": 284.3107206114466,
+    "avg_volume": 12238644.213793103,
+    "avg_amount_ma20": 1748467076.9264922,
+    "pass_70pct_full": true,
+    "pass_train_positive": true,
+    "pass_holdout_positive": true,
+    "pass_full_excess_positive": true,
+    "robust_raw_pass": true,
+    "research_quality_score": 528.3207219722951
+  },
+  "artifacts": {
+    "results_csv": "F:\\stock\\ml\\reports\\strategy_profit_search_20260610_2359.csv",
+    "best_monthly_csv": "F:\\stock\\ml\\reports\\strategy_profit_search_20260610_2359_best_monthly.csv",
+    "best_picks_csv": "F:\\stock\\ml\\reports\\strategy_profit_search_20260610_2359_best_picks.csv",
+    "summary_json": "F:\\stock\\ml\\reports\\strategy_profit_search_20260610_2359.json",
+    "report_md": "F:\\stock\\ml\\reports\\strategy_profit_search_20260610_2359.md"
+  }
+}

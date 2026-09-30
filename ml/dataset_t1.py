@@ -22,6 +22,7 @@ from ml.features.sector import compute_sector_features
 from ml.features.tdcc import TDCC_FEATURE_COLS, compute_tdcc_features
 from ml.features.technical import compute_technical_features
 from ml.target_t1 import T1_LABEL_COLUMNS, compute_t1_targets
+from ml.universe import filter_stock_universe
 
 FOREIGN_DIR = os.path.join(BASE_DIR, "外資持股")
 TDCC_SUMMARY_PATH = os.path.join(BASE_DIR, "集保分散", "tdcc_summary.csv")
@@ -56,6 +57,10 @@ T1_CONTEXT_COLUMNS = [
     "Low",
     "Close",
     "Volume",
+    "VOL_MA_5",
+    "VOL_MA_20",
+    "AMOUNT_MA_5",
+    "AMOUNT_MA_20",
     "atr_pct",        # 保留供 risk parity 部位計算（非模型特徵）
 ]
 
@@ -132,6 +137,37 @@ T1_CUSTOM_FEATURE_COLUMNS = [
     "t1_long_upper_shadow_flag",
 ]
 
+T1_GAP_CONTINUATION_COLUMNS = [
+    # A. Intraday direction (today & recent)
+    "t1_intraday_return",
+    "t1_intraday_return_ma3",
+    "t1_intraday_return_ma5",
+    "t1_intraday_win_rate_5d",
+    "t1_intraday_win_rate_20d",
+    # B. Gap behavior history
+    "t1_gap_size_zscore",
+    "t1_gap_continuation_rate_20d",
+    "t1_gap_reversal_rate_20d",
+    "t1_gap_fill_rate_20d",
+    # C. Open position / overnight decomposition
+    "t1_overnight_share_5d",
+    "t1_open_vs_prev_range",
+    "t1_gap_vs_atr",
+    # D. K-bar continuation
+    "t1_close_strength",
+    "t1_consec_intraday_up",
+    "t1_prev_day_reversal",
+    # E. Volume-gap interaction
+    "t1_gap_volume_confirm",
+    "t1_volume_price_diverge",
+]
+
+T1_MARKET_INTRADAY_COLUMNS = [
+    "twii_intraday_return",
+    "twii_intraday_ma5",
+    "twii_gap_reversal_rate_20d",
+]
+
 T1_SECTOR_FEATURE_COLUMNS = [
     "sector_return_rank",
     "sector_avg_return_5d",
@@ -150,6 +186,9 @@ T1_TDCC_FEATURE_COLUMNS = [
     "retail_capitulation",  # 散戶投降指標（底部訊號）
 ]
 
+# Gap/continuation features disabled: backtest showed they add noise, not signal.
+# AUC degraded 0.551→0.539 when included. Keep code for future research.
+# To re-enable: add T1_GAP_CONTINUATION_COLUMNS + T1_MARKET_INTRADAY_COLUMNS
 T1_FEATURE_COLUMNS = (
     T1_BASE_FEATURE_COLUMNS
     + T1_CUSTOM_FEATURE_COLUMNS
@@ -163,13 +202,12 @@ _MARKET_FEATURES_CACHE: pd.DataFrame | None = None
 
 
 def _list_daily_tickers() -> list[str]:
-    return sorted(
-        [
-            os.path.splitext(name)[0]
-            for name in os.listdir(DAILY_K_DIR)
-            if name.endswith(".csv") and os.path.splitext(name)[0].isdigit()
-        ]
-    )
+    tickers = [
+        os.path.splitext(name)[0]
+        for name in os.listdir(DAILY_K_DIR)
+        if name.endswith(".csv") and os.path.splitext(name)[0].isdigit()
+    ]
+    return sorted(filter_stock_universe(tickers))
 
 
 def _load_issued_shares() -> dict[str, float]:
@@ -203,6 +241,21 @@ def _load_index_close(filename: str) -> pd.DataFrame | None:
     if "Close" not in df.columns:
         return None
     df = df[["Date", "Close"]].dropna(subset=["Close"]).sort_values("Date")
+    return df.reset_index(drop=True)
+
+
+def _load_index_ohlc(filename: str) -> pd.DataFrame | None:
+    path = os.path.join(INDEX_DIR, filename)
+    if not os.path.exists(path):
+        return None
+    try:
+        df = pd.read_csv(path, parse_dates=["Date"])
+    except Exception:
+        return None
+    needed = {"Date", "Open", "High", "Low", "Close"}
+    if not needed.issubset(df.columns):
+        return None
+    df = df[list(needed)].dropna(subset=["Close", "Open"]).sort_values("Date")
     return df.reset_index(drop=True)
 
 
@@ -264,8 +317,38 @@ def _build_market_features() -> pd.DataFrame:
             )
         )
 
+    # -- TWII intraday regime features --
+    twii_ohlc = _load_index_ohlc("index_TWII.csv")
+    if twii_ohlc is not None and not twii_ohlc.empty:
+        tc = pd.to_numeric(twii_ohlc["Close"], errors="coerce")
+        to = pd.to_numeric(twii_ohlc["Open"], errors="coerce").replace(0, np.nan)
+        tpc = tc.shift(1).replace(0, np.nan)
+
+        twii_intraday = (tc - to) / to
+        twii_ohlc["twii_intraday_return"] = twii_intraday.astype(np.float32)
+        twii_ohlc["twii_intraday_ma5"] = twii_intraday.rolling(5, min_periods=3).mean().astype(np.float32)
+
+        twii_gap = (to - tpc) / tpc
+        twii_gap_up = (twii_gap > 0.001).astype(float)
+        twii_gap_up_reverse = ((twii_gap > 0.001) & (tc < to)).astype(float)
+        twii_gap_up_count = twii_gap_up.rolling(20, min_periods=5).sum().replace(0, np.nan)
+        twii_ohlc["twii_gap_reversal_rate_20d"] = (
+            twii_gap_up_reverse.rolling(20, min_periods=5).sum() / twii_gap_up_count
+        ).astype(np.float32)
+
+        twii_intra_feat = twii_ohlc[["Date"] + T1_MARKET_INTRADAY_COLUMNS]
+        if merged is not None:
+            merged = pd.merge_asof(
+                merged.sort_values("Date"),
+                twii_intra_feat.sort_values("Date"),
+                on="Date",
+                direction="backward",
+            )
+        else:
+            merged = twii_intra_feat
+
     if merged is None:
-        merged = pd.DataFrame(columns=["Date"] + T1_MARKET_FEATURE_COLUMNS)
+        merged = pd.DataFrame(columns=["Date"] + T1_MARKET_FEATURE_COLUMNS + T1_MARKET_INTRADAY_COLUMNS)
 
     _MARKET_FEATURES_CACHE = merged
     return merged
@@ -286,7 +369,7 @@ def _merge_market_features(df: pd.DataFrame) -> pd.DataFrame:
         on="Date",
         direction="backward",
     )
-    for col in T1_MARKET_FEATURE_COLUMNS:
+    for col in T1_MARKET_FEATURE_COLUMNS + T1_MARKET_INTRADAY_COLUMNS:
         if col not in out.columns:
             out[col] = np.nan
     return out
@@ -386,6 +469,102 @@ def _add_t1_short_features(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def _add_t1_gap_continuation_features(df: pd.DataFrame) -> pd.DataFrame:
+    """Gap behavior / intraday continuation features for Open→Close prediction."""
+    out = df.copy()
+
+    open_ = pd.to_numeric(out["Open"], errors="coerce")
+    high = pd.to_numeric(out["High"], errors="coerce")
+    low = pd.to_numeric(out["Low"], errors="coerce")
+    close = pd.to_numeric(out["Close"], errors="coerce")
+    volume = pd.to_numeric(out["Volume"], errors="coerce")
+    prev_close = close.shift(1)
+    prev_high = high.shift(1)
+    prev_low = low.shift(1)
+
+    open_safe = open_.replace(0, np.nan)
+    prev_close_safe = prev_close.replace(0, np.nan)
+
+    # -- A. Intraday direction (today & recent) --
+    intraday_ret = (close - open_) / open_safe
+    out["t1_intraday_return"] = _clip_float(intraday_ret, -0.15, 0.15)
+    out["t1_intraday_return_ma3"] = _clip_float(
+        intraday_ret.rolling(3, min_periods=2).mean(), -0.10, 0.10
+    )
+    out["t1_intraday_return_ma5"] = _clip_float(
+        intraday_ret.rolling(5, min_periods=3).mean(), -0.10, 0.10
+    )
+    intraday_up = (close > open_).astype(float)
+    out["t1_intraday_win_rate_5d"] = intraday_up.rolling(5, min_periods=3).mean().astype(np.float32)
+    out["t1_intraday_win_rate_20d"] = intraday_up.rolling(20, min_periods=10).mean().astype(np.float32)
+
+    # -- B. Gap behavior history --
+    gap = (open_ - prev_close) / prev_close_safe
+    gap_mean_20 = gap.rolling(20, min_periods=10).mean()
+    gap_std_20 = gap.rolling(20, min_periods=10).std().replace(0, np.nan)
+    out["t1_gap_size_zscore"] = _clip_float((gap - gap_mean_20) / gap_std_20, -5, 5)
+
+    gap_up = (gap > 0.001).astype(float)
+    gap_up_and_continue = ((gap > 0.001) & (close > open_)).astype(float)
+    gap_up_and_reverse = ((gap > 0.001) & (close < open_)).astype(float)
+    gap_up_and_fill = ((gap > 0.001) & (low <= prev_close)).astype(float)
+
+    gap_up_count_20 = gap_up.rolling(20, min_periods=5).sum().replace(0, np.nan)
+    out["t1_gap_continuation_rate_20d"] = (
+        gap_up_and_continue.rolling(20, min_periods=5).sum() / gap_up_count_20
+    ).astype(np.float32)
+    out["t1_gap_reversal_rate_20d"] = (
+        gap_up_and_reverse.rolling(20, min_periods=5).sum() / gap_up_count_20
+    ).astype(np.float32)
+    out["t1_gap_fill_rate_20d"] = (
+        gap_up_and_fill.rolling(20, min_periods=5).sum() / gap_up_count_20
+    ).astype(np.float32)
+
+    # -- C. Open position / overnight decomposition --
+    total_ret = close / prev_close_safe - 1.0
+    overnight_ret = open_ / prev_close_safe - 1.0
+    total_abs_5d = total_ret.abs().rolling(5, min_periods=3).sum().replace(0, np.nan)
+    overnight_abs_5d = overnight_ret.abs().rolling(5, min_periods=3).sum()
+    out["t1_overnight_share_5d"] = _clip_float(overnight_abs_5d / total_abs_5d, 0, 1)
+
+    prev_range = (prev_high - prev_low).replace(0, np.nan)
+    out["t1_open_vs_prev_range"] = _clip_float(
+        (open_ - prev_low) / prev_range, -1.0, 2.0
+    )
+
+    atr_pct = pd.to_numeric(out.get("atr_pct"), errors="coerce").replace(0, np.nan)
+    out["t1_gap_vs_atr"] = _clip_float(gap / atr_pct, -5.0, 5.0)
+
+    # -- D. K-bar continuation --
+    hl_range = (high - low).replace(0, np.nan)
+    out["t1_close_strength"] = _clip_float((close - open_) / hl_range, -1.0, 1.0)
+
+    is_intraday_up = (close > open_).astype(float)
+    intraday_streak_group = (is_intraday_up != is_intraday_up.shift(1)).cumsum()
+    out["t1_consec_intraday_up"] = (
+        is_intraday_up.groupby(intraday_streak_group).cumsum()
+        * is_intraday_up
+    ).astype(np.float32)
+
+    prev_gap_up = (gap.shift(0) > 0.001)
+    prev_intraday_down = (close.shift(0) < open_.shift(0))
+    out["t1_prev_day_reversal"] = (prev_gap_up & prev_intraday_down).astype(np.float32)
+
+    # -- E. Volume-gap interaction --
+    vol_ma20 = volume.rolling(20, min_periods=10).mean().replace(0, np.nan)
+    vol_ratio = volume / vol_ma20
+    gap_vol_raw = pd.Series(
+        np.where(gap > 0.001, vol_ratio, 0.0), index=out.index
+    )
+    out["t1_gap_volume_confirm"] = _clip_float(gap_vol_raw, 0.0, 10.0)
+
+    ret_sign = np.sign(close - prev_close)
+    vol_change_sign = np.sign(volume - volume.shift(1))
+    out["t1_volume_price_diverge"] = (ret_sign != vol_change_sign).astype(np.float32)
+
+    return out
+
+
 def load_single_stock_t1(ticker: str) -> pd.DataFrame | None:
     """Load one stock and compute T+1 labels + short-horizon features."""
     path = os.path.join(DAILY_K_DIR, f"{ticker}.csv")
@@ -405,12 +584,14 @@ def load_single_stock_t1(ticker: str) -> pd.DataFrame | None:
         return None
 
     df = compute_t1_targets(df, twii_df=_get_twii())
-    df = compute_technical_features(df)
+    df = compute_technical_features(df, ticker=ticker)
     df = compute_institutional_features(df)
     df = compute_tdcc_features(df, ticker, TDCC_SUMMARY_PATH)
     df = _add_turnover_rate(df, ticker)
     df = _merge_market_features(df)
     df = _add_t1_short_features(df)
+    # Gap features computed but not in T1_FEATURE_COLUMNS (disabled after backtest)
+    df = _add_t1_gap_continuation_features(df)
     df["ticker"] = str(ticker)
     return df
 
@@ -421,6 +602,11 @@ _T1_ZSCORE_SKIP = {
     "twii_above_ma20", "twii_volatility_20d",
     "t1_strong_close_flag", "t1_long_upper_shadow_flag",
     "chip_diverge_bear", "chip_diverge_bull",
+    "t1_intraday_win_rate_5d", "t1_intraday_win_rate_20d",
+    "t1_gap_continuation_rate_20d", "t1_gap_reversal_rate_20d",
+    "t1_gap_fill_rate_20d", "t1_overnight_share_5d",
+    "t1_prev_day_reversal", "t1_volume_price_diverge",
+    "twii_gap_reversal_rate_20d",
 }
 
 _T1_WINSORIZE_Q_LOW = 0.01
@@ -503,13 +689,25 @@ def build_t1_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
     else:
         dataset["atr_pct_rank"] = np.nan
 
-    # Cross-sectional z-score: 連續特徵截面標準化
-    dataset = _winsorize_t1_cross_section(dataset)
-    dataset = _apply_t1_cross_sectional_zscore(dataset)
+    # Cross-sectional z-score 已關閉：T+1 使用絕對報酬 target，
+    # 不需截面標準化，避免壓縮 prob 分布導致模型失去區分度
+    # dataset = _winsorize_t1_cross_section(dataset)
+    # dataset = _apply_t1_cross_sectional_zscore(dataset)
 
-    dataset = dataset.dropna(subset=["t1_high_return", "t1_hit_3pct", "t1_excess_positive"]).copy()
+    dataset = dataset.dropna(subset=[
+        "t1_high_return", "t1_hit_3pct", "t1_excess_positive", "t1_close_positive",
+        "t1_trade_positive", "t1_trade_return", "t1_trade_high", "t1_trade_low",
+        "t1_high_return_3d", "t1_low_return_3d", "t1_hit_3pct_3d",
+        "t1_close_positive_3d", "t1_close_ge_1pct_3d", "t1_open_close_positive_3d",
+    ]).copy()
     dataset["t1_hit_3pct"] = dataset["t1_hit_3pct"].astype(np.int8)
     dataset["t1_excess_positive"] = dataset["t1_excess_positive"].astype(np.int8)
+    dataset["t1_close_positive"] = dataset["t1_close_positive"].astype(np.int8)
+    dataset["t1_trade_positive"] = dataset["t1_trade_positive"].astype(np.int8)
+    dataset["t1_hit_3pct_3d"] = dataset["t1_hit_3pct_3d"].astype(np.int8)
+    dataset["t1_close_positive_3d"] = dataset["t1_close_positive_3d"].astype(np.int8)
+    dataset["t1_close_ge_1pct_3d"] = dataset["t1_close_ge_1pct_3d"].astype(np.int8)
+    dataset["t1_open_close_positive_3d"] = dataset["t1_open_close_positive_3d"].astype(np.int8)
     dataset = _finalize_frame(dataset)
 
     if verbose:
@@ -540,6 +738,19 @@ def build_latest_t1_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.Da
         raise ValueError("No eligible stocks were available for the T+1 snapshot.")
 
     snapshot = pd.concat(rows, ignore_index=True)
+
+    # 只保留最新交易日的截面。停牌/最後交易日落後的股票(例:6176 停在 2026-08-12,
+    # 其餘 1156 檔已到 08-18)不該混進「當日快照」——否則會用過期特徵當今日選股,
+    # 且因 predict_t1 的 pred_date 取排序後第一列,停牌股的舊日期會污染整個預測檔名
+    # (2026-08 事故:T+1 預測凍結在 08-12,連帶 unified signals / V4 shadow 全失敗)。
+    latest_date = snapshot["Date"].max()
+    stale_mask = snapshot["Date"] != latest_date
+    if stale_mask.any():
+        dropped = snapshot.loc[stale_mask, "ticker"].tolist()
+        if verbose:
+            print(f"  剔除 {len(dropped)} 檔非最新交易日({str(latest_date)[:10]})的停牌/落後股: {dropped[:10]}")
+        snapshot = snapshot.loc[~stale_mask].reset_index(drop=True)
+
     snapshot = compute_sector_features(snapshot)
     # atr_pct 截面百分位（snapshot 只有一天，直接 rank）
     if "atr_pct" in snapshot.columns:
@@ -547,9 +758,9 @@ def build_latest_t1_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.Da
     else:
         snapshot["atr_pct_rank"] = np.nan
 
-    # Cross-sectional z-score（snapshot 只有一天）
-    snapshot = _winsorize_t1_cross_section(snapshot)
-    snapshot = _apply_t1_cross_sectional_zscore(snapshot)
+    # Cross-sectional z-score 已關閉（與 build_t1_dataset 同步）
+    # snapshot = _winsorize_t1_cross_section(snapshot)
+    # snapshot = _apply_t1_cross_sectional_zscore(snapshot)
 
     snapshot = _finalize_frame(snapshot)
 

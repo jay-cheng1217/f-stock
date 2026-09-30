@@ -41,21 +41,27 @@ from sklearn.metrics import log_loss, precision_score, recall_score, roc_auc_sco
 warnings.filterwarnings("ignore", category=UserWarning)
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from ml.config import MODEL_DIR, REPORT_DIR
+from ml.config import LGBM_NUM_THREADS, MODEL_DIR, REPORT_DIR
 from ml.dataset_t1 import T1_FEATURE_COLUMNS, build_t1_dataset
 
 
-DEFAULT_TARGET = "t1_excess_positive"
+DEFAULT_TARGET = "t1_close_positive"
 TARGET_ALIASES = {
-    "t1_close_positive": "t1_excess_positive",
     "t1_open_to_close_positive": "t1_open_to_close_excess_positive",
     "t1_open_next_close_positive": "t1_open_next_close_excess_positive",
 }
 VALID_TARGET_COLUMNS = [
+    "t1_trade_positive",
+    "t1_close_positive",
     "t1_open_to_close_excess_positive",
     "t1_open_next_close_excess_positive",
     "t1_excess_positive",
     "t1_hit_3pct",
+    # 3-day horizon targets
+    "t1_hit_3pct_3d",
+    "t1_close_positive_3d",
+    "t1_close_ge_1pct_3d",
+    "t1_open_close_positive_3d",
 ]
 CLI_TARGET_CHOICES = VALID_TARGET_COLUMNS + list(TARGET_ALIASES)
 DEFAULT_TOP_N = 10
@@ -190,7 +196,7 @@ def train_binary_fold(
         "lambda_l2": 0.5,
         "scale_pos_weight": neg_count / pos_count,
         "verbose": -1,
-        "n_jobs": -1,
+        "n_jobs": LGBM_NUM_THREADS,
         "seed": 42,
     }
 
@@ -235,14 +241,92 @@ def simulate_trade(
     ambiguous_fill: str = "stop_first",
     entry_mode: str = "close",
 ) -> dict[str, float | str | int | None] | None:
-    """Simulate one next-day trade from daily OHLC targets.
+    """Simulate one trade from precomputed label columns.
 
     entry_mode:
-        "close" — enter at today's close, exit based on next-day OHLC (legacy)
-        "open"  — enter at next-day open, exit at next-day close.
-                   The user's actual trade: buy D+1 open, sell D+1 close.
-                   TP/SL are measured from open, using intraday high/low vs open.
+        "trade" — canonical: Open[t+1] → Close[t+1], absolute returns (no TWII adj).
+        "close" — legacy: Close[t] → Close[t+1], excess returns.
+        "open"  — legacy: Open[t+1] → Close[t+1], excess returns.
+        "3d"    — Open[t+1] → Close[t+3], absolute returns.
     """
+    if entry_mode == "trade":
+        close_ret = _safe_float(row.get("t1_trade_return"))
+        high_ret = _safe_float(row.get("t1_trade_high"))
+        low_ret = _safe_float(row.get("t1_trade_low"))
+        if close_ret is None or high_ret is None or low_ret is None:
+            return None
+
+        hit_tp = take_profit is not None and high_ret >= take_profit
+        hit_sl = stop_loss is not None and low_ret <= -stop_loss
+
+        if hit_tp and hit_sl:
+            if ambiguous_fill == "target_first":
+                gross_return = take_profit
+                exit_reason = "ambiguous_take_profit"
+            elif ambiguous_fill == "close":
+                gross_return = close_ret
+                exit_reason = "ambiguous_close"
+            else:
+                gross_return = -stop_loss
+                exit_reason = "ambiguous_stop_loss"
+        elif hit_tp:
+            gross_return = take_profit
+            exit_reason = "take_profit"
+        elif hit_sl:
+            gross_return = -stop_loss
+            exit_reason = "stop_loss"
+        else:
+            gross_return = close_ret
+            exit_reason = "close"
+
+        net_return = gross_return - friction
+        return {
+            "gross_return": gross_return,
+            "net_return": net_return,
+            "exit_reason": exit_reason,
+            "target_hit": int(hit_tp),
+            "stop_loss_hit": int(bool(hit_sl)),
+        }
+
+    if entry_mode == "3d":
+        close_ret = _safe_float(row.get("t1_close_return_3d"))
+        high_ret = _safe_float(row.get("t1_high_return_3d"))
+        low_ret = _safe_float(row.get("t1_low_return_3d"))
+        if close_ret is None or high_ret is None or low_ret is None:
+            return None
+
+        hit_tp = take_profit is not None and high_ret >= take_profit
+        hit_sl = stop_loss is not None and low_ret <= -stop_loss
+
+        if hit_tp and hit_sl:
+            if ambiguous_fill == "target_first":
+                gross_return = take_profit
+                exit_reason = "ambiguous_take_profit"
+            elif ambiguous_fill == "close":
+                gross_return = close_ret
+                exit_reason = "ambiguous_close"
+            else:
+                gross_return = -stop_loss
+                exit_reason = "ambiguous_stop_loss"
+        elif hit_tp:
+            gross_return = take_profit
+            exit_reason = "take_profit"
+        elif hit_sl:
+            gross_return = -stop_loss
+            exit_reason = "stop_loss"
+        else:
+            gross_return = close_ret
+            exit_reason = "close"
+
+        net_return = gross_return - friction
+        return {
+            "gross_return": gross_return,
+            "net_return": net_return,
+            "exit_reason": exit_reason,
+            "target_hit": int(hit_tp),
+            "stop_loss_hit": int(bool(hit_sl)),
+        }
+
     if entry_mode == "open":
         # Open-entry: user buys at next open, sells at next close
         otc_ret = _safe_float(row.get("t1_open_to_close_return"))
@@ -363,9 +447,11 @@ def score_fold_predictions(
     target_col = resolve_target_name(target_col)
     base_cols = [
         "ticker", "Date", "Close", "Open",
+        "t1_trade_return", "t1_trade_high", "t1_trade_low",
         "t1_open_return", "t1_close_return", "t1_high_return", "t1_low_return",
         "t1_open_to_close_return", "t1_high_from_open", "t1_low_from_open",
         "t1_open_next_close_return",
+        "t1_high_return_3d", "t1_low_return_3d", "t1_close_return_3d",
     ]
     if target_col not in base_cols:
         base_cols.append(target_col)
@@ -392,7 +478,10 @@ def evaluate_scored_fold(
     """Replay one scored fold under a given trading rule set."""
     target_col = resolve_target_name(target_col)
     if entry_mode is None:
-        entry_mode = "open" if ("open_next_close" in target_col or "open_to_close" in target_col) else "close"
+        if "_3d" in target_col:
+            entry_mode = "3d"
+        else:
+            entry_mode = "trade"
     y_true = scored[target_col].astype(int).values
     y_prob = scored["hit_prob"].values
     y_pred = scored["pred_label"].values
@@ -446,20 +535,28 @@ def evaluate_scored_fold(
             day_hit_flags.append(trade["target_hit"])
             day_stop_flags.append(trade["stop_loss_hit"])
 
-            trade_records.append(
-                {
-                    "date": str(pd.Timestamp(dt).date()),
-                    "ticker": row["ticker"],
-                    "close": float(row["Close"]),
-                    "hit_prob": float(row["hit_prob"]),
-                    "target_label": int(row[target_col]),
-                    "t1_open_return": _safe_float(row["t1_open_return"]),
-                    "t1_high_return": _safe_float(row["t1_high_return"]),
-                    "t1_low_return": _safe_float(row["t1_low_return"]),
-                    "t1_close_return": _safe_float(row["t1_close_return"]),
-                    **trade,
-                }
-            )
+            rec = {
+                "date": str(pd.Timestamp(dt).date()),
+                "ticker": row["ticker"],
+                "close": float(row["Close"]),
+                "hit_prob": float(row["hit_prob"]),
+                "target_label": int(row[target_col]),
+            }
+            if entry_mode == "3d":
+                rec["t1_high_return_3d"] = _safe_float(row.get("t1_high_return_3d"))
+                rec["t1_low_return_3d"] = _safe_float(row.get("t1_low_return_3d"))
+                rec["t1_close_return_3d"] = _safe_float(row.get("t1_close_return_3d"))
+            elif entry_mode == "trade":
+                rec["t1_trade_return"] = _safe_float(row.get("t1_trade_return"))
+                rec["t1_trade_high"] = _safe_float(row.get("t1_trade_high"))
+                rec["t1_trade_low"] = _safe_float(row.get("t1_trade_low"))
+            else:
+                rec["t1_open_return"] = _safe_float(row.get("t1_open_return"))
+                rec["t1_high_return"] = _safe_float(row.get("t1_high_return"))
+                rec["t1_low_return"] = _safe_float(row.get("t1_low_return"))
+                rec["t1_close_return"] = _safe_float(row.get("t1_close_return"))
+            rec.update(trade)
+            trade_records.append(rec)
 
         if not day_trade_returns:
             continue
@@ -620,6 +717,52 @@ def _save_reports(
     return result_path, trade_path, daily_path
 
 
+def _load_current_prod_t1_metrics() -> dict | None:
+    """Load backtest metrics from the current production T+1 model."""
+    import glob as _glob
+    meta_files = sorted(_glob.glob(os.path.join(MODEL_DIR, "lgbm_t1_*_meta.json")))
+    if not meta_files:
+        return None
+    try:
+        with open(meta_files[-1], "r", encoding="utf-8") as f:
+            return json.load(f).get("backtest_summary")
+    except Exception:
+        return None
+
+
+def _quality_gate_pass(candidate: dict, production: dict | None) -> bool:
+    """Return True if candidate model passes quality gate vs production.
+
+    Rules:
+    - If no production model exists, always pass
+    - AUC must be within 0.005 of production (allow tiny regression)
+    - Precision@50 must not drop more than 15% relative
+    - Cumulative return must not be negative when production is positive
+    """
+    if production is None:
+        return True
+
+    cand_auc = candidate.get("avg_auc") or 0
+    prod_auc = production.get("avg_auc") or 0
+    if cand_auc < prod_auc - 0.005:
+        print(f"  Quality Gate FAIL: AUC {cand_auc:.4f} < {prod_auc:.4f} - 0.005")
+        return False
+
+    cand_prec = candidate.get("avg_precision_at_50") or 0
+    prod_prec = production.get("avg_precision_at_50") or 0
+    if prod_prec > 0 and cand_prec < prod_prec * 0.85:
+        print(f"  Quality Gate FAIL: Precision@50 {cand_prec:.4f} < {prod_prec:.4f} * 0.85")
+        return False
+
+    cand_cum = candidate.get("cumulative_portfolio_return") or 0
+    prod_cum = production.get("cumulative_portfolio_return") or 0
+    if prod_cum > 0 and cand_cum < 0:
+        print(f"  Quality Gate FAIL: Cumulative return {cand_cum:.4f} negative (prod={prod_cum:.4f})")
+        return False
+
+    return True
+
+
 def _train_final_model(
     dataset: pd.DataFrame,
     feature_cols: list[str],
@@ -632,6 +775,14 @@ def _train_final_model(
     if not save_model:
         return None, None, None
     target_col = resolve_target_name(target_col)
+
+    # --- Quality Gate: compare candidate vs production ---
+    candidate_metrics = backtest_meta.get("overall", {})
+    prod_metrics = _load_current_prod_t1_metrics()
+    if not _quality_gate_pass(candidate_metrics, prod_metrics):
+        print("  Quality Gate: REJECTED — keeping current production model")
+        return None, None, None
+    print("  Quality Gate: PASSED — saving new model")
 
     cutoff = pd.Timestamp(dataset["Date"].max()).replace(day=1) - relativedelta(months=val_months)
     train_df = dataset[dataset["Date"] < cutoff].copy()
@@ -672,7 +823,7 @@ def _train_final_model(
             str(pd.Timestamp(dataset["Date"].max()).date()),
         ],
         "target": target_col,
-        "cross_sectional_zscore": True,
+        "cross_sectional_zscore": False,
         "trade_rules": backtest_meta["trade_rules"],
         "walk_forward": backtest_meta["walk_forward"],
         "backtest_summary": backtest_meta["overall"],
@@ -801,7 +952,7 @@ def run_t1_backtest(
             "device": actual_device,
         },
         "trade_rules": {
-            "entry": "buy_on_close",
+            "entry": "buy_on_open_3d" if "_3d" in target else "buy_on_open_t1",
             "selection": {
                 "top_n": top_n,
                 "min_prob": min_prob,

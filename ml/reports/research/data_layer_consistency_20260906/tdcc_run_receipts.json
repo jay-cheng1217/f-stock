@@ -1,0 +1,858 @@
+{
+  "scope": "TDCC acceptance receipts preserved including unsuccessful and intentionally interrupted runs",
+  "collected_at": "2026-09-06T22:07:15.2070814+08:00",
+  "notes": [
+    "Full collector interruptions retained for pacing/reference/priority changes; no discarded checkpoint.",
+    "tdcc_normalize_complete_2134 was intentionally stopped after first complete week for verified single-parser resume.",
+    "tdcc_parser_backend_equivalence_2153 passed real-source comparison but pytest default NUL write was denied; fixed by local log without changing guard.",
+    "tdcc_final_source_review_2203 enforced original status too narrowly; original source bytes now revalidated while preserving early UNRESOLVED audit status.",
+    "tdcc_final_source_review_bytes_2204 caught pandas default float parsing roundtrip; exact round_trip CSV read passed official float32 reference checks.",
+    "Other earlier failed attempts are retained as historical evidence; successful final gates are documented in tdcc_history_completion.json."
+  ],
+  "records": [
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_bulk_contract.json",
+      "receipt_sha256": "42727f0eedbdac3b8532d44e8bb34734822e410b3ccdc0ffce854cb088bded82",
+      "receipt": {
+        "label": "tdcc_bulk_contract",
+        "started": "2026-09-06T14:59:17.405712",
+        "seconds": 0.63,
+        "command": [
+          "-c",
+          "import requests,json; from pathlib import Path; p=Path('output/historical_gaps_20260906/raw'); r=requests.get('https://openapi.tdcc.com.tw/tdcc-opendata-api-docs',timeout=25); r.raise_for_status(); d=r.json(); e=d['paths']['/v1/opendata/1-5']; (p/'tdcc_bulk_contract.json').write_text(json.dumps({'url':r.url,'endpoint':e},ensure_ascii=False,indent=2),encoding='utf-8'); print(json.dumps(e,ensure_ascii=False))"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_bulk_contract.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "cf09f9137a3b35cff7f3395865e843a58bc09eef5e85b3dbbb27615fa884c722"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_collection_status_complete_2145.json",
+      "receipt_sha256": "a9d013b45982f4b1039ad9ae50d21dff99043f343453d1d546e6ee56fe5ab778",
+      "receipt": {
+        "label": "tdcc_collection_status_complete_2145",
+        "started": "2026-09-06T21:46:31.022358",
+        "seconds": 2.33,
+        "command": [
+          "scripts/audit_tdcc_collection_status.py",
+          "--label",
+          "complete_2145"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_collection_status_complete_2145.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "480197c6431b0db8eb85f172cef5792f2a34d6fdea0cf30efd2192bd236bc92a"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_complete_2031_feature_D.json",
+      "receipt_sha256": "cfeee22e66ae24d9de6d7780f46926f8b1839be28f0ec546fa46dd83e1e6afbb",
+      "receipt": {
+        "label": "tdcc_complete_2031_feature_D",
+        "started": "2026-09-06T22:00:07.826437",
+        "seconds": 158.01,
+        "command": [
+          "scripts/audit_tdcc_history_feature_ab_complete_2134.py",
+          "compare",
+          "--source-root",
+          "F:/stock",
+          "--stage-label",
+          "tdcc_feature_ab_2031",
+          "--normalized-stage",
+          "tdcc_normalized_complete_2134",
+          "--feature-source",
+          "scripts/tdcc_feature_source_2134.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_complete_2031_feature_D.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "f095b7a85b3f2db77ba5c9222e6dc571913b84f7dbcd387102d952b72d400d7a"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_feature_frame_freeze.json",
+      "receipt_sha256": "08d525df8676104a5dca2a2c9442d9eafd754bab4a4b91ccf6f2d6933489597b",
+      "receipt": {
+        "label": "tdcc_feature_frame_freeze",
+        "started": "2026-09-06T16:10:17.612459",
+        "seconds": 14.27,
+        "command": [
+          "scripts/audit_tdcc_history_feature_ab.py",
+          "freeze",
+          "--source-root",
+          "F:/stock"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_feature_frame_freeze.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "f46ed7e38e014118370538706e61e8719630232f657fca5f17240b3d9676759c"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_feature_frame_freeze2031.json",
+      "receipt_sha256": "3d36cfa93b3fd1fa6f12297ae864f7a193d8cc665a28536d98e2c38becb4606f",
+      "receipt": {
+        "label": "tdcc_feature_frame_freeze2031",
+        "started": "2026-09-06T16:16:21.615331",
+        "seconds": 19.27,
+        "command": [
+          "scripts/audit_tdcc_history_feature_ab_2031.py",
+          "freeze",
+          "--source-root",
+          "F:/stock",
+          "--stage-label",
+          "tdcc_feature_ab_2031",
+          "--source-manifest",
+          "ml/reports/research/source_universe_ab_20260906/frozen_manifest.json",
+          "--v3-dir",
+          "ml/reports/research/source_universe_ab_20260906/enriched_v3_classic/daily_k"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_feature_frame_freeze2031.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "949d7cdfa9bc52f20e13c3a8768058a648598419bf56591bbe35e56dad435246"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_final_source_review_2203.json",
+      "receipt_sha256": "4d6682f39301f27e423429fbfdb30abe3b9e343c006e6a72b65ea56a20fc28dd",
+      "receipt": {
+        "label": "tdcc_final_source_review_2203",
+        "started": "2026-09-06T22:03:04.424492",
+        "seconds": 0.6,
+        "command": [
+          "scripts/finalize_tdcc_history_evidence_2203.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 1,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_final_source_review_2203.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "7cf754fdc3e79b71697d709aea801221a9e9ec0cb857d8b13f096cbe96dfefa1"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_final_source_review_bytes_2204.json",
+      "receipt_sha256": "f11c915543fe59668512ef52c1d7358a9a4a572db95b282b26f6337dfb0048d6",
+      "receipt": {
+        "label": "tdcc_final_source_review_bytes_2204",
+        "started": "2026-09-06T22:04:05.543148",
+        "seconds": 3.07,
+        "command": [
+          "scripts/finalize_tdcc_history_evidence_source_bytes_2204.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 1,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_final_source_review_bytes_2204.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "13b85615569b51215f8255b52d08962b0a87b61330c9b19d01f95c87097c27d0"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_final_source_review_roundtrip_2205.json",
+      "receipt_sha256": "76ac2c4f8b1533e6756f01a394dcb3790aa34eaf2b0268594905ff4f790d16fe",
+      "receipt": {
+        "label": "tdcc_final_source_review_roundtrip_2205",
+        "started": "2026-09-06T22:04:42.488876",
+        "seconds": 3.12,
+        "command": [
+          "scripts/finalize_tdcc_history_evidence_roundtrip_2205.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_final_source_review_roundtrip_2205.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "b1c0037f856964cc66e823b8b8242ca9c92f565dae19f08c719bd88486af94db"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_finmind_existing_access_utf8.json",
+      "receipt_sha256": "56dbd73b41f22632c235ce4375b7b3498a6171cc55377843525234ce52a5c48f",
+      "receipt": {
+        "label": "tdcc_finmind_existing_access_utf8",
+        "started": "2026-09-06T15:13:57.653782",
+        "seconds": 0.65,
+        "command": [
+          "scripts/probe_tdcc_finmind_access.py",
+          "--source-root",
+          "F:/stock"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_finmind_existing_access_utf8.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "690e503b1c955911753e62b18e9ab789bbe19e70a79aa2f1dd0c21e76aa86d4d"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_finmind_existing_access.json",
+      "receipt_sha256": "5ec2dd904156945f3da6dd01c3f7fddb5566af0790289ddd5a5230673502af56",
+      "receipt": {
+        "label": "tdcc_finmind_existing_access",
+        "started": "2026-09-06T15:13:25.446223",
+        "seconds": 0.22,
+        "command": [
+          "scripts/probe_tdcc_finmind_access.py",
+          "--source-root",
+          "F:/stock"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_finmind_existing_access.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "a3f10977e1b54d6cee4d72e7a660768a44de59146b5b000c06818c11e5c0142b"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_historical_holiday_reconciliation.json",
+      "receipt_sha256": "37a3de65a768cacb336a60cfec3d484ce4ff5c8069786edd930f6582f4ccf5af",
+      "receipt": {
+        "label": "tdcc_historical_holiday_reconciliation",
+        "started": "2026-09-06T15:22:54.099282",
+        "seconds": 2.44,
+        "command": [
+          "scripts/reconcile_tdcc_holiday_weeks.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_historical_holiday_reconciliation.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "1b2d3f4de364c26b60328d063aca51149c0e5aaf6a5ba3236d696695476e0f87"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_holiday_2021_source.json",
+      "receipt_sha256": "23b306f95e9162f29e3ee54198e1a69e7ee68ed4699214283af2af8a65abefc6",
+      "receipt": {
+        "label": "tdcc_holiday_2021_source",
+        "started": "2026-09-06T15:21:34.409285",
+        "seconds": 0.38,
+        "command": [
+          "-c",
+          "from scripts.stage_historical_gaps import checked_root,fetch; checked_root(); fetch('twse_holiday_2021','https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20210101&response=json')"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_holiday_2021_source.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "6088b68f71891bee55da232e296201f93a11ba339808a5601b5dbbdf470d15a4"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_holiday_form_source.json",
+      "receipt_sha256": "e79068bbe7801fcffad3d139a088bb47652ce18f0b2d6f5c20c6ddca948f103f",
+      "receipt": {
+        "label": "tdcc_holiday_form_source",
+        "started": "2026-09-06T15:19:44.699836",
+        "seconds": 0.37,
+        "command": [
+          "-c",
+          "from scripts.stage_historical_gaps import checked_root,fetch; checked_root(); fetch('twse_holiday_form','https://www.twse.com.tw/zh/trading/holiday.html')"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_holiday_form_source.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "86261b1c0bf35ebd710da26689c1363585c3ecd8f222d5ff54e5176c945bad05"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_no_data_independent_confirmation.json",
+      "receipt_sha256": "566dfe96800dba23281b14d4215f67df35873d3182ad1fc9174d6995d51c4134",
+      "receipt": {
+        "label": "tdcc_no_data_independent_confirmation",
+        "started": "2026-09-06T21:40:26.318052",
+        "seconds": 59.61,
+        "command": [
+          "scripts/recheck_tdcc_no_data_confirmation_2134.py",
+          "--kind",
+          "no-data-confirm"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_no_data_independent_confirmation.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "bd847f3e56b5301babb151157b73b55a8e7322f25ae0bfa334dc844e6c8dd02a"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_normalize_complete_2134.json",
+      "receipt_sha256": "398805ef425915a29057a182ff2bd4fe4ec5bf0ed8b895c3fae710dda3287ede",
+      "receipt": {
+        "label": "tdcc_normalize_complete_2134",
+        "started": "2026-09-06T21:45:06.862204",
+        "seconds": 674.26,
+        "command": [
+          "scripts/normalize_tdcc_public_history_complete_2134.py",
+          "stage",
+          "--stage-label",
+          "tdcc_normalized_complete_2134"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 4294967295,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_normalize_complete_2134.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_normalize_resumable_single_parse_2156.json",
+      "receipt_sha256": "9fd6dbb7a73d64c0d38ed8cc634186a3697601d12ee9ba38abb91228aa900f1f",
+      "receipt": {
+        "label": "tdcc_normalize_resumable_single_parse_2156",
+        "started": "2026-09-06T21:56:21.338718",
+        "seconds": 185.71,
+        "command": [
+          "scripts/normalize_tdcc_public_history_final_2153.py",
+          "stage",
+          "--stage-label",
+          "tdcc_normalized_complete_2134",
+          "--resume",
+          "--parser-backend",
+          "lxml",
+          "--collector-source",
+          "scripts/backfill_tdcc_public_history_final_2153.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_normalize_resumable_single_parse_2156.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "daf7aad4d56a903323c9e181a24f45b790616b1ec46a796590f704739567832f"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_pacing_50.json",
+      "receipt_sha256": "57edb579cc9deb45031add7012d8ef7db48278f2da548f9e52f445f719e05405",
+      "receipt": {
+        "label": "tdcc_pacing_50",
+        "started": "2026-09-06T15:39:15.374097",
+        "seconds": 47.53,
+        "command": [
+          "scripts/backfill_tdcc_public_history.py",
+          "collect",
+          "--limit",
+          "50",
+          "--delay",
+          "0.25",
+          "--retry-unresolved"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_pacing_50.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "e12161f14c648e9708d3604e1329dcd488e9cf764e5452676ab565fc98c3950b"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_pacing_fixture.json",
+      "receipt_sha256": "bda0b3ba04843d6d924e173b286a7f67bbf76d95814950da9ec4abdcfd3f2e98",
+      "receipt": {
+        "label": "tdcc_pacing_fixture",
+        "started": "2026-09-06T15:38:58.65297",
+        "seconds": 0.67,
+        "command": [
+          "-m",
+          "pytest",
+          "tests/test_tdcc_public_history.py",
+          "--basetemp",
+          "output/pytest_tdcc_pacing",
+          "-o",
+          "log_file=logs/tdcc_pacing_tests.log",
+          "-q"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_pacing_fixture.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "263ff91e3c7985e970954a898e24f6941ebbd8f2f16955470401d29e23f1f3cb"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_parser_backend_equivalence_2153.json",
+      "receipt_sha256": "bf9632ec44a184e1206444bc3db00c132451b897b5a6e7e2726a7b60fc63e3df",
+      "receipt": {
+        "label": "tdcc_parser_backend_equivalence_2153",
+        "started": "2026-09-06T21:54:07.278795",
+        "seconds": 38.38,
+        "command": [
+          "scripts/verify_tdcc_normalization_backend_2153.py",
+          "--collector-source",
+          "scripts/backfill_tdcc_public_history_final_2153.py",
+          "--normalizer-source",
+          "scripts/normalize_tdcc_public_history_final_2153.py",
+          "--fixture",
+          "tests/test_tdcc_public_history_final_2153.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 1,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_parser_backend_equivalence_2153.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "205f93cd5207a58d828a388c00f4545e78990c73e800fcba93f3587563302f1a"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_parser_backend_equivalence_local_log_2155.json",
+      "receipt_sha256": "74915a7f1a6b2d4fac09f3fb4c7ae4c534e87274d8f76156e637dee9de686283",
+      "receipt": {
+        "label": "tdcc_parser_backend_equivalence_local_log_2155",
+        "started": "2026-09-06T21:55:23.638926",
+        "seconds": 26.05,
+        "command": [
+          "scripts/verify_tdcc_normalization_backend_local_log_2155.py",
+          "--collector-source",
+          "scripts/backfill_tdcc_public_history_final_2153.py",
+          "--normalizer-source",
+          "scripts/normalize_tdcc_public_history_final_2153.py",
+          "--fixture",
+          "tests/test_tdcc_public_history_final_2153.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_parser_backend_equivalence_local_log_2155.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "6fe8d276061e6754fafe604a1318f7cfe4809d074e6ad593003b15f08adf3e8d"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_priority_contract_tests.json",
+      "receipt_sha256": "d0aace2a27b1867113109a7d926e786c1d1b9dd40b1db970ae5b0b808875e0a9",
+      "receipt": {
+        "label": "tdcc_priority_contract_tests",
+        "started": "2026-09-06T16:21:32.356757",
+        "seconds": 0.68,
+        "command": [
+          "-m",
+          "pytest",
+          "-q",
+          "-o",
+          "log_file=logs/tdcc_priority_pytest.log",
+          "--basetemp=output/tdcc_priority_pytest_tmp",
+          "tests/test_tdcc_public_history_priority.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_priority_contract_tests.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "40eb7b62166023e7f89a6501ada52e16a78d515a46620ea599653bc8b3ca5017"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_collector_plan.json",
+      "receipt_sha256": "e39860876451d9d366add007e754f172f9c88a333a75df2142d4bf7a7f64a776",
+      "receipt": {
+        "label": "tdcc_public_collector_plan",
+        "started": "2026-09-06T15:16:38.143804",
+        "seconds": 0.83,
+        "command": [
+          "scripts/backfill_tdcc_public_history.py",
+          "plan"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_collector_plan.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "6b9c8884667c14da0667d07b3603450d495da5af3b95dad126e2c9393e7580d9"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_collector_resume.json",
+      "receipt_sha256": "6ac141c1c8bb2e02b0e48f4cabb2138ee321ce40a14280e27dd96bb588e1f9d6",
+      "receipt": {
+        "label": "tdcc_public_collector_resume",
+        "started": "2026-09-06T15:18:47.466094",
+        "seconds": 0.98,
+        "command": [
+          "scripts/backfill_tdcc_public_history.py",
+          "collect",
+          "--limit",
+          "12",
+          "--tickers",
+          "2330,2603,2357,6488"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_collector_resume.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "21a47f5843bc6eae17f6e206001f8071ec7daae47bf55c12e17ca2659cb216cd"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_collector_small_batch.json",
+      "receipt_sha256": "366350d79e5c290ef3c602a9d7203e2462e6b91ceaaf751cc4315d218d572e14",
+      "receipt": {
+        "label": "tdcc_public_collector_small_batch",
+        "started": "2026-09-06T15:16:50.551589",
+        "seconds": 14.9,
+        "command": [
+          "scripts/backfill_tdcc_public_history.py",
+          "collect",
+          "--limit",
+          "12",
+          "--tickers",
+          "2330,2603,2357,6488"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_collector_small_batch.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "92fc67fd71253a3fde7faf1efe11a139b4e2dc3e53151981264402cad9a27655"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_collector_tests.json",
+      "receipt_sha256": "09a25ee6d6e3676b0278530b7293f7442791a9576df9869d14403ad82eac34d2",
+      "receipt": {
+        "label": "tdcc_public_collector_tests",
+        "started": "2026-09-06T15:18:17.18112",
+        "seconds": 0.54,
+        "command": [
+          "-m",
+          "pytest",
+          "tests/test_tdcc_public_history.py",
+          "--basetemp",
+          "output/pytest_tdcc_public",
+          "-o",
+          "log_file=logs/tdcc_public_tests.log",
+          "-q"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_collector_tests.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "c940be40a832521b7c2109a7f529ad8bdc479195bd721c5bbbe0d63dc49f0615"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_full_history_fast_resume.json",
+      "receipt_sha256": "b9dbf9bb3a8b965b12125330fb0547de19e7623949c82d3dca63e0828e72213e",
+      "receipt": {
+        "label": "tdcc_public_full_history_fast_resume",
+        "started": "2026-09-06T15:52:37.13636",
+        "seconds": 1713.48,
+        "command": [
+          "scripts/backfill_tdcc_public_history.py",
+          "collect",
+          "--limit",
+          "0",
+          "--delay",
+          "0.25",
+          "--retry-unresolved"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 4294967295,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_full_history_fast_resume.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "7c49365de37d99cc5454a7e5cec00a450436e959bdaaf6863e6091e62dbc9c97"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_full_history_fast.json",
+      "receipt_sha256": "fdaefe4a0488aaf24e25745149ee8d80eadb8b78d1c9ee416470d05084d616fd",
+      "receipt": {
+        "label": "tdcc_public_full_history_fast",
+        "started": "2026-09-06T15:40:32.798823",
+        "seconds": 711.61,
+        "command": [
+          "scripts/backfill_tdcc_public_history.py",
+          "collect",
+          "--limit",
+          "0",
+          "--delay",
+          "0.25",
+          "--retry-unresolved"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 4294967295,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_full_history_fast.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "56a67e13220851173a60271faef5e7b8d4725e31ab9989adb3b22a95eeead521"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_full_history_priority.json",
+      "receipt_sha256": "98ab9a2f7efde5c6fbe83ebf06a49b6eb24d3648b6b53f238b65b3c633fab1ec",
+      "receipt": {
+        "label": "tdcc_public_full_history_priority",
+        "started": "2026-09-06T16:21:33.271661",
+        "seconds": 3142.05,
+        "command": [
+          "scripts/backfill_tdcc_public_history_priority.py",
+          "collect",
+          "--limit",
+          "0",
+          "--delay",
+          "0.25",
+          "--retry-unresolved",
+          "--priority-manifest",
+          "ml/reports/research/source_universe_ab_20260906/frozen_manifest.json"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_full_history_priority.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "95897263865d7461d5b95cf2a9450556f9e0e7fa8b27e568a9920d5676de230e"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_full_history.json",
+      "receipt_sha256": "9cfd2a9218a64967f9f19a57cf3610cf98a1a3f7dfc985e105ba5609cb804c62",
+      "receipt": {
+        "label": "tdcc_public_full_history",
+        "started": "2026-09-06T15:20:50.79983",
+        "seconds": 898.42,
+        "command": [
+          "scripts/backfill_tdcc_public_history.py",
+          "collect",
+          "--limit",
+          "0",
+          "--delay",
+          "1"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 4294967295,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_full_history.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "a1bafc4690e3c8ca45f1a593f060ee2b15b93bcf0af68806ac5e1bd757397d96"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_inactive_probe.json",
+      "receipt_sha256": "4cb1c29b992b97277650054eb35cb11add38de35156b87d06fd55f5b4bf8d9d8",
+      "receipt": {
+        "label": "tdcc_public_inactive_probe",
+        "started": "2026-09-06T15:20:23.753448",
+        "seconds": 2.48,
+        "command": [
+          "scripts/backfill_tdcc_public_history.py",
+          "collect",
+          "--limit",
+          "1",
+          "--tickers",
+          "000218"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_public_inactive_probe.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "ae0811cc67a5306dbd6d30948565d74e9f611afe9a0ba45d7c5f2df2553c247b"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_reference_raw_contract_cached.json",
+      "receipt_sha256": "6abe78d110c45f0e464a83afc6807a36302afc27fcc74e540652b9649293bc93",
+      "receipt": {
+        "label": "tdcc_reference_raw_contract_cached",
+        "started": "2026-09-06T15:53:36.365542",
+        "seconds": 1.01,
+        "command": [
+          "scripts/normalize_tdcc_public_history.py",
+          "reference",
+          "--cached-reference",
+          "--source-root",
+          "F:/stock"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 1,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_reference_raw_contract_cached.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "5275e384986544e313525a9bd3d59fd250edf7846d6de119bf0bcd1e1fe4c821"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_reference_raw_contract_final.json",
+      "receipt_sha256": "9f891e950e73865872eae57442d231fc6df740acbe69efb23697b8e67a00e2ef",
+      "receipt": {
+        "label": "tdcc_reference_raw_contract_final",
+        "started": "2026-09-06T15:54:34.521952",
+        "seconds": 1.17,
+        "command": [
+          "scripts/normalize_tdcc_public_history.py",
+          "reference",
+          "--cached-reference",
+          "--source-root",
+          "F:/stock"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_reference_raw_contract_final.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "3515c6bca48620eaeff776b6ed5ab5903ef2a198a285f2f1cd689662d99f41bf"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_reference_raw_contract_preserved.json",
+      "receipt_sha256": "c391bfc0b037b16730a1d23900ad2b553eba0556a40ff11bbba35d46d2717219",
+      "receipt": {
+        "label": "tdcc_reference_raw_contract_preserved",
+        "started": "2026-09-06T15:53:56.741534",
+        "seconds": 1.01,
+        "command": [
+          "scripts/normalize_tdcc_public_history.py",
+          "reference",
+          "--cached-reference",
+          "--source-root",
+          "F:/stock"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 1,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_reference_raw_contract_preserved.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "4bdf9878f4ab02c218b5b12317f4bc5c11c16759e357a198f3dee9817f7e64dc"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_reference_raw_contract.json",
+      "receipt_sha256": "5a14c5bdb497b3f86508c1e556067c171d29477dd38dc28bc8d2bce95fc02550",
+      "receipt": {
+        "label": "tdcc_reference_raw_contract",
+        "started": "2026-09-06T15:52:24.612977",
+        "seconds": 2.63,
+        "command": [
+          "scripts/normalize_tdcc_public_history.py",
+          "reference",
+          "--source-root",
+          "F:/stock"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 1,
+        "execution_status": "FAIL",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_reference_raw_contract.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "5755fd0384719eae309b23af2b0bacefbba730c6ddbfc260f119af8a8f580fab"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_source_preflight_2205.json",
+      "receipt_sha256": "98a54186d877617be0c3bbff03ef7906722d9d43c943aa630e542221a11a70c2",
+      "receipt": {
+        "label": "tdcc_source_preflight_2205",
+        "started": "2026-09-06T22:05:28.07743",
+        "seconds": 0.18,
+        "command": [
+          "scripts/tdcc_source_plan_preflight_2205.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_source_preflight_2205.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "9f76f52a543ca2d7f41e1eba54ee8db955706e11a3b8c19c4b106999efc6b1c6"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_status_1600.json",
+      "receipt_sha256": "1bb2395098ef9758bc2df75fe4cf9671101f9ad60a452b3356a7c9addfd9d718",
+      "receipt": {
+        "label": "tdcc_status_1600",
+        "started": "2026-09-06T15:58:01.773349",
+        "seconds": 1.37,
+        "command": [
+          "scripts/audit_tdcc_collection_status.py",
+          "--label",
+          "1600"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_status_1600.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "972bb5bd91d36a185fe544d1cce86c06fc561865f6dcc3e4a09c1df105e78b38"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_status_priority1629.json",
+      "receipt_sha256": "8f7d8d25e5d6afe4b6719c85af7ff703c1d48ed6533e9aa17f2e162cee27a8ff",
+      "receipt": {
+        "label": "tdcc_status_priority1629",
+        "started": "2026-09-06T16:29:26.100872",
+        "seconds": 1.62,
+        "command": [
+          "scripts/audit_tdcc_collection_status.py",
+          "--label",
+          "priority1629"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_status_priority1629.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "db7798e95d115a29a548399f573bb9bd28e9d1cd6d165aa391e4023cbdc0c9fa"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_targeted_recheck_2134.json",
+      "receipt_sha256": "abf1000cea267f4e49cf8180d20529b2e604429de5c1f9e413bf2192660ffb84",
+      "receipt": {
+        "label": "tdcc_targeted_recheck_2134",
+        "started": "2026-09-06T21:38:09.746793",
+        "seconds": 5.71,
+        "command": [
+          "scripts/recheck_tdcc_history_checkpoint.py"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_targeted_recheck_2134.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "884c2ef4e736b74e163d5ac0a73192cff764bda6ec1ab1038d6f4e461bb143fb"
+    },
+    {
+      "receipt_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_universe_inventory.json",
+      "receipt_sha256": "adbd30f25abe3c62fa6c2c5b855def8ce06108c908b3864b109757305790f912",
+      "receipt": {
+        "label": "tdcc_universe_inventory",
+        "started": "2026-09-06T14:55:49.972865",
+        "seconds": 0.81,
+        "command": [
+          "-c",
+          "import pandas as pd,json; from pathlib import Path; b=Path('集保分散'); out=[]\nfor name in ['tdcc_20251003.csv','tdcc_20251017.csv','tdcc_20251031.csv','tdcc_20260213.csv','tdcc_20260306.csv','tdcc_20260904.csv']:\n p=b/name; f=pd.read_csv(p,dtype=str); c=f.iloc[:,1].astype(str).str.strip(); out.append({'file':name,'rows':len(f),'allcodes':c.nunique(),'fourdigits':c[c.str.fullmatch('[0-9]{4}')].nunique(),'firstcols':list(f.columns)[:3]})\nprint(json.dumps(out,ensure_ascii=False))"
+        ],
+        "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+        "exit_code": 0,
+        "execution_status": "PASS",
+        "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\tdcc_universe_inventory.log",
+        "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+      },
+      "log_sha256": "e10fe6488495e7cced60b875c09a1e9696cfffebdc838cf42ece6d6a66a4f394"
+    }
+  ]
+}

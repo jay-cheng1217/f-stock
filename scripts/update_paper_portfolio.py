@@ -15,19 +15,31 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 from ml.config import DAILY_K_DIR, MODEL_DIR
 from ml.predict import apply_sector_cap, _sort_prediction_df
+from ml.universe import filter_out_etfs_df
+from scripts.order_simulation import (
+    EXIT_REASON_TIME_20D,
+    FILL_STATUS_FILLED,
+    FILL_STATUS_PENDING,
+    simulate_20d_entry,
+    simulate_intraday_stop,
+)
+from scripts.exit_policies import ENTRY_TAG_FUNDAMENTAL_DRIVEN, classify_entry_tag
 
 DEFAULT_DB_PATH = os.path.join(BASE_DIR, "paper_portfolio.db")
-DEFAULT_RULE_VERSION = "v2.1-balanced"
+NARRATIVE_DB_PATH = os.path.join(BASE_DIR, "stock.duckdb")
+DEFAULT_RULE_VERSION = "v2.4-chip-momentum-entry-filter"
 DEFAULT_TOP_N = 30
 PORTFOLIO_START_DATE = "2026-03-18"
 HOLD_DAYS = 20
+FRICTION = 0.004  # round-trip friction, same as backtest
 EARLY_CRASH_DAYS = 5
 CRASH_DRAWDOWN_THRESHOLD = -0.10
+ENABLE_STOP_LOSS = True
 
 PREDICTION_FILE_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
 PREDICTION_DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})(?=\.csv$)")
@@ -47,6 +59,15 @@ def connect_db(db_path: str) -> sqlite3.Connection:
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
+
+
+def _ensure_column(conn: sqlite3.Connection, table_name: str, column_name: str, column_ddl: str) -> None:
+    existing = {
+        str(row["name"])
+        for row in conn.execute(f"PRAGMA table_info({table_name})").fetchall()
+    }
+    if column_name not in existing:
+        conn.execute(f"ALTER TABLE {table_name} ADD COLUMN {column_name} {column_ddl}")
 
 
 def ensure_schema(conn: sqlite3.Connection) -> None:
@@ -139,7 +160,87 @@ def ensure_schema(conn: sqlite3.Connection) -> None:
         );
         """
     )
+    for column_name, column_ddl in [
+        ("order_type", "TEXT"),
+        ("fill_status", "TEXT"),
+        ("fill_price", "REAL"),
+        ("entry_slippage_pct", "REAL"),
+        ("exit_reason", "TEXT"),
+        ("entry_tag", f"TEXT NOT NULL DEFAULT '{ENTRY_TAG_FUNDAMENTAL_DRIVEN}'"),
+        ("narrative_heat_at_entry", "REAL"),
+    ]:
+        _ensure_column(conn, "portfolio_positions", column_name, column_ddl)
     conn.commit()
+
+
+def _load_narrative_features_for_date(date_str: str) -> dict[str, dict[str, object]]:
+    if not os.path.exists(NARRATIVE_DB_PATH):
+        return {}
+    try:
+        import duckdb
+
+        con = duckdb.connect(NARRATIVE_DB_PATH, read_only=True)
+        try:
+            df = con.execute(
+                """
+                SELECT ticker, active_labels, heat_3d
+                FROM daily_ticker_narrative_features
+                WHERE date = ?
+                """,
+                [date_str],
+            ).fetchdf()
+        finally:
+            con.close()
+    except Exception:
+        return {}
+    if df.empty:
+        return {}
+    df["ticker"] = df["ticker"].astype(str)
+    return {str(row["ticker"]): row for row in df.to_dict("records")}
+
+
+def _entry_tag_for_prediction(
+    narrative_by_ticker: dict[str, dict[str, object]],
+    ticker: str,
+) -> tuple[str, float | None]:
+    row = narrative_by_ticker.get(str(ticker), {})
+    return classify_entry_tag(row.get("active_labels"), row.get("heat_3d"))
+
+
+def backfill_narrative_entry_tags(conn: sqlite3.Connection) -> int:
+    rows = conn.execute(
+        """
+        SELECT id, ticker, prediction_date
+        FROM portfolio_positions
+        WHERE prediction_date >= ?
+          AND narrative_heat_at_entry IS NULL
+        ORDER BY prediction_date, ticker
+        """,
+        (PORTFOLIO_START_DATE,),
+    ).fetchall()
+    if not rows:
+        return 0
+
+    cache: dict[str, dict[str, dict[str, object]]] = {}
+    updated = 0
+    for row in rows:
+        pred_date = str(row["prediction_date"])
+        if pred_date not in cache:
+            cache[pred_date] = _load_narrative_features_for_date(pred_date)
+        entry_tag, heat = _entry_tag_for_prediction(cache[pred_date], str(row["ticker"]))
+        conn.execute(
+            """
+            UPDATE portfolio_positions
+            SET entry_tag = ?,
+                narrative_heat_at_entry = ?,
+                updated_at = ?
+            WHERE id = ?
+            """,
+            (entry_tag, heat, _utc_now_str(), int(row["id"])),
+        )
+        updated += 1
+    conn.commit()
+    return updated
 
 
 def _utc_now_str() -> str:
@@ -238,6 +339,7 @@ def _load_prediction_file(prediction_path: str) -> pd.DataFrame:
 
 
 def _build_leaderboard(pred_df: pd.DataFrame, top_n: int) -> pd.DataFrame:
+    pred_df = filter_out_etfs_df(pred_df)
     if {"pred_return_20d", "recommendation"} <= set(pred_df.columns):
         leaderboard = apply_sector_cap(pred_df, top_n=top_n)
     else:
@@ -267,8 +369,6 @@ def lock_prediction_run(
         return int(existing["id"]), prediction_date, False
 
     leaderboard = _build_leaderboard(pred_df, top_n=top_n)
-    if leaderboard.empty:
-        raise ValueError(f"{os.path.basename(prediction_path)} produced an empty leaderboard.")
 
     now = _utc_now_str()
     cursor = conn.execute(
@@ -293,8 +393,13 @@ def lock_prediction_run(
     )
     run_id = int(cursor.lastrowid)
     stats.new_runs += 1
+    narrative_at_entry = _load_narrative_features_for_date(prediction_date)
 
     for row in leaderboard.to_dict("records"):
+        entry_tag, narrative_heat_at_entry = _entry_tag_for_prediction(
+            narrative_at_entry,
+            str(row.get("ticker", "")),
+        )
         conn.execute(
             """
             INSERT INTO portfolio_positions (
@@ -316,11 +421,14 @@ def lock_prediction_run(
                 price_vs_ma20,
                 inst_net_10d,
                 risk_tags,
+                entry_tag,
+                narrative_heat_at_entry,
+                fill_status,
                 status,
                 hold_days_target,
                 created_at,
                 updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 run_id,
@@ -341,6 +449,9 @@ def lock_prediction_run(
                 _coerce_db_value(row.get("price_vs_ma20")),
                 _coerce_db_value(row.get("inst_net_10d")),
                 _coerce_db_value(row.get("risk_tags")),
+                entry_tag,
+                narrative_heat_at_entry,
+                FILL_STATUS_PENDING,
                 "pending",
                 HOLD_DAYS,
                 now,
@@ -443,7 +554,7 @@ def refresh_open_positions(
 ) -> None:
     cache: dict[str, pd.DataFrame | None] = {}
     query = """
-        SELECT id, ticker, prediction_date, hold_days_target
+        SELECT id, ticker, prediction_date, hold_days_target, selection_close
         FROM portfolio_positions
         WHERE status IN ('pending', 'open')
           AND prediction_date >= ?
@@ -485,11 +596,14 @@ def refresh_open_positions(
 
         window = future.head(hold_days_target).copy()
         entry_row = window.iloc[0]
-        # Use the first trading day's intraday high as the entry cost so
-        # portfolio PnL reflects a conservative "worst fill" assumption.
-        entry_cost = float(entry_row["High"])
-        if not np.isfinite(entry_cost) or entry_cost <= 0:
+        entry_fill = simulate_20d_entry(
+            reference_price=position["selection_close"],
+            open_price=entry_row["Open"],
+            high_price=entry_row["High"],
+        )
+        if entry_fill.fill_status != FILL_STATUS_FILLED or entry_fill.fill_price is None:
             continue
+        entry_cost = float(entry_fill.fill_price)
 
         breached_10pct_first5d = 0
         first_10pct_breach_date = None
@@ -498,6 +612,8 @@ def refresh_open_positions(
         min_drawdown_low = None
         stopped_out = False        # 強制停損旗標
         stop_day_number = None
+        stop_exit_price = None
+        exit_reason = None
 
         for day_number, mark_row in enumerate(window.itertuples(index=False), start=1):
             mark_date = mark_row.Date.date().isoformat()
@@ -515,10 +631,16 @@ def refresh_open_positions(
             if day_number <= EARLY_CRASH_DAYS and intraday_drawdown_pct <= CRASH_DRAWDOWN_THRESHOLD:
                 breached_10pct_first5d = 1
 
-            # 強制停損：收盤報酬跌破 -10% 時提前平倉
-            if close_return_pct <= CRASH_DRAWDOWN_THRESHOLD:
+            stop_event = (
+                simulate_intraday_stop(entry_cost, mark_row.Open, mark_row.Low)
+                if ENABLE_STOP_LOSS
+                else None
+            )
+            if stop_event is not None:
                 stopped_out = True
                 stop_day_number = day_number
+                stop_exit_price = stop_event.exit_price
+                exit_reason = stop_event.exit_reason
 
             is_exit_day = int(
                 stopped_out
@@ -554,22 +676,26 @@ def refresh_open_positions(
         exit_close = None
         realized_return_pct = None
         if status == "stopped_out":
-            # 停損以觸發當日收盤價計算實際報酬
             stop_row = window.iloc[stop_day_number - 1]
             exit_date = stop_row["Date"].date().isoformat()
-            exit_close = float(stop_row["Close"])
-            realized_return_pct = exit_close / entry_cost - 1.0
+            exit_close = float(stop_exit_price)
+            realized_return_pct = exit_close / entry_cost - 1.0 - FRICTION
         elif status == "closed":
             exit_row = window.iloc[hold_days_target - 1]
             exit_date = exit_row["Date"].date().isoformat()
             exit_close = float(exit_row["Close"])
-            realized_return_pct = exit_close / entry_cost - 1.0
+            realized_return_pct = exit_close / entry_cost - 1.0 - FRICTION
+            exit_reason = EXIT_REASON_TIME_20D
 
         conn.execute(
             """
             UPDATE portfolio_positions
             SET entry_date = ?,
                 entry_open = ?,
+                order_type = ?,
+                fill_status = ?,
+                fill_price = ?,
+                entry_slippage_pct = ?,
                 days_observed = ?,
                 last_mark_date = ?,
                 exit_date = ?,
@@ -581,6 +707,7 @@ def refresh_open_positions(
                 breached_10pct_drawdown = ?,
                 breached_10pct_first5d = ?,
                 first_10pct_breach_date = ?,
+                exit_reason = ?,
                 status = ?,
                 updated_at = ?
             WHERE id = ?
@@ -588,8 +715,12 @@ def refresh_open_positions(
             (
                 entry_row["Date"].date().isoformat(),
                 entry_cost,
+                entry_fill.order_type,
+                FILL_STATUS_FILLED,
+                entry_cost,
+                entry_fill.entry_slippage_pct,
                 days_observed,
-                window.iloc[-1]["Date"].date().isoformat(),
+                window.iloc[min(days_observed - 1, len(window) - 1)]["Date"].date().isoformat(),
                 exit_date,
                 exit_close,
                 realized_return_pct,
@@ -599,6 +730,7 @@ def refresh_open_positions(
                 int(min_drawdown <= CRASH_DRAWDOWN_THRESHOLD),
                 breached_10pct_first5d,
                 first_10pct_breach_date,
+                exit_reason,
                 status,
                 now,
                 position_id,
@@ -705,6 +837,7 @@ def sync_paper_portfolio(
 
     with connect_db(db_path) as conn:
         ensure_schema(conn)
+        backfill_narrative_entry_tags(conn)
         if not backfill_all:
             refresh_open_positions(conn, stats)
         new_prediction_dates: set[str] = set()

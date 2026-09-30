@@ -1,0 +1,255 @@
+{
+  "status": "ok",
+  "source_status": "ok",
+  "generated_at": "2026-06-10T20:49:06",
+  "as_of_date": "2026-06-10",
+  "preflight_pass": true,
+  "reason": "ok",
+  "selection_usage_mode": "advisory_metadata_only",
+  "model_feature_readiness": "not_ready",
+  "model_feature_gap": "latest_snapshot_only_no_point_in_time_training_panel; do_not_use_as_lightgbm_feature_until historical_backfill + leakage_review + backtest",
+  "dataset_count": 17,
+  "ok_count": 17,
+  "failed_count": 0,
+  "required_failures": [],
+  "stale_datasets": [],
+  "missing_field_datasets": [],
+  "field_checks": [
+    {
+      "dataset_id": "taifex_put_call_ratio",
+      "expected_fields": [
+        "Date",
+        "PutCallVolumeRatio%",
+        "PutCallOIRatio%"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "taifex_major_institutional_general",
+      "expected_fields": [
+        "Date",
+        "Item",
+        "TradingVolume(Net)",
+        "OpenInterest(Net)"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 3
+    },
+    {
+      "dataset_id": "taifex_large_trader_futures_oi",
+      "expected_fields": [
+        "Date",
+        "Contract",
+        "SettlementMonth",
+        "Top5Buy",
+        "Top5Sell",
+        "OIOfMarket"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "taifex_futures_fcm_volume",
+      "expected_fields": [
+        "Date",
+        "Contract",
+        "FCMCode",
+        "Volume"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "twse_market_5s_order_trade",
+      "expected_fields": [
+        "Time",
+        "AccBidOrders",
+        "AccBidVolume",
+        "AccAskOrders",
+        "AccAskVolume"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "twse_sbl_available",
+      "expected_fields": [
+        "TWSECode",
+        "TWSEAvailableVolume",
+        "GRETAICode",
+        "GRETAIAvailableVolume"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "twse_exright_forecast",
+      "expected_fields": [
+        "Date",
+        "Code",
+        "Name",
+        "Exdividend"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "twse_attention",
+      "expected_fields": [
+        "Date",
+        "Code",
+        "Name",
+        "TradingInfoForAttention"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 1
+    },
+    {
+      "dataset_id": "twse_disposition",
+      "expected_fields": [
+        "Date",
+        "Code",
+        "Name",
+        "DispositionPeriod",
+        "DispositionMeasures"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "twse_news",
+      "expected_fields": [
+        "Date",
+        "Title",
+        "Url"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "tpex_intraday_statistics",
+      "expected_fields": [
+        "Date",
+        "DayTradingVolume",
+        "DayTradingValueOfBuys",
+        "DayTradingValueOfSells"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 7
+    },
+    {
+      "dataset_id": "tpex_intraday_trading_his",
+      "expected_fields": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "FirstDayToSuspendSellThenBuy",
+        "LastDayToSuspendSellThenBuy"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "tpex_margin_sbl",
+      "expected_fields": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "SaleBalanceOfTheMarketDay",
+        "AvailableVolumesForSBLShortSale"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "tpex_short_sell",
+      "expected_fields": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "ShortSaleVolume",
+        "SBLVolume"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "tpex_exright_daily",
+      "expected_fields": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "ExRightsDiviend"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 13
+    },
+    {
+      "dataset_id": "tpex_trading_warning",
+      "expected_fields": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "TradingInformation"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    },
+    {
+      "dataset_id": "tpex_peratio",
+      "expected_fields": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "PriceEarningRatio",
+        "PriceBookRatio"
+      ],
+      "missing_fields": [],
+      "field_check_pass": true,
+      "sampled_rows": 20
+    }
+  ],
+  "candidate_feature_datasets": [
+    "taifex_put_call_ratio",
+    "taifex_major_institutional_general",
+    "taifex_large_trader_futures_oi",
+    "twse_sbl_available",
+    "twse_attention",
+    "twse_disposition",
+    "twse_news",
+    "tpex_margin_sbl",
+    "tpex_short_sell",
+    "tpex_trading_warning",
+    "tpex_peratio"
+  ],
+  "latest_dates": {
+    "taifex_put_call_ratio": "2026-06-09",
+    "taifex_major_institutional_general": "2026-06-09",
+    "taifex_large_trader_futures_oi": "2026-06-09",
+    "taifex_futures_fcm_volume": "2026-06-09",
+    "twse_market_5s_order_trade": "2026-06-10",
+    "twse_sbl_available": "2026-06-10",
+    "twse_exright_forecast": "2026-08-17",
+    "twse_attention": "2026-06-10",
+    "twse_disposition": "2026-06-09",
+    "twse_news": "2026-06-09",
+    "tpex_intraday_statistics": "2026-06-09",
+    "tpex_intraday_trading_his": "2026-06-10",
+    "tpex_margin_sbl": "2026-06-09",
+    "tpex_short_sell": "2026-06-09",
+    "tpex_exright_daily": "2026-06-11",
+    "tpex_trading_warning": "2026-06-10",
+    "tpex_peratio": "2026-06-10"
+  }
+}

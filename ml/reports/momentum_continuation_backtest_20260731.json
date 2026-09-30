@@ -1,0 +1,118 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20260731"
+  },
+  "rows": 1210972,
+  "setup_count": 5899,
+  "filled_count": 5101,
+  "missed_gap_up_count": 1288,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5101,
+      "mean_return": -0.008997058032236636,
+      "median_return": -0.012438818565400852,
+      "win_rate": 0.34012938639482454,
+      "p25": -0.033023746701846934,
+      "p75": 0.009297872340425565
+    },
+    {
+      "hold_days": 2,
+      "n": 5099,
+      "mean_return": -0.007919408577143192,
+      "median_return": -0.015398963730569922,
+      "win_rate": 0.3767405373602667,
+      "p25": -0.04566666666666658,
+      "p75": 0.02027261465949615
+    },
+    {
+      "hold_days": 3,
+      "n": 5096,
+      "mean_return": -0.007135441935134558,
+      "median_return": -0.01768302805254784,
+      "win_rate": 0.38422291993720564,
+      "p25": -0.055470588235293966,
+      "p75": 0.028279356967954864
+    },
+    {
+      "hold_days": 5,
+      "n": 5082,
+      "mean_return": -0.004358246687182055,
+      "median_return": -0.020359986617597855,
+      "win_rate": 0.39944903581267216,
+      "p25": -0.06982040917340365,
+      "p75": 0.040134721521919936
+    },
+    {
+      "hold_days": 10,
+      "n": 5043,
+      "mean_return": 0.0014003931017377476,
+      "median_return": -0.022932874354561147,
+      "win_rate": 0.4176085663295657,
+      "p25": -0.09227932370553005,
+      "p75": 0.06556726016533954
+    },
+    {
+      "hold_days": 20,
+      "n": 4966,
+      "mean_return": 0.012476465444883848,
+      "median_return": -0.03265723939431858,
+      "win_rate": 0.4224728151429722,
+      "p25": -0.12451951861220575,
+      "p75": 0.1032397349245271
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-07-30",
+      "ticker": "8462",
+      "name": "柏文",
+      "sector": "運動休閒",
+      "Close": 172.0,
+      "momentum_score": 0.570286,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 165.98,
+      "momentum_entry_limit": 172.0,
+      "momentum_entry_high": 174.58,
+      "price_vs_ma5": 0.0617283951,
+      "price_vs_ma20": 0.0920634921,
+      "price_vs_ma60": 0.2036393941,
+      "volume_ratio_20d": 2.1891893223,
+      "RSI_14": 75.8341140329,
+      "MACDh_12_26_9": 0.4757950624,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-07-30",
+      "ticker": "1526",
+      "name": "日馳",
+      "sector": "電機機械",
+      "Close": 18.55,
+      "momentum_score": 0.558196,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 17.90075,
+      "momentum_entry_limit": 18.55,
+      "momentum_entry_high": 18.82825,
+      "price_vs_ma5": 0.0486150367,
+      "price_vs_ma20": 0.1630094044,
+      "price_vs_ma60": 0.2266490329,
+      "volume_ratio_20d": 4.2822585602,
+      "RSI_14": 67.3491263802,
+      "MACDh_12_26_9": 0.3130282791,
+      "missed_gap_up": false
+    }
+  ]
+}

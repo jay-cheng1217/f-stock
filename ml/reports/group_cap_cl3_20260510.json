@@ -1,0 +1,29 @@
+{
+  "baseline": {
+    "monthly_return": 0.07637371874572896,
+    "monthly_alpha": 0.035373298344089296,
+    "mdd": -0.05569411810414859,
+    "months": 28
+  },
+  "treatment": {
+    "monthly_return": 0.07604091962787182,
+    "monthly_alpha": 0.03504049916075596,
+    "mdd": -0.05569411810414859,
+    "months": 28
+  },
+  "delta": {
+    "monthly_alpha": -0.0003327991833333363,
+    "mdd": 0.0,
+    "monthly_return": -0.00033279911785713545
+  },
+  "checks": {
+    "alpha_abs_delta_le_0_3pp": true,
+    "mdd_not_worse": true,
+    "overall_pass": true
+  },
+  "paths": {
+    "monthly_csv": "F:\\stock\\ml\\reports\\group_cap_cl3_20260510_monthly.csv",
+    "selected_csv": "F:\\stock\\ml\\reports\\group_cap_cl3_20260510_selected.csv"
+  },
+  "method_note": "Beyond-Top30 replacement candidates are filled by Stage1 rank because historical Stage2 scores for non-Top30 rows are not present in current artifacts."
+}

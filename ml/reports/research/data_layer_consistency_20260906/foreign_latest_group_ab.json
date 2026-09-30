@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "as_of": "2026-09-04",
+  "tickers": 1901,
+  "feature_columns": [
+    "foreign_cumsum_1d",
+    "foreign_cumsum_1d_norm",
+    "foreign_cumsum_3d",
+    "foreign_cumsum_3d_norm",
+    "foreign_cumsum_5d",
+    "foreign_cumsum_5d_norm",
+    "foreign_cumsum_10d",
+    "foreign_cumsum_10d_norm",
+    "foreign_cumsum_20d",
+    "foreign_cumsum_20d_norm",
+    "foreign_trust_sync",
+    "foreign_reversal_buy",
+    "foreign_buy_streak",
+    "turnover_rate"
+  ],
+  "compared_cells": 26614,
+  "changed_cells": 0,
+  "max_abs_delta": 0.0,
+  "input_snapshot": "Each full as-of daily frame read once and passed unchanged to canonical institutional feature function in both branches; holdings file map overlay is only variable.",
+  "latest_selected_file": "20260904.csv",
+  "latest_sha256": "bd04d8be6eb6a614145fa3f0f2618070104edd075a05bf70807d5a12250c20da",
+  "latest_map_rows": 2253,
+  "latest_issued_shares_and_foreign_pct_maps_exact_equal": true,
+  "explanation": "foreign_cumsum1/3/5/10/20 read daily Foreign_BuySell, not ownership CSV. V1/V2/T1 use ownership latest Issued_Shares for turnover; app uses latest Foreign_Pct.4 repaired historical dates do not alter latest selection.",
+  "cache": "dataset._raw_cache_source_patterns includes ownership/*.csv, so atomic promotion changes mtime and next load_raw_cache invalidates automatically. Process issued-share memo selects same latest file; no numerical change. No cache, snapshot or prediction is rewritten by this audit.",
+  "prediction_scope": "This proves the affected latest input feature group is exactly equal; it is not a new model inference or full-pipeline execution claim."
+}

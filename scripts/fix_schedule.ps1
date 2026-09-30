@@ -49,6 +49,20 @@ Register-BackupTask `
     -Settings $dailySettings `
     -Description "Backup triggers for the 05:00 stock update. Locking in smart_update_auto.py prevents duplicate runs."
 
+$myHoldingsRiskCutTrigger = New-ScheduledTaskTrigger -Weekly -WeeksInterval 1 -DaysOfWeek Monday, Tuesday, Wednesday, Thursday, Friday -At 6:30am
+
+Register-BackupTask `
+    -TaskName "TW_Stock_My_Holdings_Risk_Cut_0630" `
+    -Command "F:\stock\scripts\run_my_holdings_risk_cut_report.bat" `
+    -Trigger $myHoldingsRiskCutTrigger `
+    -Settings $dailySettings `
+    -Description "REQ-034-v3 my_holdings risk-cut email at 06:30. The script writes artifacts before email and logs real coverage backfill."
+
+$chipkTask = Get-ScheduledTask -TaskName "TW_Stock_ChipK_Update" -ErrorAction SilentlyContinue
+if ($chipkTask) {
+    Unregister-ScheduledTask -TaskName "TW_Stock_ChipK_Update" -Confirm:$false
+}
+
 $weeklySettings = New-ScheduledTaskSettingsSet `
     -StartWhenAvailable `
     -WakeToRun `
@@ -78,3 +92,11 @@ Write-Host ""
 Get-ScheduledTask -TaskName "TW_Stock_Weekly_Retrain_Backup" | Select-Object TaskName, State | Format-List
 Get-ScheduledTask -TaskName "TW_Stock_Weekly_Retrain_Backup" | Select-Object -ExpandProperty Triggers | Format-Table StartBoundary, DaysOfWeek, WeeksInterval, Enabled -AutoSize
 Get-ScheduledTask -TaskName "TW_Stock_Weekly_Retrain_Backup" | Select-Object -ExpandProperty Settings | Format-List ExecutionTimeLimit, StartWhenAvailable, WakeToRun, DisallowStartIfOnBatteries, StopIfGoingOnBatteries, MultipleInstances, Priority
+
+Write-Host ""
+Get-ScheduledTask -TaskName "TW_Stock_My_Holdings_Risk_Cut_0630" | Select-Object TaskName, State | Format-List
+Get-ScheduledTask -TaskName "TW_Stock_My_Holdings_Risk_Cut_0630" | Select-Object -ExpandProperty Triggers | Format-Table StartBoundary, DaysOfWeek, WeeksInterval, Enabled -AutoSize
+Get-ScheduledTask -TaskName "TW_Stock_My_Holdings_Risk_Cut_0630" | Select-Object -ExpandProperty Settings | Format-List ExecutionTimeLimit, StartWhenAvailable, WakeToRun, DisallowStartIfOnBatteries, StopIfGoingOnBatteries, MultipleInstances, Priority
+
+Write-Host ""
+Write-Host "TW_Stock_ChipK_Update retired; no desktop ChipK schedule is created."

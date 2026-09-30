@@ -1,0 +1,118 @@
+{
+  "generated_at": "2026-05-16T23:57:00",
+  "signal_file": "F:\\stock\\ml\\models\\unified_signals_2026-05-15.csv",
+  "overall": "FAIL",
+  "checks": [
+    {
+      "code": "C1",
+      "name": "MA5 進場品質",
+      "passed": false,
+      "detail": "no usable price_vs_ma5 values",
+      "data": {},
+      "severity": "CHECK"
+    },
+    {
+      "code": "C2",
+      "name": "Two-Stage rank 完整性",
+      "passed": false,
+      "detail": "NaN 0/0 = 100.00% <= 5%",
+      "data": {
+        "rank_col": "two_stage_rank",
+        "missing": 0,
+        "total": 0,
+        "ratio": 1.0
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C3",
+      "name": "OVERHEAT gate 正常",
+      "passed": true,
+      "detail": "0 active signals exceed sector threshold",
+      "data": {
+        "violations": [],
+        "violation_count": 0
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C4",
+      "name": "Guardrail 欄位存在",
+      "passed": true,
+      "detail": "required columns present",
+      "data": {
+        "missing": []
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C5",
+      "name": "ETF 洩漏",
+      "passed": true,
+      "detail": "ETF hits = 0",
+      "data": {
+        "etf_hits": []
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C6",
+      "name": "Production flags",
+      "passed": true,
+      "detail": "effective flags are enabled",
+      "data": {
+        "observed": {
+          "TWO_STAGE_RANKER_ENABLED": "1",
+          "SECTOR_OVERHEAT_THRESHOLDS_ENABLED": "1"
+        }
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C7",
+      "name": "Stage1/Stage2 model meta 鎖定",
+      "passed": true,
+      "detail": "stage1/stage2 meta and model binaries match CL3 pinned versions",
+      "data": {
+        "observed_stage1": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+        "observed_stage2": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+        "expected_stage1": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+        "expected_stage2": "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500_meta.json",
+        "model_files": [
+          "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128.txt",
+          "F:\\stock\\ml\\models\\lgbm_two_stage_ranker_20260509_011500.txt"
+        ]
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C8",
+      "name": "Tests",
+      "passed": false,
+      "detail": "skipped by --skip-tests",
+      "data": {
+        "skipped": true
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C9",
+      "name": "DB schema 完整性",
+      "passed": true,
+      "detail": "required unified_positions columns present",
+      "data": {
+        "missing": [],
+        "db_path": "F:\\stock\\paper_portfolio_v2_champion.db"
+      },
+      "severity": "CHECK"
+    },
+    {
+      "code": "C10",
+      "name": "Group concentration cap",
+      "passed": true,
+      "detail": "no active signals",
+      "data": {},
+      "severity": "CHECK"
+    }
+  ]
+}

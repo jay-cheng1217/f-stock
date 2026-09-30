@@ -1,0 +1,571 @@
+{
+  "status": "26_quarter_official_source_candidates_verified_not_promoted",
+  "classification": "L1 source correction; historical named-header parser, exact retained-key official supplementation",
+  "source_rows": 48498,
+  "known_accounting_rows": 48498,
+  "unknown_accounting_rows": 0,
+  "accounting_identity_violations": 0,
+  "quarter_count": 26,
+  "source_counts": {
+    "historical_official_rows": 46359,
+    "historical_old_rows": 46300,
+    "historical_added_rows": 224,
+    "historical_existing_cells": 25271,
+    "historical_existing_numeric_cells": 9874,
+    "historical_bad_before": 1073,
+    "historical_unknown_before": 1395,
+    "retained_cells": 274,
+    "retained_correction_counts": {
+      "2867": 216,
+      "3426": 10,
+      "3454": 10,
+      "4130": 10,
+      "4987": 10,
+      "5371": 10,
+      "6806": 8
+    },
+    "new_from_all_universe": 0,
+    "quarters": [
+      {
+        "year": 2020,
+        "quarter": 1,
+        "old_rows": 1676,
+        "final_rows": 1676,
+        "original_bad": 818,
+        "original_unknown": 858,
+        "retained_corrected_cells": 18,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2020,
+        "quarter": 2,
+        "old_rows": 1778,
+        "final_rows": 1786,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2020,
+        "quarter": 3,
+        "old_rows": 1686,
+        "final_rows": 1686,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2020,
+        "quarter": 4,
+        "old_rows": 1827,
+        "final_rows": 1835,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2021,
+        "quarter": 1,
+        "old_rows": 1709,
+        "final_rows": 1709,
+        "original_bad": 12,
+        "original_unknown": 21,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2021,
+        "quarter": 2,
+        "old_rows": 1819,
+        "final_rows": 1827,
+        "original_bad": 12,
+        "original_unknown": 21,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2021,
+        "quarter": 3,
+        "old_rows": 1733,
+        "final_rows": 1733,
+        "original_bad": 12,
+        "original_unknown": 21,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2021,
+        "quarter": 4,
+        "old_rows": 1880,
+        "final_rows": 1889,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2022,
+        "quarter": 1,
+        "old_rows": 1754,
+        "final_rows": 1754,
+        "original_bad": 11,
+        "original_unknown": 22,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2022,
+        "quarter": 2,
+        "old_rows": 1855,
+        "final_rows": 1864,
+        "original_bad": 12,
+        "original_unknown": 21,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2022,
+        "quarter": 3,
+        "old_rows": 1773,
+        "final_rows": 1773,
+        "original_bad": 12,
+        "original_unknown": 21,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2022,
+        "quarter": 4,
+        "old_rows": 1923,
+        "final_rows": 1940,
+        "original_bad": 11,
+        "original_unknown": 22,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2023,
+        "quarter": 1,
+        "old_rows": 1798,
+        "final_rows": 1798,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2023,
+        "quarter": 2,
+        "old_rows": 1904,
+        "final_rows": 1917,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2023,
+        "quarter": 3,
+        "old_rows": 1826,
+        "final_rows": 1826,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 15,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2023,
+        "quarter": 4,
+        "old_rows": 1944,
+        "final_rows": 1970,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 15,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2024,
+        "quarter": 1,
+        "old_rows": 1865,
+        "final_rows": 1865,
+        "original_bad": 11,
+        "original_unknown": 22,
+        "retained_corrected_cells": 15,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2024,
+        "quarter": 2,
+        "old_rows": 1939,
+        "final_rows": 1961,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 15,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2024,
+        "quarter": 3,
+        "old_rows": 1897,
+        "final_rows": 1897,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 15,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2024,
+        "quarter": 4,
+        "old_rows": 1946,
+        "final_rows": 1978,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 15,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2025,
+        "quarter": 1,
+        "old_rows": 1936,
+        "final_rows": 1938,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 15,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2025,
+        "quarter": 2,
+        "old_rows": 1945,
+        "final_rows": 1977,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2025,
+        "quarter": 3,
+        "old_rows": 1947,
+        "final_rows": 1975,
+        "original_bad": 11,
+        "original_unknown": 22,
+        "retained_corrected_cells": 15,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2025,
+        "quarter": 4,
+        "old_rows": 1970,
+        "final_rows": 1975,
+        "original_bad": 11,
+        "original_unknown": 22,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      },
+      {
+        "year": 2026,
+        "quarter": 1,
+        "old_rows": 1970,
+        "final_rows": 1975,
+        "original_bad": 10,
+        "original_unknown": 23,
+        "retained_corrected_cells": 8,
+        "final_bad": 0,
+        "final_unknown": 0
+      }
+    ]
+  },
+  "E": {
+    "raw_sha256": "5898ebe82b4ca01eda006e5b3a1464b4931c2fa4759d530f549ecde68a744087",
+    "rows": 2031,
+    "changed_tickers": [
+      "1591",
+      "2237",
+      "2801",
+      "2812",
+      "2816",
+      "2820",
+      "2832",
+      "2834",
+      "2836",
+      "2838",
+      "2845",
+      "2849",
+      "2850",
+      "2851",
+      "2852",
+      "2880",
+      "2881",
+      "2882",
+      "2883",
+      "2884",
+      "2885",
+      "2886",
+      "2887",
+      "2889",
+      "2890",
+      "2891",
+      "2892",
+      "2897",
+      "5876",
+      "5880",
+      "6947",
+      "7689",
+      "7835",
+      "7855"
+    ],
+    "changed_cells": 35,
+    "feature_counts": {
+      "debt_ratio_trend": 34,
+      "roe_trend": 1
+    }
+  },
+  "F": {
+    "raw_sha256": "5898ebe82b4ca01eda006e5b3a1464b4931c2fa4759d530f549ecde68a744087",
+    "rows": 2031,
+    "changed_tickers": [
+      "2867"
+    ],
+    "changed_cells": 4,
+    "changes": [
+      {
+        "Ticker": "2867",
+        "Date": "2026-08-19 00:00:00",
+        "feature": "debt_ratio",
+        "before": 2873.949951171875,
+        "after": 92.76000213623047
+      },
+      {
+        "Ticker": "2867",
+        "Date": "2026-08-19 00:00:00",
+        "feature": "book_value_per_share",
+        "before": 292554976.0,
+        "after": 20.34000015258789
+      },
+      {
+        "Ticker": "2867",
+        "Date": "2026-08-19 00:00:00",
+        "feature": "equity_ratio",
+        "before": 226.6773223876953,
+        "after": 7.2436699867248535
+      },
+      {
+        "Ticker": "2867",
+        "Date": "2026-08-19 00:00:00",
+        "feature": "debt_ratio_trend",
+        "before": -723.22998046875,
+        "after": -2.30999755859375
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "path": "F:\\stock\\output\\bs_historical_reconciliation_20260906\\manifest.json",
+      "sha256": "c3da741f8fb575318c05a25034f68c8b099477092421412dde658055c2ecacc5"
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\manifest.json",
+      "sha256": "8c082af6ef3da2b3ac438861069510186c29871c7f6268eb8f51e54029832ff2"
+    },
+    {
+      "path": "F:\\stock\\output\\bs_historical_latest_E_20260906\\manifest.json",
+      "sha256": "e57a19dae603991bb15e1f62718cf54c419bff2fb84e9d5c24157956435aade9"
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_latest_F_20260906\\manifest.json",
+      "sha256": "b3b7221b43943d8a78ea0df2796030b826ca8cc1946a064f8d04376a1eb2ec37"
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\promotion_plan.json",
+      "sha256": "2f80f4f3b9a2efb3fe4d2b91e75b61aec77955a6604764336ed2da9062f26442"
+    }
+  ],
+  "promotion_plan": {
+    "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\promotion_plan.json",
+    "sha256": "2f80f4f3b9a2efb3fe4d2b91e75b61aec77955a6604764336ed2da9062f26442"
+  },
+  "preflight": "PREFLIGHT_PASS 2026-09-06T21:43:45+08:00; 26 targets,108 evidence files",
+  "candidates": [
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2020Q1.csv",
+      "sha256": "db671b34dbf5ab85cd258d6b4c9ecab854970f56a218bba8c5f34893a5e51cc7",
+      "bytes": 187941
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2020Q2.csv",
+      "sha256": "cd456cde6e47478d7e3a8ab01b0dfba02e95b684537438392e51e6c78389d77c",
+      "bytes": 200207
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2020Q3.csv",
+      "sha256": "f4f8c8cf55a114cb0b81ea30d9adf199ed33759df1acbda7e1618e904ae26014",
+      "bytes": 189311
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2020Q4.csv",
+      "sha256": "be992038ca609c45ab6ae89a4a7e3ac2d69f1426575d95f40b50f1138971fdaf",
+      "bytes": 205801
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2021Q1.csv",
+      "sha256": "9a30277846ebaeaafa002811286d093166649c59081510a08ed8e4efae5fdb0c",
+      "bytes": 192239
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2021Q2.csv",
+      "sha256": "faa6ffd4afa9fba642ea48fbbd13599cf2340c7d52420741d97b046ac2dde02e",
+      "bytes": 205329
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2021Q3.csv",
+      "sha256": "2672a343df5ddb77784b16a3bbb93302e902582bd3650a15063c6f002880b408",
+      "bytes": 195121
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2021Q4.csv",
+      "sha256": "1183a98ab2c2ac083b03111bf3029f61c620dacb63cf20ebff9645156f43a6c3",
+      "bytes": 212399
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2022Q1.csv",
+      "sha256": "cf3c3db7014a6d3577957234c635f09233eae4f5613bdc5d798830c14000970c",
+      "bytes": 197734
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2022Q2.csv",
+      "sha256": "f43c227b72fac546aa90e4be4f0809843c33991c902e72fb161f0caabccf0b9d",
+      "bytes": 209924
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2022Q3.csv",
+      "sha256": "7bd2c10a989c688ed02f7e76b49cc0b841c5aa8c8ea524c481a57ed7a6b46211",
+      "bytes": 199928
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2022Q4.csv",
+      "sha256": "d3093dd5129ab06531aed1438bf476829dfa54ca79afb42e15a3b4949257545a",
+      "bytes": 218333
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2023Q1.csv",
+      "sha256": "174352b35dd66c54c71c106db6addc2a7f9813f5e792abbfcb4c5f5828ab7107",
+      "bytes": 202565
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2023Q2.csv",
+      "sha256": "53118f9b8bc9e10ed6043321ce642ca0f1c1c0859f13c87cf4561ef32d2205d3",
+      "bytes": 215874
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2023Q3.csv",
+      "sha256": "4af0a119e362e2024ea3dadbad829a65b0f02b43076d25ac626725491bef16d8",
+      "bytes": 205842
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2023Q4.csv",
+      "sha256": "96623d5635eee4e764c01629e12d1e3669442c33fb1832ced2573bfe10cf3da2",
+      "bytes": 221825
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2024Q1.csv",
+      "sha256": "d58b47e26204bb095c2de9c074086da966b55c12df03914cd3857c054e7a82e0",
+      "bytes": 210408
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2024Q2.csv",
+      "sha256": "a1ba8b005c4a10d605daed9a6c0285ae04b855ec7987806ba5a4dd5e19ee4d3e",
+      "bytes": 221268
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2024Q3.csv",
+      "sha256": "ca9a817a970dc2b12d36bdc27befcca975ffce34e48584c966ee6b5b7aaa9ed2",
+      "bytes": 214124
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2024Q4.csv",
+      "sha256": "12b35c7d896e35b1076eb7632cdb4748a35036f15deb4c4ab1612da78be4f7ab",
+      "bytes": 223254
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2025Q1.csv",
+      "sha256": "6d00df452e93fb88126d44f0c6c3fe460ebc3ffff77e3e4edbde4077b5b2fc0a",
+      "bytes": 218963
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2025Q2.csv",
+      "sha256": "17b03bd02b94ea0114fe827800b772f90767708649541f1fc1bb5145de002490",
+      "bytes": 223155
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2025Q3.csv",
+      "sha256": "149cc98cd61c20417ea7ea0a72752b12c90e5fa0a10e1c447e52c7bc273e0904",
+      "bytes": 222905
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2025Q4.csv",
+      "sha256": "2d774a4020af2277ab68a44f7403710e1a68d2e29ff407bbb631031560c21b51",
+      "bytes": 223225
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2026Q1.csv",
+      "sha256": "f0649ab8261a50866587240404f81d2403afa0d1722b0aece40fea31223dfd79",
+      "bytes": 223380
+    },
+    {
+      "path": "F:\\stock\\output\\bs_retained_official_reconciliation_20260906\\candidate\\資產負債\\bs_2026Q2.csv",
+      "sha256": "815fe3409f922d4c8975d5c2d23759e6c16443018f71511dc27276d61bc0a412",
+      "bytes": 223653
+    }
+  ],
+  "tests": {
+    "passed": 62,
+    "command": "python -B -m pytest tests/test_bs_historical_reconciliation.py tests/test_quarterly_source_refresh.py tests/test_balance_sheet_named_headers.py tests/test_balance_sheet_source_errors.py tests/test_quarterly_fundamental_completeness.py tests/test_backfill_eps_completeness.py tests/test_fundamentals_audit_content.py -q"
+  },
+  "limitations": [
+    "Current MOPS historical company labels/revisions are knowledge as of 2026-09-06, not original publication-date observations",
+    "Historical bulk headings show quarter only; same-period official individual reports independently show ROC year/quarter/accounting date and match 3 main accounts",
+    "3426 individual endpoint refuses continued-public-registration query; TYPEK=all official retained row remains available, no fabricated unknowns",
+    "No new unlisted/all-company ticker was added to the project universe",
+    "C and E original manifests/candidates were not changed; final F is a separate directory",
+    "E full fixed-model inference remains root/entry_cards acceptance; F changes only retired2867 on actual2026-08-19 row; no trade eligibility inference",
+    "No production CSV/DB/model/ledger write, model algorithm change or retraining"
+  ],
+  "whitelist": [
+    "scripts/stage_bs_historical_reconciliation.py",
+    "scripts/stage_bs_retained_official_reconciliation.py",
+    "scripts/audit_bs_historical_latest_features.py",
+    "scripts/build_bs_source_promotion_plan.py",
+    "tests/test_bs_historical_reconciliation.py",
+    "docs/METHOD_bs_historical_reconciliation_20260906.md",
+    "ml/reports/research/data_layer_consistency_20260906/bs_historical_source_reconciliation.json",
+    "ml/reports/research/data_layer_consistency_20260906/bs_historical_source_reconciliation.md"
+  ]
+}

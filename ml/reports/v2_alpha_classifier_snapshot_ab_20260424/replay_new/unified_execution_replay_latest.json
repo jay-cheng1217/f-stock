@@ -1,0 +1,148 @@
+{
+  "summary": {
+    "generated_at": "2026-04-24T12:13:34.392843+00:00",
+    "exit_policy": "ma5_break_plus_hwm_8pct",
+    "signal_start": "2026-04-09",
+    "signal_end": "2026-04-10",
+    "replay_start": "2026-04-10",
+    "replay_end": "2026-04-23",
+    "benchmark_contract": {
+      "kind": "trade_alpha",
+      "benchmark_key": "twii_close_to_close",
+      "benchmark_label": "TWII close-to-close",
+      "alpha_label": "Alpha vs TWII",
+      "window_definition": "same-window close-to-close over replay mark range",
+      "trade_aligned": true,
+      "notes": [
+        "Use this benchmark for unified replay, war room MTM, and paper-book alpha.",
+        "The benchmark window follows the replay mark range, not the prediction date alone."
+      ],
+      "start_date": "2026-04-10",
+      "end_date": "2026-04-23"
+    },
+    "signal_file_count": 2,
+    "position_count": 7,
+    "status_counts": {
+      "closed": 5,
+      "open": 2
+    },
+    "entry_signal_type_counts": {
+      "20D_only": 7
+    },
+    "current_signal_type_counts": {
+      "20D_only": 7
+    },
+    "fill_status_counts": {
+      "FILLED": 7
+    },
+    "order_type_counts": {
+      "INTRADAY_CHASE": 5,
+      "OPEN": 2
+    },
+    "exit_reason_counts": {
+      "MA5_BREAK": 5,
+      "NULL": 2
+    },
+    "filled_position_count": 7,
+    "closed_position_count": 5,
+    "open_position_count": 2,
+    "missed_entry_count": 0,
+    "avg_entry_slippage_pct": 0.03570090294541693,
+    "avg_filled_hold_days": 6.571428571428571,
+    "capital_weighted_hold_days": 6.4,
+    "capital_turnover_20d_multiple": 3.125,
+    "profit_giveback_sample_count": 6,
+    "avg_profit_giveback_pct": 0.027865240767680544,
+    "avg_profit_giveback_ratio_pct": 1.0935079182003231,
+    "capital_weighted_profit_giveback_pct": 0.022692029774582696,
+    "realized_avg_return_pct": 0.05728168065589016,
+    "realized_median_return_pct": -0.015602836879432647,
+    "realized_win_rate_pct": 0.4,
+    "realized_capital_weighted_return_pct": 0.04158808717442775,
+    "mtm_capital_weighted_return_pct": 0.10854963623685286,
+    "mtm_cash_return_contribution_pct": 0.18091606039475475,
+    "open_avg_unrealized_return_pct": 0.3763958324865532,
+    "open_capital_weighted_unrealized_return_pct": 0.3763958324865532,
+    "twii": {
+      "start_date": "2026-04-10",
+      "end_date": "2026-04-23",
+      "start_close": 35417.828125,
+      "end_close": 37714.1484375,
+      "return_pct": 0.06483515320012301,
+      "reason": null
+    },
+    "realized_alpha_vs_twii_pct": -0.023247066025695255,
+    "mtm_alpha_vs_twii_pct": 0.043714483036729854,
+    "exit_day_compounded_return_pct": 0.300446275850196,
+    "exit_day_max_drawdown_pct": -0.029676418439716246,
+    "exit_day_count": 4
+  },
+  "replay_result": {
+    "db_path": "C:\\Users\\cheng\\AppData\\Local\\Temp\\unified_execution_replay_dxdyzmi3\\unified_execution_replay.db",
+    "signal_files": [
+      "F:\\stock\\ml\\reports\\v2_alpha_classifier_snapshot_ab_20260424\\signals_new\\unified_signals_alpha_cls_new_2026-04-09.csv",
+      "F:\\stock\\ml\\reports\\v2_alpha_classifier_snapshot_ab_20260424\\signals_new\\unified_signals_alpha_cls_new_2026-04-10.csv"
+    ],
+    "processed_dates": [
+      "2026-04-09",
+      "2026-04-10"
+    ],
+    "new_runs": 2,
+    "skipped_runs": 0,
+    "new_positions": 7,
+    "upgraded_positions": 0,
+    "refreshed_positions": 9,
+    "marks_upserted": 66,
+    "cash_deployed": 1.6666666666666665,
+    "rule_version": "unified-v2-order-sim-replay:ma5_break_plus_hwm_8pct",
+    "exit_policy_name": "ma5_break_plus_hwm_8pct",
+    "portfolio_start_date": "2026-04-09",
+    "summary": {
+      "total_runs": 2,
+      "total_positions": 7,
+      "pending_positions": 0,
+      "open_positions": 2,
+      "closed_positions": 5,
+      "stopped_out_positions": 0,
+      "missed_entry_positions": 0,
+      "invested_capital": 0.3333333333333333,
+      "available_cash": 0.6666666666666667,
+      "avg_realized_return_pct": 0.05728168065589016,
+      "avg_max_drawdown_pct": -0.043444390086499654,
+      "total_marks": 46
+    }
+  },
+  "signal_files": [
+    "F:\\stock\\ml\\reports\\v2_alpha_classifier_snapshot_ab_20260424\\signals_new\\unified_signals_alpha_cls_new_2026-04-09.csv",
+    "F:\\stock\\ml\\reports\\v2_alpha_classifier_snapshot_ab_20260424\\signals_new\\unified_signals_alpha_cls_new_2026-04-10.csv"
+  ],
+  "positions_csv": "F:\\stock\\ml\\reports\\v2_alpha_classifier_snapshot_ab_20260424\\replay_new\\unified_execution_replay_positions_latest.csv",
+  "daily_exit_curve": [
+    {
+      "exit_date": "2026-04-13",
+      "position_count": 1,
+      "avg_return_pct": -0.029147982062780242,
+      "weighted_return_pct": -0.029147982062780242
+    },
+    {
+      "exit_date": "2026-04-15",
+      "position_count": 2,
+      "avg_return_pct": -0.0296764184397163,
+      "weighted_return_pct": -0.029676418439716298
+    },
+    {
+      "exit_date": "2026-04-20",
+      "position_count": 1,
+      "avg_return_pct": 0.015432098038657083,
+      "weighted_return_pct": 0.015432098038657083
+    },
+    {
+      "exit_date": "2026-04-23",
+      "position_count": 1,
+      "avg_return_pct": 0.3594771241830066,
+      "weighted_return_pct": 0.3594771241830066
+    }
+  ],
+  "exit_policy": "ma5_break_plus_hwm_8pct",
+  "db_path": null
+}

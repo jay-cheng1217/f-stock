@@ -1,0 +1,289 @@
+{
+  "asof": "20260623_3013_pullback_review",
+  "daily_dir": "F:\\stock\\日K資料",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      5,
+      10,
+      20
+    ]
+  },
+  "rule_definitions": {
+    "friend_base": "foreign prev-5 net sell then buy, total inst > 0, MACD hist improves, near MA60 support, not above MA20 chase, volume 0.25x-1.5x 20D average, no >4% chase day",
+    "friend_strict": "base-like but requires prior 5 straight foreign sell days, dealer non-negative, 2-day MACD hist improvement, above MA5, volume <=1.2x 20D, daily return <=2.5%",
+    "friend_loose": "foreign or total institutional turn-buy, MACD hist improves, price 0.95x MA60 to 1.08x MA20, volume <=2x 20D, daily return <=6%",
+    "friend_pullback_limit": "prior-day support setup with previous foreign selling, price near MA60, non-spike volume, no chase, MACD hist >= -2.0; next day limit buy at min(MA60*1.005, close*0.98) only if touched"
+  },
+  "summary": {
+    "friend_base": {
+      "raw_signals": 15352,
+      "filled_signals": null,
+      "selected_signals": 5373,
+      "hold_days": {
+        "5": {
+          "trades": 5333,
+          "signal_days": 581,
+          "avg_net_return": -0.003961642886254447,
+          "median_net_return": -0.006441913350883507,
+          "win_rate": 0.4127132945809113,
+          "basket_cum_return": -0.922355366102164,
+          "basket_max_drawdown": -0.9417090580368999
+        },
+        "10": {
+          "trades": 5290,
+          "signal_days": 576,
+          "avg_net_return": -0.0015274291401562892,
+          "median_net_return": -0.0059689503539832565,
+          "win_rate": 0.4378071833648393,
+          "basket_cum_return": -0.6595282419475409,
+          "basket_max_drawdown": -0.9491002790276766
+        },
+        "20": {
+          "trades": 5201,
+          "signal_days": 566,
+          "avg_net_return": 0.005182465265549508,
+          "median_net_return": -0.005838224241980324,
+          "win_rate": 0.4614497212074601,
+          "basket_cum_return": 8.088118055769034,
+          "basket_max_drawdown": -0.9920555045417958
+        }
+      },
+      "yearly_10d": [
+        {
+          "year": "2024",
+          "trades": 2263,
+          "avg_net_return": -0.003373433880635248,
+          "win_rate": 0.4197967300044189
+        },
+        {
+          "year": "2025",
+          "trades": 2101,
+          "avg_net_return": -0.005008820376834843,
+          "win_rate": 0.4321751546882437
+        },
+        {
+          "year": "2026",
+          "trades": 926,
+          "avg_net_return": 0.010882842691339956,
+          "win_rate": 0.4946004319654428
+        }
+      ]
+    },
+    "friend_strict": {
+      "raw_signals": 401,
+      "filled_signals": null,
+      "selected_signals": 401,
+      "hold_days": {
+        "5": {
+          "trades": 396,
+          "signal_days": 238,
+          "avg_net_return": -0.005337211573459317,
+          "median_net_return": -0.009374964220233702,
+          "win_rate": 0.37373737373737376,
+          "basket_cum_return": -0.7472451484545195,
+          "basket_max_drawdown": -0.7974505530634511
+        },
+        "10": {
+          "trades": 395,
+          "signal_days": 237,
+          "avg_net_return": -0.0008170493481125402,
+          "median_net_return": -0.0053140404221572145,
+          "win_rate": 0.4582278481012658,
+          "basket_cum_return": -0.5530581065877643,
+          "basket_max_drawdown": -0.8190084660134012
+        },
+        "20": {
+          "trades": 392,
+          "signal_days": 234,
+          "avg_net_return": 0.006378807933296338,
+          "median_net_return": -0.0067159615616505484,
+          "win_rate": 0.45918367346938777,
+          "basket_cum_return": 1.9635003110309772,
+          "basket_max_drawdown": -0.8954185747771382
+        }
+      },
+      "yearly_10d": [
+        {
+          "year": "2024",
+          "trades": 220,
+          "avg_net_return": -0.0045201434645092365,
+          "win_rate": 0.44545454545454544
+        },
+        {
+          "year": "2025",
+          "trades": 124,
+          "avg_net_return": -0.006155971997882274,
+          "win_rate": 0.4596774193548387
+        },
+        {
+          "year": "2026",
+          "trades": 51,
+          "avg_net_return": 0.028137992106372165,
+          "win_rate": 0.5098039215686274
+        }
+      ]
+    },
+    "friend_loose": {
+      "raw_signals": 43323,
+      "filled_signals": null,
+      "selected_signals": 5845,
+      "hold_days": {
+        "5": {
+          "trades": 5805,
+          "signal_days": 586,
+          "avg_net_return": -0.002688899150165725,
+          "median_net_return": -0.006293543064696424,
+          "win_rate": 0.41808785529715764,
+          "basket_cum_return": -0.8119252964552207,
+          "basket_max_drawdown": -0.8950268484576334
+        },
+        "10": {
+          "trades": 5755,
+          "signal_days": 581,
+          "avg_net_return": 0.00033392484285090033,
+          "median_net_return": -0.0054124422172990815,
+          "win_rate": 0.4479582971329279,
+          "basket_cum_return": 0.11425184642071318,
+          "basket_max_drawdown": -0.9429895574938337
+        },
+        "20": {
+          "trades": 5658,
+          "signal_days": 571,
+          "avg_net_return": 0.006342125504456042,
+          "median_net_return": -0.005596168486272032,
+          "win_rate": 0.4628844114528102,
+          "basket_cum_return": 25.8232463202602,
+          "basket_max_drawdown": -0.9933650004685196
+        }
+      },
+      "yearly_10d": [
+        {
+          "year": "2024",
+          "trades": 2391,
+          "avg_net_return": -0.002339330661445578,
+          "win_rate": 0.42952739439565035
+        },
+        {
+          "year": "2025",
+          "trades": 2373,
+          "avg_net_return": -0.0026223796993985536,
+          "win_rate": 0.4466919511167299
+        },
+        {
+          "year": "2026",
+          "trades": 991,
+          "avg_net_return": 0.01386274884843197,
+          "win_rate": 0.4954591321897074
+        }
+      ]
+    },
+    "friend_pullback_limit": {
+      "raw_signals": 60712,
+      "filled_signals": 8523,
+      "selected_signals": 4027,
+      "hold_days": {
+        "5": {
+          "trades": 4001,
+          "signal_days": 567,
+          "avg_net_return": -0.0021686102895305745,
+          "median_net_return": -0.005187776697980758,
+          "win_rate": 0.4491377155711072,
+          "basket_cum_return": -0.8586316218326905,
+          "basket_max_drawdown": -0.9489529589905218
+        },
+        "10": {
+          "trades": 3970,
+          "signal_days": 563,
+          "avg_net_return": 0.0008231233306330331,
+          "median_net_return": -0.007454458326301924,
+          "win_rate": 0.4488664987405542,
+          "basket_cum_return": -0.5255350506029123,
+          "basket_max_drawdown": -0.9832046948272847
+        },
+        "20": {
+          "trades": 3897,
+          "signal_days": 553,
+          "avg_net_return": 0.007516466973930005,
+          "median_net_return": -0.00840231610253694,
+          "win_rate": 0.4634334103156274,
+          "basket_cum_return": 11.172895741082344,
+          "basket_max_drawdown": -0.9981865064096549
+        }
+      },
+      "yearly_10d": [
+        {
+          "year": "2024",
+          "trades": 1706,
+          "avg_net_return": -0.002752178637782238,
+          "win_rate": 0.43786635404454866
+        },
+        {
+          "year": "2025",
+          "trades": 1481,
+          "avg_net_return": -0.004038675295707247,
+          "win_rate": 0.424713031735314
+        },
+        {
+          "year": "2026",
+          "trades": 783,
+          "avg_net_return": 0.017808805225558198,
+          "win_rate": 0.5185185185185185
+        }
+      ]
+    }
+  },
+  "current_3013": [
+    {
+      "date": "2026-06-18",
+      "close": 113.0,
+      "foreign": -118370.0,
+      "dealer": -8144.0,
+      "inst_total": -126514.0,
+      "macd_hist": -1.3689328438794206,
+      "volume_ratio_20d": 0.3164596793582378,
+      "base": false,
+      "strict": false,
+      "loose": false,
+      "pullback_setup": true,
+      "pullback_entry": false,
+      "pullback_limit_price": 110.00059994888306,
+      "pullback_entry_price": null
+    },
+    {
+      "date": "2026-06-22",
+      "close": 113.5,
+      "foreign": 151560.0,
+      "dealer": 4050.0,
+      "inst_total": 155610.0,
+      "macd_hist": -1.114232821660312,
+      "volume_ratio_20d": 0.27569038100731164,
+      "base": true,
+      "strict": true,
+      "loose": true,
+      "pullback_setup": true,
+      "pullback_entry": true,
+      "pullback_limit_price": 110.27864992332458,
+      "pullback_entry_price": 110.27864992332458
+    },
+    {
+      "date": "2026-06-23",
+      "close": 109.5,
+      "foreign": 93605.0,
+      "dealer": -76641.0,
+      "inst_total": 16964.0,
+      "macd_hist": -1.1611527658915883,
+      "volume_ratio_20d": 0.33505114057623764,
+      "base": false,
+      "strict": false,
+      "loose": false,
+      "pullback_setup": true,
+      "pullback_entry": false,
+      "pullback_limit_price": 107.31,
+      "pullback_entry_price": null
+    }
+  ]
+}

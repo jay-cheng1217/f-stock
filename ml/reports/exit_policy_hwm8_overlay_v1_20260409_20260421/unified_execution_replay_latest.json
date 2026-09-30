@@ -1,0 +1,174 @@
+{
+  "summary": {
+    "generated_at": "2026-04-22T23:51:31.941141+00:00",
+    "exit_policy": "trailing_stop_hwm_8pct",
+    "signal_start": "2026-04-09",
+    "signal_end": "2026-04-21",
+    "replay_start": "2026-04-10",
+    "replay_end": "2026-04-22",
+    "signal_file_count": 9,
+    "position_count": 62,
+    "status_counts": {
+      "closed": 26,
+      "open": 34,
+      "stopped_out": 2
+    },
+    "entry_signal_type_counts": {
+      "20D_only": 62
+    },
+    "current_signal_type_counts": {
+      "20D_only": 62
+    },
+    "fill_status_counts": {
+      "FILLED": 62
+    },
+    "order_type_counts": {
+      "INTRADAY_CHASE": 35,
+      "OPEN": 27
+    },
+    "exit_reason_counts": {
+      "NULL": 34,
+      "STOP_LOSS_SLIPPAGE": 2,
+      "TAKE_PROFIT_MA20": 22,
+      "TRAILING_STOP_HWM_8PCT": 4
+    },
+    "filled_position_count": 62,
+    "closed_position_count": 28,
+    "open_position_count": 34,
+    "missed_entry_count": 0,
+    "avg_entry_slippage_pct": 0.02138119927333181,
+    "avg_filled_hold_days": 3.6774193548387095,
+    "capital_weighted_hold_days": 5.7856819425784956,
+    "capital_turnover_20d_multiple": 3.456809447614853,
+    "profit_giveback_sample_count": 36,
+    "avg_profit_giveback_pct": 0.02427761561731949,
+    "avg_profit_giveback_ratio_pct": 0.9491543702066007,
+    "capital_weighted_profit_giveback_pct": 0.01778695366162513,
+    "realized_avg_return_pct": 0.04164752129385515,
+    "realized_median_return_pct": 0.011779626578067082,
+    "realized_win_rate_pct": 0.6071428571428571,
+    "realized_capital_weighted_return_pct": 0.09971638969874382,
+    "mtm_capital_weighted_return_pct": 0.06023222919928495,
+    "mtm_cash_return_contribution_pct": 0.14922178380399775,
+    "open_avg_unrealized_return_pct": -0.007157629559225109,
+    "open_capital_weighted_unrealized_return_pct": 0.0014293773672263892,
+    "twii": {
+      "start_date": "2026-04-10",
+      "end_date": "2026-04-22",
+      "start_close": 35417.828125,
+      "end_close": 37878.46875,
+      "return_pct": 0.0694746334054046,
+      "reason": null
+    },
+    "realized_alpha_vs_twii_pct": 0.03024175629333921,
+    "mtm_alpha_vs_twii_pct": -0.009242404206119659,
+    "exit_day_compounded_return_pct": 0.7420373020403079,
+    "exit_day_max_drawdown_pct": -0.014833127317676054,
+    "exit_day_count": 7
+  },
+  "replay_result": {
+    "db_path": "C:\\Users\\cheng\\AppData\\Local\\Temp\\unified_execution_replay_9a92bmb3\\unified_execution_replay.db",
+    "signal_files": [
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-09.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-10.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-13.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-14.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-15.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-16.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-17.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-20.csv",
+      "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-21.csv"
+    ],
+    "processed_dates": [
+      "2026-04-09",
+      "2026-04-10",
+      "2026-04-13",
+      "2026-04-14",
+      "2026-04-15",
+      "2026-04-16",
+      "2026-04-17",
+      "2026-04-20",
+      "2026-04-21"
+    ],
+    "new_runs": 9,
+    "skipped_runs": 0,
+    "new_positions": 62,
+    "upgraded_positions": 0,
+    "refreshed_positions": 177,
+    "marks_upserted": 958,
+    "cash_deployed": 2.477440828402372,
+    "exit_policy_name": "trailing_stop_hwm_8pct",
+    "summary": {
+      "total_runs": 9,
+      "total_positions": 62,
+      "pending_positions": 0,
+      "open_positions": 34,
+      "closed_positions": 26,
+      "stopped_out_positions": 2,
+      "missed_entry_positions": 0,
+      "invested_capital": 0.9952451394759089,
+      "available_cash": 0.004754860524091131,
+      "avg_realized_return_pct": 0.04164752129385516,
+      "avg_max_drawdown_pct": -0.051054518849752574,
+      "total_marks": 228
+    }
+  },
+  "signal_files": [
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-09.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-10.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-13.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-14.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-15.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-16.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-17.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-20.csv",
+    "F:\\stock\\ml\\models\\unified_signals_overlay_2026-04-21.csv"
+  ],
+  "positions_csv": "F:\\stock\\ml\\reports\\exit_policy_hwm8_overlay_v1_20260409_20260421\\unified_execution_replay_positions_latest.csv",
+  "daily_exit_curve": [
+    {
+      "exit_date": "2026-04-13",
+      "position_count": 1,
+      "avg_return_pct": 0.004316546762589857,
+      "weighted_return_pct": 0.004316546762589857
+    },
+    {
+      "exit_date": "2026-04-14",
+      "position_count": 3,
+      "avg_return_pct": 0.061849122161178695,
+      "weighted_return_pct": 0.11331233113888775
+    },
+    {
+      "exit_date": "2026-04-15",
+      "position_count": 1,
+      "avg_return_pct": 0.11753368583389068,
+      "weighted_return_pct": 0.11753368583389068
+    },
+    {
+      "exit_date": "2026-04-16",
+      "position_count": 2,
+      "avg_return_pct": -0.014833127317676165,
+      "weighted_return_pct": -0.014833127317676163
+    },
+    {
+      "exit_date": "2026-04-20",
+      "position_count": 4,
+      "avg_return_pct": 0.11261110588577733,
+      "weighted_return_pct": 0.10591718313793196
+    },
+    {
+      "exit_date": "2026-04-21",
+      "position_count": 8,
+      "avg_return_pct": 0.02645437773622618,
+      "weighted_return_pct": 0.1456858931049275
+    },
+    {
+      "exit_date": "2026-04-22",
+      "position_count": 9,
+      "avg_return_pct": 0.025146645150040156,
+      "weighted_return_pct": 0.11689209859349835
+    }
+  ],
+  "exit_policy": "trailing_stop_hwm_8pct",
+  "db_path": null
+}

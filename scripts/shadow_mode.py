@@ -9,7 +9,7 @@ import sqlite3
 import sys
 from datetime import datetime
 
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 from ml.model_selection import get_slot_label

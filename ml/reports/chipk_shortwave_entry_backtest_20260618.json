@@ -1,0 +1,570 @@
+{
+  "status": "fail",
+  "production_decision": "hold",
+  "start_date": "2026-05-01",
+  "end_date": null,
+  "horizon_days": 5,
+  "top_n": 10,
+  "prediction_files": 33,
+  "control": {
+    "basket": "control_current_buy_topn",
+    "rows": 270,
+    "signal_days": 33,
+    "avg_return": -0.01025757721620751,
+    "median_return": -0.030933256836871315,
+    "win_rate": 0.40370370370370373,
+    "zero_pick_days": 2
+  },
+  "treatment": {
+    "basket": "shortwave_treatment_topn",
+    "rows": 262,
+    "signal_days": 33,
+    "avg_return": -0.0044522128253588955,
+    "median_return": -0.011814156081730087,
+    "win_rate": 0.41603053435114506,
+    "zero_pick_days": 2
+  },
+  "avg_return_delta": 0.005805364390848615,
+  "failures": [
+    "treatment_avg_return_not_positive"
+  ],
+  "warnings": [],
+  "daily": [
+    {
+      "signal_date": "2026-05-04",
+      "eligible": 180,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 180,
+        "actions": {
+          "NORMAL_ENTRY": 65,
+          "SMALL_ENTRY": 62,
+          "NO_CHASE": 27,
+          "OBSERVE": 20,
+          "BLOCK": 6
+        },
+        "avg_score": 0.6986277777777777
+      }
+    },
+    {
+      "signal_date": "2026-05-05",
+      "eligible": 122,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 122,
+        "actions": {
+          "SMALL_ENTRY": 41,
+          "NORMAL_ENTRY": 40,
+          "NO_CHASE": 28,
+          "OBSERVE": 10,
+          "BLOCK": 3
+        },
+        "avg_score": 0.6974426229508197
+      }
+    },
+    {
+      "signal_date": "2026-05-06",
+      "eligible": 152,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 152,
+        "actions": {
+          "SMALL_ENTRY": 59,
+          "NORMAL_ENTRY": 43,
+          "NO_CHASE": 30,
+          "OBSERVE": 15,
+          "BLOCK": 5
+        },
+        "avg_score": 0.6810065789473684
+      }
+    },
+    {
+      "signal_date": "2026-05-07",
+      "eligible": 72,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 72,
+        "actions": {
+          "SMALL_ENTRY": 27,
+          "NORMAL_ENTRY": 26,
+          "NO_CHASE": 9,
+          "OBSERVE": 8,
+          "BLOCK": 2
+        },
+        "avg_score": 0.6926111111111112
+      }
+    },
+    {
+      "signal_date": "2026-05-08",
+      "eligible": 101,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 101,
+        "actions": {
+          "SMALL_ENTRY": 41,
+          "NO_CHASE": 21,
+          "NORMAL_ENTRY": 19,
+          "OBSERVE": 14,
+          "BLOCK": 6
+        },
+        "avg_score": 0.6684752475247524
+      }
+    },
+    {
+      "signal_date": "2026-05-11",
+      "eligible": 162,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 162,
+        "actions": {
+          "NORMAL_ENTRY": 54,
+          "SMALL_ENTRY": 47,
+          "NO_CHASE": 33,
+          "OBSERVE": 16,
+          "BLOCK": 12
+        },
+        "avg_score": 0.6889135802469136
+      }
+    },
+    {
+      "signal_date": "2026-05-12",
+      "eligible": 101,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 101,
+        "actions": {
+          "SMALL_ENTRY": 31,
+          "NO_CHASE": 30,
+          "NORMAL_ENTRY": 26,
+          "BLOCK": 7,
+          "OBSERVE": 7
+        },
+        "avg_score": 0.6774554455445545
+      }
+    },
+    {
+      "signal_date": "2026-05-13",
+      "eligible": 65,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 65,
+        "actions": {
+          "SMALL_ENTRY": 22,
+          "NO_CHASE": 17,
+          "OBSERVE": 10,
+          "NORMAL_ENTRY": 10,
+          "BLOCK": 6
+        },
+        "avg_score": 0.6478615384615384
+      }
+    },
+    {
+      "signal_date": "2026-05-14",
+      "eligible": 51,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 51,
+        "actions": {
+          "SMALL_ENTRY": 15,
+          "BLOCK": 10,
+          "NO_CHASE": 10,
+          "NORMAL_ENTRY": 10,
+          "OBSERVE": 6
+        },
+        "avg_score": 0.6313725490196079
+      }
+    },
+    {
+      "signal_date": "2026-05-15",
+      "eligible": 58,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 58,
+        "actions": {
+          "SMALL_ENTRY": 25,
+          "BLOCK": 12,
+          "NORMAL_ENTRY": 8,
+          "NO_CHASE": 8,
+          "OBSERVE": 5
+        },
+        "avg_score": 0.6298793103448275
+      }
+    },
+    {
+      "signal_date": "2026-05-18",
+      "eligible": 25,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 25,
+        "actions": {
+          "SMALL_ENTRY": 11,
+          "BLOCK": 6,
+          "OBSERVE": 5,
+          "NORMAL_ENTRY": 2,
+          "NO_CHASE": 1
+        },
+        "avg_score": 0.58664
+      }
+    },
+    {
+      "signal_date": "2026-05-19",
+      "eligible": 19,
+      "control": 10,
+      "treatment": 8,
+      "shortwave_distribution": {
+        "rows": 19,
+        "actions": {
+          "SMALL_ENTRY": 8,
+          "BLOCK": 8,
+          "OBSERVE": 3
+        },
+        "avg_score": 0.5313684210526316
+      }
+    },
+    {
+      "signal_date": "2026-05-20",
+      "eligible": 0,
+      "control": 0,
+      "treatment": 0,
+      "shortwave_distribution": {
+        "rows": 0,
+        "actions": {}
+      }
+    },
+    {
+      "signal_date": "2026-05-21",
+      "eligible": 19,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 19,
+        "actions": {
+          "SMALL_ENTRY": 7,
+          "NORMAL_ENTRY": 5,
+          "BLOCK": 5,
+          "OBSERVE": 2
+        },
+        "avg_score": 0.6297368421052633
+      }
+    },
+    {
+      "signal_date": "2026-05-22",
+      "eligible": 38,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 38,
+        "actions": {
+          "NORMAL_ENTRY": 21,
+          "SMALL_ENTRY": 10,
+          "NO_CHASE": 5,
+          "BLOCK": 2
+        },
+        "avg_score": 0.7398684210526315
+      }
+    },
+    {
+      "signal_date": "2026-05-25",
+      "eligible": 14,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 14,
+        "actions": {
+          "SMALL_ENTRY": 6,
+          "NORMAL_ENTRY": 4,
+          "BLOCK": 3,
+          "NO_CHASE": 1
+        },
+        "avg_score": 0.6655714285714286
+      }
+    },
+    {
+      "signal_date": "2026-05-26",
+      "eligible": 24,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 24,
+        "actions": {
+          "NORMAL_ENTRY": 17,
+          "SMALL_ENTRY": 4,
+          "NO_CHASE": 2,
+          "BLOCK": 1
+        },
+        "avg_score": 0.7487083333333334
+      }
+    },
+    {
+      "signal_date": "2026-05-27",
+      "eligible": 17,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 17,
+        "actions": {
+          "NORMAL_ENTRY": 10,
+          "SMALL_ENTRY": 3,
+          "BLOCK": 3,
+          "NO_CHASE": 1
+        },
+        "avg_score": 0.7015882352941176
+      }
+    },
+    {
+      "signal_date": "2026-05-28",
+      "eligible": 19,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 19,
+        "actions": {
+          "SMALL_ENTRY": 10,
+          "NORMAL_ENTRY": 5,
+          "BLOCK": 3,
+          "OBSERVE": 1
+        },
+        "avg_score": 0.6517368421052631
+      }
+    },
+    {
+      "signal_date": "2026-05-29",
+      "eligible": 19,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 19,
+        "actions": {
+          "NORMAL_ENTRY": 8,
+          "SMALL_ENTRY": 6,
+          "OBSERVE": 3,
+          "BLOCK": 2
+        },
+        "avg_score": 0.6857894736842106
+      }
+    },
+    {
+      "signal_date": "2026-06-01",
+      "eligible": 20,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 20,
+        "actions": {
+          "NORMAL_ENTRY": 11,
+          "SMALL_ENTRY": 6,
+          "OBSERVE": 2,
+          "BLOCK": 1
+        },
+        "avg_score": 0.73055
+      }
+    },
+    {
+      "signal_date": "2026-06-02",
+      "eligible": 20,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 20,
+        "actions": {
+          "OBSERVE": 7,
+          "SMALL_ENTRY": 6,
+          "NORMAL_ENTRY": 4,
+          "NO_CHASE": 2,
+          "BLOCK": 1
+        },
+        "avg_score": 0.6580999999999999
+      }
+    },
+    {
+      "signal_date": "2026-06-03",
+      "eligible": 72,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 72,
+        "actions": {
+          "SMALL_ENTRY": 31,
+          "NORMAL_ENTRY": 24,
+          "OBSERVE": 9,
+          "NO_CHASE": 5,
+          "BLOCK": 3
+        },
+        "avg_score": 0.6894305555555555
+      }
+    },
+    {
+      "signal_date": "2026-06-04",
+      "eligible": 17,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 17,
+        "actions": {
+          "OBSERVE": 5,
+          "NORMAL_ENTRY": 5,
+          "SMALL_ENTRY": 5,
+          "NO_CHASE": 1,
+          "BLOCK": 1
+        },
+        "avg_score": 0.650470588235294
+      }
+    },
+    {
+      "signal_date": "2026-06-05",
+      "eligible": 31,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 31,
+        "actions": {
+          "NORMAL_ENTRY": 10,
+          "SMALL_ENTRY": 8,
+          "NO_CHASE": 6,
+          "OBSERVE": 4,
+          "BLOCK": 3
+        },
+        "avg_score": 0.6683548387096775
+      }
+    },
+    {
+      "signal_date": "2026-06-08",
+      "eligible": 21,
+      "control": 10,
+      "treatment": 9,
+      "shortwave_distribution": {
+        "rows": 21,
+        "actions": {
+          "BLOCK": 7,
+          "OBSERVE": 5,
+          "SMALL_ENTRY": 5,
+          "NO_CHASE": 3,
+          "NORMAL_ENTRY": 1
+        },
+        "avg_score": 0.5586190476190476
+      }
+    },
+    {
+      "signal_date": "2026-06-09",
+      "eligible": 17,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 17,
+        "actions": {
+          "NORMAL_ENTRY": 5,
+          "BLOCK": 5,
+          "SMALL_ENTRY": 3,
+          "NO_CHASE": 2,
+          "OBSERVE": 2
+        },
+        "avg_score": 0.6131764705882352
+      }
+    },
+    {
+      "signal_date": "2026-06-10",
+      "eligible": 19,
+      "control": 10,
+      "treatment": 5,
+      "shortwave_distribution": {
+        "rows": 19,
+        "actions": {
+          "BLOCK": 10,
+          "OBSERVE": 4,
+          "SMALL_ENTRY": 3,
+          "NO_CHASE": 2
+        },
+        "avg_score": 0.4892105263157894
+      }
+    },
+    {
+      "signal_date": "2026-06-11",
+      "eligible": 0,
+      "control": 0,
+      "treatment": 0,
+      "shortwave_distribution": {
+        "rows": 0,
+        "actions": {}
+      }
+    },
+    {
+      "signal_date": "2026-06-12",
+      "eligible": 15,
+      "control": 10,
+      "treatment": 6,
+      "shortwave_distribution": {
+        "rows": 15,
+        "actions": {
+          "BLOCK": 6,
+          "OBSERVE": 3,
+          "NORMAL_ENTRY": 3,
+          "SMALL_ENTRY": 2,
+          "NO_CHASE": 1
+        },
+        "avg_score": 0.5565333333333334
+      }
+    },
+    {
+      "signal_date": "2026-06-15",
+      "eligible": 45,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 45,
+        "actions": {
+          "NORMAL_ENTRY": 15,
+          "SMALL_ENTRY": 15,
+          "NO_CHASE": 8,
+          "BLOCK": 5,
+          "OBSERVE": 2
+        },
+        "avg_score": 0.6811333333333334
+      }
+    },
+    {
+      "signal_date": "2026-06-16",
+      "eligible": 41,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 41,
+        "actions": {
+          "SMALL_ENTRY": 22,
+          "NORMAL_ENTRY": 10,
+          "NO_CHASE": 5,
+          "OBSERVE": 2,
+          "BLOCK": 2
+        },
+        "avg_score": 0.675390243902439
+      }
+    },
+    {
+      "signal_date": "2026-06-17",
+      "eligible": 57,
+      "control": 10,
+      "treatment": 10,
+      "shortwave_distribution": {
+        "rows": 57,
+        "actions": {
+          "NORMAL_ENTRY": 23,
+          "SMALL_ENTRY": 19,
+          "NO_CHASE": 6,
+          "BLOCK": 6,
+          "OBSERVE": 3
+        },
+        "avg_score": 0.683421052631579
+      }
+    }
+  ]
+}

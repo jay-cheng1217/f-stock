@@ -1,0 +1,108 @@
+{
+  "method_lock": "docs/METHOD_disposition_contract_20260906.md",
+  "snapshot_hashes": {
+    "ml\\data\\disposition_periods.csv": "5e8bc45662dc119180fa9f08669fac4c1c9e1c1c7b275126c5f9708758404de4",
+    "disposition_active.csv": "e0250b9fda59fd38c0d6ed564b6c56630956f3467669471fc89007017200b0a0",
+    "ml\\reports\\special_stock_status_latest.json": "4a18c3b42392c1ef4acfa2f1b6ef51e48f17c7c2e998bc980cd81a2893290b3d",
+    "config\\disposition_corrections.json": "15351be79227fea6065d2feefb0dfaabe16a3e01c00fd29413bbf1dc1c87fbe9"
+  },
+  "raw_period_frame_sha256": "2498ea2c2807a985e68d015977cc125fe5067a2fc40f248a9ad55cc5deb0fb60",
+  "raw_period_rows": 1618,
+  "corrected_rows": 15,
+  "corrected_security_count": 15,
+  "pre_publication_period_changes": 0,
+  "raw_frame_source": "DuckDB daily_k through same-process read-only /api/stocks/{ticker}/daily; fetched once and frozen",
+  "duckdb_error": "DatabaseUnavailableError: DuckDB is temporarily unavailable",
+  "raw_frame_sql": "SELECT CAST(Ticker AS VARCHAR) AS ticker, CAST(Date AS DATE) AS date, Close AS close FROM daily_k WHERE Date BETWEEN '2026-08-01' AND '2026-08-31' ORDER BY Ticker, Date",
+  "api_response_sha256": {
+    "039038": "865d8809943e1c60ec6393029d9aa37c5f87a9b85699fc66741db3865094b965",
+    "039457": "7b4b76af7e7b17219965bd05ba1f53e92330c250a1ac241810bcd174971285af",
+    "053859": "a19c2812bd38e06c7138ea458de13cef175a426ad50c737146efc55bcd82e950",
+    "057808": "06e03b9b46831458634e15366bfc206fdfdc850e7189c7e270a32e6e65850f5e",
+    "068822": "6f48e53d745f5098ec80fc02984b24162efa189dbb44e4ec4bf5c13b9206fc19",
+    "1515": "3866b21f111796e8baae56fa6988cc79c8d701fe80f8dd4d5b6fe8a8b6608258",
+    "3026": "1a1fe2763b738149ce62ac83aef9160fb50edff714476509e786756282ea19f3",
+    "3055": "683115d70b04c86aa08e66b2d211e398bb21cb12bd8cd5a1df6763f7b5475818",
+    "3167": "40077aadc7644c54cb9ca04e83006dd088174e1475ac2bb0cb6664d6366c0da8",
+    "3532": "88d6acc5af9749a02085f739961c57938469a0894ceb6a452800408a25fe0288",
+    "4169": "cd5ac1fdcb1dc44ec464fdc8c14e5299d92b3a4e823c2d9f30924199ce85205d",
+    "6531": "cf81ce0734e286070eac74b765f06777e4112c80d84145dd3dd16ebc50bc6120",
+    "6969": "79228c43052b54dce85380d726a7e996006978e5387b8dd14020f21f93ba0a65",
+    "7610": "2ad2b05db2b895e2eb814192964b46e09d6d80f43f241baf7e59c374cf00eb2e",
+    "8046": "12ddc41e6672cd0b6a71c76d46e362646096496aeb2709515e5d5c712dcc3302"
+  },
+  "missing_price_tickers": [
+    "039038",
+    "039457",
+    "053859",
+    "057808",
+    "068822",
+    "4169",
+    "7610"
+  ],
+  "raw_frame_sha256": "8bd6393dbd3af4958fdfae79b0cb4c913cd4993a66177a9f7db7ea8e6ff1e89a",
+  "raw_frame_rows": 168,
+  "eligibility_flips": 24,
+  "flip_security_count": 8,
+  "flips_before_publication": 0,
+  "flip_counts_by_ticker": {
+    "1515": 4,
+    "3026": 4,
+    "3055": 4,
+    "3167": 1,
+    "3532": 4,
+    "6531": 1,
+    "6969": 1,
+    "8046": 5
+  },
+  "source_coverage_comparison": {
+    "before_rows": 167,
+    "after_rows": 172,
+    "added": [
+      {
+        "stock_id": "2455",
+        "period_start": "2026-09-07",
+        "period_end": "2026-09-15",
+        "source": "TWSE",
+        "announcement_date": "2026-09-04"
+      },
+      {
+        "stock_id": "6933",
+        "period_start": "2026-09-07",
+        "period_end": "2026-09-11",
+        "source": "TWSE",
+        "announcement_date": "2026-09-04"
+      },
+      {
+        "stock_id": "24552",
+        "period_start": "2026-09-07",
+        "period_end": "2026-09-15",
+        "source": "TPEx",
+        "announcement_date": "2026-09-04"
+      },
+      {
+        "stock_id": "24553",
+        "period_start": "2026-09-07",
+        "period_end": "2026-09-15",
+        "source": "TPEx",
+        "announcement_date": "2026-09-04"
+      },
+      {
+        "stock_id": "704556",
+        "period_start": "2026-09-07",
+        "period_end": "2026-09-11",
+        "source": "TPEx",
+        "announcement_date": "2026-09-04"
+      }
+    ],
+    "before_sha256": "1bd73b9f503a9c5a8f3cdf9aa82efc2c82e126d88259ca3f71f757294f8e9073",
+    "after_sha256": "5e8d525c014ab7fb7be503d8dc73803523c610b438eb22ec49ea827195119cf8",
+    "known_end": "2026-09-05",
+    "old_coverage_end": "2026-09-05",
+    "new_coverage_end": "2026-09-07"
+  },
+  "prob_edge_delta": "N/A: no prediction computation or model input change",
+  "performance_claim": "Eligibility backtest only; no strategy return/MDD superiority claim.",
+  "legacy_history_limitation": "Three-column raw history lacks announcement dates; only the correction known-at boundary is established.",
+  "production_sources_unchanged": true
+}

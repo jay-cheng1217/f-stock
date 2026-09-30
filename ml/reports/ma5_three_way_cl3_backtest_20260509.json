@@ -1,0 +1,153 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-09T09:38:30.577761+00:00",
+    "fold_artifact": "F:\\stock\\ml\\reports\\audit002_step5_grid_search_20260509_N75_bins5_fold_top30.csv",
+    "actual_start": "2024-01",
+    "actual_end": "2026-04",
+    "months": 28,
+    "entries": 840,
+    "simulated_trades": 1680,
+    "skipped_entries": 0,
+    "trades_csv": "F:\\stock\\ml\\reports\\ma5_three_way_cl3_backtest_20260509_trades.csv",
+    "monthly_csv": "F:\\stock\\ml\\reports\\ma5_three_way_cl3_backtest_20260509_monthly.csv",
+    "summary_csv": "F:\\stock\\ml\\reports\\ma5_three_way_cl3_backtest_20260509_summary.csv",
+    "groups_csv": "F:\\stock\\ml\\reports\\ma5_three_way_cl3_backtest_20260509_groups.csv"
+  },
+  "summary": [
+    {
+      "variant": "Control_AsymmetricV2",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.02295393711787255,
+      "monthly_avg_alpha": 0.012232814203980499,
+      "compound_return": 0.853968563820769,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.120625564702319,
+      "calmar": 4.0681844446193,
+      "avg_hold_days": 4.886904761904762,
+      "strong_trend_no_ma5_count": 109,
+      "ma_exit_count": 704,
+      "hwm_exit_count": 70,
+      "stop_exit_count": 103,
+      "timeout_count": 33,
+      "stop_only_route_count": 0
+    },
+    {
+      "variant": "Treatment_GroupB_StopOnly",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.037297886093751224,
+      "monthly_avg_alpha": 0.018859628083186437,
+      "compound_return": 1.6526051472044,
+      "mdd": -0.10898883706430207,
+      "sharpe": 2.0132401624983074,
+      "calmar": 5.063105997071212,
+      "avg_hold_days": 9.772619047619047,
+      "strong_trend_no_ma5_count": 84,
+      "ma_exit_count": 413,
+      "hwm_exit_count": 48,
+      "stop_exit_count": 175,
+      "timeout_count": 252,
+      "stop_only_route_count": 319
+    }
+  ],
+  "groups": [
+    {
+      "entry_ma5_bucket": "A_price_vs_ma5_at_entry_gt_0",
+      "variant": "Control_AsymmetricV2",
+      "samples": 441,
+      "avg_hold_days": 6.294784580498866,
+      "avg_realized_return": 0.03222089912166116,
+      "win_rate": 0.41496598639455784,
+      "ma5_break_exit_pct": 0.764172335600907,
+      "stop_only_route_pct": 0.0,
+      "stop_exit_pct": 0.17233560090702948,
+      "timeout_pct": 0.06349206349206349
+    },
+    {
+      "entry_ma5_bucket": "A_price_vs_ma5_at_entry_gt_0",
+      "variant": "Treatment_GroupB_StopOnly",
+      "samples": 441,
+      "avg_hold_days": 6.294784580498866,
+      "avg_realized_return": 0.03222089912166116,
+      "win_rate": 0.41496598639455784,
+      "ma5_break_exit_pct": 0.764172335600907,
+      "stop_only_route_pct": 0.0,
+      "stop_exit_pct": 0.17233560090702948,
+      "timeout_pct": 0.06349206349206349
+    },
+    {
+      "entry_ma5_bucket": "B_minus5pct_to_0",
+      "variant": "Control_AsymmetricV2",
+      "samples": 319,
+      "avg_hold_days": 3.58307210031348,
+      "avg_realized_return": 0.013172845484885334,
+      "win_rate": 0.4608150470219436,
+      "ma5_break_exit_pct": 0.9122257053291536,
+      "stop_only_route_pct": 0.0,
+      "stop_exit_pct": 0.07210031347962383,
+      "timeout_pct": 0.01567398119122257
+    },
+    {
+      "entry_ma5_bucket": "B_minus5pct_to_0",
+      "variant": "Treatment_GroupB_StopOnly",
+      "samples": 319,
+      "avg_hold_days": 16.448275862068964,
+      "avg_realized_return": 0.050943745609456116,
+      "win_rate": 0.5517241379310345,
+      "ma5_break_exit_pct": 0.0,
+      "stop_only_route_pct": 1.0,
+      "stop_exit_pct": 0.29780564263322884,
+      "timeout_pct": 0.7021943573667712
+    },
+    {
+      "entry_ma5_bucket": "C_le_minus5pct",
+      "variant": "Control_AsymmetricV2",
+      "samples": 80,
+      "avg_hold_days": 2.325,
+      "avg_realized_return": 0.01087191195852437,
+      "win_rate": 0.5875,
+      "ma5_break_exit_pct": 0.95,
+      "stop_only_route_pct": 0.0,
+      "stop_exit_pct": 0.05,
+      "timeout_pct": 0.0
+    },
+    {
+      "entry_ma5_bucket": "C_le_minus5pct",
+      "variant": "Treatment_GroupB_StopOnly",
+      "samples": 80,
+      "avg_hold_days": 2.325,
+      "avg_realized_return": 0.01087191195852437,
+      "win_rate": 0.5875,
+      "ma5_break_exit_pct": 0.95,
+      "stop_only_route_pct": 0.0,
+      "stop_exit_pct": 0.05,
+      "timeout_pct": 0.0
+    }
+  ],
+  "cl3": {
+    "checks": {
+      "alpha_sacrifice": {
+        "value": 0.0,
+        "threshold": 0.005,
+        "pass": true
+      },
+      "mdd_delta": {
+        "value": -0.03204423631557729,
+        "threshold": 0.001,
+        "pass": false
+      },
+      "sharpe_regression": {
+        "value": 0.05063854929952513,
+        "threshold": 0.05,
+        "pass": false
+      },
+      "calmar_regression": {
+        "value": 0.0,
+        "threshold": 0.05,
+        "pass": true
+      }
+    },
+    "overall_pass": false
+  }
+}

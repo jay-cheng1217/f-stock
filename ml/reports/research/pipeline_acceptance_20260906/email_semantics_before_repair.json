@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "delivery": "NOT_RUN",
+  "preview": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\logs\\acceptance_email.html",
+  "html_bytes": 16915,
+  "sha256": "13ac7c3bb5655cd968970a3f7a0720ef61ed107f766e072fbec7d82954c49a9b",
+  "subject": "[Stock ML] 2026-09-04 每日投資總結",
+  "mime": "plain/html UTF-8 base64",
+  "credentials": "dummy .invalid addresses only"
+}

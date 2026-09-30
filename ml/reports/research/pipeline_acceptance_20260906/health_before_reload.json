@@ -1,0 +1,144 @@
+{
+  "scope": "daily_production_health",
+  "status": "fail",
+  "all_ok": false,
+  "stale": true,
+  "hours_since_update": null,
+  "daily_health": {
+    "scope": "daily_production_health",
+    "checked_at": "2026-09-06 13:27:58",
+    "expected_latest_trading_date": "2026-09-04",
+    "expected_latest_prediction_date": "2026-09-04",
+    "status": "fail",
+    "ok": false,
+    "stale": true,
+    "duckdb": {
+      "path": "F:\\stock\\stock.duckdb",
+      "exists": true,
+      "name": "stock.duckdb",
+      "size": 1003237376,
+      "mtime": "2026-09-05 12:35:00",
+      "error": "Connection Error: Can't open a connection to same database file with a different configuration than existing connections"
+    },
+    "predictions": {
+      "twenty_day": {
+        "path": "F:\\stock\\ml\\models\\predictions_2026-09-04.csv",
+        "name": "predictions_2026-09-04.csv",
+        "size": 3379412,
+        "mtime": "2026-09-05 12:06:24",
+        "exists": true,
+        "date": "2026-09-04",
+        "rows": 1080
+      },
+      "unified_signals": {
+        "path": "F:\\stock\\ml\\models\\unified_signals_2026-09-04.csv",
+        "name": "unified_signals_2026-09-04.csv",
+        "size": 17413,
+        "mtime": "2026-09-05 12:14:26",
+        "exists": true,
+        "date": "2026-09-04",
+        "rows": 1
+      }
+    },
+    "automation": {
+      "phase1": {
+        "log": "smart_update_auto_20260904.log",
+        "finished_at": "2026-09-04 20:34:29",
+        "elapsed_min": 64.5,
+        "all_ok": true
+      },
+      "phase2": {
+        "log": "smart_update_auto_20260904.log",
+        "finished_at": "2026-09-04 07:25:52",
+        "elapsed_min": 25.9,
+        "all_ok": true
+      }
+    },
+    "checks": [
+      {
+        "name": "duckdb_exists",
+        "status": "ok",
+        "message": "DuckDB file is present."
+      },
+      {
+        "name": "daily_k_fresh",
+        "status": "error",
+        "message": "daily_k latest=None, expected_at_least=2026-09-04."
+      },
+      {
+        "name": "daily_k_snapshot_size",
+        "status": "error",
+        "message": "latest daily_k tickers=None."
+      },
+      {
+        "name": "daily_k_required_values",
+        "status": "ok",
+        "message": "null_close=None, null_volume=None."
+      },
+      {
+        "name": "twenty_day_prediction_fresh",
+        "status": "ok",
+        "message": "twenty_day latest=2026-09-04, expected_at_least=2026-09-04, rows=1080."
+      },
+      {
+        "name": "unified_signals_prediction_fresh",
+        "status": "ok",
+        "message": "unified_signals latest=2026-09-04, expected_at_least=2026-09-04, rows=1."
+      },
+      {
+        "name": "phase1_latest_success",
+        "status": "ok",
+        "message": "latest phase1={'log': 'smart_update_auto_20260904.log', 'finished_at': '2026-09-04 20:34:29', 'elapsed_min': 64.5, 'all_ok': True}."
+      },
+      {
+        "name": "phase2_latest_success",
+        "status": "ok",
+        "message": "latest phase2={'log': 'smart_update_auto_20260904.log', 'finished_at': '2026-09-04 07:25:52', 'elapsed_min': 25.9, 'all_ok': True}."
+      }
+    ]
+  },
+  "weekly_retrain": {
+    "scope": "weekly_retrain",
+    "exists": true,
+    "path": "F:\\stock\\ml\\models\\pipeline_status.json",
+    "last_run": "2026-09-05 10:00:02",
+    "elapsed_min": 155.0,
+    "steps": {
+      "K": "ok",
+      "PE_PB": "ok",
+      "MOPS": "ok",
+      "step_4": "ok",
+      "step_5": "ok",
+      "TDCC": "ok",
+      "DuckDB": "ok",
+      "step_8": "ok",
+      "step_9": "ok",
+      "step_10": "ok",
+      "T+1": "ok",
+      "UnifiedSignals": "ok",
+      "UnifiedPortfolio": "ok",
+      "step_14": "ok",
+      "AgentArena": "failed",
+      "ResearchOutputLayer": "ok",
+      "EntryCandidateRefresh": "ok",
+      "Shadow": "ok",
+      "V4Rank15Shadow": "ok",
+      "step_22": "ok",
+      "Replay": "ok",
+      "Email": "ok"
+    },
+    "all_ok": false,
+    "hours_since_update": 27.5,
+    "stale": false
+  },
+  "steps": {
+    "duckdb_exists": "ok",
+    "daily_k_fresh": "error",
+    "daily_k_snapshot_size": "error",
+    "daily_k_required_values": "ok",
+    "twenty_day_prediction_fresh": "ok",
+    "unified_signals_prediction_fresh": "ok",
+    "phase1_latest_success": "ok",
+    "phase2_latest_success": "ok"
+  }
+}

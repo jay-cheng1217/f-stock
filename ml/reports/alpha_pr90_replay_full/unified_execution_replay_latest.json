@@ -1,0 +1,151 @@
+{
+  "summary": {
+    "generated_at": "2026-04-22T15:46:28.154043+00:00",
+    "signal_start": "2026-04-09",
+    "signal_end": "2026-04-21",
+    "replay_start": "2026-04-10",
+    "replay_end": "2026-04-22",
+    "signal_file_count": 9,
+    "position_count": 10,
+    "status_counts": {
+      "closed": 3,
+      "open": 5,
+      "stopped_out": 2
+    },
+    "entry_signal_type_counts": {
+      "20D_only": 10
+    },
+    "current_signal_type_counts": {
+      "20D_only": 10
+    },
+    "fill_status_counts": {
+      "FILLED": 10
+    },
+    "order_type_counts": {
+      "INTRADAY_CHASE": 7,
+      "OPEN": 3
+    },
+    "exit_reason_counts": {
+      "NULL": 5,
+      "STOP_LOSS_SLIPPAGE": 2,
+      "TAKE_PROFIT_MA20": 3
+    },
+    "filled_position_count": 10,
+    "closed_position_count": 5,
+    "open_position_count": 5,
+    "missed_entry_count": 0,
+    "avg_entry_slippage_pct": 0.03140976638523554,
+    "realized_avg_return_pct": -0.013126342267485968,
+    "realized_median_return_pct": -0.005649717514124242,
+    "realized_win_rate_pct": 0.4,
+    "realized_capital_weighted_return_pct": -0.0022446875912269905,
+    "mtm_capital_weighted_return_pct": -0.006186970211561159,
+    "mtm_cash_return_contribution_pct": -0.013920682976012608,
+    "open_avg_unrealized_return_pct": -0.002538986007452193,
+    "open_capital_weighted_unrealized_return_pct": -0.01111482348697887,
+    "twii": {
+      "start_date": "2026-04-10",
+      "end_date": "2026-04-22",
+      "start_close": 35417.828125,
+      "end_close": 37878.46875,
+      "return_pct": 0.0694746334054046,
+      "reason": null
+    },
+    "realized_alpha_vs_twii_pct": -0.0717193209966316,
+    "mtm_alpha_vs_twii_pct": -0.07566160361696576,
+    "exit_day_compounded_return_pct": -0.0832869024758307,
+    "exit_day_max_drawdown_pct": -0.19807974999999967,
+    "exit_day_count": 5
+  },
+  "replay_result": {
+    "db_path": "C:\\Users\\cheng\\AppData\\Local\\Temp\\unified_execution_replay_sk4qhiif\\unified_execution_replay.db",
+    "signal_files": [
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-09.csv",
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-10.csv",
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-13.csv",
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-14.csv",
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-15.csv",
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-16.csv",
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-17.csv",
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-20.csv",
+      "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-21.csv"
+    ],
+    "processed_dates": [
+      "2026-04-09",
+      "2026-04-10",
+      "2026-04-13",
+      "2026-04-14",
+      "2026-04-15",
+      "2026-04-16",
+      "2026-04-17",
+      "2026-04-20",
+      "2026-04-21"
+    ],
+    "new_runs": 9,
+    "skipped_runs": 0,
+    "new_positions": 10,
+    "upgraded_positions": 0,
+    "refreshed_positions": 41,
+    "marks_upserted": 286,
+    "cash_deployed": 2.25,
+    "summary": {
+      "total_runs": 9,
+      "total_positions": 10,
+      "pending_positions": 0,
+      "open_positions": 5,
+      "closed_positions": 3,
+      "stopped_out_positions": 2,
+      "missed_entry_positions": 0,
+      "invested_capital": 1.0,
+      "available_cash": 0.0,
+      "avg_realized_return_pct": -0.013126342267485968,
+      "avg_max_drawdown_pct": -0.08141895271525887,
+      "total_marks": 54
+    }
+  },
+  "signal_files": [
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-09.csv",
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-10.csv",
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-13.csv",
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-14.csv",
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-15.csv",
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-16.csv",
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-17.csv",
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-20.csv",
+    "F:\\stock\\ml\\models\\unified_signals_alpha_pr90_2026-04-21.csv"
+  ],
+  "positions_csv": "F:\\stock\\ml\\reports\\alpha_pr90_replay_full\\unified_execution_replay_positions_latest.csv",
+  "daily_exit_curve": [
+    {
+      "exit_date": "2026-04-10",
+      "position_count": 1,
+      "avg_return_pct": -0.005649717514124242,
+      "weighted_return_pct": -0.005649717514124242
+    },
+    {
+      "exit_date": "2026-04-13",
+      "position_count": 1,
+      "avg_return_pct": 0.004316546762589857,
+      "weighted_return_pct": 0.004316546762589857
+    },
+    {
+      "exit_date": "2026-04-15",
+      "position_count": 1,
+      "avg_return_pct": -0.10449999999999982,
+      "weighted_return_pct": -0.10449999999999982
+    },
+    {
+      "exit_date": "2026-04-17",
+      "position_count": 1,
+      "avg_return_pct": -0.10449999999999993,
+      "weighted_return_pct": -0.10449999999999993
+    },
+    {
+      "exit_date": "2026-04-21",
+      "position_count": 1,
+      "avg_return_pct": 0.14470145941410428,
+      "weighted_return_pct": 0.14470145941410428
+    }
+  ],
+  "db_path": null
+}

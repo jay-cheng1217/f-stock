@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-08T12:44:19.498067+00:00",
+    "fold_artifact": "ml/reports/v2_fold_top30_20260508_200128.csv",
+    "actual_start": "2024-01",
+    "actual_end": "2026-04",
+    "months": 28,
+    "entries": 840,
+    "trades_csv": "F:\\stock\\ml\\reports\\stoponly_cl3_backtest_20260508_trades.csv",
+    "monthly_csv": "F:\\stock\\ml\\reports\\stoponly_cl3_backtest_20260508_monthly.csv",
+    "summary_csv": "F:\\stock\\ml\\reports\\stoponly_cl3_backtest_20260508_summary.csv"
+  },
+  "summary": [
+    {
+      "variant": "Baseline_MA5_HWM8",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.006229170943287843,
+      "monthly_avg_alpha": -0.0016619220451696505,
+      "compound_return": 0.17550960723837328,
+      "mdd": -0.08723897905529499,
+      "sharpe": 0.7124504867491351,
+      "calmar": 0.8868163098587223,
+      "avg_hold_days": 3.822619047619048,
+      "ma_exit_count": 805,
+      "hwm_exit_count": 13,
+      "stop_exit_count": 34,
+      "timeout_count": 1
+    },
+    {
+      "variant": "Test_StopOnly",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.01589612468349672,
+      "monthly_avg_alpha": -0.010024816458091916,
+      "compound_return": 0.4570809242184022,
+      "mdd": -0.2519498773171134,
+      "sharpe": 0.7735422476670321,
+      "calmar": 0.8269380157955756,
+      "avg_hold_days": 14.702380952380953,
+      "ma_exit_count": 0,
+      "hwm_exit_count": 0,
+      "stop_exit_count": 352,
+      "timeout_count": 488
+    }
+  ],
+  "cl3": {
+    "checks": {
+      "alpha_sacrifice": {
+        "value": 0.0,
+        "threshold": 0.005,
+        "pass": true
+      },
+      "mdd_delta": {
+        "value": -0.1647108982618184,
+        "threshold": 0.001,
+        "pass": false
+      },
+      "sharpe_regression": {
+        "value": 0.0,
+        "threshold": 0.05,
+        "pass": true
+      },
+      "calmar_regression": {
+        "value": 0.06752051512526405,
+        "threshold": 0.05,
+        "pass": false
+      }
+    },
+    "overall_pass": false
+  },
+  "decision": "FAIL: rollback production default to ma5_break_plus_hwm_8pct"
+}

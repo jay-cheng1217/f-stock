@@ -1,0 +1,336 @@
+{
+  "status": "SOURCE_PROMOTED_AND_FORMAL_DB_PASS_OUTPUTS_PENDING",
+  "time": "2026-09-06T22:11:39.905153+08:00",
+  "classification": "L1 official source corrections and database consistency acceptance",
+  "source_promotions": [
+    {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\source_promotion\\bs_26_quarter_official_repair\\receipt_220200_985516.json",
+      "sha256": "848f368508f72ca48c570f189d574c6435a6d99397262a658f210b63f08bafe6",
+      "label": "bs_26_quarter_official_repair",
+      "plan_sha256": "2f80f4f3b9a2efb3fe4d2b91e75b61aec77955a6604764336ed2da9062f26442",
+      "started_at": "2026-09-06T22:02:00.662571+08:00",
+      "status": "PUBLISHED",
+      "file_count": 26,
+      "completed_at": "2026-09-06T22:02:00.985490+08:00"
+    },
+    {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\source_promotion\\margin_day_20260320\\receipt_155251_281430.json",
+      "sha256": "7c3362b5f8654bc0ae923418a4ee794c4439bc54d7242760f88997bbc7ab1f0b",
+      "label": "margin_day_20260320",
+      "plan_sha256": "0a6e6a7b798cb9cb2bb911b0a08188b25085dd189820dc498cd0e2c6bbf627bb",
+      "started_at": "2026-09-06T15:52:28.453282+08:00",
+      "status": "PUBLISHED",
+      "file_count": 1848,
+      "completed_at": "2026-09-06T15:52:51.281390+08:00"
+    },
+    {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\source_promotion\\margin_identifier_history_20260906\\receipt_163204_721993.json",
+      "sha256": "74a9afea798fb5218b28e5b1ff7ba298a80aecd9e3f360a291556b0a2303135f",
+      "label": "margin_identifier_history_20260906",
+      "plan_sha256": "78d82c4898127f7c92d7a397b49b2c5a3432b0677e87a39d31a3d64201726727",
+      "started_at": "2026-09-06T16:32:03.819498+08:00",
+      "status": "PUBLISHED",
+      "file_count": 35,
+      "completed_at": "2026-09-06T16:32:04.721944+08:00"
+    },
+    {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\source_promotion\\new_company_sources_20260906\\receipt_220159_230392.json",
+      "sha256": "7e2af30d3171905b2a52cef617c4fc3b6bb669f8b1837481e53351852e638f33",
+      "label": "new_company_sources_20260906",
+      "plan_sha256": "d26119e7eed059815a4bd6e16ea033abf611c2bc60fc98fc439fd3c68517a408",
+      "started_at": "2026-09-06T22:01:58.744617+08:00",
+      "status": "PUBLISHED",
+      "file_count": 85,
+      "completed_at": "2026-09-06T22:01:59.230367+08:00"
+    },
+    {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\source_promotion\\q2_financial_eps_20260906\\receipt_220159_897200.json",
+      "sha256": "cec86d6cc25b066aedf605753a2bac698b51b02da8b679365ed272cb943f49eb",
+      "label": "q2_financial_eps_20260906",
+      "plan_sha256": "006cbdceab89e920f655ee39b246a9df3d0d02b4924f83a867b0f4996006ba00",
+      "started_at": "2026-09-06T22:01:59.874092+08:00",
+      "status": "PUBLISHED",
+      "file_count": 2,
+      "completed_at": "2026-09-06T22:01:59.897176+08:00"
+    },
+    {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\source_promotion\\tdcc_history_three_weeks_20260906\\receipt_220613_315239.json",
+      "sha256": "fbb7881e6d53e3eaacabe1fe9050d1e3e256491230fbe5c93ccdd5d5aeeb4ac2",
+      "label": "tdcc_history_three_weeks_20260906",
+      "plan_sha256": "18837844408c02c33bb468908c3856570f8f221ef0ada4763498d84e7e0e4c1d",
+      "started_at": "2026-09-06T22:06:13.154973+08:00",
+      "status": "PUBLISHED",
+      "file_count": 4,
+      "completed_at": "2026-09-06T22:06:13.315178+08:00"
+    },
+    {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\source_promotion\\valuation_20210510_wrong_day_repair\\receipt_160759_090576.json",
+      "sha256": "a7776b7f9cadd4c6f4bcfa99a11ea5eb3835e47c2948beb9fbc18f97d53d4323",
+      "label": "valuation_20210510_wrong_day_repair",
+      "plan_sha256": "03d4020c98c38b5c54cab47943a600670a863dfe1bdbc87c0138350bb0d27576",
+      "started_at": "2026-09-06T16:07:59.078435+08:00",
+      "status": "PUBLISHED",
+      "file_count": 1,
+      "completed_at": "2026-09-06T16:07:59.090551+08:00"
+    },
+    {
+      "path": "F:\\stock\\output\\data_layer_consistency_20260906\\source_promotion\\valuation_fingerprint_family_20260906\\receipt_215843_412354.json",
+      "sha256": "ca431190cc2e90143a456b4410f57ca880257907bd73a2a28280d162954c739a",
+      "label": "valuation_fingerprint_family_20260906",
+      "plan_sha256": "2dcd6a320cf2f0f84cff1adf9c8664f26b921e8eb21f4b379b4fcfc5e3e5ae13",
+      "started_at": "2026-09-06T21:58:42.992472+08:00",
+      "status": "PUBLISHED",
+      "file_count": 37,
+      "completed_at": "2026-09-06T21:58:43.412327+08:00"
+    }
+  ],
+  "database_audit": {
+    "path": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_db_after_ingest_20260906.json",
+    "sha256": "e8abe1923a3ea9a9b8eec24bf6de77e148ce6d549c7eb61de5c106014a05800b",
+    "checks": {
+      "source_is_previous_trade_close": true,
+      "source_errors_zero": true,
+      "source_duplicates_zero": true,
+      "source_latest_market_date": true,
+      "five_ingest_generations_and_counts": true,
+      "stock_list_unique": true,
+      "source_db_daily_rows_equal": true,
+      "daily_duplicate_zero": true,
+      "latest_source_db_ohlcv_exact": true,
+      "twii_source_date": true,
+      "source_files_stable_through_audit": true,
+      "source_file_set_stable_through_audit": true,
+      "db_file_stable_through_audit": true
+    },
+    "database": {
+      "checks": {
+        "five_ingest_generations_and_counts": true,
+        "stock_list_unique": true,
+        "source_db_daily_rows_equal": true,
+        "daily_duplicate_zero": true,
+        "latest_source_db_ohlcv_exact": true
+      },
+      "ingest_integrity": {
+        "tables": {
+          "daily_k": {
+            "recorded_rows": 2990060,
+            "generation_id": "313405adc97749b5aab935e979ef617c",
+            "actual_rows": 2990060
+          },
+          "revenue": {
+            "recorded_rows": 61854,
+            "generation_id": "313405adc97749b5aab935e979ef617c",
+            "actual_rows": 61854
+          },
+          "financials": {
+            "recorded_rows": 47331,
+            "generation_id": "313405adc97749b5aab935e979ef617c",
+            "actual_rows": 47331
+          },
+          "tdcc": {
+            "recorded_rows": 910711,
+            "generation_id": "313405adc97749b5aab935e979ef617c",
+            "actual_rows": 910711
+          },
+          "indices": {
+            "recorded_rows": 10037,
+            "generation_id": "313405adc97749b5aab935e979ef617c",
+            "actual_rows": 10037
+          }
+        },
+        "missing_metadata": [],
+        "same_generation": true,
+        "row_counts_match": true,
+        "stock_list_mismatched_tickers": 0,
+        "ok": true
+      },
+      "daily_rows": 2990060,
+      "daily_duplicate_rows": 0,
+      "stock_list_rows": 2031,
+      "latest_comparison": {
+        "expected_rows": 2031,
+        "actual_rows": 2031,
+        "missing_tickers": [],
+        "extra_tickers": [],
+        "mismatch_count": 0,
+        "mismatches": [],
+        "ok": true
+      },
+      "financial_max_period": 20262,
+      "twii_latest_date": "2026-09-04",
+      "path": "F:\\stock\\stock.duckdb",
+      "bytes": 1003761664,
+      "mtime_ns": 1788703631073538400
+    },
+    "actual_source_date_counts": {
+      "2026-09-04": 1994,
+      "2026-09-03": 16,
+      "2026-09-02": 6,
+      "2026-09-01": 5,
+      "2026-08-26": 3,
+      "2026-08-24": 1,
+      "2026-04-02": 1,
+      "2026-08-19": 1,
+      "2026-07-21": 1,
+      "2026-04-13": 1,
+      "2026-08-21": 1,
+      "2026-08-27": 1
+    },
+    "older_source_rows": [
+      {
+        "Ticker": "1538",
+        "Date": "2026-08-24"
+      },
+      {
+        "Ticker": "1563",
+        "Date": "2026-08-26"
+      },
+      {
+        "Ticker": "1589",
+        "Date": "2026-04-02"
+      },
+      {
+        "Ticker": "2724",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "2867",
+        "Date": "2026-08-19"
+      },
+      {
+        "Ticker": "2949",
+        "Date": "2026-09-01"
+      },
+      {
+        "Ticker": "3064",
+        "Date": "2026-08-26"
+      },
+      {
+        "Ticker": "3067",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "3632",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "4130",
+        "Date": "2026-07-21"
+      },
+      {
+        "Ticker": "4154",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "4406",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "4550",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "4804",
+        "Date": "2026-04-13"
+      },
+      {
+        "Ticker": "5205",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "5310",
+        "Date": "2026-09-02"
+      },
+      {
+        "Ticker": "5371",
+        "Date": "2026-08-21"
+      },
+      {
+        "Ticker": "5520",
+        "Date": "2026-09-02"
+      },
+      {
+        "Ticker": "5703",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "5906",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "6129",
+        "Date": "2026-09-02"
+      },
+      {
+        "Ticker": "6228",
+        "Date": "2026-08-27"
+      },
+      {
+        "Ticker": "6236",
+        "Date": "2026-09-01"
+      },
+      {
+        "Ticker": "6461",
+        "Date": "2026-09-01"
+      },
+      {
+        "Ticker": "6496",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "6615",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "6762",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "6767",
+        "Date": "2026-09-01"
+      },
+      {
+        "Ticker": "6904",
+        "Date": "2026-09-02"
+      },
+      {
+        "Ticker": "6949",
+        "Date": "2026-08-26"
+      },
+      {
+        "Ticker": "6997",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "7782",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "8077",
+        "Date": "2026-09-03"
+      },
+      {
+        "Ticker": "8342",
+        "Date": "2026-09-02"
+      },
+      {
+        "Ticker": "8416",
+        "Date": "2026-09-02"
+      },
+      {
+        "Ticker": "8923",
+        "Date": "2026-09-01"
+      },
+      {
+        "Ticker": "8929",
+        "Date": "2026-09-03"
+      }
+    ]
+  },
+  "scope_notes": [
+    "Earlier foreign source repair and numeric-zero reconciliation are in foreign repair evidence from commit 33cb5a9a.",
+    "All source promotion plans retain original bytes and current official knowledge-time; no model, training, ledger, allocation or exit-policy changes.",
+    "37 older latest daily dates remain explicit. Latest source/DB equality is not independent proof that every historical source is correct.",
+    "API/ML/current cards and model calibration are separate required acceptance scopes. This receipt does not certify them."
+  ]
+}

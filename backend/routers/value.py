@@ -66,11 +66,16 @@ def _load_eps_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     return ttm, qoq, yoy
 
 
-def _load_revenue_yoy() -> pd.DataFrame:
+def _load_revenue_yoy(tickers: list[str] | None = None) -> pd.DataFrame:
     """讀取個股最新月營收 YoY。"""
-    rev_files = sorted(glob.glob(os.path.join(REV_DIR, "revenue_*.csv")))
+    if tickers:
+        rev_files = [os.path.join(REV_DIR, f"revenue_{ticker}.csv") for ticker in tickers]
+    else:
+        rev_files = sorted(glob.glob(os.path.join(REV_DIR, "revenue_*.csv")))[-2000:]
     records = {}
-    for f in rev_files[-2000:]:
+    for f in rev_files:
+        if not os.path.exists(f):
+            continue
         try:
             r = pd.read_csv(f)
             if "YoY_pct_change" in r.columns and len(r) > 0:
@@ -107,7 +112,17 @@ def _load_price_stats(tickers: list[str]) -> pd.DataFrame:
             })
         except Exception:
             pass
-    return pd.DataFrame(rows)
+    return pd.DataFrame(
+        rows,
+        columns=[
+            "ticker",
+            "ret_20d",
+            "ret_60d",
+            "pct_from_60d_low",
+            "ma5_bias",
+            "avg_vol_5d",
+        ],
+    )
 
 
 def _load_sector() -> dict[str, str]:
@@ -133,34 +148,39 @@ def screen_value_stocks() -> list[dict]:
         return []
 
     pred_mini = pred[["ticker", "close", "hit_prob_3pct"]].copy()
-    tickers = pred_mini["ticker"].tolist()
 
     # 載入各資料
     ttm, qoq, yoy = _load_eps_data()
-    rev = _load_revenue_yoy()
-    price = _load_price_stats(tickers)
     sectors = _load_sector()
 
     # 合併
     df = pred_mini.merge(ttm, on="ticker", how="left")
     df = df.merge(qoq, on="ticker", how="left")
     df = df.merge(yoy, on="ticker", how="left")
-    df = df.merge(rev, on="ticker", how="left")
-    df = df.merge(price, on="ticker", how="left")
     df["sector"] = df["ticker"].map(sectors).fillna("")
     df["pe"] = df["close"] / df["eps_ttm"].replace(0, np.nan)
 
-    # 篩選
-    cond = (
+    # 先用便宜的基本面與機率條件縮小 universe，再讀取日 K 計算價格統計。
+    prelim_cond = (
         (df["eps_ttm"] > VALUE_MIN_EPS_TTM)
         & (df["eps_latest"] > 0)
         & (df["eps_qoq"] > 0)
         & (df["pe"] > 0)
         & (df["pe"] < VALUE_MAX_PE)
+        & (df["hit_prob_3pct"] > VALUE_MIN_PROB)
+    )
+    candidate_tickers = df.loc[prelim_cond, "ticker"].astype(str).tolist()
+    price = _load_price_stats(candidate_tickers)
+    rev = _load_revenue_yoy(candidate_tickers)
+    df = df.merge(rev, on="ticker", how="left")
+    df = df.merge(price, on="ticker", how="left")
+
+    # 篩選
+    cond = (
+        prelim_cond
         & (df["ma5_bias"] < VALUE_MAX_MA5_BIAS)
         & (df["ret_20d"] < VALUE_MAX_RET_20D)
         & (df["avg_vol_5d"] > VALUE_MIN_AVG_VOL)
-        & (df["hit_prob_3pct"] > VALUE_MIN_PROB)
     )
     result = df[cond].sort_values("hit_prob_3pct", ascending=False).head(30)
 

@@ -1,0 +1,31 @@
+[
+  {
+    "case": "yellow_trim_watch_boundary",
+    "bucket": "yellow",
+    "not_real_holding": true,
+    "reason": "Real 12 holdings produced no yellow sample; this validates report rendering only.",
+    "example_conditions": [
+      "OVERHEAT_MA20",
+      "NEWS_NEGATIVE_ALERT"
+    ]
+  },
+  {
+    "case": "etf_rule_subset_boundary",
+    "bucket": "yellow",
+    "not_real_holding": true,
+    "reason": "Real 12 holdings include no ETF; this validates ETF coverage expectation only.",
+    "example_conditions": [
+      "ETF_V2_ALPHA_MODEL_UNSUPPORTED",
+      "technical_rule_subset"
+    ]
+  },
+  {
+    "case": "prediction_universe_fallback_boundary",
+    "bucket": "yellow",
+    "not_real_holding": true,
+    "reason": "Real 12 holdings all had prediction payloads; this validates fallback rendering only.",
+    "example_conditions": [
+      "MODEL_UNAVAILABLE_REVIEW_REQUIRED"
+    ]
+  }
+]

@@ -5,24 +5,29 @@ from __future__ import annotations
 import argparse
 import glob
 import html
+import json
 import os
 import re
 import smtplib
 import sqlite3
 import sys
+import time
+from email import policy
 from dataclasses import dataclass
 from datetime import datetime
 from email.message import EmailMessage
+from email.utils import formataddr
 
 import pandas as pd
 
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 from ml.config import MODEL_DIR
 from ml.cross_confirm import get_dual_confirmed_tickers
 from ml.features.sector import SECTOR_MAPPING_PATH
 from ml.predict import apply_sector_cap, _sort_prediction_df
+from scripts.signal_explainability import explain_signal_row
 
 
 def _load_name_lookup() -> dict[str, str]:
@@ -50,7 +55,17 @@ DEFAULT_EMAIL_TOP_N = 30
 DEFAULT_PORTFOLIO_LIMIT = 12
 DEFAULT_SUBJECT_PREFIX = "[Stock ML]"
 DEFAULT_PREVIEW_PATH = os.path.join(BASE_DIR, "logs", "daily_email_preview.html")
+REPORT_DIR = os.path.join(BASE_DIR, "ml", "reports")
+CHIPK_STATUS_REPORT_PATH = os.path.join(REPORT_DIR, "chipk_snapshot_status_latest.json")
+SPECIAL_STATUS_REPORT_PATH = os.path.join(REPORT_DIR, "special_stock_status_latest.json")
+DISPOSITION_ACTIVE_PATH = os.path.join(BASE_DIR, "disposition_active.csv")
+UNIFIED_SIGNALS_LATEST_JSON_PATH = os.path.join(REPORT_DIR, "unified_signals_latest.json")
+MOMENTUM_LATEST_SETUP_GLOB = os.path.join(
+    REPORT_DIR, "momentum_continuation_backtest_*_latest_setups.csv"
+)
 PRODUCTION_PREDICTION_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
+UNIFIED_SIGNAL_RE = re.compile(r"^unified_signals_\d{4}-\d{2}-\d{2}\.csv$")
+PLAIN_TEXT_FALLBACK = "請使用支援 HTML 的郵件客戶端查看每日 ML 預測與帳本觀察。"
 
 
 @dataclass
@@ -140,11 +155,17 @@ def load_email_settings() -> EmailSettings | None:
     )
 
 
-def _latest_prediction_path(prediction_file: str | None = None) -> str:
+def _latest_prediction_path(prediction_file: str | None = None, as_of_date: str | None = None) -> str:
     if prediction_file:
         if os.path.isabs(prediction_file):
             return prediction_file
         return os.path.join(BASE_DIR, prediction_file)
+
+    if as_of_date:
+        exact = os.path.join(MODEL_DIR, f"predictions_{as_of_date}.csv")
+        if not os.path.exists(exact):
+            raise FileNotFoundError(f"No predictions file for {as_of_date}: {exact}")
+        return exact
 
     candidates = sorted(
         f for f in glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv"))
@@ -158,6 +179,879 @@ def _latest_prediction_path(prediction_file: str | None = None) -> str:
 def _latest_t1_prediction_path() -> str | None:
     candidates = sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_t1_*.csv")))
     return candidates[-1] if candidates else None
+
+
+def _latest_unified_signal_path(as_of_date: str | None = None) -> str | None:
+    if as_of_date:
+        exact = os.path.join(MODEL_DIR, f"unified_signals_{as_of_date}.csv")
+        return exact if os.path.exists(exact) else None
+    candidates = sorted(
+        path
+        for path in glob.glob(os.path.join(MODEL_DIR, "unified_signals_*.csv"))
+        if UNIFIED_SIGNAL_RE.match(os.path.basename(path))
+    )
+    return candidates[-1] if candidates else None
+
+
+def _load_unified_signal_stats(as_of_date: str | None = None) -> dict[str, object]:
+    signal_path = _latest_unified_signal_path(as_of_date)
+    if signal_path is None:
+        return {}
+
+    df = pd.read_csv(signal_path, encoding="utf-8-sig", dtype={"ticker": str})
+    if df.empty:
+        return {
+            "prediction_date": None,
+            "source_file": os.path.basename(signal_path),
+            "total_candidates": 0,
+            "total_units": 0,
+            "signal_type_counts": {"Dual": 0, "20D_only": 0, "T1_only": 0},
+        }
+
+    signal_counts = {"Dual": 0, "20D_only": 0, "T1_only": 0}
+    for signal_type, count in df["signal_type"].fillna("").astype(str).value_counts().items():
+        signal_counts[signal_type] = int(count)
+
+    total_units = int(pd.to_numeric(df.get("target_units"), errors="coerce").fillna(0).sum())
+    prediction_date = (
+        str(df["prediction_date"].iloc[0])
+        if "prediction_date" in df.columns and not df.empty
+        else None
+    )
+    return {
+        "prediction_date": prediction_date,
+        "source_file": os.path.basename(signal_path),
+        "total_candidates": int(len(df)),
+        "total_units": total_units,
+        "signal_type_counts": signal_counts,
+    }
+
+
+def _load_json_object(path: str) -> dict[str, object]:
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _load_chipk_status() -> dict[str, object]:
+    return _load_json_object(CHIPK_STATUS_REPORT_PATH)
+
+
+def _entry_special_status_gate() -> tuple[bool, str]:
+    status = _load_json_object(SPECIAL_STATUS_REPORT_PATH)
+    if not status:
+        return False, "special stock status missing"
+    today = datetime.now().strftime("%Y-%m-%d")
+    effective_date = str(status.get("effective_date") or "")
+    gate_action = str(status.get("gate_action") or "")
+    missing_sources = status.get("missing_sources") or []
+    is_ok = (
+        str(status.get("status") or "").upper() == "OK"
+        and effective_date == today
+        and gate_action == "ALLOW_T1_AND_DUAL"
+        and not missing_sources
+    )
+    if is_ok:
+        return True, f"special status current: {effective_date}"
+    reason = (
+        f"special status not current: effective={effective_date or '-'} "
+        f"today={today} gate={gate_action or '-'} missing={missing_sources or []}"
+    )
+    return False, reason
+
+
+def _load_active_disposition_tickers(asof_date: str | None = None) -> set[str]:
+    try:
+        active = pd.read_csv(DISPOSITION_ACTIVE_PATH, dtype={"stock_id": str}, encoding="utf-8-sig")
+    except (OSError, pd.errors.EmptyDataError, UnicodeDecodeError):
+        return set()
+    if active.empty or "stock_id" not in active.columns:
+        return set()
+
+    filtered = active
+    if asof_date and {"period_start", "period_end"}.issubset(active.columns):
+        asof = pd.to_datetime(asof_date, errors="coerce")
+        starts = pd.to_datetime(active["period_start"], errors="coerce")
+        ends = pd.to_datetime(active["period_end"], errors="coerce")
+        if pd.notna(asof):
+            filtered = active[(starts.isna() | (starts <= asof)) & (ends.isna() | (ends >= asof))]
+
+    return {
+        ticker
+        for ticker in filtered["stock_id"].astype(str).str.strip().str.zfill(4)
+        if ticker and ticker.lower() != "nan"
+    }
+
+
+def _entry_zone_status_label(value: object) -> str:
+    text = str(value or "").strip()
+    labels = {
+        "in_entry_zone": "目前在買進區",
+        "wait_pullback_to_zone": "等回落到買進區",
+        "wait_reclaim_zone": "等重新站回買進區",
+        "zone_unavailable": "買進區不足",
+    }
+    return labels.get(text, text or "-")
+
+
+def _format_entry_zone(row: dict[str, object]) -> str:
+    low = row.get("shortwave_entry_zone_low")
+    high = row.get("shortwave_entry_zone_high")
+    if pd.notna(low) and pd.notna(high):
+        try:
+            return f"{float(low):.2f} ~ {float(high):.2f}"
+        except (TypeError, ValueError):
+            return f"{low} ~ {high}"
+    return "-"
+
+
+ENTRY_TAG_LABELS = {
+    "friend_pullback_support": "回落支撐",
+    "volume_quiet": "量能冷卻",
+    "macd_hist_positive": "MACD柱正",
+    "macd_improving": "MACD改善",
+    "friend_combo_primary": "短打組合完整",
+    "friend_combo_developing": "短打組合成形中",
+    "ml_buy_signal": "20D模型支持",
+    "two_stage_supported": "排名支持",
+    "alpha_supported": "勝率支持",
+    "positive_prob_edge": "勝率優勢為正",
+    "macro_ok": "宏觀允許",
+}
+
+MISSING_TAG_LABELS = {
+    "missing_friend_pullback_support": "缺回落支撐確認",
+    "missing_volume_quiet": "量能未降溫",
+    "missing_macd_hist_positive": "MACD柱未轉正",
+    "missing_macd_improving": "MACD尚未改善",
+}
+
+
+def _safe_float(value: object) -> float | None:
+    if value is None or pd.isna(value):
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _truthy(value: object) -> bool:
+    if value is None or pd.isna(value):
+        return False
+    return str(value).strip().lower() in {"1", "true", "yes", "y", "on"}
+
+
+def _fmt_price(value: object, digits: int = 2) -> str:
+    numeric = _safe_float(value)
+    if numeric is None:
+        return "-"
+    return f"{numeric:.{digits}f}"
+
+
+def _fmt_ratio_pct(value: object, digits: int = 2) -> str:
+    numeric = _safe_float(value)
+    if numeric is None:
+        return "-"
+    return f"{numeric * 100:+.{digits}f}%"
+
+
+def _translated_tags(raw: object, mapping: dict[str, str], limit: int = 4) -> str:
+    text = str(raw or "").strip()
+    if not text or text.lower() == "nan":
+        return "-"
+    tags = [item.strip() for item in re.split(r"[;,]", text) if item.strip()]
+    labels = [mapping.get(tag, tag) for tag in tags[:limit]]
+    if len(tags) > limit:
+        labels.append(f"+{len(tags) - limit}")
+    return "、".join(labels) if labels else "-"
+
+
+def _recommendation_is_buy(value: object) -> bool:
+    text = str(value or "")
+    return "買" in text and "賣" not in text
+
+
+def _recommendation_is_sell(value: object) -> bool:
+    return "賣" in str(value or "")
+
+
+def _latest_momentum_setup_path() -> str | None:
+    candidates = [path for path in glob.glob(MOMENTUM_LATEST_SETUP_GLOB) if os.path.exists(path)]
+    if not candidates:
+        return None
+    return max(candidates, key=os.path.getmtime)
+
+
+def _load_momentum_latest_setups(prediction_date: str) -> tuple[pd.DataFrame, str | None]:
+    path = _latest_momentum_setup_path()
+    if path is None:
+        return pd.DataFrame(), None
+    source_file = os.path.basename(path)
+    try:
+        df = pd.read_csv(path, encoding="utf-8-sig", dtype={"ticker": str})
+    except (OSError, pd.errors.EmptyDataError, UnicodeDecodeError):
+        return pd.DataFrame(), source_file
+    if df.empty or "Date" not in df.columns:
+        return pd.DataFrame(), source_file
+    df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+    same_day = df[df["Date"].dt.strftime("%Y-%m-%d").eq(str(prediction_date))].copy()
+    return same_day.reset_index(drop=True), source_file
+
+
+def _entry_candidate_label(action: object) -> str:
+    text = str(action or "").strip()
+    if text in {"NORMAL_ENTRY", "SMALL_ENTRY"}:
+        return "可掛價"
+    if text == "WAIT_NEW_STRATEGY":
+        return "條件式低接"
+    if text == "NO_CHASE":
+        return "等回落不追"
+    return "候選觀察"
+
+
+def _build_entry_candidate_records_legacy(
+    prediction_date: str,
+    all_pred_df: pd.DataFrame,
+    limit: int = 10,
+) -> tuple[list[dict[str, object]], str | None, dict[str, int]]:
+    special_ok, special_note = _entry_special_status_gate()
+    if not special_ok:
+        return [], None, {"setup_rows": 0, "excluded": 0, "special_gate_closed": 1, "note": special_note}
+    latest, source_file = _load_momentum_latest_setups(prediction_date)
+    stats = {"setup_rows": int(len(latest)), "excluded": 0, "special_gate_closed": 0, "note": special_note}
+    if latest.empty or all_pred_df.empty or "ticker" not in all_pred_df.columns:
+        return [], source_file, stats
+
+    pred = all_pred_df.copy()
+    pred["ticker"] = pred["ticker"].astype(str).str.strip().str.zfill(4)
+    latest["ticker"] = latest["ticker"].astype(str).str.strip().str.zfill(4)
+    pred_by_ticker = pred.drop_duplicates("ticker").set_index("ticker", drop=False)
+    active_dispositions = _load_active_disposition_tickers(datetime.now().strftime("%Y-%m-%d"))
+    stats["disposition_blocked"] = 0
+
+    records: list[dict[str, object]] = []
+    for _, setup in latest.iterrows():
+        ticker = str(setup.get("ticker") or "").strip().zfill(4)
+        if ticker not in pred_by_ticker.index:
+            continue
+        row = pred_by_ticker.loc[ticker]
+        action = str(row.get("shortwave_action") or "").strip()
+        recommendation = row.get("recommendation")
+        pred_return = _safe_float(row.get("pred_return_20d"))
+        special_blocked = any(
+            _truthy(row.get(column))
+            for column in (
+                "is_disposition",
+                "is_attention",
+                "is_full_delivery",
+                "is_suspended",
+                "tradability_blocked",
+                "penalty_hard_block",
+                "guardrail_blocked",
+            )
+        )
+        if ticker in active_dispositions:
+            special_blocked = True
+            stats["disposition_blocked"] += 1
+        if (
+            action in {"BLOCK", "EXIT_BIAS"}
+            or special_blocked
+            or _recommendation_is_sell(recommendation)
+            or (pred_return is not None and pred_return < 0)
+        ):
+            stats["excluded"] += 1
+            continue
+        if not (
+            action in {"NORMAL_ENTRY", "SMALL_ENTRY", "WAIT_NEW_STRATEGY", "NO_CHASE"}
+            or _recommendation_is_buy(recommendation)
+        ):
+            stats["excluded"] += 1
+            continue
+
+        entry_low = _safe_float(setup.get("momentum_entry_low"))
+        entry_high = _safe_float(setup.get("momentum_entry_high"))
+        entry_limit = _safe_float(setup.get("momentum_entry_limit") or setup.get("Close"))
+        if entry_low is None or entry_high is None:
+            stats["excluded"] += 1
+            continue
+
+        score = _safe_float(setup.get("momentum_score")) or 0.0
+        priority = {
+            "NORMAL_ENTRY": 0,
+            "SMALL_ENTRY": 1,
+            "WAIT_NEW_STRATEGY": 2,
+            "NO_CHASE": 3,
+        }.get(action, 4)
+        reason_bits = [
+            f"20D {_fmt_ratio_pct(pred_return)}",
+            f"動能分數 {score:.3f}",
+            f"RSI {_fmt_price(setup.get('RSI_14'), 1)}",
+            f"量比 {_fmt_price(setup.get('volume_ratio_20d'), 2)}",
+            "MACD柱正" if (_safe_float(setup.get("MACDh_12_26_9")) or 0.0) > 0 else "MACD待確認",
+        ]
+        records.append(
+            {
+                "ticker": ticker,
+                "name": setup.get("name") or _NAME_LOOKUP.get(ticker, ""),
+                "sector": setup.get("sector") or row.get("sector") or "-",
+                "label": _entry_candidate_label(action),
+                "entry_zone": f"{entry_low:.2f} ~ {entry_high:.2f}",
+                "entry_limit": entry_limit,
+                "stop_loss": entry_low * 0.97,
+                "resistance": entry_high,
+                "reason": " / ".join(reason_bits),
+                "support_tags": _translated_tags(row.get("shortwave_strategy_tags"), ENTRY_TAG_LABELS),
+                "missing_tags": _translated_tags(
+                    row.get("shortwave_missing_strategy_tags"),
+                    MISSING_TAG_LABELS,
+                ),
+                "priority": priority,
+                "score": score,
+                "pred_return": pred_return or 0.0,
+            }
+        )
+
+    records.sort(key=lambda item: (item["priority"], -float(item["score"]), -float(item["pred_return"])))
+    return records[:limit], source_file, stats
+
+
+def _build_entry_candidate_email_section_legacy(
+    prediction_date: str,
+    all_pred_df: pd.DataFrame,
+    limit: int = 10,
+) -> str:
+    rows, source_file, stats = _build_entry_candidate_records(
+        prediction_date,
+        all_pred_df,
+        limit=limit,
+    )
+    payload = _load_json_object(UNIFIED_SIGNALS_LATEST_JSON_PATH)
+    selected_count = (
+        len(payload.get("selected") or [])
+        if str(payload.get("prediction_date") or "") == str(prediction_date)
+        else 0
+    )
+    if stats.get("special_gate_closed"):
+        source_note = "special status gate closed"
+    else:
+        source_note = source_file or "momentum setup 檔案未產生"
+    source_note = html.escape(source_note)
+    gate_note = html.escape(str(stats.get("note") or "-"))
+    if not rows:
+        body_rows = """
+        <tr>
+          <td colspan="5">今天沒有通過條件式入場表的候選。若盤中想買，只能等新的進場過濾器或手動補籌碼K確認。</td>
+        </tr>
+        """
+    else:
+        body_rows = "\n".join(
+            f"""
+            <tr>
+              <td><strong>{html.escape(str(item["ticker"]))}</strong><br><span class="muted">{html.escape(str(item["name"] or ""))}</span></td>
+              <td>{html.escape(str(item["label"]))}<br><span class="muted">{html.escape(str(item["sector"] or "-"))}</span></td>
+              <td><strong>{html.escape(str(item["entry_zone"]))}</strong><br><span class="muted">掛價參考 {html.escape(_fmt_price(item["entry_limit"]))}</span></td>
+              <td>停損 {html.escape(_fmt_price(item["stop_loss"]))}<br><span class="muted">上緣/壓力 {html.escape(_fmt_price(item["resistance"]))}</span></td>
+              <td>{html.escape(str(item["reason"]))}<br><span class="muted">符合：{html.escape(str(item["support_tags"]))}<br>缺少：{html.escape(str(item["missing_tags"]))}</span></td>
+            </tr>
+            """
+            for item in rows
+        )
+
+    return f"""
+    <div class="section" id="sec-entry-candidates">
+      <h2>可進場候選表</h2>
+      <div class="muted">
+        正式 selected：{selected_count} 檔。下表是「條件式可掛價」清單：只在價格落入入場區間時考慮，超過區間上緣不追；
+        處置股、交易限制、BLOCK、EXIT_BIAS、20D賣出方向一律排除。
+      </div>
+      <div class="muted" style="margin-top:8px;">來源：{source_note} / setups {stats.get("setup_rows", 0)} / 排除 {stats.get("excluded", 0)} / special gate: {gate_note}</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>股票</th>
+            <th>動作</th>
+            <th>入場區間</th>
+            <th>停損 / 壓力</th>
+            <th>理由</th>
+          </tr>
+        </thead>
+        <tbody>{body_rows}</tbody>
+      </table>
+</div>
+"""
+
+
+ENTRY_SUPPORT_ACTIONS = {"MOMENTUM_LIMIT_BUY", "MOMENTUM_WAIT_PULLBACK", "MOMENTUM_WATCH"}
+
+
+def _clean_entry_tags(raw: object, *, limit: int = 5) -> str:
+    text = str(raw or "").strip()
+    if not text or text.lower() == "nan":
+        return "-"
+    mapping = {
+        **ENTRY_TAG_LABELS,
+        **MISSING_TAG_LABELS,
+        "watch_only": "觀察優先",
+        "wait_for_full_setup": "等待完整條件",
+    }
+    tags = [item.strip() for item in re.split(r"[;,]", text) if item.strip()]
+    labels = [mapping.get(tag, tag.replace("_", " ")) for tag in tags[:limit]]
+    if len(tags) > limit:
+        labels.append(f"+{len(tags) - limit}")
+    return "、".join(labels) if labels else "-"
+
+
+def _clean_entry_candidate_label(action: object, *, formal: bool) -> str:
+    text = str(action or "").strip()
+    if formal and text in {"NORMAL_ENTRY", "SMALL_ENTRY"}:
+        return "動能研究條件成立"
+    if text == "MOMENTUM_LIMIT_BUY":
+        return "支撐區觀察"
+    if text == "MOMENTUM_WAIT_PULLBACK":
+        return "等回落觀察"
+    if text == "MOMENTUM_WATCH":
+        return "條件式觀察"
+    if text == "WAIT_NEW_STRATEGY":
+        return "等待新策略確認"
+    if text == "NO_CHASE":
+        return "不追價"
+    return "觀察候選"
+
+
+def _daily_k_dir_path() -> str | None:
+    candidates = [
+        os.path.join(BASE_DIR, "\u65e5K\u8cc7\u6599"),
+        os.path.join(BASE_DIR, "daily_k"),
+    ]
+    for path in candidates:
+        if os.path.isdir(path):
+            return path
+    for name in os.listdir(BASE_DIR):
+        path = os.path.join(BASE_DIR, name)
+        if os.path.isdir(path) and name.encode("unicode_escape").decode("ascii") == r"\u65e5K\u8cc7\u6599":
+            return path
+    return None
+
+
+def _load_daily_ohlc(ticker: str, date_value: object) -> dict[str, float] | None:
+    daily_dir = _daily_k_dir_path()
+    if not daily_dir:
+        return None
+    path = os.path.join(daily_dir, f"{str(ticker).zfill(4)}.csv")
+    if not os.path.exists(path):
+        return None
+    try:
+        df = pd.read_csv(
+            path,
+            encoding="utf-8-sig",
+            dtype={"Date": str},
+            usecols=lambda column: column in {"Date", "Open", "High", "Low", "Close"},
+        )
+    except Exception:
+        return None
+    if df.empty or "Date" not in df.columns:
+        return None
+    target = pd.to_datetime(str(date_value), errors="coerce")
+    if pd.isna(target):
+        return None
+    dates = pd.to_datetime(df["Date"], errors="coerce")
+    match = df.loc[dates.dt.strftime("%Y-%m-%d").eq(target.strftime("%Y-%m-%d"))].copy()
+    if match.empty:
+        return None
+    row = match.iloc[-1]
+    values = {key: _safe_float(row.get(key)) for key in ("Open", "High", "Low", "Close")}
+    if any(value is None for value in values.values()):
+        return None
+    return {key.lower(): float(value) for key, value in values.items() if value is not None}
+
+
+def _format_ohlc(ohlc: dict[str, float] | None) -> str:
+    if not ohlc:
+        return "-"
+    return " / ".join(
+        _fmt_price(ohlc.get(key), 2)
+        for key in ("open", "high", "low", "close")
+    )
+
+
+def _entry_support_review(
+    *,
+    entry_low: float,
+    entry_high: float,
+    stop_loss: float,
+    ohlc: dict[str, float] | None,
+    special_blocked: bool,
+    formal_ok: bool,
+) -> tuple[str, str, str]:
+    if ohlc is None:
+        return "-", "-", "日K資料不足，僅能列為觀察，不做進場判斷。"
+
+    high = ohlc["high"]
+    low = ohlc["low"]
+    close = ohlc["close"]
+    touched = low <= entry_high and high >= entry_low
+    if not touched:
+        return "否", "未測試", "尚未落入進場區間，等回落到區間內再評估，不追價。"
+
+    if special_blocked:
+        return "有", "否", "排除。特殊狀態或處置股風險未解除，即使進入區間也不進場。"
+
+    if close < entry_low:
+        return "有", "否", "排除。收盤跌破區間下緣，支撐沒有守住，明天需重新站回區間才可再看。"
+
+    if low <= stop_loss:
+        return "有", "不乾淨", "盤中跌破停損參考後收回，支撐不乾淨；明天不追，需重新站穩區間且不能再破今日低點附近。"
+
+    if low < entry_low:
+        return "有", "有守停損但有下洗", "當日價格曾落入區間且收盤回到區間內；低點未破失效參考價，但日K不能證明盤中守穩，下次觸價仍待確認。"
+
+    if close > entry_high:
+        return "有", "有", "當日低點未破失效參考價，收盤高於區間上緣；不追高，等回落後再確認盤中支撐。"
+
+    if formal_ok:
+        return "有", "有", "收盤仍在區間內且當日低點未破失效參考價，符合動能研究條件；僅為日K回顧，盤中仍待確認。"
+    return "有", "有", "收盤仍在區間內且當日低點未破失效參考價，屬觀察候選；盤中守穩、人工分點與主力成本仍待確認。"
+
+
+def _build_entry_candidate_records(
+    prediction_date: str,
+    all_pred_df: pd.DataFrame,
+    limit: int = 10,
+) -> tuple[list[dict[str, object]], str | None, dict[str, int | str]]:
+    """Build momentum-research rows plus support-zone observations for the email.
+
+    The internal formal_ok predicate belongs to the momentum research table,
+    not production selected membership. Labels must preserve that distinction.
+    """
+
+    special_ok, special_note = _entry_special_status_gate()
+    if not special_ok:
+        return [], None, {"setup_rows": 0, "excluded": 0, "special_gate_closed": 1, "note": special_note}
+
+    latest, source_file = _load_momentum_latest_setups(prediction_date)
+    stats: dict[str, int | str] = {
+        "setup_rows": int(len(latest)),
+        "excluded": 0,
+        "not_in_prediction": 0,
+        "disposition_blocked": 0,
+        "formal_rows": 0,
+        "observation_rows": 0,
+        "blocked_rows": 0,
+        "special_gate_closed": 0,
+        "note": special_note,
+    }
+    if latest.empty or all_pred_df.empty or "ticker" not in all_pred_df.columns:
+        return [], source_file, stats
+
+    pred = all_pred_df.copy()
+    pred["ticker"] = pred["ticker"].astype(str).str.strip().str.zfill(4)
+    latest["ticker"] = latest["ticker"].astype(str).str.strip().str.zfill(4)
+    pred_by_ticker = pred.drop_duplicates("ticker").set_index("ticker", drop=False)
+    active_dispositions = _load_active_disposition_tickers(datetime.now().strftime("%Y-%m-%d"))
+
+    records: list[dict[str, object]] = []
+    for _, setup in latest.iterrows():
+        ticker = str(setup.get("ticker") or "").strip().zfill(4)
+        if ticker not in pred_by_ticker.index:
+            stats["not_in_prediction"] = int(stats["not_in_prediction"]) + 1
+            continue
+
+        row = pred_by_ticker.loc[ticker]
+        shortwave_action = str(row.get("shortwave_action") or "").strip()
+        momentum_action = str(row.get("momentum_action") or "").strip()
+        pred_return = _safe_float(row.get("pred_return_20d"))
+        special_blocked = any(
+            _truthy(row.get(column))
+            for column in (
+                "is_disposition",
+                "is_attention",
+                "is_full_delivery",
+                "is_suspended",
+                "tradability_blocked",
+                "penalty_hard_block",
+                "guardrail_blocked",
+            )
+        )
+        if ticker in active_dispositions:
+            special_blocked = True
+            stats["disposition_blocked"] = int(stats["disposition_blocked"]) + 1
+        if shortwave_action == "BLOCK":
+            stats["excluded"] = int(stats["excluded"]) + 1
+            continue
+
+        entry_low = _safe_float(setup.get("momentum_entry_low")) or _safe_float(row.get("momentum_entry_zone_low"))
+        entry_high = _safe_float(setup.get("momentum_entry_high")) or _safe_float(row.get("momentum_entry_zone_high"))
+        entry_limit = _safe_float(setup.get("momentum_entry_limit")) or _safe_float(row.get("momentum_entry_limit")) or _safe_float(setup.get("Close"))
+        if entry_low is None or entry_high is None:
+            stats["excluded"] = int(stats["excluded"]) + 1
+            continue
+
+        formal_ok = (
+            shortwave_action in {"NORMAL_ENTRY", "SMALL_ENTRY", "WAIT_NEW_STRATEGY", "NO_CHASE"}
+            and (pred_return is None or pred_return >= 0)
+            and not special_blocked
+        )
+        observation_ok = momentum_action in ENTRY_SUPPORT_ACTIONS
+        if not formal_ok and not observation_ok:
+            stats["excluded"] = int(stats["excluded"]) + 1
+            continue
+
+        score = _safe_float(setup.get("momentum_score")) or _safe_float(row.get("momentum_score")) or 0.0
+        raw_stop_loss = _safe_float(row.get("momentum_stop_loss"))
+        stop_loss = raw_stop_loss if raw_stop_loss is not None and raw_stop_loss < entry_low else entry_low * 0.97
+        label_action = shortwave_action if formal_ok else momentum_action
+        if special_blocked:
+            scope = "排除"
+            stats["blocked_rows"] = int(stats["blocked_rows"]) + 1
+            priority = 9
+        elif formal_ok:
+            scope = "研究條件"
+            stats["formal_rows"] = int(stats["formal_rows"]) + 1
+            priority = {"NORMAL_ENTRY": 0, "SMALL_ENTRY": 1, "WAIT_NEW_STRATEGY": 2, "NO_CHASE": 3}.get(shortwave_action, 4)
+        else:
+            scope = "觀察"
+            stats["observation_rows"] = int(stats["observation_rows"]) + 1
+            priority = {"MOMENTUM_LIMIT_BUY": 4, "MOMENTUM_WAIT_PULLBACK": 5, "MOMENTUM_WATCH": 6}.get(momentum_action, 7)
+
+        notes = []
+        if special_blocked:
+            notes.append("特殊狀態排除")
+        if not formal_ok:
+            notes.append("非正式買進")
+        if shortwave_action in {"EXIT_BIAS", "BLOCK"}:
+            notes.append(f"短波段={shortwave_action}")
+        if pred_return is not None and pred_return < 0:
+            notes.append("20D 模型偏弱")
+
+        macd_hist = _safe_float(setup.get("MACDh_12_26_9"))
+        reason_bits = [
+            f"20D {_fmt_ratio_pct(pred_return)}",
+            f"動能 {score:.3f}",
+            f"RSI {_fmt_price(setup.get('RSI_14'), 1)}",
+            f"量比 {_fmt_price(setup.get('volume_ratio_20d'), 2)}",
+            "MACD 偏多" if (macd_hist or 0.0) > 0 else "MACD 未確認",
+        ]
+        if notes:
+            reason_bits.append("；".join(notes))
+        ohlc = _load_daily_ohlc(ticker, setup.get("Date") or prediction_date)
+        zone_touched, support_hold, conclusion = _entry_support_review(
+            entry_low=entry_low,
+            entry_high=entry_high,
+            stop_loss=stop_loss,
+            ohlc=ohlc,
+            special_blocked=special_blocked,
+            formal_ok=formal_ok,
+        )
+
+        records.append(
+            {
+                "ticker": ticker,
+                "name": setup.get("name") or _NAME_LOOKUP.get(ticker, ""),
+                "sector": setup.get("sector") or row.get("sector") or "-",
+                "scope": scope,
+                "source_date": str(setup.get("Date") or prediction_date)[:10],
+                "label": _clean_entry_candidate_label(label_action, formal=formal_ok),
+                "entry_zone": f"{entry_low:.2f} ~ {entry_high:.2f}",
+                "entry_limit": entry_limit,
+                "stop_loss": stop_loss,
+                "resistance": entry_high,
+                "ohlc_text": _format_ohlc(ohlc),
+                "zone_touched": zone_touched,
+                "support_hold": support_hold,
+                "conclusion": conclusion,
+                "reason": " / ".join(reason_bits),
+                "support_tags": _clean_entry_tags(row.get("momentum_reason") or row.get("shortwave_strategy_tags")),
+                "missing_tags": _clean_entry_tags(row.get("momentum_missing_strategy_tags") or row.get("shortwave_missing_strategy_tags")),
+                "priority": priority,
+                "score": score,
+                "pred_return": pred_return or 0.0,
+            }
+        )
+
+    records.sort(key=lambda item: (item["priority"], -float(item["score"]), -float(item["pred_return"])))
+    return records[:limit], source_file, stats
+
+
+def _build_entry_candidate_email_section(
+    prediction_date: str,
+    all_pred_df: pd.DataFrame,
+    limit: int = 10,
+) -> str:
+    rows, source_file, stats = _build_entry_candidate_records(prediction_date, all_pred_df, limit=limit)
+    payload = _load_json_object(UNIFIED_SIGNALS_LATEST_JSON_PATH)
+    selected_count = (
+        len(payload.get("selected") or [])
+        if str(payload.get("prediction_date") or "") == str(prediction_date)
+        else 0
+    )
+    source_note = "special status gate closed" if stats.get("special_gate_closed") else (source_file or "momentum setup not found")
+    gate_note = html.escape(str(stats.get("note") or "-"))
+
+    if not rows:
+        body_rows = """
+        <tr>
+          <td colspan="6">目前沒有動能研究或支撐區觀察候選。production 名單請另看「今日 production 訊號」；研究型態入列不代表正式放行。</td>
+        </tr>
+        """
+    else:
+        body_rows = "\n".join(
+            f"""
+            <tr class="entry-main">
+              <td data-label="股票"><span class="entry-field-label">股票</span><strong>{html.escape(str(item["ticker"]))}</strong><br><span class="muted">{html.escape(str(item["name"] or ""))}</span></td>
+              <td data-label="策略動作"><span class="entry-field-label">策略動作</span>{html.escape(str(item["scope"]))} / {html.escape(str(item["label"]))}<br><span class="muted">{html.escape(str(item["sector"] or "-"))}</span></td>
+              <td data-label="進場區間"><span class="entry-field-label">進場區間</span><strong>{html.escape(str(item["entry_zone"]))}</strong><br><span class="muted">掛價參考 {html.escape(_fmt_price(item["entry_limit"]))}</span></td>
+              <td data-label="O/H/L/C"><span class="entry-field-label">O/H/L/C</span>{html.escape(str(item["ohlc_text"]))}<br><span class="muted">日K資料日：{html.escape(str(item["source_date"]))}（盤後）</span></td>
+              <td data-label="落入區間?"><span class="entry-field-label">落入區間?</span>{html.escape(str(item["zone_touched"]))}</td>
+              <td data-label="日K支撐回顧"><span class="entry-field-label">日K支撐回顧</span>{html.escape(str(item["support_hold"]))}<br><span class="muted">停損 {html.escape(_fmt_price(item["stop_loss"]))}</span></td>
+            </tr>
+            <tr class="entry-detail">
+              <td colspan="6"><strong>結論：{html.escape(str(item["conclusion"]))}</strong><br><span class="muted">{html.escape(str(item["reason"]))}<br>符合：{html.escape(str(item["support_tags"]))}<br>缺少：{html.escape(str(item["missing_tags"]))}</span></td>
+            </tr>
+            """
+            for item in rows
+        )
+
+    return f"""
+    <div class="section" id="sec-entry-candidates">
+      <h2>進場區間候選表 · 動能研究</h2>
+      <div class="muted">
+        Production 已選：{selected_count} 檔；這張動能研究表與 production 名單、rere／主策略 canonical 觀察名單分開計算。
+        「研究條件」僅表示符合本表動能條件，不代表 production 放行；「觀察」表示支撐/壓力區間可盯盤。
+        區間碰觸與支撐欄是所標日期的日K回顧，不能證明盤中守穩或已成交。
+        若列出「20D 模型偏弱」或「短波段=EXIT_BIAS」，只能當盤中條件觀察，不可直接追價。
+      </div>
+      <div class="muted" style="margin-top:8px;">
+        預測資料日：{html.escape(str(prediction_date))} / 來源：{html.escape(str(source_note))} / setups {stats.get("setup_rows", 0)} / 研究條件 {stats.get("formal_rows", 0)} / 觀察 {stats.get("observation_rows", 0)} / 排除列出 {stats.get("blocked_rows", 0)} / 其他排除 {stats.get("excluded", 0)} / special gate: {gate_note}
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>股票</th>
+            <th>策略動作</th>
+            <th>進場區間</th>
+            <th>O/H/L/C</th>
+            <th>落入區間?</th>
+            <th>日K支撐回顧</th>
+          </tr>
+        </thead>
+        <tbody>{body_rows}</tbody>
+      </table>
+    </div>
+""".strip()
+
+
+def _chipk_mobile_targets(
+    prediction_date: str,
+    leaderboard_df: pd.DataFrame,
+    limit: int = 3,
+) -> list[dict[str, object]]:
+    targets: list[dict[str, object]] = []
+    seen: set[str] = set()
+    payload = _load_json_object(UNIFIED_SIGNALS_LATEST_JSON_PATH)
+    payload_date = str(payload.get("prediction_date") or "")
+
+    if payload_date == str(prediction_date):
+        for row in payload.get("shortwave_candidates") or []:
+            if not isinstance(row, dict):
+                continue
+            ticker = str(row.get("ticker") or "").strip()
+            if not ticker or ticker in seen:
+                continue
+            seen.add(ticker)
+            targets.append(
+                {
+                    "ticker": ticker,
+                    "name": row.get("name") or row.get("stock_name") or _NAME_LOOKUP.get(ticker, ""),
+                    "sector": row.get("sector") or "-",
+                    "entry_zone": _format_entry_zone(row),
+                    "status": _entry_zone_status_label(row.get("shortwave_entry_zone_status")),
+                    "source": "進場過濾候選",
+                }
+            )
+            if len(targets) >= limit:
+                return targets
+
+    for _, row in leaderboard_df.head(limit * 2).iterrows():
+        ticker = str(row.get("ticker") or "").strip()
+        if not ticker or ticker in seen:
+            continue
+        seen.add(ticker)
+        targets.append(
+            {
+                "ticker": ticker,
+                "name": _NAME_LOOKUP.get(ticker, ""),
+                "sector": row.get("sector") or "-",
+                "entry_zone": "-",
+                "status": "模型榜候選，買前再複核",
+                "source": "模型候選",
+            }
+        )
+        if len(targets) >= limit:
+            break
+    return targets
+
+
+def _build_chipk_mobile_review_section(
+    prediction_date: str,
+    leaderboard_df: pd.DataFrame,
+) -> str:
+    targets = _chipk_mobile_targets(prediction_date, leaderboard_df, limit=3)
+    status = _load_chipk_status()
+    asof = html.escape(str(status.get("asof_date") or "-"))
+    status_text = html.escape(str(status.get("status") or "unknown"))
+    user_action = str(status.get("user_action") or "").strip()
+    if str(status.get("status") or "").strip().lower() == "retired":
+        status_note = "桌面自動來源已退役，不作選股判斷；分點、主力成本、散戶/大戶請用手機 App 人工截圖確認。"
+    else:
+        status_note = (
+            html.escape(user_action)
+            if user_action
+            else "桌面快照的日期與狀態仍需確認；手機 App 用來補分點、主力成本、散戶/大戶細節。"
+        )
+    target_rows = "\n".join(
+        f"""
+        <tr>
+          <td><strong>{html.escape(str(item.get("ticker") or "-"))}</strong><br><span class="muted">{html.escape(str(item.get("name") or ""))}</span></td>
+          <td>{html.escape(str(item.get("sector") or "-"))}</td>
+          <td>{html.escape(str(item.get("entry_zone") or "-"))}<br><span class="muted">{html.escape(str(item.get("status") or "-"))}</span></td>
+          <td>{html.escape(str(item.get("source") or "-"))}</td>
+        </tr>
+        """
+        for item in targets
+    )
+    if not target_rows:
+        target_rows = """
+        <tr>
+          <td colspan="4">今日沒有明確手機複核名單；若你有想買的個股，仍照下方 checklist 查。</td>
+        </tr>
+        """
+
+    return f"""
+    <div class="section">
+      <h2>籌碼K手機 App 複核提醒</h2>
+      <div class="muted">
+        每天買進前，只查你真的想買的 1 到 3 檔。K 線、量、MACD 本地系統已有；手機 App 重點補「分點、主力成本、散戶/大戶」。
+      </div>
+      <div class="muted" style="margin-top:8px;">桌面快照 as-of: {asof} / status: {status_text}<br>{status_note}</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>股票</th><th>產業</th><th>買進區 / 狀態</th><th>來源</th></tr>
+        </thead>
+        <tbody>{target_rows}</tbody>
+      </table>
+      <div class="muted" style="margin-top:12px;">
+        手機籌碼K固定查四項：1. 主力動向 1D / 5D / 20D；
+        2. 分點明細 1D / 5D / 20D 的前 10/15 券商、買賣超、均價；
+        3. 主力成本是否貼近目前價格；
+        4. 散戶/大戶變化，確認是不是主力吃貨、散戶退場，而不是隔日沖誘多。
+        查完後把截圖貼回來，我再補進場判斷。
+      </div>
+    </div>
+"""
 
 
 def _load_t1_leaderboard(top_n: int = 20) -> tuple[str, pd.DataFrame]:
@@ -363,6 +1257,50 @@ def _render_leaderboard_rows(df: pd.DataFrame) -> str:
         )
         recommendation = _html_cell(row.get("recommendation"))
         risk_html = _format_risk_html(row.get("risk_tags"))
+        explain = explain_signal_row(row.to_dict(), source="prediction")
+        explain_action = html.escape(str(explain["action_label"]))
+        explain_summary = html.escape(str(explain["summary"]))
+        explain_drivers = html.escape(" / ".join(explain["drivers"]))
+        explain_warnings = html.escape(" / ".join(explain["warnings"]))
+        shortwave_action = _html_cell(row.get("shortwave_action") or "-")
+        shortwave_tags = _format_risk_html(row.get("shortwave_strategy_tags"))
+        shortwave_missing = _format_risk_html(row.get("shortwave_missing_strategy_tags"))
+        shortwave_advice = _format_risk_html(row.get("shortwave_entry_strategy_advice"))
+        shortwave_note = _format_risk_html(row.get("shortwave_watch_note"))
+        hold_days_raw = row.get("shortwave_preferred_hold_days")
+        hold_days = "-"
+        if pd.notna(hold_days_raw):
+            try:
+                hold_days = f"{int(float(hold_days_raw))}D"
+            except (TypeError, ValueError):
+                hold_days = html.escape(str(hold_days_raw))
+        combo_score_raw = row.get("shortwave_friend_combo_score")
+        combo_score = "-"
+        if pd.notna(combo_score_raw):
+            try:
+                combo_score = _fmt_pct(float(combo_score_raw) * 100, 1)
+            except (TypeError, ValueError):
+                combo_score = html.escape(str(combo_score_raw))
+        zone_low_raw = row.get("shortwave_entry_zone_low")
+        zone_high_raw = row.get("shortwave_entry_zone_high")
+        entry_zone = "-"
+        if pd.notna(zone_low_raw) and pd.notna(zone_high_raw):
+            try:
+                entry_zone = f"{float(zone_low_raw):.2f} ~ {float(zone_high_raw):.2f}"
+            except (TypeError, ValueError):
+                entry_zone = f"{html.escape(str(zone_low_raw))} ~ {html.escape(str(zone_high_raw))}"
+        zone_status = _html_cell(row.get("shortwave_entry_zone_status") or "-")
+        zone_note = _format_risk_html(row.get("shortwave_entry_zone_note"))
+        model_support = _html_cell(row.get("shortwave_model_combo_support") or "-")
+        shortwave_strategy_html = (
+            f"{shortwave_action} / combo {combo_score} / hold {hold_days} / model support {model_support}"
+            f"<br><strong>Entry Zone:</strong> {entry_zone} / {zone_status}"
+            f"<br><strong>Met:</strong> {shortwave_tags}"
+            f"<br><strong>Missing:</strong> {shortwave_missing}"
+            f"<br><strong>Advice:</strong> {shortwave_advice}"
+            f"<br><strong>Zone Note:</strong> {zone_note}"
+            f"<br>{shortwave_note}"
+        )
         rows.append(
             """
             <tr class="main-row">
@@ -372,6 +1310,7 @@ def _render_leaderboard_rows(df: pd.DataFrame) -> str:
                 <div class="cell-sub">{sector} / 收盤 {close}</div>
                 <div class="cell-badges">
                   <span class="{rec_class}">{recommendation}</span>
+                  <span class="badge badge-neutral">{explain_action}</span>
                 </div>
               </td>
               <td class="col-return">{pred_return}</td>
@@ -381,6 +1320,12 @@ def _render_leaderboard_rows(df: pd.DataFrame) -> str:
               <td colspan="2" class="detail-cell">
                 <span class="detail-label">風險標籤</span>
                 <div class="risk-text">{risk_html}</div>
+                <span class="detail-label">New Entry Strategy</span>
+                <div class="risk-text">{shortwave_strategy_html}</div>
+                <span class="detail-label">Explain</span>
+                <div class="risk-text">{explain_summary}</div>
+                <div class="risk-text"><strong>Drivers:</strong> {explain_drivers}</div>
+                <div class="risk-text"><strong>Warnings:</strong> {explain_warnings}</div>
               </td>
             </tr>
             """.format(
@@ -393,6 +1338,11 @@ def _render_leaderboard_rows(df: pd.DataFrame) -> str:
                 rec_class=_badge_class(row.get("recommendation"), kind="recommendation"),
                 recommendation=recommendation,
                 risk_html=risk_html,
+                shortwave_strategy_html=shortwave_strategy_html,
+                explain_action=explain_action,
+                explain_summary=explain_summary,
+                explain_drivers=explain_drivers,
+                explain_warnings=explain_warnings,
             )
         )
     return "\n".join(rows)
@@ -568,6 +1518,7 @@ def _render_cross_confirm_rows(items: list[dict]) -> str:
         ticker = html.escape(str(item.get("ticker", "")))
         name = _NAME_LOOKUP.get(str(item.get("ticker", "")), "")
         name_html = f' <span style="color:#999;font-size:12px;">{html.escape(name)}</span>' if name else ""
+        close_ref = _fmt_num(item.get("close_ref"), 2)
         t1_prob = f"{float(item.get('t1_prob', 0)) * 100:.1f}%" if item.get("t1_prob") else "-"
         t1_rank = f"#{item['t1_rank']}" if item.get("t1_rank") else "-"
         d20_ret = _fmt_pct(float(item.get("d20_pred_return", 0)) * 100) if item.get("d20_pred_return") else "-"
@@ -580,7 +1531,7 @@ def _render_cross_confirm_rows(items: list[dict]) -> str:
               <td class="col-rank">#{i}</td>
               <td class="col-target">
                 <div class="cell-title">{ticker}{name_html}</div>
-                <div class="cell-sub">T+1 排名 {t1_rank} / 機率 {t1_prob}</div>
+                <div class="cell-sub">收盤 {close_ref} / T+1 排名 {t1_rank} / 機率 {t1_prob}</div>
                 <div class="cell-badges">
                   <span class="{_badge_class(d20_rec, kind='recommendation')}">{d20_rec}</span>
                 </div>
@@ -690,6 +1641,8 @@ def _wrap_email_html(title: str, subtitle: str, body_html: str, generated_at: st
       color: #475569;
       font-size: 14px;
       line-height: 1.6;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
     }}
     .data-table {{
       width: 100%;
@@ -720,6 +1673,13 @@ def _wrap_email_html(title: str, subtitle: str, body_html: str, generated_at: st
     }}
     .data-table tr:last-child td {{
       border-bottom: none;
+    }}
+    #sec-entry-candidates .entry-detail td {{
+      background: #f8fafc;
+      border-bottom: 2px solid #cbd5e1;
+    }}
+    #sec-entry-candidates .entry-field-label {{
+      display: none;
     }}
     .detail-row td {{
       padding-top: 6px;
@@ -902,6 +1862,31 @@ def _wrap_email_html(title: str, subtitle: str, body_html: str, generated_at: st
       }}
       .portfolio-table .col-return {{
         width: 30%;
+      }}
+      #sec-entry-candidates .data-table,
+      #sec-entry-candidates tbody,
+      #sec-entry-candidates tr,
+      #sec-entry-candidates td {{
+        display: block;
+      }}
+      #sec-entry-candidates thead {{
+        display: none;
+      }}
+      #sec-entry-candidates .entry-main td {{
+        padding: 10px;
+        font-size: 13px;
+        min-height: 20px;
+      }}
+      #sec-entry-candidates .entry-field-label {{
+        display: block;
+        margin-bottom: 4px;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+      }}
+      #sec-entry-candidates .entry-detail td {{
+        padding: 12px 10px 16px;
+        font-size: 13px;
       }}
     }}
   </style>
@@ -1346,27 +2331,54 @@ def build_email_portfolio(
 
 
 
-def send_email(settings: EmailSettings, subject: str, html_body: str) -> None:
-    message = EmailMessage()
+def _build_email_message(settings: EmailSettings, subject: str, html_body: str) -> EmailMessage:
+    message = EmailMessage(policy=policy.SMTP)
     message["Subject"] = subject
-    message["From"] = f"{settings.from_name} <{settings.from_email}>"
+    message["From"] = formataddr((settings.from_name, settings.from_email), charset="utf-8")
     message["To"] = ", ".join(settings.to_emails)
-    message.set_content("請使用支援 HTML 的郵件客戶端查看每日 ML 預測與帳本觀察。")
-    message.add_alternative(html_body, subtype="html")
+    message.set_content(PLAIN_TEXT_FALLBACK, subtype="plain", charset="utf-8", cte="base64")
+    message.add_alternative(html_body, subtype="html", charset="utf-8", cte="base64")
+    return message
 
+
+def send_email(settings: EmailSettings, subject: str, html_body: str) -> None:
+    message = _build_email_message(settings, subject, html_body)
+
+    # Try SSL(465) → STARTTLS(587) fallback with retries for transient network/Gmail issues
+    attempts: list[tuple[bool, int]]
     if settings.use_ssl:
-        with smtplib.SMTP_SSL(settings.host, settings.port, timeout=30) as server:
-            server.login(settings.user, settings.password)
-            server.send_message(message)
+        attempts = [(True, settings.port), (False, 587)]
     else:
-        with smtplib.SMTP(settings.host, settings.port, timeout=30) as server:
-            server.starttls()
-            server.login(settings.user, settings.password)
-            server.send_message(message)
+        attempts = [(False, settings.port), (True, 465)]
+
+    last_err: Exception | None = None
+    for mode_ssl, port in attempts:
+        for retry in range(3):
+            try:
+                if mode_ssl:
+                    with smtplib.SMTP_SSL(settings.host, port, timeout=60) as server:
+                        server.login(settings.user, settings.password)
+                        server.send_message(message)
+                else:
+                    with smtplib.SMTP(settings.host, port, timeout=60) as server:
+                        server.starttls()
+                        server.login(settings.user, settings.password)
+                        server.send_message(message)
+                return
+            except (TimeoutError, OSError, smtplib.SMTPException) as exc:
+                last_err = exc
+                print(
+                    f"[email] SMTP {'SSL' if mode_ssl else 'STARTTLS'} "
+                    f"{settings.host}:{port} attempt {retry + 1}/3 failed: {exc}"
+                )
+                time.sleep(5 * (retry + 1))
+
+    raise RuntimeError(f"send_email failed after all retries: {last_err}")
 
 
 def send_latest_email(
     prediction_file: str | None = None,
+    as_of_date: str | None = None,
     dry_run: bool = False,
     preview_path: str | None = None,
     remote_url: str | None = None,
@@ -1376,12 +2388,50 @@ def send_latest_email(
         print("[email] SMTP 未設定，跳過寄信。")
         return {"status": "skipped", "reason": "missing_smtp_settings"}
 
-    prediction_path = _latest_prediction_path(prediction_file)
-    prediction_date, all_pred_df, _ = _load_leaderboard(prediction_path, settings.top_n)
+    prediction_path = _latest_prediction_path(prediction_file, as_of_date=as_of_date)
+    prediction_date, all_pred_df, leaderboard_df = _load_leaderboard(prediction_path, settings.top_n)
 
     # AI 每日投資總結
     from scripts.ai_summary import generate_daily_summary
-    ai_html = generate_daily_summary()
+    ai_html = generate_daily_summary(
+        prediction_date=prediction_date,
+        all_pred_df=all_pred_df,
+        leaderboard_df=leaderboard_df,
+    )
+    unified_signal_stats = _load_unified_signal_stats(prediction_date)
+    entry_candidate_section = _build_entry_candidate_email_section(
+        prediction_date,
+        all_pred_df,
+    )
+    chipk_mobile_section = _build_chipk_mobile_review_section(prediction_date, leaderboard_df)
+
+    unified_signal_section = ""
+    if unified_signal_stats:
+        counts = unified_signal_stats.get("signal_type_counts", {}) or {}
+        cards_html = "\n".join(
+            (
+                f'<div class="summary-card"><div class="label">{label}</div>'
+                f'<div class="value">{value}</div></div>'
+            )
+            for label, value in [
+                ("Unified Date", unified_signal_stats.get("prediction_date") or "-"),
+                ("Dual", counts.get("Dual", 0)),
+                ("20D_only", counts.get("20D_only", 0)),
+                ("T1_only", counts.get("T1_only", 0)),
+            ]
+        )
+        latest_source = html.escape(str(unified_signal_stats.get("source_file") or "-"))
+        total_candidates = int(unified_signal_stats.get("total_candidates") or 0)
+        total_units = int(unified_signal_stats.get("total_units") or 0)
+        unified_signal_section = f"""
+    <div class="section">
+      <h2>Unified Signal Mix</h2>
+      <div class="grid">
+        {cards_html}
+      </div>
+      <div class="muted">Latest unified CSV: {latest_source} / candidates {total_candidates} / target units {total_units}</div>
+    </div>
+"""
 
     # Remote URL
     remote_section = ""
@@ -1397,6 +2447,9 @@ def send_latest_email(
 
     body = f"""
     {remote_section}
+    {unified_signal_section}
+    {entry_candidate_section}
+    {chipk_mobile_section}
     <div class="section">
       <h2>AI 每日投資總結</h2>
       <div style="font-size:14px;line-height:1.8;color:#1e293b;">
@@ -1420,6 +2473,12 @@ def send_latest_email(
         f.write(email_html)
 
     if dry_run:
+        try:
+            from scripts.ai_summary import _summary_html_to_text
+            print("[email] AI summary preview:")
+            print(_summary_html_to_text(ai_html))
+        except Exception:
+            print("[email] AI summary preview unavailable")
         print(f"[email] Dry run 完成：{preview_target}")
         return {
             "status": "preview",
@@ -1442,6 +2501,7 @@ def send_latest_email(
 def main(argv: list[str] | None = None) -> dict[str, object]:
     parser = argparse.ArgumentParser(description="Send the daily ML email report.")
     parser.add_argument("--prediction-file", help="Specific predictions_YYYY-MM-DD.csv path.")
+    parser.add_argument("--as-of-date", help="Use predictions/unified_signals for YYYY-MM-DD.")
     parser.add_argument("--dry-run", action="store_true", help="Render HTML preview without sending.")
     parser.add_argument(
         "--preview-path",
@@ -1452,6 +2512,7 @@ def main(argv: list[str] | None = None) -> dict[str, object]:
 
     return send_latest_email(
         prediction_file=args.prediction_file,
+        as_of_date=args.as_of_date,
         dry_run=args.dry_run,
         preview_path=args.preview_path,
     )

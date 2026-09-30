@@ -33,7 +33,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # ==============================================================================
 # 設定
 # ==============================================================================
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TDCC_DIR = os.path.join(BASE_DIR, "集保分散")
 os.makedirs(TDCC_DIR, exist_ok=True)
 
@@ -364,12 +364,10 @@ def rebuild_summary():
                 levels = g[level_col].tolist()
                 pcts = g[pct_col].tolist()
 
-                # Retail: sum of levels 1-12
-                retail_pct = sum(p for lv, p in zip(levels, pcts) if 1 <= lv <= 12)
-                # Whale: sum of levels 15
-                # (level 15 = 1,000,001股以上, 16=自行保管, 17=合計)
-                # 我們用 level 12-15 對齊現有 _summarize_tdcc 邏輯
-                whale_pct = sum(p for lv, p in zip(levels, pcts) if 12 <= lv <= 15)
+                # 口徑(2026-07-16 PM 核定,單一真相=twstock._summarize_tdcc):
+                # 散戶 = Level 1-9 (<100張)、大戶 = Level 15 (>=1000張,千張大戶)
+                retail_pct = sum(p for lv, p in zip(levels, pcts) if 1 <= lv <= 9)
+                whale_pct = sum(p for lv, p in zip(levels, pcts) if lv == 15)
 
                 total_holders = int(g[count_col].sum())
 
@@ -461,8 +459,12 @@ def rebuild_summary_v2():
             grouped = detail_df.groupby(["Date", "Ticker"], sort=False)
 
             for (dt, ticker), g in grouped:
-                retail_pct = float(g.loc[g["Level"].between(1, 11), "Pct"].sum())
-                whale_pct = float(g.loc[g["Level"].between(12, 15), "Pct"].sum())
+                # PM-approved single source of truth (2026-07-16), aligned with
+                # twstock._summarize_tdcc and every downstream TDCC feature:
+                # retail = levels 1-9 (<100 lots), whale = level 15 only
+                # (1,000+ lots). Levels 10-14 are neither bucket.
+                retail_pct = float(g.loc[g["Level"].between(1, 9), "Pct"].sum())
+                whale_pct = float(g.loc[g["Level"].eq(15), "Pct"].sum())
                 total_holders = int(g.loc[g["Level"].between(1, 15), "Holders"].sum())
 
                 all_summaries.append({

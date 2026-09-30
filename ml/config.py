@@ -1,8 +1,35 @@
 """ML 預測模型設定檔"""
 import os
 
+
+DEFAULT_LGBM_NUM_THREADS = 8
+
+
+def coerce_lgbm_num_threads(value, default: int = DEFAULT_LGBM_NUM_THREADS) -> int:
+    """Return a safe positive LightGBM CPU thread cap."""
+    try:
+        threads = int(value)
+    except (TypeError, ValueError):
+        return default
+    return threads if threads > 0 else default
+
+
+def get_lgbm_num_threads(default: int = DEFAULT_LGBM_NUM_THREADS) -> int:
+    """Resolve the LightGBM CPU thread cap from environment variables."""
+    for env_name in ("STOCK_LGBM_THREADS", "LGBM_NUM_THREADS"):
+        raw = os.environ.get(env_name, "").strip()
+        if raw:
+            return coerce_lgbm_num_threads(raw, default=default)
+    return default
+
+
+LGBM_NUM_THREADS = get_lgbm_num_threads()
+
 # === 路徑 ===
-BASE_DIR = r"F:\stock"
+# 優先吃 STOCK_BASE_DIR env var；否則由本檔位置往上推一層（ml/ 的父）。
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
 DAILY_K_DIR = os.path.join(BASE_DIR, "日K資料")
 REVENUE_DIR = os.path.join(BASE_DIR, "月營收")
 FINANCIAL_DIR = os.path.join(BASE_DIR, "季報財務")
@@ -41,7 +68,7 @@ LGBM_PARAMS = {
     "bagging_fraction": 0.8,
     "bagging_freq": 5,
     "verbose": -1,
-    "n_jobs": -1,
+    "n_jobs": LGBM_NUM_THREADS,
     "seed": 42,
 }
 LGBM_NUM_ROUNDS = 1000
@@ -49,3 +76,19 @@ LGBM_EARLY_STOPPING = 50
 
 # === 特徵窗口 ===
 ROLLING_WINDOWS = [5, 10, 20]
+
+# === 市場體制特徵防過擬合 ===
+REGIME_FEATURE_FRACTION_CAP = 0.15
+REGIME_FEATURE_COLS = [
+    "taiex_20d_return_pct",
+    "taiex_vs_ma60_pct",
+    "market_breadth_20d_pct",
+]
+
+# === AUDIT-002 / REQ-010 two-stage ranking defaults ===
+# Stage 1 remains the V2 regression model. Stage 2 is an optional LambdaRank
+# reranker that is only active when a trained stage-2 model is explicitly
+# enabled by the caller.
+TWO_STAGE_CANDIDATE_SIZE = 75
+TWO_STAGE_LABEL_BINS = 5
+TWO_STAGE_TOP_N = 30

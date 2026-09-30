@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "generated_at": "2026-07-02T14:26:29",
+    "daily_k_cutoff": "2026-07-02",
+    "target_date_range": [
+      "2020-01-02",
+      "2026-06-03"
+    ],
+    "old_stage1_meta": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+    "new_stage1_meta": "ml\\models\\lgbm_v2_20260702_131745_meta.json",
+    "new_stage2_meta": "ml\\models\\lgbm_two_stage_ranker_20260702_141205_meta.json",
+    "old_fold": "F:\\stock\\ml\\reports\\audit002_step5_grid_search_20260509_N75_bins5_fold_top30.csv",
+    "new_fold": "ml\\reports\\req032_step4_two_stage_dataA_20260702_top75_fold_top30.csv",
+    "months": [
+      "2024-01",
+      "2024-02",
+      "2024-03",
+      "2024-04",
+      "2024-05",
+      "2024-06",
+      "2024-07",
+      "2024-08",
+      "2024-09",
+      "2024-10",
+      "2024-11",
+      "2024-12",
+      "2025-01",
+      "2025-02",
+      "2025-03",
+      "2025-04",
+      "2025-05",
+      "2025-06",
+      "2025-07",
+      "2025-08",
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12",
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04"
+    ],
+    "holdout_months": [
+      "2026-04",
+      "2026-05",
+      "2026-06"
+    ]
+  },
+  "stage1_score_distribution": [
+    {
+      "model": "old_stage1",
+      "meta": "F:\\stock\\ml\\models\\lgbm_v2_20260508_200128_meta.json",
+      "trained_at": "20260508_200128",
+      "date_range": "['2020-01-02', '2026-04-08']",
+      "n": 3627,
+      "mean": -0.054425793795961075,
+      "median": -0.056756801507324275,
+      "p25": -0.08402305380823488,
+      "p75": -0.029118913324184426
+    },
+    {
+      "model": "new_stage1",
+      "meta": "ml\\models\\lgbm_v2_20260702_131745_meta.json",
+      "trained_at": "20260702_131745",
+      "date_range": "['2020-01-02', '2026-06-03']",
+      "n": 3627,
+      "mean": -0.0173898737803414,
+      "median": -0.02182158717164662,
+      "p25": -0.05200821801059136,
+      "p75": 0.005594145671379523
+    }
+  ],
+  "top10_holdout": {
+    "months": [
+      "2026-04",
+      "2026-05",
+      "2026-06"
+    ],
+    "rows": 10,
+    "win_rate": 0.5,
+    "avg_return": 0.012382703088223933,
+    "avg_alpha": -0.1367776520550251
+  },
+  "old_summary": {
+    "variant": "old_two_stage",
+    "months": 28,
+    "monthly_return": 0.07637371874572896,
+    "monthly_alpha": 0.035373298344089296,
+    "mdd": -0.05569411810414859,
+    "sharpe": 2.969360601268965,
+    "calmar": 25.4705689785858,
+    "win_rate": 0.8571428571428571
+  },
+  "new_summary": {
+    "variant": "new_two_stage",
+    "months": 28,
+    "monthly_return": 0.058378626279833645,
+    "monthly_alpha": 0.018958839795370646,
+    "mdd": -0.09279034818756826,
+    "sharpe": 2.532939843956773,
+    "calmar": 10.513716297776439,
+    "win_rate": 0.75
+  },
+  "cl3": {
+    "checks": {
+      "alpha_sacrifice": {
+        "value": 0.01641445854871865,
+        "threshold": 0.005,
+        "pass": false
+      },
+      "mdd_not_worse": {
+        "value": -0.03709623008341967,
+        "threshold": 0.0,
+        "pass": false
+      },
+      "sharpe_regression": {
+        "value": 0.14697465748204713,
+        "threshold": 0.05,
+        "pass": false
+      },
+      "calmar_regression": {
+        "value": 0.5872209880110738,
+        "threshold": 0.05,
+        "pass": false
+      }
+    },
+    "overall_pass": false
+  },
+  "repeat_diagnostics": {
+    "old": {
+      "rows": 840,
+      "unique_tickers": 446,
+      "repeat_rows": 394,
+      "repeat_ratio": 0.46904761904761905,
+      "top_repeat_tickers": {
+        "6919": 10,
+        "5314": 9,
+        "6442": 8,
+        "7751": 8,
+        "1591": 7,
+        "3066": 7,
+        "7721": 7,
+        "2404": 7,
+        "7728": 7,
+        "3555": 6
+      }
+    },
+    "new": {
+      "rows": 840,
+      "unique_tickers": 460,
+      "repeat_rows": 380,
+      "repeat_ratio": 0.4523809523809524,
+      "top_repeat_tickers": {
+        "5314": 9,
+        "6498": 9,
+        "8935": 8,
+        "6739": 8,
+        "7721": 7,
+        "3555": 7,
+        "6919": 7,
+        "1519": 6,
+        "7751": 6,
+        "8932": 6
+      }
+    }
+  },
+  "monthly_csv": "F:\\stock\\ml\\reports\\dataA_cl3_final_20260702_monthly.csv",
+  "score_distribution_csv": "F:\\stock\\ml\\reports\\dataA_cl3_final_20260702_stage1_score_distribution.csv",
+  "report": "F:\\stock\\ml\\reports\\dataA_cl3_final_20260702.md"
+}

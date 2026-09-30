@@ -1,0 +1,63 @@
+{
+  "start_date": "2026-04-01",
+  "end_date": "2026-04-30",
+  "generated_at": "2026-05-10 01:40:31",
+  "note": "Residual 主要反映大市值半導體 exposure gap，非系統缺陷。",
+  "structural_behavior_note": "大市值主導型牛市期間，Champion 系統可能出現現金等待期（中小型股流動性不足），入場點通常落在多頭擴散後。此現象為策略結構性特徵，非流動性門檻設定錯誤。",
+  "twii": {
+    "return_pct": 0.17337877442346739,
+    "start_date": "2026-04-01",
+    "end_date": "2026-04-30",
+    "observations": 30,
+    "source": "F:\\stock\\大盤指數\\index_TWII.csv",
+    "method": "TWII daily start-close to end-close compounded",
+    "daily_return_days": 19
+  },
+  "strategy_fit": {
+    "return_pct": 0.09852994885759458,
+    "start_date": "2026-04-01",
+    "end_date": "2026-04-30",
+    "observations": 1161,
+    "source": "F:\\stock\\stock.duckdb",
+    "method": "prediction-union daily equal-weight start-close to end-close compounded",
+    "universe_size": 1161,
+    "prediction_days": [
+      "2026-04-01",
+      "2026-04-02",
+      "2026-04-07",
+      "2026-04-08",
+      "2026-04-09",
+      "2026-04-10",
+      "2026-04-13",
+      "2026-04-14",
+      "2026-04-15",
+      "2026-04-16",
+      "2026-04-17",
+      "2026-04-20",
+      "2026-04-21",
+      "2026-04-22",
+      "2026-04-23",
+      "2026-04-24",
+      "2026-04-27",
+      "2026-04-28",
+      "2026-04-29",
+      "2026-04-30"
+    ],
+    "daily_return_days": 19,
+    "daily_observations": 34830
+  },
+  "champion": {
+    "return_pct": -0.08775070159486664,
+    "start_date": "2026-04-01",
+    "end_date": "2026-04-30",
+    "observations": 59,
+    "source": "F:\\stock\\paper_portfolio_v2_champion.db",
+    "method": "Champion target-weight-normalized mark daily compounded",
+    "daily_return_days": 19,
+    "marked_return_days": 6,
+    "cash_filled_days": 13,
+    "positions": 59
+  },
+  "residual_pct": 0.0748488255658728,
+  "champion_alpha_vs_strategy_fit_pct": -0.18628065045246123
+}

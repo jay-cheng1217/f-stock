@@ -1,0 +1,3 @@
+﻿model,universe_ic_mean,universe_ic_t_stat,top30_internal_ic_mean,top30_internal_ic_t_stat,positive_deciles,total_deciles,positive_decile_pct,max_consecutive_negative_deciles,calibration_spearman,top30_excess_mean
+Before_baseline,0.04312090339404594,2.4270798766531803,-0.03505174107251766,-0.7028357886774584,4,10,0.4,4,0.406060606060606,0.0013836281142857153
+After_feature_cleanup,0.01252353467804797,0.6660982531565729,-0.011628300023814122,-0.29055558655392427,5,10,0.5,2,0.35757575757575755,0.003660377913287708

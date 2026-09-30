@@ -1,0 +1,255 @@
+{
+  "status": "pass_for_pm_review",
+  "start_date": "2026-05-11",
+  "end_date": "2026-05-15",
+  "target": {
+    "metric": "NAV unexplained residual",
+    "source": "F:\\stock\\ml\\reports\\rd005_residual_split_20260517.json",
+    "field": "attribution.residual_split.unexplained_reconciliation_residual_pct",
+    "value_pct": -0.05638164814819354
+  },
+  "a5_reference": {
+    "source": "F:\\stock\\ml\\reports\\rd005_ledger_error_a5_20260517.json",
+    "corrected_reconciliation_error_pct": -5.551115123125783e-17
+  },
+  "method": {
+    "locked_doc": "F:\\stock\\docs\\designs\\rd005_phase_b_timing_method_lock_20260517.md",
+    "daily_b4_allocation_note": "Window-level B4 is authoritative; daily B4 is exposure-weight allocated for the required daily table.",
+    "new_data_source_used": false
+  },
+  "buckets": [
+    {
+      "bucket": "B1 overnight gap timing",
+      "key": "b1_overnight_gap_timing_pct",
+      "contribution_pct": 0.052564967919357275
+    },
+    {
+      "bucket": "B2 rebalance-day intraday slippage",
+      "key": "b2_rebalance_day_intraday_slippage_pct",
+      "contribution_pct": -0.016835146188920923
+    },
+    {
+      "bucket": "B3 held intraday mark timing",
+      "key": "b3_held_intraday_mark_timing_pct",
+      "contribution_pct": 0.012596516518090316
+    },
+    {
+      "bucket": "B4 mark/weight synchronization residual",
+      "key": "b4_mark_weight_sync_residual_pct",
+      "contribution_pct": -0.10470798639672022
+    }
+  ],
+  "reconciliation": {
+    "bucket_total_pct": -0.05638164814819355,
+    "target_pct": -0.05638164814819354,
+    "reconciliation_error_pct": -6.938893903907228e-18,
+    "tolerance_pct": 0.005,
+    "pass": true,
+    "observable_b1_b2_b3_sum_pct": 0.04832633824852667
+  },
+  "daily_contributions": [
+    {
+      "date": "2026-05-11",
+      "gross_exposure": 1.0,
+      "b1_overnight_gap_timing_pct": 0.006484364123617679,
+      "b2_rebalance_day_intraday_slippage_pct": 7.703802904980858e-05,
+      "b3_held_intraday_mark_timing_pct": 0.010411500310000595,
+      "weighted_mark_delta_pct": 0.017028542353441364,
+      "missing_rows": 0,
+      "target_allocated_pct": -0.011907398628545778,
+      "b4_mark_weight_sync_residual_pct": -0.02888030109121386,
+      "bucket_total_pct": -0.011907398628545778
+    },
+    {
+      "date": "2026-05-12",
+      "gross_exposure": 0.8063765479876162,
+      "b1_overnight_gap_timing_pct": 0.012780858560053253,
+      "b2_rebalance_day_intraday_slippage_pct": -0.013171037590122517,
+      "b3_held_intraday_mark_timing_pct": 0.006385949327544492,
+      "weighted_mark_delta_pct": 0.01818163839607232,
+      "missing_rows": 0,
+      "target_allocated_pct": -0.00960184700159922,
+      "b4_mark_weight_sync_residual_pct": -0.015597617299074447,
+      "bucket_total_pct": -0.00960184700159922
+    },
+    {
+      "date": "2026-05-13",
+      "gross_exposure": 0.9565114164086688,
+      "b1_overnight_gap_timing_pct": -0.006403962516497147,
+      "b2_rebalance_day_intraday_slippage_pct": 0.007163859940133357,
+      "b3_held_intraday_mark_timing_pct": 0.019295089796221316,
+      "weighted_mark_delta_pct": 0.014661548127446876,
+      "missing_rows": 0,
+      "target_allocated_pct": -0.011389562727932961,
+      "b4_mark_weight_sync_residual_pct": -0.03144454994779049,
+      "bucket_total_pct": -0.011389562727932963
+    },
+    {
+      "date": "2026-05-14",
+      "gross_exposure": 0.9782557082043344,
+      "b1_overnight_gap_timing_pct": 0.03508345335000209,
+      "b2_rebalance_day_intraday_slippage_pct": -0.003894044215069756,
+      "b3_held_intraday_mark_timing_pct": -0.01129469751381007,
+      "weighted_mark_delta_pct": 0.020834427450391088,
+      "missing_rows": 0,
+      "target_allocated_pct": -0.011648480678239368,
+      "b4_mark_weight_sync_residual_pct": -0.03154319229936163,
+      "bucket_total_pct": -0.011648480678239367
+    },
+    {
+      "date": "2026-05-15",
+      "gross_exposure": 0.9938660391788294,
+      "b1_overnight_gap_timing_pct": 0.004620254402181403,
+      "b2_rebalance_day_intraday_slippage_pct": -0.007010962352911817,
+      "b3_held_intraday_mark_timing_pct": -0.01220132540186602,
+      "weighted_mark_delta_pct": -0.011728291616911123,
+      "missing_rows": 0,
+      "target_allocated_pct": -0.011834359111876218,
+      "b4_mark_weight_sync_residual_pct": 0.002757674240720218,
+      "bucket_total_pct": -0.011834359111876218
+    }
+  ],
+  "data_sufficiency": {
+    "holding_day_rows": 132,
+    "missing_required_price_rows": 0,
+    "missing_required_exposure_abs": 0.0,
+    "missing_stop_threshold_pct": 0.0056381648148193545,
+    "tracked_ticker_found": true,
+    "new_data_source_required": false,
+    "stop_reasons": []
+  },
+  "tracked_6419": {
+    "ticker": "6419",
+    "found": true,
+    "order_type": "INTRADAY_CHASE",
+    "entry_date": "2026-05-12",
+    "entry_slippage_pct": 0.0985401459854014,
+    "target_weight_at_entry": 0.12681172600619192,
+    "b1_overnight_gap_timing_pct": 0.01558815236620964,
+    "b2_rebalance_day_intraday_slippage_pct": -0.012496045993310875,
+    "b3_held_intraday_mark_timing_pct": 0.02148637218045111,
+    "b4_mark_weight_sync_residual_pct": 0.0,
+    "b4_note": "portfolio-level residual, not assigned to individual tickers",
+    "expected_bucket": "B2 rebalance-day intraday slippage",
+    "classification": "as_expected",
+    "rows": [
+      {
+        "date": "2026-05-12",
+        "position_id": 118,
+        "ticker": "6419",
+        "sector": "光電業",
+        "target_weight": 0.12681172600619192,
+        "order_type": "INTRADAY_CHASE",
+        "entry_date": "2026-05-12",
+        "entry_day": true,
+        "exit_row": false,
+        "entry_slippage_pct": 0.0985401459854014,
+        "weighted_mark_delta_pct": 0.0,
+        "entry_slippage_cost_pct": 0.012496045993310875,
+        "entry_mark_component_pct": 0.0,
+        "b1_overnight_gap_timing_pct": 0.0,
+        "b2_rebalance_day_intraday_slippage_pct": -0.012496045993310875,
+        "b3_held_intraday_mark_timing_pct": 0.0,
+        "missing_required_price": false,
+        "daily_k_found": true,
+        "method_note": "entry_day_slippage_plus_mark"
+      },
+      {
+        "date": "2026-05-13",
+        "position_id": 118,
+        "ticker": "6419",
+        "sector": "光電業",
+        "target_weight": 0.12681172600619192,
+        "order_type": "INTRADAY_CHASE",
+        "entry_date": "2026-05-12",
+        "entry_day": false,
+        "exit_row": false,
+        "entry_slippage_pct": 0.0985401459854014,
+        "weighted_mark_delta_pct": 0.012639042459088895,
+        "entry_slippage_cost_pct": 0.0,
+        "entry_mark_component_pct": 0.0,
+        "b1_overnight_gap_timing_pct": 0.004634315568332595,
+        "b2_rebalance_day_intraday_slippage_pct": 0.0,
+        "b3_held_intraday_mark_timing_pct": 0.008004726890756299,
+        "missing_required_price": false,
+        "daily_k_found": true,
+        "method_note": "held_day"
+      },
+      {
+        "date": "2026-05-14",
+        "position_id": 118,
+        "ticker": "6419",
+        "sector": "光電業",
+        "target_weight": 0.12681172600619192,
+        "order_type": "INTRADAY_CHASE",
+        "entry_date": "2026-05-12",
+        "entry_day": false,
+        "exit_row": false,
+        "entry_slippage_pct": 0.0985401459854014,
+        "weighted_mark_delta_pct": 0.009689932551968147,
+        "entry_slippage_cost_pct": 0.0,
+        "entry_mark_component_pct": 0.0,
+        "b1_overnight_gap_timing_pct": 0.009689932551968154,
+        "b2_rebalance_day_intraday_slippage_pct": 0.0,
+        "b3_held_intraday_mark_timing_pct": -6.938893903907228e-18,
+        "missing_required_price": false,
+        "daily_k_found": true,
+        "method_note": "held_day"
+      },
+      {
+        "date": "2026-05-15",
+        "position_id": 118,
+        "ticker": "6419",
+        "sector": "光電業",
+        "target_weight": 0.12681172600619192,
+        "order_type": "INTRADAY_CHASE",
+        "entry_date": "2026-05-12",
+        "entry_day": false,
+        "exit_row": false,
+        "entry_slippage_pct": 0.0985401459854014,
+        "weighted_mark_delta_pct": 0.014745549535603709,
+        "entry_slippage_cost_pct": 0.0,
+        "entry_mark_component_pct": 0.0,
+        "b1_overnight_gap_timing_pct": 0.0012639042459088895,
+        "b2_rebalance_day_intraday_slippage_pct": 0.0,
+        "b3_held_intraday_mark_timing_pct": 0.013481645289694819,
+        "missing_required_price": false,
+        "daily_k_found": true,
+        "method_note": "held_day"
+      }
+    ]
+  },
+  "kill_criteria": {
+    "result": "actionable_for_pm_ticket",
+    "material_buckets_abs_ge_3pp": [
+      {
+        "bucket": "B1 overnight gap timing",
+        "key": "b1_overnight_gap_timing_pct",
+        "contribution_pct": 0.052564967919357275
+      },
+      {
+        "bucket": "B4 mark/weight synchronization residual",
+        "key": "b4_mark_weight_sync_residual_pct",
+        "contribution_pct": -0.10470798639672022
+      }
+    ],
+    "all_buckets_abs_lt_1pp": false,
+    "observable_buckets_abs_ge_half_target_abs": true,
+    "phase_c_status": "HOLD",
+    "action_note": "Diagnostic only; any production action requires a separate PM ticket."
+  },
+  "prohibited_conclusions": {
+    "production_allocation_change": false,
+    "sector_cap_change": false,
+    "guardrail_threshold_change": false,
+    "model_retraining": false,
+    "stage_b_production_adoption": false,
+    "phase_c_execution": false
+  },
+  "reporting_definition_labels": {
+    "c1_basis_label": "nav_unexplained_target",
+    "b4_dominance_flag": true,
+    "cross_window_sign_stability": "insufficient_windows",
+    "label_version": "rd006_minimal_v1"
+  }
+}

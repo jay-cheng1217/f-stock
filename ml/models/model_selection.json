@@ -1,10 +1,10 @@
 {
   "production": {
-    "label": "v2.2-main",
-    "meta_path": "F:\\stock\\ml\\models\\lgbm_20260404_131437_meta.json"
+    "label": "legacy-v1-reference-20260516",
+    "meta_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json"
   },
   "shadow": {
-    "label": "v3.1-industry-tdcc",
-    "meta_path": "F:\\stock\\ml\\models\\lgbm_20260409_125845_meta.json"
+    "label": "legacy-v1-reference-20260516",
+    "meta_path": "F:\\stock\\ml\\models\\lgbm_20260516_112903_meta.json"
   }
 }

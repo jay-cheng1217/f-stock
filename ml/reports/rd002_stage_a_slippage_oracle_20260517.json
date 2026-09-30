@@ -1,0 +1,87 @@
+{
+  "summary": {
+    "generated_at": "2026-05-17T01:59:10",
+    "trade_count": 135,
+    "oracle_slippage_only_upper_bound_pct": 0.15967447550248853,
+    "price_improvement_offset_pct": 0.028879623788057234,
+    "net_realized_slippage_drag_pct": -0.1307948517144313,
+    "stage_b_kill_switch_threshold_pct": 0.005,
+    "stage_b_recommendation": "ALLOW_STAGE_B_DESIGN",
+    "diagnostic_only": true,
+    "stage_b_warning": "Stage B must use predicted_slippage_proxy and must not use realized entry_slippage_pct directly."
+  },
+  "by_order_type": [
+    {
+      "order_type": "INTRADAY_CHASE",
+      "trade_count": 54,
+      "avg_slippage_pct": 0.040750464298579425,
+      "slippage_cost_pct": 0.14288639597389047,
+      "avg_effective_return_pct": -0.003903091259883975
+    },
+    {
+      "order_type": "OPEN",
+      "trade_count": 81,
+      "avg_slippage_pct": -0.004530418828890402,
+      "slippage_cost_pct": 0.01678807952859803,
+      "avg_effective_return_pct": -0.010816868056744191
+    }
+  ],
+  "thresholds": [
+    {
+      "threshold_pct": 0.01,
+      "trade_count": 54,
+      "slippage_saved_pct": 0.14288639597389044,
+      "avoided_bad_chase_pct": 0.11479676962586809,
+      "missed_good_chase_pct": 0.13900965706621227,
+      "net_skip_oracle_pct": 0.11867350853354625
+    },
+    {
+      "threshold_pct": 0.015,
+      "trade_count": 53,
+      "slippage_saved_pct": 0.14233847757705087,
+      "avoided_bad_chase_pct": 0.11479676962586809,
+      "missed_good_chase_pct": 0.13819885372637764,
+      "net_skip_oracle_pct": 0.11893639347654134
+    },
+    {
+      "threshold_pct": 0.02,
+      "trade_count": 47,
+      "slippage_saved_pct": 0.13638635323850068,
+      "avoided_bad_chase_pct": 0.09553851738695472,
+      "missed_good_chase_pct": 0.13705235691109102,
+      "net_skip_oracle_pct": 0.09487251371436439
+    },
+    {
+      "threshold_pct": 0.025,
+      "trade_count": 40,
+      "slippage_saved_pct": 0.12887861489505742,
+      "avoided_bad_chase_pct": 0.0751078725461844,
+      "missed_good_chase_pct": 0.13705235691109102,
+      "net_skip_oracle_pct": 0.06693413053015079
+    },
+    {
+      "threshold_pct": 0.03,
+      "trade_count": 35,
+      "slippage_saved_pct": 0.1166646442349724,
+      "avoided_bad_chase_pct": 0.052225122186797764,
+      "missed_good_chase_pct": 0.13705235691109102,
+      "net_skip_oracle_pct": 0.03183740951067915
+    },
+    {
+      "threshold_pct": 0.035,
+      "trade_count": 28,
+      "slippage_saved_pct": 0.10486806368008064,
+      "avoided_bad_chase_pct": 0.03486022626623105,
+      "missed_good_chase_pct": 0.13419720353342157,
+      "net_skip_oracle_pct": 0.005531086412890129
+    },
+    {
+      "threshold_pct": 0.04,
+      "trade_count": 21,
+      "slippage_saved_pct": 0.09042822069065855,
+      "avoided_bad_chase_pct": 0.02362691973128983,
+      "missed_good_chase_pct": 0.12391206029558016,
+      "net_skip_oracle_pct": -0.009856919873631784
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "started_at": "2026-09-06T14:56:23.474344+08:00",
+  "files": [
+    {
+      "date": "20220915",
+      "path": "F:\\stock\\外資持股\\20220915.csv",
+      "rows_before": 0,
+      "rows_after": 1954,
+      "before_sha256": null,
+      "after_sha256": "a1c720ddb2327fc02eaf509b49fe0073c28002af5fab543be0de01f7ac9f7b22",
+      "status": "published"
+    },
+    {
+      "date": "20220916",
+      "path": "F:\\stock\\外資持股\\20220916.csv",
+      "rows_before": 0,
+      "rows_after": 1954,
+      "before_sha256": null,
+      "after_sha256": "2ba46c887156813ac9da869eb96fa058286c7a9a32ffcb0ce6c724828e48ddaf",
+      "status": "published"
+    },
+    {
+      "date": "20220919",
+      "path": "F:\\stock\\外資持股\\20220919.csv",
+      "rows_before": 0,
+      "rows_after": 1954,
+      "before_sha256": null,
+      "after_sha256": "5018929317580289b0b399d75bf8fda93096f1f758186f626075a7a2324d627d",
+      "status": "published"
+    },
+    {
+      "date": "20260807",
+      "path": "F:\\stock\\外資持股\\20260807.csv",
+      "rows_before": 889,
+      "rows_after": 2249,
+      "before_sha256": "30ce1be6f6068b6a58acef36082a05388a1ed7cef0fd1d52371b845d7e47176c",
+      "after_sha256": "45dffe727d0559f6d1bf35c760877976338f9e4648f1c020b1e3fc50d8a94a26",
+      "status": "published"
+    }
+  ],
+  "category": "L1 official-source backfill; latest affected feature group exactly equal",
+  "completed_at": "2026-09-06T14:56:23.525403+08:00",
+  "latest_file_unchanged": true,
+  "rows_added": 7222,
+  "db_scope": "Ownership history is not an ingest_all DuckDB table. API/ML select unchanged latest CSV.",
+  "status": "PASS"
+}

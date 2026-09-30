@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-05-08T21:38:45",
+  "step2_comparison_csv": "F:\\stock\\ml\\reports\\audit002_step2_feature_ic_20260508_comparison.csv",
+  "monthly_csv": "F:\\stock\\ml\\reports\\audit002_step3_lambdarank_20260508_monthly.csv",
+  "fold_top30_csv": "F:\\stock\\ml\\reports\\audit002_step3_lambdarank_20260508_fold_top30.csv",
+  "calibration_deciles_csv": "F:\\stock\\ml\\reports\\audit002_step3_lambdarank_20260508_calibration_deciles.csv",
+  "comparison_csv": "F:\\stock\\ml\\reports\\audit002_step3_lambdarank_20260508_comparison.csv",
+  "calibration_png": "F:\\stock\\ml\\reports\\audit002_step3_lambdarank_20260508_calibration.png",
+  "report": "F:\\stock\\ml\\reports\\audit002_step3_lambdarank_20260508.md",
+  "label_bins": 5,
+  "group_definition": "one rebalance month snapshot = all tickers in that month",
+  "comparison": [
+    {
+      "model": "Before_baseline",
+      "universe_ic_mean": 0.0431209033940459,
+      "universe_ic_t_stat": 2.4270798766531803,
+      "top30_internal_ic_mean": -0.0350517410725176,
+      "top30_internal_ic_t_stat": -0.7028357886774584,
+      "positive_deciles": 4,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.4,
+      "max_consecutive_negative_deciles": 4,
+      "calibration_spearman": 0.406060606060606,
+      "top30_excess_mean": 0.0013836281142857,
+      "ndcg_at_30": NaN
+    },
+    {
+      "model": "After_feature_cleanup",
+      "universe_ic_mean": 0.0125235346780479,
+      "universe_ic_t_stat": 0.6660982531565729,
+      "top30_internal_ic_mean": -0.0116283000238141,
+      "top30_internal_ic_t_stat": -0.2905555865539242,
+      "positive_deciles": 5,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.5,
+      "max_consecutive_negative_deciles": 2,
+      "calibration_spearman": 0.3575757575757575,
+      "top30_excess_mean": 0.0036603779132877,
+      "ndcg_at_30": NaN
+    },
+    {
+      "model": "LambdaRank",
+      "universe_ic_mean": 0.004869266686507,
+      "universe_ic_t_stat": 0.26244180759657526,
+      "top30_internal_ic_mean": 0.06892190381222678,
+      "top30_internal_ic_t_stat": 1.6636056164675745,
+      "positive_deciles": 8,
+      "total_deciles": 10,
+      "positive_decile_pct": 0.8,
+      "max_consecutive_negative_deciles": 2,
+      "calibration_spearman": 0.5272727272727272,
+      "top30_excess_mean": 0.010189770298893563,
+      "ndcg_at_30": 0.4630081191793424
+    }
+  ],
+  "lambda_calibration": {
+    "positive_deciles": 8,
+    "total_deciles": 10,
+    "positive_decile_pct": 0.8,
+    "max_consecutive_negative_deciles": 2,
+    "monotonic_spearman": 0.5272727272727272
+  },
+  "verdict": "LambdaRank turns Top30 IC positive but Universe IC is below 0.03. Recommendation: evaluate two-stage architecture: Stage 1 regression screen, Stage 2 LambdaRank reorder."
+}

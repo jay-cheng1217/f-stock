@@ -1,0 +1,646 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-09-06T13:35:16.371038+08:00",
+  "status": "EXPLAINED_INTERNAL_COUNTER_CHANGE",
+  "scope": "Read-only SQLite mode=ro transactions and scheduler/log inspection. No database writes, collector/pipeline execution or private text output.",
+  "snapshot_copied_at": "2026-09-06T12:54:09.520861",
+  "initial_source_manifest": {
+    "path": "kol_tracker.db",
+    "size": 2441216,
+    "sha256": "d2097a78403d17925228e39d366031205ef8b4f61962e7656cab1e37e1f29098",
+    "copy_method": "sqlite_backup"
+  },
+  "file_before": {
+    "source": {
+      "path": "F:\\stock\\kol_tracker.db",
+      "bytes": 2441216,
+      "mtime_ns": 1788671702777684100,
+      "mtime_local": "2026-09-06T13:15:02.777684+08:00",
+      "sha256": "5bf0b56c684b032f05da693ff27b9735a4a3731d6c861f294e97de742b3166eb"
+    },
+    "backup": {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\kol_tracker.db",
+      "bytes": 2441216,
+      "mtime_ns": 1788670449335579100,
+      "mtime_local": "2026-09-06T12:54:09.335579+08:00",
+      "sha256": "e3d65f6a45a173350e409f0f7cdfcd5fca37af8830e847c63184c1c81a616dd6"
+    }
+  },
+  "file_after": {
+    "source": {
+      "path": "F:\\stock\\kol_tracker.db",
+      "bytes": 2441216,
+      "mtime_ns": 1788671702777684100,
+      "mtime_local": "2026-09-06T13:15:02.777684+08:00",
+      "sha256": "5bf0b56c684b032f05da693ff27b9735a4a3731d6c861f294e97de742b3166eb"
+    },
+    "backup": {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\kol_tracker.db",
+      "bytes": 2441216,
+      "mtime_ns": 1788670449335579100,
+      "mtime_local": "2026-09-06T12:54:09.335579+08:00",
+      "sha256": "e3d65f6a45a173350e409f0f7cdfcd5fca37af8830e847c63184c1c81a616dd6"
+    }
+  },
+  "files_unchanged_during_audit": true,
+  "databases": {
+    "source": {
+      "schema_sql_sha256": "868e6a798f8f4d2a4c6e361197d1916e16296979ad63238b12590250adbb40f9",
+      "tables": {
+        "mentions": {
+          "rows": 608,
+          "all_column_row_multiset_sha256": "bfd965cf6b5390f5811537fb898965a19495e8787345dcbaebf95f9517239452",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key_order": 1
+            },
+            {
+              "name": "post_id",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "symbol",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "market",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "stance",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "stance_source",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "confidence",
+              "type": "REAL",
+              "primary_key_order": 0
+            },
+            {
+              "name": "reason_summary",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "classified_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "classified_at": {
+              "earliest": "2026-07-02T15:16:20.347776+00:00",
+              "latest": "2026-09-02T23:00:46.611457+00:00",
+              "distinct": 54
+            }
+          }
+        },
+        "posts": {
+          "rows": 347,
+          "all_column_row_multiset_sha256": "92f7224664248ff0645f14d3a1db55c3f1ca6a650c17724878a256842b03a7a0",
+          "columns": [
+            {
+              "name": "id",
+              "type": "TEXT",
+              "primary_key_order": 1
+            },
+            {
+              "name": "source_id",
+              "type": "INTEGER",
+              "primary_key_order": 0
+            },
+            {
+              "name": "text",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "url",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "posted_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "collected_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "raw_json",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "classified_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "posted_at": {
+              "earliest": "2026-06-20T03:52:23+00:00",
+              "latest": "2026-09-02T14:16:19+00:00",
+              "distinct": 347
+            },
+            "collected_at": {
+              "earliest": "2026-07-02T15:08:27.675834+00:00",
+              "latest": "2026-09-02T15:15:01.917987+00:00",
+              "distinct": 173
+            },
+            "classified_at": {
+              "earliest": "2026-07-02T15:16:20.347776+00:00",
+              "latest": "2026-09-02T23:00:46.611457+00:00",
+              "distinct": 55
+            }
+          }
+        },
+        "price_history": {
+          "rows": 30134,
+          "all_column_row_multiset_sha256": "51f3f44b386053f095d4b2e30c2d3061390272a36afd674641eac3de054eeeee",
+          "columns": [
+            {
+              "name": "symbol",
+              "type": "TEXT",
+              "primary_key_order": 1
+            },
+            {
+              "name": "date",
+              "type": "TEXT",
+              "primary_key_order": 2
+            },
+            {
+              "name": "close",
+              "type": "REAL",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "date": {
+              "earliest": "2025-07-01",
+              "latest": "2026-09-04",
+              "distinct": 367
+            }
+          }
+        },
+        "sources": {
+          "rows": 1,
+          "all_column_row_multiset_sha256": "5dc23fd2a2194b038c00126d295c6388a23e12f42aeb8dc6312401e26c4b92e2",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key_order": 1
+            },
+            {
+              "name": "grp",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "platform",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "username",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "nickname",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "added_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "added_at": {
+              "earliest": "2026-07-02T15:08:27.675198+00:00",
+              "latest": "2026-07-02T15:08:27.675198+00:00",
+              "distinct": 1
+            }
+          }
+        },
+        "sqlite_sequence": {
+          "rows": 2,
+          "all_column_row_multiset_sha256": "556878227533c3c069f5ea370d46b7dfba72eb774d258a2b3cd8c70a63245a15",
+          "columns": [
+            {
+              "name": "name",
+              "type": "",
+              "primary_key_order": 0
+            },
+            {
+              "name": "seq",
+              "type": "",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {}
+        },
+        "symbol_meta": {
+          "rows": 152,
+          "all_column_row_multiset_sha256": "dbba753b8af27218b86616d9daab19be25df677f6e5900dbdb88aba741cc5299",
+          "columns": [
+            {
+              "name": "symbol",
+              "type": "TEXT",
+              "primary_key_order": 1
+            },
+            {
+              "name": "name",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "industry",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "enriched_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "enriched_at": {
+              "earliest": "2026-07-02T15:52:29.971120+00:00",
+              "latest": "2026-09-02T23:01:07.624535+00:00",
+              "distinct": 26
+            }
+          }
+        }
+      },
+      "journal_mode": "delete",
+      "schema_version": 6,
+      "user_version": 0,
+      "sqlite_sequence": {
+        "mentions": 608,
+        "sources": 1374
+      },
+      "sidecars_present": []
+    },
+    "backup": {
+      "schema_sql_sha256": "868e6a798f8f4d2a4c6e361197d1916e16296979ad63238b12590250adbb40f9",
+      "tables": {
+        "mentions": {
+          "rows": 608,
+          "all_column_row_multiset_sha256": "bfd965cf6b5390f5811537fb898965a19495e8787345dcbaebf95f9517239452",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key_order": 1
+            },
+            {
+              "name": "post_id",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "symbol",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "market",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "stance",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "stance_source",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "confidence",
+              "type": "REAL",
+              "primary_key_order": 0
+            },
+            {
+              "name": "reason_summary",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "classified_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "classified_at": {
+              "earliest": "2026-07-02T15:16:20.347776+00:00",
+              "latest": "2026-09-02T23:00:46.611457+00:00",
+              "distinct": 54
+            }
+          }
+        },
+        "posts": {
+          "rows": 347,
+          "all_column_row_multiset_sha256": "92f7224664248ff0645f14d3a1db55c3f1ca6a650c17724878a256842b03a7a0",
+          "columns": [
+            {
+              "name": "id",
+              "type": "TEXT",
+              "primary_key_order": 1
+            },
+            {
+              "name": "source_id",
+              "type": "INTEGER",
+              "primary_key_order": 0
+            },
+            {
+              "name": "text",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "url",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "posted_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "collected_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "raw_json",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "classified_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "posted_at": {
+              "earliest": "2026-06-20T03:52:23+00:00",
+              "latest": "2026-09-02T14:16:19+00:00",
+              "distinct": 347
+            },
+            "collected_at": {
+              "earliest": "2026-07-02T15:08:27.675834+00:00",
+              "latest": "2026-09-02T15:15:01.917987+00:00",
+              "distinct": 173
+            },
+            "classified_at": {
+              "earliest": "2026-07-02T15:16:20.347776+00:00",
+              "latest": "2026-09-02T23:00:46.611457+00:00",
+              "distinct": 55
+            }
+          }
+        },
+        "price_history": {
+          "rows": 30134,
+          "all_column_row_multiset_sha256": "51f3f44b386053f095d4b2e30c2d3061390272a36afd674641eac3de054eeeee",
+          "columns": [
+            {
+              "name": "symbol",
+              "type": "TEXT",
+              "primary_key_order": 1
+            },
+            {
+              "name": "date",
+              "type": "TEXT",
+              "primary_key_order": 2
+            },
+            {
+              "name": "close",
+              "type": "REAL",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "date": {
+              "earliest": "2025-07-01",
+              "latest": "2026-09-04",
+              "distinct": 367
+            }
+          }
+        },
+        "sources": {
+          "rows": 1,
+          "all_column_row_multiset_sha256": "5dc23fd2a2194b038c00126d295c6388a23e12f42aeb8dc6312401e26c4b92e2",
+          "columns": [
+            {
+              "name": "id",
+              "type": "INTEGER",
+              "primary_key_order": 1
+            },
+            {
+              "name": "grp",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "platform",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "username",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "nickname",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "added_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "added_at": {
+              "earliest": "2026-07-02T15:08:27.675198+00:00",
+              "latest": "2026-07-02T15:08:27.675198+00:00",
+              "distinct": 1
+            }
+          }
+        },
+        "sqlite_sequence": {
+          "rows": 2,
+          "all_column_row_multiset_sha256": "08bbf0581fd6ea1e71f28937877312f44e2a16436000f2b62f3eacf0671c809b",
+          "columns": [
+            {
+              "name": "name",
+              "type": "",
+              "primary_key_order": 0
+            },
+            {
+              "name": "seq",
+              "type": "",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {}
+        },
+        "symbol_meta": {
+          "rows": 152,
+          "all_column_row_multiset_sha256": "dbba753b8af27218b86616d9daab19be25df677f6e5900dbdb88aba741cc5299",
+          "columns": [
+            {
+              "name": "symbol",
+              "type": "TEXT",
+              "primary_key_order": 1
+            },
+            {
+              "name": "name",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "industry",
+              "type": "TEXT",
+              "primary_key_order": 0
+            },
+            {
+              "name": "enriched_at",
+              "type": "TEXT",
+              "primary_key_order": 0
+            }
+          ],
+          "timestamps": {
+            "enriched_at": {
+              "earliest": "2026-07-02T15:52:29.971120+00:00",
+              "latest": "2026-09-02T23:01:07.624535+00:00",
+              "distinct": 26
+            }
+          }
+        }
+      },
+      "journal_mode": "delete",
+      "schema_version": 1,
+      "user_version": 0,
+      "sqlite_sequence": {
+        "mentions": 608,
+        "sources": 1373
+      },
+      "sidecars_present": []
+    }
+  },
+  "table_comparison": {
+    "mentions": {
+      "row_counts_equal": true,
+      "all_column_content_equal": true,
+      "columns_equal": true,
+      "timestamps_equal": true
+    },
+    "posts": {
+      "row_counts_equal": true,
+      "all_column_content_equal": true,
+      "columns_equal": true,
+      "timestamps_equal": true
+    },
+    "price_history": {
+      "row_counts_equal": true,
+      "all_column_content_equal": true,
+      "columns_equal": true,
+      "timestamps_equal": true
+    },
+    "sources": {
+      "row_counts_equal": true,
+      "all_column_content_equal": true,
+      "columns_equal": true,
+      "timestamps_equal": true
+    },
+    "sqlite_sequence": {
+      "row_counts_equal": true,
+      "all_column_content_equal": false,
+      "columns_equal": true,
+      "timestamps_equal": true
+    },
+    "symbol_meta": {
+      "row_counts_equal": true,
+      "all_column_content_equal": true,
+      "columns_equal": true,
+      "timestamps_equal": true
+    }
+  },
+  "business_tables_content_equal": true,
+  "schema_sql_equal": true,
+  "internal_sequence_delta": {
+    "mentions": 0,
+    "sources": 1
+  },
+  "byte_comparison": {
+    "source_vs_backup_differing_offsets": [
+      26,
+      27,
+      43,
+      94,
+      95,
+      16355
+    ],
+    "source_header_counters": {
+      "24": 6519,
+      "40": 6,
+      "92": 6519
+    },
+    "backup_header_counters": {
+      "24": 1,
+      "40": 1,
+      "92": 1
+    },
+    "memory_only_prior_source_reconstruction_matches_manifest": true,
+    "method": "Backup body plus current source 100-byte header with the four-byte counters at offsets 24 and 92 each decremented by one. Reconstructed only in memory, never written."
+  },
+  "provenance": {
+    "scheduled_task": "SerenityFeedCollector",
+    "last_run_time_local": "2026-09-06T13:15:01+08:00",
+    "last_task_result": 0,
+    "next_run_time_local": "2026-09-06T14:15:00+08:00",
+    "action": "F:/stock/scripts/serenity_feed_collector.py",
+    "safe_log_lines": [
+      "2026-09-06 11:15:02 feed=80 new=0 total=347",
+      "2026-09-06 12:15:02 feed=80 new=0 total=347",
+      "2026-09-06 13:15:02 feed=80 new=0 total=347"
+    ],
+    "collector_code": "sources INTEGER PRIMARY KEY AUTOINCREMENT; collect() performs INSERT OR IGNORE into sources and commits each successful poll, even when new=0.",
+    "backup_code": "scripts/pipeline_acceptance.py opens source mode=ro and uses src.backup(dst). input_manifest records source-file SHA, not backup-file SHA.",
+    "attribution": "High confidence: independent 13:15 scheduled poll matches source mtime, log, and one sources sequence increment. No per-process OS write trace was captured.",
+    "wal_assessment": "Both databases journal_mode=delete; no WAL/SHM/journal sidecar observed. WAL checkpoint has no supporting evidence here."
+  },
+  "conclusion": "All five business tables (31,242 rows), schema definitions and latest timestamps match exactly. Only internal sqlite_sequence.sources differs, 1373 to 1374; backup header differences are separate. This is not a changed post, classification, price or identity.",
+  "limits": [
+    "Logical hashes cover all columns, but message text, identity values, URLs and raw JSON are not emitted or retained in the report.",
+    "Original baseline is a manifest hash rather than a byte-for-byte preserved source; the pure-memory reconstruction matches that hash exactly.",
+    "Hourly new=0 does not prove external content completeness: latest post/collection data still dates to 9/2."
+  ]
+}

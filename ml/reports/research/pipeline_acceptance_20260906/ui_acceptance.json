@@ -1,0 +1,318 @@
+{
+  "status": "PASS_WITH_DECLARED_BOUNDARIES",
+  "generated_at": "2026-09-06T14:02:28.393622+08:00",
+  "scope": "Isolated canonical dashboard and dry-run email composer; browser layout/semantics only",
+  "workspace": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+  "artifacts": {
+    "dashboard": {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\reports\\entry_dashboard_latest.html",
+      "bytes": 9363885,
+      "sha256": "60719d3441c4c980849e313e6ddf5e52a74e583b55db400677f09bd079a37d4e",
+      "hash_scope": "exact file bytes"
+    },
+    "email_final": {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\logs\\acceptance_email.html",
+      "bytes": 22352,
+      "sha256": "4157930ff71c158279be29f2b144825d65330d8b334d6f9acbe485f2f53d2c00",
+      "hash_scope": "exact file bytes"
+    },
+    "email_before_mobile_layout": {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_email_before_20260906.html",
+      "bytes": 18638,
+      "sha256": "e1e49f4de319e8e6cccd8aa2c84e0c19becb6c317f01a8a1bf66d3dcfca9fd90",
+      "hash_scope": "exact file bytes"
+    },
+    "canonical": {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\logs\\entry_list_20260907.json",
+      "bytes": 12901,
+      "sha256": "72a70b0716471505bc70427c7b99d8236eb052e2692b8c31c62165672ab52147",
+      "hash_scope": "exact file bytes"
+    },
+    "dashboard_qa_snapshot": {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_dashboard_20260906.html",
+      "bytes": 9363885,
+      "sha256": "acda91fdd6c15dff74a72525a3a9cd3d174affe24cf7a9b6118be75e7e6b5926",
+      "hash_scope": "exact file bytes; actual browser screenshot input"
+    }
+  },
+  "dashboard": {
+    "desktop": {
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "cardCount": 18,
+      "guard": "⚠️ 模型風險檢查警示：名單風險攔截比例偏高、模型判斷分歧偏高\n這是模型預測的風險診斷；Champion 是否正式放行，以當日正式訊號名單（unified）為準。rere 觀察仍依自身型態、失效價與人工確認判斷。\n查看原始診斷",
+      "dates": [
+        "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "型態截至 2026-09-04 · 模型截至 2026-09-04"
+      ],
+      "rere": [
+        "3605 宏致",
+        "3189 景碩",
+        "3066 李洲",
+        "2364 倫飛",
+        "3176 基亞",
+        "6472 保瑞"
+      ],
+      "allPending": true,
+      "collapsed": true
+    },
+    "mobile": {
+      "viewport": 390,
+      "scrollWidth": 390,
+      "cardCount": 18,
+      "overflowCards": 0
+    },
+    "trade_date": "2026-09-07",
+    "as_of_date": "2026-09-04",
+    "collapse_expanded": {
+      "detailsOpen": true,
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    "collapse_closed_after_check": true,
+    "console_errors": 0,
+    "console_warnings": 0,
+    "visual_review": "Desktop three-column/mobile one-column cards readable; dated last close and pending intraday action visible.",
+    "strategy_boundaries": [
+      "18 canonical candidates are observation, not 18 production buys; all 18 show pending intraday confirmation.",
+      "rere six system-proxy candidates, 60-trading-day observation; not KOL personal endorsements; model not veto.",
+      "Main lane uses 20D context; card sources and model sources are both 2026-09-04.",
+      "July 3 whale radar visibly stale against August 28 minimum; current rere card is not blocked by that stale overlay.",
+      "Prediction guard is model risk diagnosis; Champion production permission belongs to unified, which selected 2603."
+    ],
+    "fixture_vs_actual": "Unknown/watch cannot turn green is covered by focused fixtures; actual final 18 rows have dated OK data and remain pending intraday.",
+    "later_runner_rebuild_comparison": {
+      "equal_except_meta_generated": true,
+      "qa_snapshot_generated": "2026-09-06 13:41",
+      "runner_artifact_generated": "2026-09-06 13:46",
+      "note": "All other HTML characters identical after replacing only meta.generated timestamps; no additional UI/data change."
+    }
+  },
+  "email": {
+    "desktop": {
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "tableHeight": 1392.171875,
+      "detailWidth": 725,
+      "mainRows": 5,
+      "detailRows": 5,
+      "visibleLabels": 0,
+      "scripts": 0
+    },
+    "mobile": {
+      "viewport": 390,
+      "scrollWidth": 390,
+      "tableHeight": 3598.65625,
+      "mainRows": 5,
+      "detailRows": 5,
+      "detailWidth": 346,
+      "visibleLabels": 30,
+      "scripts": 0,
+      "weightLabel": true,
+      "concentrationWarning": true,
+      "retired": true,
+      "falseFresh": false,
+      "falseFormal": false,
+      "datedResearch": true,
+      "separateProduction": true
+    },
+    "before_mobile_table_height_px": 7041.875,
+    "height_reduction_percent": 48.9,
+    "content_preservation": {
+      "sameSevenFieldValuesAndOrder": true,
+      "otherSectionsUnchanged": true,
+      "stocks": [
+        "2465麗臺",
+        "2464盟立",
+        "6530創威",
+        "6640均華",
+        "6224聚鼎"
+      ],
+      "fieldCounts": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ]
+    },
+    "visual_review": "Six-field main row plus full-width conclusion; mobile genuine HTML labels above values, readable prose instead of two/three characters per line.",
+    "console_errors_final_load": 0,
+    "console_warnings_final_load": 0,
+    "initial_preview_only_warning": "An earlier initial preview request returned favicon.ico 404; no application JavaScript error, final reload console is empty.",
+    "delivery": "NOT_RUN",
+    "mime": "UTF-8/base64 plain+HTML verified by guarded real-composer dry run.",
+    "capital_semantics": "Signal allocation cap is a total-position cap, not merely a candidate percentage. An empty one-signal book can reserve 99.85% pending capital; display remains 99.9%. This is not a fill or current existing Champion holding.",
+    "compatibility": "Chromium 1440x1080 and 390x844 only; no Gmail/Outlook/native client delivery test. Real HTML labels and simple class/id/media display avoid reliance on pseudo-elements or absolute positioning; word-wrap fallback retained.",
+    "official_reference": "https://developers.google.com/workspace/gmail/design/css"
+  },
+  "build_audit": {
+    "dashboard": {
+      "command": "C:\\Users\\cheng\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -B -X utf8 scripts/entry_dashboard.py --date 20260907",
+      "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+      "STOCK_BASE_DIR": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+      "session_id": 20385,
+      "exit_code": 0,
+      "prebuild_hash_marker_time": "2026-09-06T13:41:35.926466+08:00",
+      "output_mtime": "2026-09-06T13:42:02.790707+08:00",
+      "marker_to_output_seconds": 26.864,
+      "duration_scope": "Derived marker-to-file interval, not a recorded precise command stopwatch duration.",
+      "stdout": "entry dashboard v2 -> isolated ml/reports/entry_dashboard_latest.html (source entry_list_20260907.json, 9144 KB)",
+      "side_effect_review": "main reads existing entry JSON; writes OUT HTML only. No canonical/watchlist/name-list/kol-dashboard/ledger writes.",
+      "input_hash_comparison": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\logs\\entry_list_20260907.json",
+          "before": "72A70B0716471505BC70427C7B99D8236EB052E2692B8C31C62165672AB52147",
+          "after": "72A70B0716471505BC70427C7B99D8236EB052E2692B8C31C62165672AB52147",
+          "unchanged": true
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\logs\\entry_watchlist.json",
+          "before": "A5338D955B09046EC0B16F3A9625B7955C763AAE07DC722E474E6078745F932F",
+          "after": "A5338D955B09046EC0B16F3A9625B7955C763AAE07DC722E474E6078745F932F",
+          "unchanged": true
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\reports\\entry_filter_ledger.csv",
+          "before": "6E0CBD97BED5D5944AB6AE3D4D9004089331C7B92E3E9B912D712AD66EE34519",
+          "after": "6E0CBD97BED5D5944AB6AE3D4D9004089331C7B92E3E9B912D712AD66EE34519",
+          "unchanged": true
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\reports\\rere_lane_ledger.csv",
+          "before": "6BCD10C56C2FECB86DC6E86AAB9EB798B4F591E2A9759E162FEF05EA33CB41FD",
+          "after": "6BCD10C56C2FECB86DC6E86AAB9EB798B4F591E2A9759E162FEF05EA33CB41FD",
+          "unchanged": true
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\reports\\shadow_dataA_ledger.csv",
+          "before": "C0DD41B805F1080BA0CACA9A9FBA285E9F2BFD5146614EB3087F5BFAE2C70992",
+          "after": "C0DD41B805F1080BA0CACA9A9FBA285E9F2BFD5146614EB3087F5BFAE2C70992",
+          "unchanged": true
+        }
+      ]
+    },
+    "email": {
+      "label": "email_observation_html_labels",
+      "started": "2026-09-06T13:58:11.620984",
+      "seconds": 2.25,
+      "command": [
+        "scripts/pipeline_acceptance_checks.py",
+        "email"
+      ],
+      "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\email_observation_html_labels.log",
+      "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+    },
+    "later_dashboard_runner": {
+      "label": "dashboard_banner_verified",
+      "started": "2026-09-06T13:46:42.244778",
+      "seconds": 22.08,
+      "command": [
+        "scripts/entry_dashboard.py",
+        "--date",
+        "20260907"
+      ],
+      "cwd": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "log": "F:\\stock\\output\\pipeline_acceptance_20260906\\dashboard_banner_verified.log",
+      "note": "Process exit is not semantic or full scheduler acceptance; inspect stage outputs and gates."
+    }
+  },
+  "tests": {
+    "command": "python -B -X utf8 -m pytest tests/test_entry_dashboard_cards.py tests/test_send_daily_email_encoding.py tests/test_ai_summary_context.py tests/test_email_observation_semantics.py -q",
+    "result": "32 passed in 1.81s",
+    "focus": "Dated cards, stale/unknown evidence, model/unified scope, observed OHLC versus intraday fill, allocation cap, retired ChipK, MIME and row/value preservation."
+  },
+  "changed_source_hashes": [
+    {
+      "path": "F:\\stock\\scripts\\entry_dashboard.py",
+      "bytes": 106276,
+      "sha256": "34ae59f5f74b3954db951e54578d760be1344cefc533ab3006ed687596b26398",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\scripts\\send_daily_email.py",
+      "bytes": 96103,
+      "sha256": "2a225ce09054903c9911a8b705bae15cacf4ad01c3f7994f70c998393d00b0b8",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\scripts\\ai_summary.py",
+      "bytes": 26460,
+      "sha256": "a1038914a857bb93b6db3e8e9ca3f50f6412850c3dbe8c32506314a69bf69d40",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\tests\\test_email_observation_semantics.py",
+      "bytes": 4069,
+      "sha256": "b1a77ec8331e62c7698c32ea6e36d8ac41c56612b04547b511cce2bbd96a477c",
+      "hash_scope": "exact file bytes"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_dashboard_desktop_20260906.png",
+      "bytes": 138709,
+      "sha256": "11a4879370bfff6ea045f6f6b6847ad7d00924996da9602b2295a6c739aed53b",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_dashboard_mobile_20260906.png",
+      "bytes": 52814,
+      "sha256": "a848b7eb94244a7ed7a97167c54709ed6aa3c505173522d93b7f7fce4bb43297",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_dashboard_mobile_card_20260906.png",
+      "bytes": 35563,
+      "sha256": "daa0e7630dedc914aeb784c79181f60c96696653e4994148fcd7b96704813200",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_email_desktop_20260906.png",
+      "bytes": 116250,
+      "sha256": "c4b01b3a99f6a2463296cc14f72d80f01f04b481fba78870f869d2b39042e6c0",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_email_desktop_table_20260906.png",
+      "bytes": 119592,
+      "sha256": "cded791bab84624636cd6a2de7edb131a2cd2e27160079e9508462bdbf3d4ecd",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_email_mobile_20260906.png",
+      "bytes": 50588,
+      "sha256": "10a22fd096fb7ab3f48e2a28d1c423049147ffced2488b7434ef87b964e0abe2",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_email_mobile_table_20260906.png",
+      "bytes": 36785,
+      "sha256": "dc5d02d2f6da523cdcce626dea4e239f9e9c964849d7c7c083cb89b7a6ab8151",
+      "hash_scope": "exact file bytes"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\pipeline_acceptance_email_mobile_table_before_20260906.png",
+      "bytes": 30324,
+      "sha256": "fb099163c4e307fddc1d6523208298931d9b5354ecaa6241fdda4af55554ff0d",
+      "hash_scope": "exact file bytes"
+    }
+  ],
+  "not_run_or_unresolved": [
+    "No SMTP delivery, production publish, service restart, scheduler trigger or independent commit by this subagent.",
+    "Fixed Claude Artifact URL update unavailable through current authenticated UI/tools; root owns existing-channel publish.",
+    "Live Web remains old process after Windows access denied; isolated ASGI verification cannot prove live process loaded repaired code. Root owns deployment acceptance.",
+    "Capital concentration policy remains an explicit risk; presentation changes do not alter allocator, selection, thresholds or current holdings."
+  ],
+  "post_review_web_deployment": {
+    "status": "PASS_LIVE_WEB_VERIFIED",
+    "verified_at": "2026-09-06T14:15:27.918572+08:00",
+    "pid": 13804,
+    "evidence": "web_live_deployment.json"
+  }
+}

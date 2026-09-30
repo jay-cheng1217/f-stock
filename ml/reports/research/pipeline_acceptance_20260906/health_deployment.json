@@ -1,0 +1,43 @@
+{
+  "status": "PASS_LIVE_WEB_VERIFIED",
+  "verified_at": "2026-09-06T14:15:27.918572+08:00",
+  "pid": 13804,
+  "port": 8001,
+  "code_at_start_commit": "23eb8a83",
+  "health_fix_commit": "61db15ca",
+  "daily_health": "ok",
+  "daily_checks_passed": 8,
+  "homepage_http": 200,
+  "stock_http": 200,
+  "cloudflared_pid": 3624,
+  "integrity_validation": {
+    "checked_at": "2026-09-06T14:15:12+08:00",
+    "model_and_metadata_sha_matches": 10,
+    "canonical_watchlist_and_ledger_sha_matches": 6,
+    "mismatches": 0,
+    "read_access_errors": 0,
+    "method": "Independent read-only comparison with production_model_contract and ui_production_rebuild after hashes"
+  },
+  "training_or_ingest_observed": false,
+  "evidence": "web_live_deployment.json",
+  "prior_blocked_attempt": {
+    "date": "2026-09-06",
+    "status": "BLOCKED_OS_ACCESS_DENIED",
+    "fix_commit": "61db15ca",
+    "attempt": "Stop only the verified Web listener PID 21164 before starting the patched app with the same host/port",
+    "stop_result": "Cannot stop process python (21164): access denied",
+    "new_service_started": false,
+    "listener_after_attempt": {
+      "address": "0.0.0.0",
+      "port": 8001,
+      "pid": 21164
+    },
+    "cloudflared_pid_before_and_after": 3624,
+    "production_duckdb": {
+      "bytes": 1003237376,
+      "mtime_utc_before_and_after": "2026-09-05T04:35:00.8424426Z"
+    },
+    "isolated_validation": "acceptance_health.json: actual ASGI auth/route and shared RW database passed; no live reload or lifespan claim",
+    "required_step": "An administrator must restart the existing Web service, then authenticate GET /api/pipeline/status. No training or tunnel restart is required."
+  }
+}

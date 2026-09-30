@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "changed": [
+    "ml/reports/entry_dashboard_latest.html"
+  ],
+  "before": {
+    "logs/entry_list_20260907.json": "02f657a10432073ac411c75039accd423f776e4289f0970f65774e2a06fdf65e",
+    "logs/entry_watchlist.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+    "ml/reports/rere_lane_ledger.csv": "7bfb4a565fdd41ac08a87e1aa8ac131d3cddfa00b7e5568137f67eef6d221e10",
+    "ml/reports/shadow_dataA_ledger.csv": "bfe4f53aff7650df797453ea3d9185c1cd283945b59ba57327631f1465ce624b",
+    "ml/reports/entry_filter_ledger.csv": "6e0cbd97bed5d5944ab6ae3d4d9004089331c7b92e3e9b912d712ad66ee34519",
+    "paper_portfolio_v2_champion.db": "54fd2d9cdc8d4ecc2e0a99c915d2097e6b9af50b9de030c1c3ad52196482f7f7",
+    "ml/reports/entry_dashboard_latest.html": "0d3e7bd4853d480d431e73e21f2e9cb6477aa744faa748b88f756af94cc49732"
+  },
+  "after": {
+    "logs/entry_list_20260907.json": "02f657a10432073ac411c75039accd423f776e4289f0970f65774e2a06fdf65e",
+    "logs/entry_watchlist.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+    "ml/reports/rere_lane_ledger.csv": "7bfb4a565fdd41ac08a87e1aa8ac131d3cddfa00b7e5568137f67eef6d221e10",
+    "ml/reports/shadow_dataA_ledger.csv": "bfe4f53aff7650df797453ea3d9185c1cd283945b59ba57327631f1465ce624b",
+    "ml/reports/entry_filter_ledger.csv": "6e0cbd97bed5d5944ab6ae3d4d9004089331c7b92e3e9b912d712ad66ee34519",
+    "paper_portfolio_v2_champion.db": "54fd2d9cdc8d4ecc2e0a99c915d2097e6b9af50b9de030c1c3ad52196482f7f7",
+    "ml/reports/entry_dashboard_latest.html": "05a7af45c6d8345e62c11b42427925106590e0395105ebb4d00fd646edfd042d"
+  },
+  "scope": "UI-only regeneration from existing 9/7 canonical; watchlist and trading ledgers unchanged"
+}

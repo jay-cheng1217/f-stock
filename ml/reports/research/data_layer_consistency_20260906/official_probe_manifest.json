@@ -1,0 +1,666 @@
+[
+  {
+    "label": "foreign_20220915_TWSE",
+    "url": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?response=json&date=20220915&selectType=ALLBUT0999",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:43:53.056728",
+    "http_status": 200,
+    "final_url": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?response=json&date=20220915&selectType=ALLBUT0999",
+    "bytes": 140596,
+    "transport": "requests",
+    "json_type": "dict",
+    "response_keys": [
+      "stat",
+      "date",
+      "selectType",
+      "title",
+      "hints",
+      "fields",
+      "data",
+      "notes",
+      "total"
+    ],
+    "response_meta": {
+      "stat": "OK",
+      "date": "20220915",
+      "selectType": "ALLBUT0999",
+      "title": "111年09月15日 外資及陸資投資持股統計",
+      "hints": "單位:股",
+      "notes": "一、與前日異動原因以空白及數字2,3,4,5表示，其代表意義說明如下：\n'空白'係指外陸資於集中市場交易所產生之股數異動，不包含外陸資配認股數、外資原始股東出售股數、存託憑證發行等異動。\n  '2'係上市公司因股本變動申報最近一次除權交易日或股東會外陸資持股情形、因依規定之固定基準日申報外陸資持股情形、因前次申報資料有誤予以更新、或因發行海外有價證券、合併、公開收購等申報外陸資持股情形。\n  '3'係指非前項因素所產生之持股變動，如海外存託憑證經證期局核可尚未發行之預扣等。\n  '4'係依海外存託憑證流通餘額及外國人將海外存託憑證兌回普通股或將普通股再發行海外存託憑證情形更新外陸資持股數。\n  '5'係依上市公司每月申報國內海外有價證券轉換情形更新外陸資持股數。\n二、ETF證券代號第六碼為K、M、S、C者，表示該ETF以外幣交易。",
+      "total": 1151
+    },
+    "fields": [
+      "證券代號",
+      "證券名稱",
+      "國際證券編碼",
+      "發行股數",
+      "外資及陸資尚可投資股數",
+      "全體外資及陸資持有股數",
+      "外資及陸資尚可投資比率",
+      "全體外資及陸資持股比率",
+      "外資及陸資共用法令投資上限比率",
+      "陸資法令投資上限比率",
+      "與前日異動原因(註)",
+      "最近一次上市公司申報外資及陸資持股異動日期"
+    ],
+    "tables": [],
+    "data_rows": 1151,
+    "sample": [
+      [
+        "0050",
+        "元大台灣50",
+        "TW0000050004",
+        "2,139,000,000",
+        "1,985,014,366",
+        "153,985,634",
+        92.8,
+        7.19,
+        "100.00",
+        "100.00",
+        "",
+        "111/07/08"
+      ],
+      [
+        "0051",
+        "元大中型100",
+        "TW0000051002",
+        "14,500,000",
+        "14,415,892",
+        "84,108",
+        99.41,
+        0.58,
+        "100.00",
+        "100.00",
+        "",
+        "111/07/08"
+      ]
+    ],
+    "sha256": "2a5e3e28ea563d31694fc076c99e950b857441c63c5ddf01e31508d325d00da3"
+  },
+  {
+    "label": "foreign_20220915_TPEx",
+    "url": "https://www.tpex.org.tw/web/stock/3insti/qfii/qfii_result.php?l=zh-tw&d=111%2F09%2F15&t=D",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:43:54.370520",
+    "http_status": 200,
+    "final_url": "https://www.tpex.org.tw/web/stock/3insti/qfii/qfii_result.php?l=zh-tw&d=111%2F09%2F15&t=D",
+    "bytes": 72922,
+    "transport": "requests",
+    "json_type": "dict",
+    "response_keys": [
+      "tables",
+      "template",
+      "stat",
+      "date"
+    ],
+    "response_meta": {
+      "template": "/template/insti/qfii",
+      "stat": "ok",
+      "date": "20220915"
+    },
+    "fields": null,
+    "tables": [
+      {
+        "title": "櫃檯買賣股票僑外資及陸資持股比例排行表",
+        "fields": [
+          "排行",
+          "代號",
+          "名稱",
+          "發行股數(A)",
+          "僑外資及陸資尚可投資股數B=A*F-C",
+          "僑外資及陸資持有股數(C)",
+          "僑外資及陸資尚可投資比率(D=B/A)",
+          "僑外資及陸資持股比率(E=C/A)",
+          "法令投資上限比率(F)",
+          "備註"
+        ],
+        "rows": 803
+      }
+    ],
+    "data_rows": 0,
+    "sample": [
+      [
+        "1",
+        "8418",
+        "捷必勝-KY",
+        "78,359,000",
+        "7,902,780",
+        "70,456,220",
+        "10.09%",
+        "89.91%",
+        "100%",
+        ""
+      ],
+      [
+        "2",
+        "8455",
+        "大拓-KY",
+        "25,219,056",
+        "3,081,750",
+        "22,137,306",
+        "12.22%",
+        "87.78%",
+        "100%",
+        ""
+      ]
+    ],
+    "sha256": "1454dabc5f98dd4831fa4e997854b04e32501d4be66d3d9eea4bad61b40d3db4"
+  },
+  {
+    "label": "foreign_20220916_TWSE",
+    "url": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?response=json&date=20220916&selectType=ALLBUT0999",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:43:55.524224",
+    "http_status": 200,
+    "final_url": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?response=json&date=20220916&selectType=ALLBUT0999",
+    "bytes": 140806,
+    "transport": "requests",
+    "json_type": "dict",
+    "response_keys": [
+      "stat",
+      "date",
+      "selectType",
+      "title",
+      "hints",
+      "fields",
+      "data",
+      "notes",
+      "total"
+    ],
+    "response_meta": {
+      "stat": "OK",
+      "date": "20220916",
+      "selectType": "ALLBUT0999",
+      "title": "111年09月16日 外資及陸資投資持股統計",
+      "hints": "單位:股",
+      "notes": "一、與前日異動原因以空白及數字2,3,4,5表示，其代表意義說明如下：\n'空白'係指外陸資於集中市場交易所產生之股數異動，不包含外陸資配認股數、外資原始股東出售股數、存託憑證發行等異動。\n  '2'係上市公司因股本變動申報最近一次除權交易日或股東會外陸資持股情形、因依規定之固定基準日申報外陸資持股情形、因前次申報資料有誤予以更新、或因發行海外有價證券、合併、公開收購等申報外陸資持股情形。\n  '3'係指非前項因素所產生之持股變動，如海外存託憑證經證期局核可尚未發行之預扣等。\n  '4'係依海外存託憑證流通餘額及外國人將海外存託憑證兌回普通股或將普通股再發行海外存託憑證情形更新外陸資持股數。\n  '5'係依上市公司每月申報國內海外有價證券轉換情形更新外陸資持股數。\n二、ETF證券代號第六碼為K、M、S、C者，表示該ETF以外幣交易。",
+      "total": 1151
+    },
+    "fields": [
+      "證券代號",
+      "證券名稱",
+      "國際證券編碼",
+      "發行股數",
+      "外資及陸資尚可投資股數",
+      "全體外資及陸資持有股數",
+      "外資及陸資尚可投資比率",
+      "全體外資及陸資持股比率",
+      "外資及陸資共用法令投資上限比率",
+      "陸資法令投資上限比率",
+      "與前日異動原因(註)",
+      "最近一次上市公司申報外資及陸資持股異動日期"
+    ],
+    "tables": [],
+    "data_rows": 1151,
+    "sample": [
+      [
+        "0050",
+        "元大台灣50",
+        "TW0000050004",
+        "2,129,000,000",
+        "1,980,376,996",
+        "148,623,004",
+        93.01,
+        6.98,
+        "100.00",
+        "100.00",
+        "",
+        "111/07/08"
+      ],
+      [
+        "0051",
+        "元大中型100",
+        "TW0000051002",
+        "14,500,000",
+        "14,416,892",
+        "83,108",
+        99.42,
+        0.57,
+        "100.00",
+        "100.00",
+        "",
+        "111/07/08"
+      ]
+    ],
+    "sha256": "1da1b691d589d3324b2692f0f279b4b4fc5c97dea884af2e4e096619168a77e3"
+  },
+  {
+    "label": "foreign_20220916_TPEx",
+    "url": "https://www.tpex.org.tw/web/stock/3insti/qfii/qfii_result.php?l=zh-tw&d=111%2F09%2F16&t=D",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:43:56.826613",
+    "http_status": 200,
+    "final_url": "https://www.tpex.org.tw/web/stock/3insti/qfii/qfii_result.php?l=zh-tw&d=111%2F09%2F16&t=D",
+    "bytes": 72919,
+    "transport": "requests",
+    "json_type": "dict",
+    "response_keys": [
+      "tables",
+      "template",
+      "stat",
+      "date"
+    ],
+    "response_meta": {
+      "template": "/template/insti/qfii",
+      "stat": "ok",
+      "date": "20220916"
+    },
+    "fields": null,
+    "tables": [
+      {
+        "title": "櫃檯買賣股票僑外資及陸資持股比例排行表",
+        "fields": [
+          "排行",
+          "代號",
+          "名稱",
+          "發行股數(A)",
+          "僑外資及陸資尚可投資股數B=A*F-C",
+          "僑外資及陸資持有股數(C)",
+          "僑外資及陸資尚可投資比率(D=B/A)",
+          "僑外資及陸資持股比率(E=C/A)",
+          "法令投資上限比率(F)",
+          "備註"
+        ],
+        "rows": 803
+      }
+    ],
+    "data_rows": 0,
+    "sample": [
+      [
+        "1",
+        "8418",
+        "捷必勝-KY",
+        "78,359,000",
+        "7,902,780",
+        "70,456,220",
+        "10.09%",
+        "89.91%",
+        "100%",
+        ""
+      ],
+      [
+        "2",
+        "8455",
+        "大拓-KY",
+        "25,219,056",
+        "3,081,750",
+        "22,137,306",
+        "12.22%",
+        "87.78%",
+        "100%",
+        ""
+      ]
+    ],
+    "sha256": "cfe77cb5f6d210aed3633f560110bd18021459c801ecd48e16969753440fb3aa"
+  },
+  {
+    "label": "foreign_20220919_TWSE",
+    "url": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?response=json&date=20220919&selectType=ALLBUT0999",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:43:58.001624",
+    "http_status": 200,
+    "final_url": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?response=json&date=20220919&selectType=ALLBUT0999",
+    "bytes": 140768,
+    "transport": "requests",
+    "json_type": "dict",
+    "response_keys": [
+      "stat",
+      "date",
+      "selectType",
+      "title",
+      "hints",
+      "fields",
+      "data",
+      "notes",
+      "total"
+    ],
+    "response_meta": {
+      "stat": "OK",
+      "date": "20220919",
+      "selectType": "ALLBUT0999",
+      "title": "111年09月19日 外資及陸資投資持股統計",
+      "hints": "單位:股",
+      "notes": "一、與前日異動原因以空白及數字2,3,4,5表示，其代表意義說明如下：\n'空白'係指外陸資於集中市場交易所產生之股數異動，不包含外陸資配認股數、外資原始股東出售股數、存託憑證發行等異動。\n  '2'係上市公司因股本變動申報最近一次除權交易日或股東會外陸資持股情形、因依規定之固定基準日申報外陸資持股情形、因前次申報資料有誤予以更新、或因發行海外有價證券、合併、公開收購等申報外陸資持股情形。\n  '3'係指非前項因素所產生之持股變動，如海外存託憑證經證期局核可尚未發行之預扣等。\n  '4'係依海外存託憑證流通餘額及外國人將海外存託憑證兌回普通股或將普通股再發行海外存託憑證情形更新外陸資持股數。\n  '5'係依上市公司每月申報國內海外有價證券轉換情形更新外陸資持股數。\n二、ETF證券代號第六碼為K、M、S、C者，表示該ETF以外幣交易。",
+      "total": 1151
+    },
+    "fields": [
+      "證券代號",
+      "證券名稱",
+      "國際證券編碼",
+      "發行股數",
+      "外資及陸資尚可投資股數",
+      "全體外資及陸資持有股數",
+      "外資及陸資尚可投資比率",
+      "全體外資及陸資持股比率",
+      "外資及陸資共用法令投資上限比率",
+      "陸資法令投資上限比率",
+      "與前日異動原因(註)",
+      "最近一次上市公司申報外資及陸資持股異動日期"
+    ],
+    "tables": [],
+    "data_rows": 1151,
+    "sample": [
+      [
+        "0050",
+        "元大台灣50",
+        "TW0000050004",
+        "2,136,500,000",
+        "1,999,684,087",
+        "136,815,913",
+        93.59,
+        6.4,
+        "100.00",
+        "100.00",
+        "",
+        "111/07/08"
+      ],
+      [
+        "0051",
+        "元大中型100",
+        "TW0000051002",
+        "14,500,000",
+        "14,419,892",
+        "80,108",
+        99.44,
+        0.55,
+        "100.00",
+        "100.00",
+        "",
+        "111/07/08"
+      ]
+    ],
+    "sha256": "3472a8388199f2d9246c84cdcaeec26a1d2d07efa6a84adf4a39fff72dcefcdd"
+  },
+  {
+    "label": "foreign_20220919_TPEx",
+    "url": "https://www.tpex.org.tw/web/stock/3insti/qfii/qfii_result.php?l=zh-tw&d=111%2F09%2F19&t=D",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:43:59.318418",
+    "http_status": 200,
+    "final_url": "https://www.tpex.org.tw/web/stock/3insti/qfii/qfii_result.php?l=zh-tw&d=111%2F09%2F19&t=D",
+    "bytes": 72903,
+    "transport": "requests",
+    "json_type": "dict",
+    "response_keys": [
+      "tables",
+      "template",
+      "stat",
+      "date"
+    ],
+    "response_meta": {
+      "template": "/template/insti/qfii",
+      "stat": "ok",
+      "date": "20220919"
+    },
+    "fields": null,
+    "tables": [
+      {
+        "title": "櫃檯買賣股票僑外資及陸資持股比例排行表",
+        "fields": [
+          "排行",
+          "代號",
+          "名稱",
+          "發行股數(A)",
+          "僑外資及陸資尚可投資股數B=A*F-C",
+          "僑外資及陸資持有股數(C)",
+          "僑外資及陸資尚可投資比率(D=B/A)",
+          "僑外資及陸資持股比率(E=C/A)",
+          "法令投資上限比率(F)",
+          "備註"
+        ],
+        "rows": 803
+      }
+    ],
+    "data_rows": 0,
+    "sample": [
+      [
+        "1",
+        "8418",
+        "捷必勝-KY",
+        "78,359,000",
+        "7,902,780",
+        "70,456,220",
+        "10.09%",
+        "89.91%",
+        "100%",
+        ""
+      ],
+      [
+        "2",
+        "8455",
+        "大拓-KY",
+        "25,219,056",
+        "3,081,750",
+        "22,137,306",
+        "12.22%",
+        "87.78%",
+        "100%",
+        ""
+      ]
+    ],
+    "sha256": "ef12ccdd19d4a1183146530c190d6832260aba01936429f41cc3c8b1ecf21a21"
+  },
+  {
+    "label": "foreign_20260807_TWSE",
+    "url": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?response=json&date=20260807&selectType=ALLBUT0999",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:44:00.473739",
+    "http_status": 200,
+    "final_url": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?response=json&date=20260807&selectType=ALLBUT0999",
+    "bytes": 166905,
+    "transport": "requests",
+    "json_type": "dict",
+    "response_keys": [
+      "stat",
+      "date",
+      "selectType",
+      "title",
+      "hints",
+      "fields",
+      "data",
+      "notes",
+      "total"
+    ],
+    "response_meta": {
+      "stat": "OK",
+      "date": "20260807",
+      "selectType": "ALLBUT0999",
+      "title": "115年08月07日 外資及陸資投資持股統計",
+      "hints": "單位:股",
+      "notes": "一、與前日異動原因以空白及數字2,3,4,5表示，其代表意義說明如下：\n'空白'係指外陸資於集中市場交易所產生之股數異動，不包含外陸資配認股數、外資原始股東出售股數、存託憑證發行等異動。\n  '2'係上市公司因股本變動申報最近一次除權交易日或股東會外陸資持股情形、因依規定之固定基準日申報外陸資持股情形、因前次申報資料有誤予以更新、或因發行海外有價證券、合併、公開收購等申報外陸資持股情形。\n  '3'係指非前項因素所產生之持股變動，如海外存託憑證經證期局核可尚未發行之預扣等。\n  '4'係依海外存託憑證流通餘額及外國人將海外存託憑證兌回普通股或將普通股再發行海外存託憑證情形更新外陸資持股數。\n  '5'係依上市公司每月申報國內海外有價證券轉換情形更新外陸資持股數。\n二、ETF證券代號第六碼為K、M、S、C者，表示該ETF以外幣交易。",
+      "total": 1358
+    },
+    "fields": [
+      "證券代號",
+      "證券名稱",
+      "國際證券編碼",
+      "發行股數",
+      "外資及陸資尚可投資股數",
+      "全體外資及陸資持有股數",
+      "外資及陸資尚可投資比率",
+      "全體外資及陸資持股比率",
+      "外資及陸資共用法令投資上限比率",
+      "陸資法令投資上限比率",
+      "與前日異動原因(註)",
+      "最近一次上市公司申報外資及陸資持股異動日期"
+    ],
+    "tables": [],
+    "data_rows": 1358,
+    "sample": [
+      [
+        "00400A",
+        "主動國泰動能高息",
+        "TW00000400A3",
+        "2,123,140,000",
+        "2,034,124,474",
+        "89,015,526",
+        95.8,
+        4.19,
+        "100.00",
+        "100.00",
+        "",
+        "115/04/10"
+      ],
+      [
+        "00401A",
+        "主動摩根台灣鑫收",
+        "TW00000401A1",
+        "226,395,000",
+        "223,511,448",
+        "2,883,552",
+        98.72,
+        1.27,
+        "100.00",
+        "100.00",
+        "",
+        "115/04/10"
+      ]
+    ],
+    "sha256": "5e95ae156ed39a61ddc0670fdc56f4c598d7833fa9e0cc8ce56976a7e0bb6a00"
+  },
+  {
+    "label": "foreign_20260807_TPEx",
+    "url": "https://www.tpex.org.tw/web/stock/3insti/qfii/qfii_result.php?l=zh-tw&d=115%2F08%2F07&t=D",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:44:02.717294",
+    "http_status": 200,
+    "final_url": "https://www.tpex.org.tw/web/stock/3insti/qfii/qfii_result.php?l=zh-tw&d=115%2F08%2F07&t=D",
+    "bytes": 81400,
+    "transport": "requests",
+    "json_type": "dict",
+    "response_keys": [
+      "tables",
+      "template",
+      "stat",
+      "date"
+    ],
+    "response_meta": {
+      "template": "/template/insti/qfii",
+      "stat": "ok",
+      "date": "20260807"
+    },
+    "fields": null,
+    "tables": [
+      {
+        "title": "櫃檯買賣股票僑外資及陸資持股比例排行表",
+        "fields": [
+          "排行",
+          "代號",
+          "名稱",
+          "發行股數(A)",
+          "僑外資及陸資尚可投資股數B=A*F-C",
+          "僑外資及陸資持有股數(C)",
+          "僑外資及陸資尚可投資比率(D=B/A)",
+          "僑外資及陸資持股比率(E=C/A)",
+          "法令投資上限比率(F)",
+          "備註"
+        ],
+        "rows": 891
+      }
+    ],
+    "data_rows": 0,
+    "sample": [
+      [
+        "1",
+        "8455",
+        "大拓-KY",
+        "25,219,056",
+        "3,066,750",
+        "22,152,306",
+        "12.16%",
+        "87.83%",
+        "100%",
+        ""
+      ],
+      [
+        "2",
+        "5276",
+        "達輝-KY",
+        "39,500,000",
+        "9,076,000",
+        "30,424,000",
+        "22.98%",
+        "77.02%",
+        "100%",
+        ""
+      ]
+    ],
+    "sha256": "353113b841de92ab74314648c6c024b35e5f0bee5b0642d517e2cd39217b3ed0"
+  },
+  {
+    "label": "tdcc_history_page",
+    "url": "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock",
+    "method": "GET",
+    "request_body": null,
+    "fetched_at": "2026-09-06T14:44:03.931604",
+    "http_status": 200,
+    "final_url": "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock",
+    "bytes": 69367,
+    "transport": "requests",
+    "json_type": "non_json",
+    "sample": "<!DOCTYPE html>\n\n<html lang=\"zh-Hant-tw\">\n<head>\n    <style>\n    #external-link-popup { position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }\n    .popup-mask { position: absolute; width: 100%; heig",
+    "sha256": "4d533d828c04a6ef2c61f7d130a52509c1b6bd39ae278f3c5d9a49de6441c3b6"
+  },
+  {
+    "label": "tdcc_20251009",
+    "url": "https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "method": "POST_QUERY",
+    "request_body": {
+      "SqlMethod": "StockNo",
+      "StockNo": "",
+      "StartDate": "20251009",
+      "EndDate": "20251009"
+    },
+    "fetched_at": "2026-09-06T14:44:05.033258",
+    "http_status": 404,
+    "final_url": "https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "bytes": 196,
+    "transport": "requests",
+    "error": "HTTPError: 404 Client Error: Not Found for url: https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "sha256": "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+  },
+  {
+    "label": "tdcc_20251023",
+    "url": "https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "method": "POST_QUERY",
+    "request_body": {
+      "SqlMethod": "StockNo",
+      "StockNo": "",
+      "StartDate": "20251023",
+      "EndDate": "20251023"
+    },
+    "fetched_at": "2026-09-06T14:44:06.116569",
+    "http_status": 404,
+    "final_url": "https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "bytes": 196,
+    "transport": "requests",
+    "error": "HTTPError: 404 Client Error: Not Found for url: https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "sha256": "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+  },
+  {
+    "label": "tdcc_20260226",
+    "url": "https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "method": "POST_QUERY",
+    "request_body": {
+      "SqlMethod": "StockNo",
+      "StockNo": "",
+      "StartDate": "20260226",
+      "EndDate": "20260226"
+    },
+    "fetched_at": "2026-09-06T14:44:07.194613",
+    "http_status": 404,
+    "final_url": "https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "bytes": 196,
+    "transport": "requests",
+    "error": "HTTPError: 404 Client Error: Not Found for url: https://www.tdcc.com.tw/server/web/StockQuery/queryStockCustStat",
+    "sha256": "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+  }
+]

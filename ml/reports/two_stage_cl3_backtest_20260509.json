@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-09T01:26:45",
+    "start_month": "2024-01",
+    "end_month": "2026-04",
+    "requested_start_month": "2024-01",
+    "requested_end_month": "2026-04",
+    "months": 28,
+    "control_artifact": "F:\\stock\\ml\\reports\\audit002_step4_two_stage_20260509_stage1_oof_candidates.csv",
+    "treatment_artifact": "F:\\stock\\ml\\reports\\audit002_step5_grid_search_20260509_N75_bins5_fold_top30.csv",
+    "cost_bps": 30.0,
+    "monthly_csv": "F:\\stock\\ml\\reports\\two_stage_cl3_backtest_20260509_monthly.csv",
+    "summary_csv": "F:\\stock\\ml\\reports\\two_stage_cl3_backtest_20260509_summary.csv",
+    "control_top30_csv": "F:\\stock\\ml\\reports\\two_stage_cl3_backtest_20260509_control_top30.csv",
+    "treatment_top30_csv": "F:\\stock\\ml\\reports\\two_stage_cl3_backtest_20260509_treatment_top30.csv",
+    "chart_png": "F:\\stock\\ml\\reports\\two_stage_cl3_backtest_20260509_monthly_returns.png",
+    "report": "F:\\stock\\ml\\reports\\two_stage_cl3_backtest_20260509.md"
+  },
+  "control": {
+    "variant": "Control_Regression_Top30",
+    "months": 28,
+    "monthly_return": 0.034948187476562295,
+    "monthly_alpha": -0.00605223324235714,
+    "mdd": -0.09228642523024522,
+    "sharpe": 2.11444316154146,
+    "calmar": 5.528019634292912,
+    "win_rate": 0.6428571428571429
+  },
+  "treatment": {
+    "variant": "Treatment_TwoStage_N75",
+    "months": 28,
+    "monthly_return": 0.07637371874572896,
+    "monthly_alpha": 0.035373298344089296,
+    "mdd": -0.05569411810414859,
+    "sharpe": 2.969360601268965,
+    "calmar": 25.4705689785858,
+    "win_rate": 0.8571428571428571
+  },
+  "cl3": {
+    "checks": {
+      "alpha_sacrifice": {
+        "value": 0.0,
+        "threshold": 0.005,
+        "pass": true
+      },
+      "mdd_improvement": {
+        "value": 0.036592307126096624,
+        "threshold": 0.001,
+        "pass": true
+      },
+      "sharpe_regression": {
+        "value": 0.0,
+        "threshold": 0.05,
+        "pass": true
+      },
+      "calmar_regression": {
+        "value": 0.0,
+        "threshold": 0.05,
+        "pass": true
+      }
+    },
+    "overall_pass": true
+  },
+  "turnover": {
+    "average_jaccard": 0.299886430507985,
+    "average_replacement_ratio": 0.5452380952380952,
+    "estimated_round_trip_cost": 0.0032714285714285714,
+    "cost_adjusted_treatment_alpha": 0.032101869772660725,
+    "cost_adjusted_alpha_delta": 0.038154103015017864
+  }
+}

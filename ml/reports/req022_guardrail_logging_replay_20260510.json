@@ -1,0 +1,19 @@
+{
+  "legacy_prediction_path": "ml\\models\\predictions_2026-04-30.csv",
+  "legacy_guardrail_blocked": 782,
+  "legacy_raw_missing_reason": 782,
+  "legacy_normalized_missing_reason": 0,
+  "legacy_normalized_reason_counts_top12": {
+    "NO_BUY_SIGNAL_OR_LOW_EDGE": 706,
+    "DISPOSITION_PERIOD": 32,
+    "LIQUIDITY_GUARD": 28,
+    "CHIP_DIVERGENCE_GUARD": 10,
+    "FUNDAMENTAL_GUARD": 6
+  },
+  "replay_path": "ml\\reports\\req022_guardrail_replay_2026-04-30.csv",
+  "replay_guardrail_blocked": 0,
+  "replay_guardrail_missing_reason": 0,
+  "replay_tradability_blocked": 25,
+  "replay_tradability_missing_reason": 0,
+  "diag004_no_reason_rows_after_rerun": 0
+}

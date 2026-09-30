@@ -1,0 +1,1196 @@
+{
+  "schema_version": 1,
+  "scope": "latest_bar_coverage_only",
+  "target_date": "2026-09-04",
+  "knowledge_date": "2026-09-06",
+  "status": "ok",
+  "official_market_rows": {
+    "twse": 1380,
+    "tpex": 1013
+  },
+  "classified_tickers": 36,
+  "counts": {
+    "official_no_ohlc_reported_volume": 2,
+    "official_suspended": 6,
+    "official_no_ohlc_zero_volume": 25,
+    "official_terminated": 3
+  },
+  "error_tickers": [],
+  "unknown_tickers": [],
+  "rows": [
+    {
+      "ticker": "1538",
+      "classification": "official_no_ohlc_reported_volume",
+      "csv_date": "2026-08-24",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "1538",
+        "name": "正峰",
+        "market": "twse",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_reported_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 218.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-08-24",
+      "ml_date": null
+    },
+    {
+      "ticker": "1563",
+      "classification": "official_suspended",
+      "csv_date": "2026-08-26",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "1563_suspended_2026-08-27",
+        "ticker": "1563",
+        "status": "suspended",
+        "effective_from": "2026-08-27",
+        "effective_until": "2026-09-07",
+        "available_on": "2026-08-06",
+        "verified_on": "2026-09-06",
+        "source_url": "https://dsp.twse.com.tw/public/static/downloads/announcement/official/ABS-11500154501-1.pdf",
+        "source_sha256": "8e0504888dd472261b913171d98f05820fbe0b3f3a6e6f223d89994b37f08153",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/ABS-11500154501-1.pdf",
+        "reason": "現金減資換股；原 PDF 第 1 頁人工核對；減資 25%，每股退 2.5 元",
+        "scheduled_resumption": "2026-09-07"
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-08-26",
+      "ml_date": "2026-08-26"
+    },
+    {
+      "ticker": "1589",
+      "classification": "official_suspended",
+      "csv_date": "2026-04-02",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "1589_suspended_2026-04-07",
+        "ticker": "1589",
+        "status": "suspended",
+        "effective_from": "2026-04-07",
+        "effective_until": null,
+        "available_on": "2026-04-01",
+        "verified_on": "2026-09-06",
+        "source_url": "https://dsp.twse.com.tw/public/static/downloads/announcement/official/S-11517009561-1.pdf",
+        "source_sha256": "0ab6c05f415395343f413beac86db65fbb5b7899791707ad5ed94c6408cf2a55",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/S-11517009561-1.pdf",
+        "reason": "未如期申報財報；PDF第1頁及9/6官方停止買賣表交叉核對",
+        "scheduled_resumption": null
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-04-02",
+      "ml_date": null
+    },
+    {
+      "ticker": "2724",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "2724",
+        "name": "藝舍-KY",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "2867",
+      "classification": "official_terminated",
+      "csv_date": "2026-08-19",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "2867_terminated_2026-09-01",
+        "ticker": "2867",
+        "status": "terminated",
+        "effective_from": "2026-09-01",
+        "effective_until": null,
+        "available_on": "2026-07-28",
+        "verified_on": "2026-09-06",
+        "source_url": "https://dsp.twse.com.tw/public/static/downloads/announcement/official/S-11500135581-1.pdf",
+        "source_sha256": "29cc73fa5d21a2ef78f99ab568eb7555fe4346f089e2004444fb6b95a67d2f17",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/S-11500135581-1.pdf",
+        "reason": "股份轉換為2884子公司，終止上市；PDF第1頁人工核對",
+        "scheduled_resumption": null
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-08-19",
+      "ml_date": null
+    },
+    {
+      "ticker": "2949",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-01",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "2949",
+        "name": "欣新網",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-01",
+      "ml_date": null
+    },
+    {
+      "ticker": "3064",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-08-26",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "3064",
+        "name": "泰偉",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-08-26",
+      "ml_date": null
+    },
+    {
+      "ticker": "3067",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "3067",
+        "name": "全域",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "3632",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "3632",
+        "name": "研勤",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "4130",
+      "classification": "official_terminated",
+      "csv_date": "2026-07-21",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "4130_terminated_2026-07-28",
+        "ticker": "4130",
+        "status": "terminated",
+        "effective_from": "2026-07-28",
+        "effective_until": null,
+        "available_on": "2026-07-03",
+        "verified_on": "2026-09-06",
+        "source_url": "https://www.tpex.org.tw/storage/eb_data/11507/11502017631.html",
+        "source_sha256": "51268f6ad2b94b8af2d4607c7cad4ee258643662f21c7f2a825d6bb77f02a355",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11502017631.json",
+        "reason": "股份轉換為1799子公司，終止上櫃",
+        "scheduled_resumption": null
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-07-21",
+      "ml_date": null
+    },
+    {
+      "ticker": "4154",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "4154",
+        "name": "樂威科-KY",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "4406",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "4406",
+        "name": "新昕纖",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "4550",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "4550",
+        "name": "長佳",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "4804",
+      "classification": "official_suspended",
+      "csv_date": "2026-04-13",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "4804_suspended_2026-04-14",
+        "ticker": "4804",
+        "status": "suspended",
+        "effective_from": "2026-04-14",
+        "effective_until": null,
+        "available_on": "2026-04-10",
+        "verified_on": "2026-09-06",
+        "source_url": "https://www.tpex.org.tw/storage/eb_data/11504/11502007761.html",
+        "source_sha256": "50e3cb1da2bc1196b8476c0e0a4856447903a36cf7c63c624a9703bf7754634b",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11502007761.json",
+        "reason": "繼續經營重大不確定性三年未消除",
+        "scheduled_resumption": null
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-04-13",
+      "ml_date": null
+    },
+    {
+      "ticker": "5205",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "5205",
+        "name": "中茂",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "5310",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-02",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "5310",
+        "name": "天剛",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-02",
+      "ml_date": null
+    },
+    {
+      "ticker": "5371",
+      "classification": "official_terminated",
+      "csv_date": "2026-08-21",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "5371_terminated_2026-09-03",
+        "ticker": "5371",
+        "status": "terminated",
+        "effective_from": "2026-09-03",
+        "effective_until": null,
+        "available_on": "2026-09-06",
+        "verified_on": "2026-09-06",
+        "source_url": "https://www.tpex.org.tw/www/zh-tw/company/deListed?date=2026&reason=-1&response=json&start=0&length=100",
+        "source_sha256": "6ad1b7962cdb379c6baf172e6b8ee2a55f7396a360656cc6a1d3d780f9b9582d",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_delisted.json",
+        "reason": "官方終止上櫃表；未含原公告日，以首次驗證日作保守available_on；新投控3718不得自行串接舊5371價歷史",
+        "scheduled_resumption": null
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-08-21",
+      "ml_date": "2026-08-21"
+    },
+    {
+      "ticker": "5520",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-02",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "5520",
+        "name": "力泰",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-02",
+      "ml_date": null
+    },
+    {
+      "ticker": "5703",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "5703",
+        "name": "亞都",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "5906",
+      "classification": "official_no_ohlc_reported_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "5906",
+        "name": "台南-KY",
+        "market": "twse",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_reported_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 716.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "6129",
+      "classification": "official_suspended",
+      "csv_date": "2026-09-02",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "6129_suspended_2026-09-03",
+        "ticker": "6129",
+        "status": "suspended",
+        "effective_from": "2026-09-03",
+        "effective_until": "2026-09-14",
+        "available_on": "2026-08-20",
+        "verified_on": "2026-09-06",
+        "source_url": "https://www.tpex.org.tw/storage/eb_data/11508/11500054161.html",
+        "source_sha256": "8b9439d865a9215f14e728d9b1e50e1546d3737eafc0d958c3e3b9c4ab04075c",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11500054161.json",
+        "reason": "減資彌補虧損換股；官方停交易9/3至9/11，9/12-13非交易日",
+        "scheduled_resumption": "2026-09-14"
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-02",
+      "ml_date": "2026-09-02"
+    },
+    {
+      "ticker": "6228",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-08-27",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "6228",
+        "name": "全譜",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-08-27",
+      "ml_date": null
+    },
+    {
+      "ticker": "6236",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-01",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "6236",
+        "name": "中湛",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-01",
+      "ml_date": null
+    },
+    {
+      "ticker": "6461",
+      "classification": "official_suspended",
+      "csv_date": "2026-09-01",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "6461_suspended_2026-09-02",
+        "ticker": "6461",
+        "status": "suspended",
+        "effective_from": "2026-09-02",
+        "effective_until": "2026-09-09",
+        "available_on": "2026-08-20",
+        "verified_on": "2026-09-06",
+        "source_url": "https://www.tpex.org.tw/storage/eb_data/11508/11500054121.html",
+        "source_sha256": "de8c17647f974929df6de5f61bb07fd8fbb3ac1c3239dae387181d6bc1a61d08",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11500054121.json",
+        "reason": "減資彌補虧損換股",
+        "scheduled_resumption": "2026-09-09"
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-01",
+      "ml_date": null
+    },
+    {
+      "ticker": "6496",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "6496",
+        "name": "科懋",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "6615",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "6615",
+        "name": "慧智",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "6762",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "6762",
+        "name": "達亞",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "6767",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-01",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "6767",
+        "name": "台微醫",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-01",
+      "ml_date": null
+    },
+    {
+      "ticker": "6904",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-02",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "6904",
+        "name": "伯鑫",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-02",
+      "ml_date": null
+    },
+    {
+      "ticker": "6949",
+      "classification": "official_suspended",
+      "csv_date": "2026-08-26",
+      "target_date": "2026-09-04",
+      "source": null,
+      "event": {
+        "id": "6949_suspended_2026-08-27",
+        "ticker": "6949",
+        "status": "suspended",
+        "effective_from": "2026-08-27",
+        "effective_until": "2026-09-07",
+        "available_on": "2026-09-06",
+        "verified_on": "2026-09-06",
+        "source_url": "https://www.twse.com.tw/exchangeReport/TWTB7U?response=json",
+        "source_sha256": "c5547d0fbfa0dfccb2c5bf0f100be8c606edc4822fb59ab14a14831f6d14200d",
+        "source_snapshot": "output/latest_bar_coverage_20260906/staging/twse_TWTB7U.json",
+        "reason": "面額 10 元改 0.5 元，1 股換 20 股；來源未列公告日，以首次驗證日作保守 available_on",
+        "scheduled_resumption": "2026-09-07"
+      },
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-08-26",
+      "ml_date": "2026-08-26"
+    },
+    {
+      "ticker": "6997",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "6997",
+        "name": "博弘",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "8077",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "8077",
+        "name": "洛碁",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    },
+    {
+      "ticker": "8342",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-02",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "8342",
+        "name": "益張",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-02",
+      "ml_date": null
+    },
+    {
+      "ticker": "8416",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-02",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "8416",
+        "name": "實威",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-02",
+      "ml_date": null
+    },
+    {
+      "ticker": "8923",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-01",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "8923",
+        "name": "時報",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-01",
+      "ml_date": null
+    },
+    {
+      "ticker": "8929",
+      "classification": "official_no_ohlc_zero_volume",
+      "csv_date": "2026-09-03",
+      "target_date": "2026-09-04",
+      "source": {
+        "ticker": "8929",
+        "name": "富堡",
+        "market": "tpex",
+        "source_date": "2026-09-04",
+        "state": "official_no_ohlc_zero_volume",
+        "open": null,
+        "high": null,
+        "low": null,
+        "close": null,
+        "volume": 0.0
+      },
+      "event": null,
+      "layer_issues": [],
+      "ml_row_current": false,
+      "db_date": "2026-09-03",
+      "ml_date": null
+    }
+  ],
+  "limitations": [
+    "No historical gap or price-value audit is implied.",
+    "No-OHLC is a valid source absence, not a tradeable quote.",
+    "Scheduled resumption requires a new official bar to establish freshness."
+  ],
+  "provenance": {
+    "ml_path": "ml\\models\\predictions_2026-09-04.csv",
+    "ml_sha256": "91e2698ad5bea16824841d48e223bcf0e44b8ee0f9fd62ea1e379fa8caec73d6",
+    "ml_rows": 1080,
+    "files": {
+      "output\\latest_bar_coverage_20260906\\staging\\ABS-11500154501-1.json": {
+        "sha256": "9193eca2ae55a78b9de796d0d23b07c63c552448a7b7824b11e71f1bf722ef82",
+        "size": 179,
+        "mtime_ns": 1788677568702842800
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\ABS-11500154501-1.pdf": {
+        "sha256": "8e0504888dd472261b913171d98f05820fbe0b3f3a6e6f223d89994b37f08153",
+        "size": 265032,
+        "mtime_ns": 1788677568701098300
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\db_latest_http.json": {
+        "sha256": "f422ceaaad78169a518113aa718f950ee5d6fd89a4ec809a3a9158e6f1656225",
+        "size": 43343,
+        "mtime_ns": 1788677988785181300
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\local_latest_dates.json": {
+        "sha256": "fc42c091b24388d853041276f7b71926bb08d0884ee59fe162a277e06a6b3466",
+        "size": 124663,
+        "mtime_ns": 1788677940634906900
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\S-11500135581-1.json": {
+        "sha256": "10544a909e643e4fae3e241e99a9db0baefba2e4332deb179f581c9eeaf54baf",
+        "size": 179,
+        "mtime_ns": 1788677568737304700
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\S-11500135581-1.pdf": {
+        "sha256": "29cc73fa5d21a2ef78f99ab568eb7555fe4346f089e2004444fb6b95a67d2f17",
+        "size": 288176,
+        "mtime_ns": 1788677568730655600
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\S-11517009561-1.json": {
+        "sha256": "31e0024967bc5a1f7bd9489c08b041868ea3a028dd4ee13e4345325c16b21d4a",
+        "size": 177,
+        "mtime_ns": 1788677568762576400
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\S-11517009561-1.pdf": {
+        "sha256": "0ab6c05f415395343f413beac86db65fbb5b7899791707ad5ed94c6408cf2a55",
+        "size": 230906,
+        "mtime_ns": 1788677568761570000
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\stale_layer_dates.json": {
+        "sha256": "ba495fe979875e0ee2505b43eaffc0dbc518e745f2061c7597de17fe2bdbf7ef",
+        "size": 4211,
+        "mtime_ns": 1788677988818136800
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_20260904.json.gz": {
+        "sha256": "8755710421053381a925650c292618262e7ea87721b187cb2d3820666015ad02",
+        "size": 48497,
+        "mtime_ns": 1788677808881651800
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_5371.json": {
+        "sha256": "ecfc5fca3e49f225e404ea87c4b72cd50dbcba8a1a05edbee5f8a9b62619f026",
+        "size": 256,
+        "mtime_ns": 1788677152808441700
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_5371_roc.json": {
+        "sha256": "fc9c72569a4da141e967c57b3863d0abb5ea2e39680704838f285b191a402823",
+        "size": 266,
+        "mtime_ns": 1788677170924985400
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_5371_valid.json": {
+        "sha256": "6c6018ee92022198685656003a1e22caaa185926fd256a2f94e9426c85616471",
+        "size": 1114,
+        "mtime_ns": 1788677457592816600
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_6129.json": {
+        "sha256": "aafb26b8042a732ccac3e2b27cce2cba2c46add54cb51f5a7a2d85bafb7abb60",
+        "size": 256,
+        "mtime_ns": 1788677153111275700
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_6129_roc.json": {
+        "sha256": "e4530163d7d37ce96fee4775cf0e1c69d2316e480accf1a05dee22f8c6e96b4f",
+        "size": 266,
+        "mtime_ns": 1788677171182364700
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_6129_valid.json": {
+        "sha256": "00fe022b6c07d7982598b3e6aa0ca2b134b97fe69ef9f69b368e8db6cffbb848",
+        "size": 1116,
+        "mtime_ns": 1788677457650235600
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_6461.json": {
+        "sha256": "1c5a94f1ecdf109a217a448a135ad1b33181607594d24179340ac7c44ece18c4",
+        "size": 256,
+        "mtime_ns": 1788677153390641800
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_6461_roc.json": {
+        "sha256": "5f6f2eb986207d2671caa0416fef2d040ae2fece18d89dbe7fc9968759d80380",
+        "size": 266,
+        "mtime_ns": 1788677171522833400
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_announcement_6461_valid.json": {
+        "sha256": "09cccb042d8ee7592874d6a06dcc40d819d57d1eef966bfdcc024fb90785a0fe",
+        "size": 1524,
+        "mtime_ns": 1788677457711772100
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_delisted.json": {
+        "sha256": "6ad1b7962cdb379c6baf172e6b8ee2a55f7396a360656cc6a1d3d780f9b9582d",
+        "size": 2039,
+        "mtime_ns": 1788677457740815800
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_notice_11500050581.json": {
+        "sha256": "5acb6d2baf30402b1c7b3beadca32cc4a9a1878100a4392252f0898b196e8731",
+        "size": 21839,
+        "mtime_ns": 1788677498474358900
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_notice_11500054121.json": {
+        "sha256": "de8c17647f974929df6de5f61bb07fd8fbb3ac1c3239dae387181d6bc1a61d08",
+        "size": 19896,
+        "mtime_ns": 1788677498539151000
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_notice_11500054161.json": {
+        "sha256": "8b9439d865a9215f14e728d9b1e50e1546d3737eafc0d958c3e3b9c4ab04075c",
+        "size": 19211,
+        "mtime_ns": 1788677498513357000
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_notice_11502007761.json": {
+        "sha256": "50e3cb1da2bc1196b8476c0e0a4856447903a36cf7c63c624a9703bf7754634b",
+        "size": 21951,
+        "mtime_ns": 1788677498608726100
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\tpex_notice_11502017631.json": {
+        "sha256": "51268f6ad2b94b8af2d4607c7cad4ee258643662f21c7f2a825d6bb77f02a355",
+        "size": 24281,
+        "mtime_ns": 1788677498569809100
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_20260904.json.gz": {
+        "sha256": "a0abeaa72a59f76102527abba9cc0d1accc1e0cb31ed3952b443e7bb44c0edb1",
+        "size": 69247,
+        "mtime_ns": 1788677808880657300
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_delisted.json": {
+        "sha256": "7a08704b6994de6298e623a458f3f17eaa0dd8dbd0e99a3694437b972bdc4596",
+        "size": 28234,
+        "mtime_ns": 1788677457997174700
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_dsp_search_1563.json": {
+        "sha256": "5c0cf593eb3618b8bd613fad4932319b6df442b9354cf8efb9fe8499f79c0af8",
+        "size": 34452,
+        "mtime_ns": 1788677538888515600
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_dsp_search_1589.json": {
+        "sha256": "b0ad26d6e96f6dd1ddc489d171a23ac1a4385532f846ade0f963deacc78c9e83",
+        "size": 39759,
+        "mtime_ns": 1788677539014403800
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_dsp_search_2867.json": {
+        "sha256": "578ac01035458068a79be310ac8e0d769c8741e5ac08f8b97bdcaf894e25d14f",
+        "size": 34569,
+        "mtime_ns": 1788677538947124300
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_stop.json": {
+        "sha256": "37e222f25f66bc9c3f580d426e4a9534c866829e7bfce902c771148826a7b5b5",
+        "size": 1179,
+        "mtime_ns": 1788677538573016700
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_TWTAVU.json": {
+        "sha256": "8c7862403bd904395be72c05c8c36b824856e484be2eedbe2e2069426768d219",
+        "size": 2827,
+        "mtime_ns": 1788677458328556600
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_TWTAVU_20260826.json": {
+        "sha256": "721130a0aef502a4327356fabc4296b31d305e73c36a4fc1f8e101fbcdc68aa0",
+        "size": 2789,
+        "mtime_ns": 1788677498936921300
+      },
+      "output\\latest_bar_coverage_20260906\\staging\\twse_TWTB7U.json": {
+        "sha256": "c5547d0fbfa0dfccb2c5bf0f100be8c606edc4822fb59ab14a14831f6d14200d",
+        "size": 1185,
+        "mtime_ns": 1788677458393562100
+      }
+    },
+    "source_csvs": {
+      "1538": {
+        "sha256": "f3cb637814ff08df5c8b958c0515798068c8cd16dd1bd7fe87a1cc360efc288c",
+        "mtime_ns": 1788575561273161600
+      },
+      "1563": {
+        "sha256": "79fdcf255204418713b8f626e56c7a4547a5f22b045c66ba8f3862ca5e416d67",
+        "mtime_ns": 1788575562257589900
+      },
+      "1589": {
+        "sha256": "a3f06e4f1b33afd0b420847d772d9cf0483cebf1a0da607a0260008e24e60a23",
+        "mtime_ns": 1788575564217277900
+      },
+      "2724": {
+        "sha256": "fcfcb0a48ce3396f69f7439c94c1f99c794fcbe4474c1c6c7f82141cceafccd3",
+        "mtime_ns": 1788575622535378600
+      },
+      "2867": {
+        "sha256": "4854021e72a41f7bcaafacdde588484ef5e3e3d7a8f88e6ac9c70ca3e8dd8d6f",
+        "mtime_ns": 1788575628005689300
+      },
+      "2949": {
+        "sha256": "92ebc2dcb916677954581260470a6a6e1731994b2daeb8cc71ef6f9763ca1d0d",
+        "mtime_ns": 1788575633475032000
+      },
+      "3064": {
+        "sha256": "49959552aca0d9ecd4e1997854d318a9b8e254d8984c642c63a1084735e760b3",
+        "mtime_ns": 1788575642783161300
+      },
+      "3067": {
+        "sha256": "4d61d2c04f85b5bd37575535d02bcadc150328f20633fff67631e427b3c9d34b",
+        "mtime_ns": 1788575643064528700
+      },
+      "3632": {
+        "sha256": "b7e0ef56a8e11518b8c72bc090f0cad9b1949e7088e80dc87702cc040a00304b",
+        "mtime_ns": 1788575677023983500
+      },
+      "4130": {
+        "sha256": "232aafe3f9a542766c2bf881e00f39ed1c6de697b17e08edf3849e14cb499c99",
+        "mtime_ns": 1788575686452311300
+      },
+      "4154": {
+        "sha256": "22fde9b08fc3f10f76b9ca74a3fa2fb50d1ddfdeb188cf2a84ff751f415fc7a1",
+        "mtime_ns": 1788575688049905000
+      },
+      "4406": {
+        "sha256": "cf83151858f193aa824ec23a3ba86bfd6bfa1817ad0e501fd9b89fba2ffe9ec9",
+        "mtime_ns": 1788575692399913000
+      },
+      "4550": {
+        "sha256": "1c26f8b67776a959194358b973a5162f05dd989a750dce91194183fa7149c8a1",
+        "mtime_ns": 1788575698498973100
+      },
+      "4804": {
+        "sha256": "deddeffec04562acd528f75233869a7ffb28219c70d7612730923d12f595ff40",
+        "mtime_ns": 1788575707993565700
+      },
+      "5205": {
+        "sha256": "a23b82d90b03e92af33af4bf2d8b7fa8c2b786e6f13628cba88deb3995b92db9",
+        "mtime_ns": 1788575721644903100
+      },
+      "5310": {
+        "sha256": "a6e184d6d69cb02c9dc26acc4d888158795711210d809cce953e3f032fd4db8d",
+        "mtime_ns": 1788575732317910600
+      },
+      "5371": {
+        "sha256": "39fcbc6cb2271870698d823f6e724739e470fc195f511573fe58d2c86c9b3fe3",
+        "mtime_ns": 1788575740605855700
+      },
+      "5520": {
+        "sha256": "a27fd154361fd957629efdc9c2a3e134291a702ee091bb4817b64e5e66862200",
+        "mtime_ns": 1788575760080328500
+      },
+      "5703": {
+        "sha256": "eac9031b098843d0b851da9f18555ed7e3e20858b949ff7b1f181fa18f2d684e",
+        "mtime_ns": 1788575769054693200
+      },
+      "5906": {
+        "sha256": "4e8e688ca2e0d1901adf083577c02c1333331476d790d0f6392a6f357b80406c",
+        "mtime_ns": 1788575774415010300
+      },
+      "6129": {
+        "sha256": "14c5c02a9a5e47afe20bbe2fb65c80a9b2ac87125f5b8247008f7c6ff1c6bc19",
+        "mtime_ns": 1788575787392371900
+      },
+      "6228": {
+        "sha256": "66266eff2c1d2ec6d555a4a2fc5890668fed06f2b0610e49afda015cfc189a38",
+        "mtime_ns": 1788575822110638600
+      },
+      "6236": {
+        "sha256": "2111c6437372dabe2ab81bf975c0238fe2d221608a9fb6a3f973d872777214fb",
+        "mtime_ns": 1788575824488365000
+      },
+      "6461": {
+        "sha256": "476dab37e85d67242673146d5c13e2a7fce44e9f39f08c5d41d326150de1047b",
+        "mtime_ns": 1788575845483855200
+      },
+      "6496": {
+        "sha256": "b914caa043e1bf1044faabe2625da991a10d0ef4a5fcc7c7e408c8e4fe35796b",
+        "mtime_ns": 1788575849528109000
+      },
+      "6615": {
+        "sha256": "c1ebec18f20c9e585f59e4a8c3126a58318ae7eda58149ee1efe2e3534b8a365",
+        "mtime_ns": 1788575862049186900
+      },
+      "6762": {
+        "sha256": "e204732e74a21fc87e7f80141c30629865cd534295914d4bfd22510248bef4ab",
+        "mtime_ns": 1788575871332035000
+      },
+      "6767": {
+        "sha256": "44d5bc385b2b87fef3ac114b7ec5f5122ff7c8ffce60e993028d87ad26b256e9",
+        "mtime_ns": 1788575871558066800
+      },
+      "6904": {
+        "sha256": "de49df17b0ab91ce90f26e86465a59b0a9d9e5d0d991c77d9f0e4b983351c363",
+        "mtime_ns": 1788575877042025600
+      },
+      "6949": {
+        "sha256": "33a9eed37aa817c3ef889c92cdb6500ef0b0cd7e6c1520ddbc8f4aa16e6448a8",
+        "mtime_ns": 1788575878238994900
+      },
+      "6997": {
+        "sha256": "66d617a9b3c0972592536831d51f3d8b89883650791244fa1e38616458ceeba4",
+        "mtime_ns": 1788575879293414900
+      },
+      "8077": {
+        "sha256": "30b0700cc0a0dc9a1c9306af88baeaeef7e4ad2783a5fd6821c06294a94030af",
+        "mtime_ns": 1788575886600420500
+      },
+      "8342": {
+        "sha256": "64d594c8838848e11494d1c697a5068eaef220032d86b29eea02a1a214019544",
+        "mtime_ns": 1788575896040106700
+      },
+      "8416": {
+        "sha256": "8d7713379a24753b09d4454b7dfb390d07a0a18a3b41e765357f21133884ed04",
+        "mtime_ns": 1788575898524356100
+      },
+      "8923": {
+        "sha256": "aae61b9e1823683785b516ef12b5cc936cf4183bc1eab1b163fa9c164a86f97a",
+        "mtime_ns": 1788575905896175700
+      },
+      "8929": {
+        "sha256": "2b65b78a2cbd4ba5d9722672112ad59b67d511b5a4706ea3ec2f9fcf0bf23447",
+        "mtime_ns": 1788575906682915700
+      }
+    }
+  }
+}

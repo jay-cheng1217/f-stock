@@ -1,0 +1,313 @@
+{
+  "assessment": "OPEN_ALLOCATION_RISK",
+  "generated_at": "2026-09-06T13:38:03.763315",
+  "as_of": "2026-09-04",
+  "method": "Read-only copied-ledger and source diagnosis; same-signal arithmetic sensitivity, not backtest",
+  "workspace": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace",
+  "guard_pid": 46048,
+  "guard_denials": 0,
+  "input_hashes_unchanged": {
+    "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\paper_portfolio_v2_champion.db": "b63ed2c1e9db9919e46a4aee7f69f63ddfca669cb7446b27a7b2d9cfa3c067af",
+    "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\shadow_portfolio_v2_baseline.db": "c3344dac07d38fab2d522119d68d343965a5443163f712866fd1685a7553d5b5",
+    "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\models\\unified_signals_2026-09-04.csv": "e28998b8efc76973fb677e5ab7abd63c7ded7b6db1e61d198f40b802557c5d50"
+  },
+  "source_references": {
+    "AGENTS.md": {
+      "line": 282,
+      "role": "20% Top-N sector-count policy",
+      "sha256": "c06a0d536ee41656c9895b96bd6a291280fe2117b01395524407f87b1cfec224"
+    },
+    "ml/thresholds.py": {
+      "line": 94,
+      "role": "sector20%, group15%, expensive-momentum3% constants",
+      "sha256": "80670e5213785ce6044f8cead8ec3152fa8e19d62097ee0459b4ff1c9ed3fd54"
+    },
+    "ml/predict.py": {
+      "line": 1636,
+      "role": "sector cap counts names against configured top_n",
+      "sha256": "56b5bbd08e217fd18d33ae40c6f526532fe7d23b561409be5b8b9677b8c030b2"
+    },
+    "scripts/build_unified_signals.py": {
+      "line": 946,
+      "role": "penalty sector-count cap; line1414 units normalization; line2481 risk overlays after gates",
+      "sha256": "9b7c237278a49c8ab32ae305677ca5841f9f9ba6e6522982a15dd4dac5999cd2"
+    },
+    "scripts/update_unified_portfolio.py": {
+      "line": 1397,
+      "role": "clip by signal upper bound; line1422 allocator; line1697 active nominal capital",
+      "sha256": "8cb048bbbe523ad33b023eb4eaaa650ad0062640f4a2d8399953e1b46c42d66b"
+    },
+    "scripts/order_simulation.py": {
+      "line": 166,
+      "role": "gap/slippage handling means nominal10% is not maximum executable loss",
+      "sha256": "a19e92f654c2485dccfc059fff520a5331f5306aa3e9dbdb23d82d96fabfd8a4"
+    },
+    "backend/services/warroom_service.py": {
+      "line": 931,
+      "role": "target_weight also enters cash/equity and position presentation",
+      "sha256": "47a942ecb043e27312cec8b5732130f528d38f8a36edc9417fdb6b9a7fc95b56"
+    }
+  },
+  "current_copied_champion": {
+    "database": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\paper_portfolio_v2_champion.db",
+    "active_positions": [
+      {
+        "id": 197,
+        "opened_by_run_id": 97,
+        "last_run_id": 100,
+        "prediction_date": "2026-08-27",
+        "last_signal_date": "2026-09-01",
+        "ticker": "2357",
+        "sector": "電腦及週邊設備業",
+        "entry_signal_type": "20D_only",
+        "current_signal_type": "20D_only",
+        "target_units": 2,
+        "target_weight": 1.0,
+        "planned_entry_ref_price": 968.0,
+        "entry_date": "2026-08-28",
+        "entry_price": 975.0,
+        "exit_policy": "20D",
+        "hold_days_target": 20,
+        "upgrade_count": 0,
+        "upgraded_at": null,
+        "status": "open",
+        "days_observed": 6,
+        "last_mark_date": "2026-09-04",
+        "exit_date": null,
+        "exit_price": null,
+        "realized_return_pct": null,
+        "max_drawdown_pct": -0.024615384615384595,
+        "max_drawdown_date": "2026-08-31",
+        "max_drawdown_low": 951.0,
+        "created_at": "2026-08-28 07:24:37",
+        "updated_at": "2026-09-06 13:20:12",
+        "order_type": "OPEN",
+        "fill_status": "FILLED",
+        "fill_price": 975.0,
+        "entry_slippage_pct": 0.00723140495867769,
+        "exit_reason": null,
+        "entry_tag": "NARRATIVE_DRIVEN",
+        "narrative_heat_at_entry": 1.0,
+        "two_stage_rank_at_entry": null,
+        "price_vs_ma20_at_entry": 0.0923042202663055,
+        "two_stage_rank_status": "rank_unknown",
+        "entry_snapshot_id": "2026-08-27:ede95cb73387967e5678f834d510500453ac6ae08e4ef95ac576ed48cb09b4ac:2357",
+        "entry_model_version": "stage1_meta=lgbm_v2_20260508_200128_meta.json|stage2_meta=lgbm_two_stage_ranker_20260509_011500_meta.json|source_20d=predictions_2026-08-27.csv",
+        "entry_rank_20d": 1.0,
+        "entry_two_stage_rank": null,
+        "entry_score": 0.0027299267666039,
+        "entry_prob_edge": -0.0980101711461709,
+        "entry_risk_adjusted_return_pre_penalty": 0.0001419137787,
+        "entry_leaderboard_score_pre_penalty": null,
+        "entry_penalty_overlay_total": 0.0,
+        "entry_guardrail_version": "guardrail_v1|monitor_top_n=50|loose_mode=1|intercept_rate_top50=0.82",
+        "entry_allocation_version": "sector_cap=0.20|group_cap=0.15|group_cap_applied=False",
+        "entry_execution_policy_version": "rule=unified-v2-order-sim|exit_policy=20D|order_type=pending_fill",
+        "entry_snapshot_confidence": "exact_snapshot",
+        "entry_snapshot_reason_code": "MISSING_TWO_STAGE_RANK;MISSING_LEADERBOARD_PRE_PENALTY"
+      }
+    ],
+    "status_summary": [
+      {
+        "status": "closed",
+        "count": 173,
+        "nominal_weight_sum": 12.387985502631851
+      },
+      {
+        "status": "open",
+        "count": 1,
+        "nominal_weight_sum": 1.0
+      },
+      {
+        "status": "stopped_out",
+        "count": 23,
+        "nominal_weight_sum": 1.198589025293353
+      }
+    ],
+    "active_count": 1,
+    "nominal_active_weight": 1.0,
+    "nominal_available_cash": 0.0,
+    "by_ticker_nominal_weight": {
+      "2357": 1.0
+    },
+    "by_sector_nominal_weight": {
+      "電腦及週邊設備業": 1.0
+    },
+    "max_single_name_nominal_weight": 1.0,
+    "max_sector_nominal_weight": 1.0,
+    "nominal_capital_at_risk_if_all_active_positions_exit_exact_minus10pct": 0.1,
+    "locked_asof_run": [
+      {
+        "id": 103,
+        "prediction_date": "2026-09-04",
+        "created_at": "2026-09-05 12:14:26",
+        "signals_file_path": "F:\\stock\\ml\\models\\unified_signals_2026-09-04.csv",
+        "signals_sha256": "0f8f3b85c65981b33ea6ddf04ceae0a712290bea962805fc2cdff7e794d352d1",
+        "rule_version": "unified-v2-order-sim",
+        "total_candidates": 1,
+        "total_units": 2,
+        "available_cash_before": 0.0,
+        "cash_deployed": 0.0,
+        "new_positions": 0,
+        "upgraded_positions": 0
+      }
+    ],
+    "active_origin_runs": [
+      {
+        "id": 97,
+        "prediction_date": "2026-08-27",
+        "created_at": "2026-08-28 07:24:37",
+        "signals_file_path": "F:\\stock\\ml\\models\\unified_signals_2026-08-27.csv",
+        "signals_sha256": "ede95cb73387967e5678f834d510500453ac6ae08e4ef95ac576ed48cb09b4ac",
+        "rule_version": "unified-v2-order-sim:paper:champion",
+        "total_candidates": 1,
+        "total_units": 2,
+        "available_cash_before": 1.0,
+        "cash_deployed": 1.0,
+        "new_positions": 1,
+        "upgraded_positions": 0
+      }
+    ],
+    "min_max_mark_dates": [
+      "2026-04-23",
+      "2026-09-04"
+    ],
+    "measurement_limit": "Weights are ledger allocations relative to a nominal1 capital budget, not current marked-to-market NAV fractions or a live brokerage account. Pending reserves cash. Realized P&L is not used in allocator available_cash formula."
+  },
+  "fresh_same_signal": {
+    "ticker": "2603",
+    "sector": "航運業",
+    "target_units": 2,
+    "target_weight_ratio": 0.9985,
+    "before_macro": 1.0,
+    "macro_multiplier": 0.9985,
+    "expensive_momentum_risk": false,
+    "futures_multiplier": 1.0,
+    "proof": "portfolio_acceptance.json: actual canonical fresh DB pending insert0.9985, no fill"
+  },
+  "allocation_formula": {
+    "cash": "C=max(0,1-sum(target_weight for pending/open positions))",
+    "delta": "d_i=max(signal_target_units_i-existing_target_units_i,0)",
+    "raw_new_weight": "a_i=C*d_i/sum(d), if sum(d)>0",
+    "final_new_weight_for_positive_signal_cap": "min(a_i,max(0,signal_target_weight_ratio_i-existing_weight_i))",
+    "signal_weight_source": "target_units/sum(target_units) over surviving daily signal pool, then conditional risk reductions",
+    "nonpositive_or_nonfinite_cap_behavior": "_cap_delta_weight currently returns raw allocation for <=0 or nonfinite cap. Research caps here are positive; do not assume setting zero freezes allocation."
+  },
+  "controls": [
+    {
+      "control": "sector20% / theme15%",
+      "layer": "candidate name counts",
+      "capital_cap": false,
+      "limit": "counts use configured top_n, not final surviving pool or current ledger sectors; unknown themes uncapped"
+    },
+    {
+      "control": "generic single-name capital cap",
+      "layer": "allocator",
+      "present": false
+    },
+    {
+      "control": "portfolio sector capital cap",
+      "layer": "allocator",
+      "present": false
+    },
+    {
+      "control": "portfolio max active slots / fixed minimum denominator",
+      "layer": "allocator",
+      "present": false
+    },
+    {
+      "control": "total nominal active capital100%",
+      "layer": "allocator",
+      "present": true,
+      "limit": "No diversification or mandatory cash buffer; cash is nominal, not actual NAV cash"
+    },
+    {
+      "control": "expensive momentum3%",
+      "layer": "signal upper bound",
+      "present": true,
+      "limit": "Only PE>50 AND MA60 deviation>25%; current2603 does not trigger"
+    },
+    {
+      "control": "settlement/macro reduction",
+      "layer": "signal multipliers",
+      "present": true,
+      "limit": "Conditional, not universal concentration protection; current macro leaves0.9985"
+    },
+    {
+      "control": "CAUTION market state",
+      "layer": "candidate ranking and route gate",
+      "present": true,
+      "limit": "Limits20D to Top10 and blocksT1; does not impose a total exposure budget"
+    }
+  ],
+  "trigger_scenarios": [
+    "New/empty or correctly recovered empty ledger + unlocked run + sole new candidate + near100% signal cap: may reserve near100% in one name.",
+    "Closed/stopped/missed positions leave active sum, releasing nominal cash; next unlocked sparse-signal run can concentrate most released cash in one new name.",
+    "Partial cash release means new concentration is limited by that cash and signal cap; no forced sell/rebalance of other open names occurs.",
+    "Existing same ticker without delta-unit increase gets no top-up; upgrades can add if delta>0 and cap headroom exists.",
+    "Already locked9/4 run is skipped; freed cash does not cause that same date to rerun. Existingcopied9/4 ledger did not buy2603.",
+    "Recovery against an empty DB while actual positions still exist would lose cash-reservation context; do not treat empty rebuild as safe live-book recovery."
+  ],
+  "sensitivity_fresh_one_candidate": [
+    {
+      "scenario": "current",
+      "single_name_cap": null,
+      "ticker": "2603",
+      "initial_nominal_cash": 1.0,
+      "allocated_pending_weight": 0.9985,
+      "cash_left_unallocated": 0.0014999999999999458,
+      "nominal_capital_at_risk_at_minus10pct": 0.09985000000000001,
+      "nominal_loss_per_TWD_1000000_if_exact_minus10pct_exit": 99850.00000000001
+    },
+    {
+      "scenario": "single_name_10pct",
+      "single_name_cap": 0.1,
+      "ticker": "2603",
+      "initial_nominal_cash": 1.0,
+      "allocated_pending_weight": 0.1,
+      "cash_left_unallocated": 0.9,
+      "nominal_capital_at_risk_at_minus10pct": 0.010000000000000002,
+      "nominal_loss_per_TWD_1000000_if_exact_minus10pct_exit": 10000.000000000002
+    },
+    {
+      "scenario": "single_name_20pct",
+      "single_name_cap": 0.2,
+      "ticker": "2603",
+      "initial_nominal_cash": 1.0,
+      "allocated_pending_weight": 0.2,
+      "cash_left_unallocated": 0.8,
+      "nominal_capital_at_risk_at_minus10pct": 0.020000000000000004,
+      "nominal_loss_per_TWD_1000000_if_exact_minus10pct_exit": 20000.000000000004
+    }
+  ],
+  "cash_release_arithmetic": [
+    {
+      "available_nominal_cash": 0.0,
+      "new_2603_weight_current_rule": 0.0,
+      "interpretation": "Arithmetic only: new unlocked run, no existing 2603, sole positive delta-unit request"
+    },
+    {
+      "available_nominal_cash": 0.1,
+      "new_2603_weight_current_rule": 0.1,
+      "interpretation": "Arithmetic only: new unlocked run, no existing 2603, sole positive delta-unit request"
+    },
+    {
+      "available_nominal_cash": 0.2,
+      "new_2603_weight_current_rule": 0.2,
+      "interpretation": "Arithmetic only: new unlocked run, no existing 2603, sole positive delta-unit request"
+    },
+    {
+      "available_nominal_cash": 0.5,
+      "new_2603_weight_current_rule": 0.5,
+      "interpretation": "Arithmetic only: new unlocked run, no existing 2603, sole positive delta-unit request"
+    },
+    {
+      "available_nominal_cash": 1.0,
+      "new_2603_weight_current_rule": 0.9985,
+      "interpretation": "Arithmetic only: new unlocked run, no existing 2603, sole positive delta-unit request"
+    }
+  ],
+  "stop_assumption": "Nominal capital_at_risk=allocated_weight*10%. Assumes exact entry-to-exit -10%; excludes fees, tax, gap, slippage, liquidity and unfilled-order risks. This is not a loss ceiling, forecast, backtest or guaranteed stop fill.",
+  "impact_scope": "Champion and baseline Shadow use the same canonical allocator; existing paper cash/equity/warroom views consume target_weight. This diagnosis does not change rere selection or any trade rule.",
+  "sa_recommendation_pending_user_decision": "Add explicit post-gate capital policy at allocator boundary: generic single-name cap, current-portfolio sector cap and retained cash; preserve candidates.10%/20% are comparison points, not approved thresholds. Define existing-book handling separately; no retroactive rebalance is performed."
+}

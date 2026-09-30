@@ -1,0 +1,118 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20260817"
+  },
+  "rows": 1232699,
+  "setup_count": 5968,
+  "filled_count": 5160,
+  "missed_gap_up_count": 1302,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5160,
+      "mean_return": -0.008982677086506005,
+      "median_return": -0.012468599842222313,
+      "win_rate": 0.34011627906976744,
+      "p25": -0.033029220814766946,
+      "p75": 0.009288236201048464
+    },
+    {
+      "hold_days": 2,
+      "n": 5151,
+      "mean_return": -0.007893100105981406,
+      "median_return": -0.01532075471698113,
+      "win_rate": 0.37701417200543585,
+      "p25": -0.045602285305396895,
+      "p75": 0.020303803699100568
+    },
+    {
+      "hold_days": 3,
+      "n": 5145,
+      "mean_return": -0.007204822056898785,
+      "median_return": -0.01763636363636367,
+      "win_rate": 0.38406219630709426,
+      "p25": -0.05546036161335188,
+      "p75": 0.028258064516129004
+    },
+    {
+      "hold_days": 5,
+      "n": 5134,
+      "mean_return": -0.004735744135188526,
+      "median_return": -0.020565438513043762,
+      "win_rate": 0.3983248928710557,
+      "p25": -0.06990628276171934,
+      "p75": 0.03959309427207003
+    },
+    {
+      "hold_days": 10,
+      "n": 5110,
+      "mean_return": 0.000278432027386165,
+      "median_return": -0.02358029130131711,
+      "win_rate": 0.4142857142857143,
+      "p25": -0.09340140985304068,
+      "p75": 0.06446047000525584
+    },
+    {
+      "hold_days": 20,
+      "n": 5052,
+      "mean_return": 0.010007379187726326,
+      "median_return": -0.03438449006190941,
+      "win_rate": 0.4180522565320665,
+      "p25": -0.12611221122112207,
+      "p75": 0.10083657820963604
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-08-14",
+      "ticker": "6617",
+      "name": "共信-KY",
+      "sector": "生技醫療業",
+      "Close": 101.0,
+      "momentum_score": 0.661103,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 99.485,
+      "momentum_entry_limit": 101.0,
+      "momentum_entry_high": 102.515,
+      "price_vs_ma5": -0.0155945419,
+      "price_vs_ma20": 0.1169477468,
+      "price_vs_ma60": 0.2270932469,
+      "volume_ratio_20d": 0.9150533386,
+      "RSI_14": 59.9984423337,
+      "MACDh_12_26_9": 1.6126714874,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-08-14",
+      "ticker": "6130",
+      "name": "上亞科技",
+      "sector": "生技醫療業",
+      "Close": 29.0,
+      "momentum_score": 0.636783,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 27.985,
+      "momentum_entry_limit": 29.0,
+      "momentum_entry_high": 29.435,
+      "price_vs_ma5": 0.0618820945,
+      "price_vs_ma20": 0.1477194024,
+      "price_vs_ma60": 0.1890931456,
+      "volume_ratio_20d": 2.3442410797,
+      "RSI_14": 68.1701610488,
+      "MACDh_12_26_9": 0.5221891152,
+      "missed_gap_up": false
+    }
+  ]
+}

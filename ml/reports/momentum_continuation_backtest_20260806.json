@@ -1,0 +1,156 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20260806"
+  },
+  "rows": 1218865,
+  "setup_count": 5917,
+  "filled_count": 5116,
+  "missed_gap_up_count": 1290,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5116,
+      "mean_return": -0.008983663320792042,
+      "median_return": -0.01243289242876788,
+      "win_rate": 0.34030492572322124,
+      "p25": -0.03300562614957386,
+      "p75": 0.009288236201048464
+    },
+    {
+      "hold_days": 2,
+      "n": 5115,
+      "mean_return": -0.007935861074060075,
+      "median_return": -0.015398963730569922,
+      "win_rate": 0.376930596285435,
+      "p25": -0.04564258188824655,
+      "p75": 0.020215009697602263
+    },
+    {
+      "hold_days": 3,
+      "n": 5110,
+      "mean_return": -0.0071831827320597,
+      "median_return": -0.017724315068493143,
+      "win_rate": 0.3843444227005871,
+      "p25": -0.055458068043787,
+      "p75": 0.028258064516129004
+    },
+    {
+      "hold_days": 5,
+      "n": 5101,
+      "mean_return": -0.004560215473702594,
+      "median_return": -0.02055629139072845,
+      "win_rate": 0.39894138404234464,
+      "p25": -0.06985365853658532,
+      "p75": 0.04005286343612324
+    },
+    {
+      "hold_days": 10,
+      "n": 5073,
+      "mean_return": 0.0006849148337988181,
+      "median_return": -0.023292604501607746,
+      "win_rate": 0.4151389710230633,
+      "p25": -0.09304109589041099,
+      "p75": 0.06496551724137922
+    },
+    {
+      "hold_days": 20,
+      "n": 4999,
+      "mean_return": 0.011156683529779743,
+      "median_return": -0.033478458049886695,
+      "win_rate": 0.4204840968193639,
+      "p25": -0.12568054723180888,
+      "p75": 0.10227004611280899
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-08-05",
+      "ticker": "2425",
+      "name": "承啟",
+      "sector": "電腦及週邊設備業",
+      "Close": 49.1,
+      "momentum_score": 0.683306,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 47.3815,
+      "momentum_entry_limit": 49.1,
+      "momentum_entry_high": 49.8365,
+      "price_vs_ma5": 0.0347734457,
+      "price_vs_ma20": 0.1051713466,
+      "price_vs_ma60": 0.2407548333,
+      "volume_ratio_20d": 1.6357073217,
+      "RSI_14": 63.1372826351,
+      "MACDh_12_26_9": 0.3740193094,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-08-05",
+      "ticker": "3231",
+      "name": "緯創",
+      "sector": "電腦及週邊設備業",
+      "Close": 193.0,
+      "momentum_score": 0.680621,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 186.245,
+      "momentum_entry_limit": 193.0,
+      "momentum_entry_high": 195.895,
+      "price_vs_ma5": 0.0604395604,
+      "price_vs_ma20": 0.1898890259,
+      "price_vs_ma60": 0.2522470961,
+      "volume_ratio_20d": 2.1632698765,
+      "RSI_14": 68.6691469556,
+      "MACDh_12_26_9": 3.5685373182,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-08-05",
+      "ticker": "6863",
+      "name": "永道-KY",
+      "sector": "通信網路業",
+      "Close": 135.0,
+      "momentum_score": 0.647511,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 131.539,
+      "momentum_entry_limit": 135.0,
+      "momentum_entry_high": 137.025,
+      "price_vs_ma5": 0.0211800303,
+      "price_vs_ma20": 0.1982622462,
+      "price_vs_ma60": 0.2897813457,
+      "volume_ratio_20d": 1.2484253034,
+      "RSI_14": 79.726697327,
+      "MACDh_12_26_9": 2.746757866,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-08-05",
+      "ticker": "2880",
+      "name": "華南金",
+      "sector": "金融保險業",
+      "Close": 43.8,
+      "momentum_score": 0.576614,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 43.07355,
+      "momentum_entry_limit": 43.8,
+      "momentum_entry_high": 44.457,
+      "price_vs_ma5": 0.0117810118,
+      "price_vs_ma20": 0.0680972993,
+      "price_vs_ma60": 0.1869114559,
+      "volume_ratio_20d": 0.7873112194,
+      "RSI_14": 72.5025628587,
+      "MACDh_12_26_9": 0.1528210533,
+      "missed_gap_up": false
+    }
+  ]
+}

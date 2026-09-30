@@ -1,0 +1,143 @@
+{
+  "status": "actionable_diagnostic_pm_review",
+  "inputs": {
+    "mock_attribution": "F:\\stock\\ml\\reports\\champion_nav_attribution_20260423_20260429.json",
+    "formal_attribution": "F:\\stock\\ml\\reports\\rd005_residual_split_20260517.json",
+    "formal_phase_b": "F:\\stock\\ml\\reports\\rd005_phase_b_timing_split_20260517.json",
+    "mock_target_formula": "gross_exposure_cash_residual_pct - execution_pnl_pct - exit_pnl_pct",
+    "formal_target_formula": "attribution.residual_split.unexplained_reconciliation_residual_pct"
+  },
+  "windows": {
+    "mock": {
+      "start_date": "2026-04-23",
+      "end_date": "2026-04-29",
+      "target_pct": -0.012565565715093228,
+      "b1_overnight_gap_timing_pct": 0.023856913409182307,
+      "b2_rebalance_day_intraday_slippage_pct": -0.1892389166126023,
+      "b3_held_intraday_mark_timing_pct": -0.009132915301257757,
+      "b4_mark_weight_sync_residual_pct": 0.16194935278958453,
+      "observable_timing_sum_pct": -0.17451491850467776,
+      "transition_observable_pct": -0.17246969690149802,
+      "young_entry_observable_pct": -0.1892389166126023,
+      "mature_held_observable_pct": -0.0020452216031797365,
+      "entry_rows": 51,
+      "exit_rows": 42,
+      "mature_rows": 12,
+      "holding_day_rows": 95,
+      "avg_gross_exposure": 1.3544263157894734,
+      "mark_price_mismatch_proxy_pct": 0.0,
+      "missing_required_price_rows": 0
+    },
+    "formal": {
+      "start_date": "2026-05-11",
+      "end_date": "2026-05-15",
+      "target_pct": -0.05638164814819354,
+      "b1_overnight_gap_timing_pct": 0.052564967919357275,
+      "b2_rebalance_day_intraday_slippage_pct": -0.016835146188920923,
+      "b3_held_intraday_mark_timing_pct": 0.012596516518090316,
+      "b4_mark_weight_sync_residual_pct": -0.10470798639672022,
+      "observable_timing_sum_pct": 0.04832633824852667,
+      "transition_observable_pct": -0.012560360961079134,
+      "young_entry_observable_pct": -0.016835146188920923,
+      "mature_held_observable_pct": 0.0608866992096058,
+      "entry_rows": 24,
+      "exit_rows": 30,
+      "mature_rows": 78,
+      "holding_day_rows": 132,
+      "avg_gross_exposure": 0.9470019423558897,
+      "mark_price_mismatch_proxy_pct": 0.0,
+      "missing_required_price_rows": 0
+    }
+  },
+  "formal_phase_b_reference": {
+    "status": "pass_for_pm_review",
+    "b4_dominance": true
+  },
+  "candidate_explanatory_power": [
+    {
+      "candidate": "C1 target/bucket basis mismatch",
+      "mock_proxy_pct": 0.16194935278958453,
+      "formal_proxy_pct": -0.10470798639672022,
+      "mock_explanatory_power": 1.0,
+      "formal_explanatory_power": 1.0,
+      "passes_30pct_both_windows": true,
+      "note": "Definition-level closure: B4 is the explicit gap between the NAV unexplained target and observable timing proxies."
+    },
+    {
+      "candidate": "C2 transition weight snapshot lag",
+      "mock_proxy_pct": -0.17246969690149802,
+      "formal_proxy_pct": -0.012560360961079134,
+      "mock_explanatory_power": 1.0,
+      "formal_explanatory_power": 0.11995609306715276,
+      "passes_30pct_both_windows": false,
+      "note": "Entry/exit transition rows dominate the mock but not the formal window."
+    },
+    {
+      "candidate": "C3 mark refresh / stale mark timing",
+      "mock_proxy_pct": 0.0,
+      "formal_proxy_pct": 0.0,
+      "mock_explanatory_power": 0.0,
+      "formal_explanatory_power": 0.0,
+      "passes_30pct_both_windows": false,
+      "note": "Existing mark open/close rows match daily K open/close at this aggregate check."
+    },
+    {
+      "candidate": "C4 cash/gross exposure normalization",
+      "mock_proxy_pct": 0.0008416989184811263,
+      "formal_proxy_pct": -0.041455336458437894,
+      "mock_explanatory_power": 0.005197297204235932,
+      "formal_explanatory_power": 0.3959137968843264,
+      "passes_30pct_both_windows": false,
+      "note": "Gross/cash residual is material in formal but negligible in mock."
+    },
+    {
+      "candidate": "C5 corporate action / price basis",
+      "mock_proxy_pct": 0.0,
+      "formal_proxy_pct": 0.0,
+      "mock_explanatory_power": 0.0,
+      "formal_explanatory_power": 0.0,
+      "passes_30pct_both_windows": false,
+      "note": "No existing-data price-basis mismatch is observed in the aggregate open/close checks."
+    }
+  ],
+  "c1_mature_vs_young_test": {
+    "mock_mode": "young_transition",
+    "mock_driver_pct": -0.17246969690149802,
+    "mock_driver_power": 1.0,
+    "formal_mode": "mature_held",
+    "formal_driver_pct": 0.0608866992096058,
+    "formal_driver_power": 0.5814904985271779,
+    "passes_pm_combination_rule": true
+  },
+  "recommended_interpretation": {
+    "dominant_root_cause": "C1 target/bucket basis mismatch with window-conditional portfolio state",
+    "one_time_vs_structural": "Not universal structural daily drag. It is structural to the current attribution decomposition when B4 is used to bridge a NAV unexplained target to mark-level timing proxies, but the sign and dominance are window-dependent.",
+    "rd002_stage_b_impact": "Execution-slippage case studies such as 6419 remain usable for RD-002. NAV-level B4 residuals must not be used to score Stage B benefit until the reporting-definition issue is fixed."
+  },
+  "fix_scopes": [
+    {
+      "scope": "minimal_reporting_definition",
+      "recommendation": "Add C1 basis labels, B4 dominance, and cross-window sign-stability checks to NAV attribution outputs.",
+      "blast_radius": "Low: report schema and docs only; no DB mutation.",
+      "pm_decision_needed": true
+    },
+    {
+      "scope": "medium_reporting_refactor",
+      "recommendation": "Split NAV unexplained target from observable timing proxy target and report young-transition vs mature-held sub-bases.",
+      "blast_radius": "Medium: attribution scripts and tests; regenerate only approved windows first.",
+      "pm_decision_needed": true
+    },
+    {
+      "scope": "ledger_schema_or_write_path",
+      "recommendation": "Add explicit as-of weight snapshot or mark timestamp fields only if row-level proof shows C2/C3 cannot be fixed in reporting.",
+      "blast_radius": "High: DB schema/write path, historical compatibility, and regression risk.",
+      "pm_decision_needed": true
+    }
+  ],
+  "rd_gate": {
+    "production_patch_allowed": false,
+    "schema_change_allowed": false,
+    "historical_retrofit_allowed": false,
+    "next_step": "PM review of offline diagnostic before any implementation patch."
+  }
+}

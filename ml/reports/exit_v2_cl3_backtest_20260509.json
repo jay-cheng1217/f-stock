@@ -1,0 +1,76 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-08T18:45:23.849694+00:00",
+    "fold_artifact": "F:\\stock\\ml\\reports\\audit002_step5_grid_search_20260509_N75_bins5_fold_top30.csv",
+    "actual_start": "2024-01",
+    "actual_end": "2026-04",
+    "months": 28,
+    "entries": 840,
+    "simulated_trades": 1680,
+    "skipped_entries": 0,
+    "trades_csv": "F:\\stock\\ml\\reports\\exit_v2_cl3_backtest_20260509_trades.csv",
+    "monthly_csv": "F:\\stock\\ml\\reports\\exit_v2_cl3_backtest_20260509_monthly.csv",
+    "summary_csv": "F:\\stock\\ml\\reports\\exit_v2_cl3_backtest_20260509_summary.csv"
+  },
+  "summary": [
+    {
+      "variant": "Control_MA5_HWM8",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.015700114417151318,
+      "monthly_avg_alpha": 0.007089062983619597,
+      "compound_return": 0.5252586255169049,
+      "mdd": -0.08574338338703225,
+      "sharpe": 1.660440856629375,
+      "calmar": 2.397295072389932,
+      "avg_hold_days": 4.005952380952381,
+      "strong_trend_no_ma5_count": 0,
+      "ma_exit_count": 806,
+      "hwm_exit_count": 10,
+      "stop_exit_count": 33,
+      "timeout_count": 1
+    },
+    {
+      "variant": "Treatment_AsymmetricV2",
+      "months": 28,
+      "trades": 840,
+      "monthly_avg_return": 0.02295393711787255,
+      "monthly_avg_alpha": 0.012232814203980499,
+      "compound_return": 0.853968563820769,
+      "mdd": -0.07694460074872478,
+      "sharpe": 2.120625564702319,
+      "calmar": 4.0681844446193,
+      "avg_hold_days": 4.886904761904762,
+      "strong_trend_no_ma5_count": 109,
+      "ma_exit_count": 704,
+      "hwm_exit_count": 70,
+      "stop_exit_count": 103,
+      "timeout_count": 33
+    }
+  ],
+  "cl3": {
+    "checks": {
+      "alpha_sacrifice": {
+        "value": 0.0,
+        "threshold": 0.005,
+        "pass": true
+      },
+      "mdd_delta": {
+        "value": 0.008798782638307467,
+        "threshold": 0.001,
+        "pass": true
+      },
+      "sharpe_regression": {
+        "value": 0.0,
+        "threshold": 0.05,
+        "pass": true
+      },
+      "calmar_regression": {
+        "value": 0.0,
+        "threshold": 0.05,
+        "pass": true
+      }
+    },
+    "overall_pass": true
+  }
+}

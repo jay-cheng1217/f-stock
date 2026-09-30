@@ -1,0 +1,133 @@
+{
+  "control": {
+    "months": 28,
+    "monthly_return": 0.018722086178312097,
+    "monthly_alpha_vs_twii": -0.008563851850044577,
+    "monthly_alpha_vs_strategy_fit": 0.005223778380676967,
+    "mdd": -0.021273057264696194,
+    "sharpe": 2.0699921804622963,
+    "calmar": 10.561012991423151,
+    "positive_months": 18,
+    "avg_positions_count": 2.3845992952236825
+  },
+  "treatment": {
+    "months": 28,
+    "monthly_return": 0.029759882731231254,
+    "monthly_alpha_vs_twii": 0.0024739447028745776,
+    "monthly_alpha_vs_strategy_fit": 0.01626157493359612,
+    "mdd": -0.079627717292306,
+    "sharpe": 1.4680626773114949,
+    "calmar": 4.484852824096736,
+    "positive_months": 16,
+    "avg_positions_count": 4.803714430116032
+  },
+  "delta": {
+    "monthly_return_delta": 0.011037796552919157,
+    "monthly_alpha_vs_twii_delta": 0.011037796552919154,
+    "monthly_alpha_vs_strategy_fit_delta": 0.011037796552919154,
+    "mdd_delta": -0.058354660027609806,
+    "sharpe_delta": -0.6019295031508014,
+    "calmar_delta": -6.076160167326416,
+    "avg_positions_delta": 2.4191151348923494
+  },
+  "decision_checks": {
+    "monthly_alpha_vs_twii_gt_1pp": false,
+    "mdd_not_worse_than_minus_15pct": true,
+    "calmar_gt_1": true,
+    "mainline_pass": false
+  },
+  "control_signal_analysis": {
+    "signals": 525,
+    "avg_monthly_signals": 18.103448275862068,
+    "top_tickers": {
+      "2330": 24,
+      "3017": 24,
+      "2317": 22,
+      "3231": 20,
+      "2308": 20,
+      "2382": 19,
+      "2454": 17,
+      "2383": 16,
+      "1519": 15,
+      "3037": 14
+    },
+    "sector_distribution": {
+      "半導體業": 139,
+      "電子零組件業": 117,
+      "電腦及週邊設備業": 95,
+      "其他電子業": 53,
+      "電機機械": 34,
+      "航運業": 25,
+      "通信網路業": 23,
+      "塑膠工業": 10,
+      "光電業": 8,
+      "金融保險業": 5,
+      "電器電纜": 4,
+      "電子通路業": 3,
+      "生技醫療業": 3,
+      "鋼鐵工業": 3,
+      "玻璃陶瓷": 2,
+      "化學工業": 1
+    },
+    "exit_reasons": {
+      "FOREIGN_SELL_1D": 500,
+      "HWM_8PCT_TRAIL": 15,
+      "20D_TIMEOUT": 1
+    }
+  },
+  "treatment_signal_analysis": {
+    "signals": 445,
+    "avg_monthly_signals": 15.344827586206897,
+    "top_tickers": {
+      "3017": 19,
+      "2330": 18,
+      "3231": 18,
+      "2382": 15,
+      "2317": 15,
+      "1519": 14,
+      "2383": 14,
+      "2454": 14,
+      "2308": 14,
+      "6669": 13
+    },
+    "sector_distribution": {
+      "半導體業": 121,
+      "電子零組件業": 99,
+      "電腦及週邊設備業": 81,
+      "其他電子業": 38,
+      "電機機械": 28,
+      "航運業": 25,
+      "通信網路業": 21,
+      "光電業": 8,
+      "塑膠工業": 7,
+      "金融保險業": 5,
+      "電器電纜": 3,
+      "電子通路業": 3,
+      "生技醫療業": 2,
+      "鋼鐵工業": 2,
+      "化學工業": 1,
+      "玻璃陶瓷": 1
+    },
+    "exit_reasons": {
+      "FOREIGN_SELL_2D": 332,
+      "HWM_8PCT_TRAIL": 90,
+      "20D_TIMEOUT": 13
+    }
+  },
+  "method": {
+    "control": "sector cap 2 names; foreign sell exits after 1 day",
+    "treatment": "sector cap 4 names; foreign sell exits after 2 consecutive days",
+    "summary_window": "2024-01-01 to 2026-04-30",
+    "replay_window": "2024-01-01 to 2026-05-08",
+    "entry": "T+0 close",
+    "exit": "foreign consecutive sell OR HWM -8% OR 20 trading days"
+  },
+  "paths": {
+    "monthly": "F:\\stock\\ml\\reports\\req026_large_cap_flow_relaxation_20260510_monthly.csv",
+    "treatment_trades": "F:\\stock\\ml\\reports\\req026_large_cap_flow_relaxation_20260510_treatment_trades.csv",
+    "treatment_open": "F:\\stock\\ml\\reports\\req026_large_cap_flow_relaxation_20260510_treatment_open_positions.csv",
+    "treatment_signals": "F:\\stock\\ml\\reports\\req026_large_cap_flow_relaxation_20260510_treatment_signals.csv",
+    "april": "F:\\stock\\ml\\reports\\req026_large_cap_flow_relaxation_20260510_april2026.csv",
+    "json": "F:\\stock\\ml\\reports\\req026_large_cap_flow_relaxation_20260510.json"
+  }
+}

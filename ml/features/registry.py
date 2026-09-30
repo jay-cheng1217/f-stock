@@ -13,6 +13,7 @@ from ml.config import (
     FINANCIAL_DIR,
     INDEX_DIR,
     VALUATION_DIR,
+    REGIME_FEATURE_COLS,
 )
 from ml.features.technical import TECHNICAL_FEATURE_COLS
 from ml.features.institutional import INSTITUTIONAL_FEATURE_COLS
@@ -61,6 +62,12 @@ FEATURE_REGISTRY: Dict[str, dict] = {
         "group": "market",
         "requires": [INDEX_DIR],
         "description": "大盤環境特徵：加權指數、VIX、費半、匯率",
+    },
+    "market_regime": {
+        "columns": REGIME_FEATURE_COLS,
+        "group": "market_regime",
+        "requires": [INDEX_DIR, DAILY_K_DIR],
+        "description": "市場體制百分位特徵：TAIEX 趨勢與市場廣度，嚴格使用 T-1 資料",
     },
     "valuation": {
         "columns": VALUATION_FEATURE_COLS,

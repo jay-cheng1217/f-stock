@@ -1,0 +1,17 @@
+﻿prediction_date,active_count,active_units,max_name_weight,max_sector,max_sector_weight,signal_rows,path
+2026-04-09,5,10,0.2,電子零組件業,0.6000000000000001,27,F:\stock\ml\models\unified_signals_2026-04-09.csv
+2026-04-10,4,8,0.25,金融保險業,0.75,8,F:\stock\ml\models\unified_signals_2026-04-10.csv
+2026-04-13,18,36,0.0555555555555555,金融保險業,0.27777777777777746,30,F:\stock\ml\models\unified_signals_2026-04-13.csv
+2026-04-14,1,2,1.0,光電業,1.0,5,F:\stock\ml\models\unified_signals_2026-04-14.csv
+2026-04-15,4,8,0.25,光電業,0.25,9,F:\stock\ml\models\unified_signals_2026-04-15.csv
+2026-04-16,0,0,0.0,,0.0,7,F:\stock\ml\models\unified_signals_2026-04-16.csv
+2026-04-17,14,28,0.0714285714285714,光電業,0.2142857142857142,30,F:\stock\ml\models\unified_signals_2026-04-17.csv
+2026-04-20,18,36,0.0555555555555555,光電業,0.1666666666666665,30,F:\stock\ml\models\unified_signals_2026-04-20.csv
+2026-04-21,18,36,0.0555555555555555,光電業,0.222222222222222,30,F:\stock\ml\models\unified_signals_2026-04-21.csv
+2026-04-22,14,28,0.0714285714285714,光電業,0.2142857142857142,30,F:\stock\ml\models\unified_signals_2026-04-22.csv
+2026-04-23,21,42,0.0476190476190476,其他電子業,0.23809523809523803,30,F:\stock\ml\models\unified_signals_2026-04-23.csv
+2026-04-24,4,8,0.25,通信網路業,0.5,30,F:\stock\ml\models\unified_signals_2026-04-24.csv
+2026-04-27,5,10,0.2,通信網路業,0.6000000000000001,30,F:\stock\ml\models\unified_signals_2026-04-27.csv
+2026-04-28,5,10,0.2,半導體業,0.4,30,F:\stock\ml\models\unified_signals_2026-04-28.csv
+2026-04-29,7,14,0.1428571428571428,通信網路業,0.4285714285714284,30,F:\stock\ml\models\unified_signals_2026-04-29.csv
+2026-04-30,6,12,0.1666666666666666,半導體業,0.4999999999999998,30,F:\stock\ml\models\unified_signals_2026-04-30.csv

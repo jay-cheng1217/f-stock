@@ -1,0 +1,104 @@
+{
+  "generated_at": "2026-05-02T17:15:09.621538+00:00",
+  "dates": [
+    "2026-04-09",
+    "2026-04-10",
+    "2026-04-13",
+    "2026-04-14",
+    "2026-04-15",
+    "2026-04-16",
+    "2026-04-17",
+    "2026-04-20",
+    "2026-04-21",
+    "2026-04-22",
+    "2026-04-23",
+    "2026-04-24",
+    "2026-04-27",
+    "2026-04-28",
+    "2026-04-29",
+    "2026-04-30"
+  ],
+  "top_n": 30,
+  "available_days": 16,
+  "active_rows": {
+    "min": 0,
+    "p25": 4.0,
+    "median": 5.5,
+    "p75": 15.0,
+    "max": 21,
+    "below_10_days": 10,
+    "below_10_ratio": 0.625
+  },
+  "focus_sector_survival_rank20_to_active": [
+    {
+      "sector": "其他電子業",
+      "before_count": 68,
+      "after_count": 16,
+      "killed_count": 52,
+      "mean_survival_rate": 0.21555555555555556,
+      "total_survival_rate": 0.23529411764705882
+    },
+    {
+      "sector": "半導體業",
+      "before_count": 73,
+      "after_count": 24,
+      "killed_count": 49,
+      "mean_survival_rate": 0.3055555555555555,
+      "total_survival_rate": 0.3287671232876712
+    },
+    {
+      "sector": "通信網路業",
+      "before_count": 65,
+      "after_count": 27,
+      "killed_count": 38,
+      "mean_survival_rate": 0.3688888888888889,
+      "total_survival_rate": 0.4153846153846154
+    },
+    {
+      "sector": "電子零組件業",
+      "before_count": 63,
+      "after_count": 11,
+      "killed_count": 52,
+      "mean_survival_rate": 0.203125,
+      "total_survival_rate": 0.1746031746031746
+    }
+  ],
+  "semiconductor_vs_communication_score_medians": [
+    {
+      "column": "pred_return_20d",
+      "left": "半導體業",
+      "right": "通信網路業",
+      "left_median": -0.0068786773943338,
+      "right_median": -0.0070326233093347,
+      "diff": 0.00015394591500090052
+    },
+    {
+      "column": "prob_edge",
+      "left": "半導體業",
+      "right": "通信網路業",
+      "left_median": -0.0564446511527138,
+      "right_median": -0.0618298849193372,
+      "diff": 0.0053852337666234
+    },
+    {
+      "column": "leaderboard_score",
+      "left": "半導體業",
+      "right": "通信網路業",
+      "left_median": -0.00184271912536385,
+      "right_median": -0.0020108520150413,
+      "diff": 0.00016813288967744986
+    }
+  ],
+  "reason_counts": {
+    "OVERHEAT_RISK": 158,
+    "MARKET_REGIME_CAUTION": 70,
+    "HIGH_BETA_RISK": 21,
+    "LOW_LIQUIDITY": 10,
+    "DISPOSITION_PERIOD": 10
+  },
+  "answers": {
+    "why_communication_survives": "通信網路不是 rank20 供給最多的族群，但 rank20_to_active survival 41.54% 是四個 focus sectors 最高；它在 CAUTION Top10 與 tradability gates 後留下的比例高，所以 target denominator 縮小時被動放大。",
+    "is_semiconductor_low_at_selection": "否。半導體 rank20 count 73 高於通信網路 65，且 raw score medians 沒有明顯劣勢；半導體 active count 24 略低於通信 27，主因是 gate kill rate 較高。"
+  },
+  "interpretation": "Active breadth collapse is driven mainly after sector-capped rank20, especially market-regime CAUTION Top10 pruning and tradability gates. Treat model-level sector score bias as secondary until gate funnel is fully reviewed."
+}

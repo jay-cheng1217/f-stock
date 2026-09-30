@@ -1,4 +1,4 @@
-"""台股分析平台 — FastAPI 主程式
+"""Two-Stage Champion War Room — FastAPI 主程式
 
 啟動方式:
     python app.py                    # 預設 http://localhost:8000
@@ -22,58 +22,54 @@ import threading
 import logging
 import traceback
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from fastapi import FastAPI, Request
+from dotenv import load_dotenv
+
+# 在所有 backend / ml 模組 import 前先載入 .env，
+# 確保 FINMIND_TOKEN / ADMIN_TOKEN / ANTHROPIC_API_KEY 等環境變數可用。
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+
+from fastapi import FastAPI, Query, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 
-from backend.routers import stocks, market, charts, rankings, scoring, news, t1, value, shadow
+from scripts.taiwan_trading_calendar import previous_taiwan_trading_day
+
+from backend.routers import (
+    stocks,
+    market,
+    charts,
+    rankings,
+    scoring,
+    news,
+    t1,
+    unified,
+    value,
+    shadow,
+    chat,
+    warroom,
+    workbench,
+    forecast,
+    macro_events,
+    agent_arena,
+    model as model_router,
+    pipeline as pipeline_router,
+    my_holdings as my_holdings_router,
+    portfolio as portfolio_router,
+)
 from backend.routers.t1 import _NAME_LOOKUP
 
 # ==============================================================================
-# Logging 設定
+# Logging — 集中於 backend/logging_config.py，讓 routers 也能共用同一組 logger
 # ==============================================================================
-LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
-os.makedirs(LOG_DIR, exist_ok=True)
-
-
-def _setup_logger(name: str, filename: str, level=logging.INFO) -> logging.Logger:
-    """建立帶有檔案 handler 的 logger"""
-    logger = logging.getLogger(name)
-    logger.setLevel(level)
-
-    # 避免重複 handler
-    if logger.handlers:
-        return logger
-
-    # 檔案 handler (append, UTF-8)
-    fh = logging.FileHandler(
-        os.path.join(LOG_DIR, filename),
-        encoding="utf-8",
-        mode="a",
-    )
-    fh.setLevel(level)
-    fmt = logging.Formatter(
-        "%(asctime)s | %(levelname)-5s | %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
-    fh.setFormatter(fmt)
-    logger.addHandler(fh)
-
-    # 同時輸出到 console
-    ch = logging.StreamHandler()
-    ch.setLevel(level)
-    ch.setFormatter(fmt)
-    logger.addHandler(ch)
-
-    return logger
-
-
-# 三個 logger
-access_log = _setup_logger("web.access", "web_access.log")
-error_log = _setup_logger("web.error", "web_error.log", logging.ERROR)
-pipeline_log = _setup_logger("pipeline", "pipeline.log")
+from backend.logging_config import (
+    LOG_DIR,
+    access_log,
+    error_log,
+    pipeline_log,
+)
+from backend.db.engine import DatabaseUnavailableError
 
 
 _PREDICTION_CACHE_LOCK = threading.Lock()
@@ -92,14 +88,293 @@ _SNAPSHOT_CACHE_PATH = os.path.join(
 _SNAPSHOT_CACHE_META_PATH = os.path.join(
     os.path.dirname(__file__), "ml", "models", "latest_snapshot_cache_meta.json"
 )
-BUY_PROB_EDGE_MIN = 0.0
-STRONG_BUY_PROB_EDGE_MIN = 0.05
-RECOMMENDATION_OVERHEAT_THRESHOLD = 0.18
-STRONG_BUY_MAX_INST_SELL_PCT = 20.0
-TOP30_EXCLUDE_INST_SELL_PCT = 30.0
-PAPER_PORTFOLIO_DB_PATH = os.path.join(os.path.dirname(__file__), "paper_portfolio.db")
-PAPER_PORTFOLIO_START_DATE = "2026-03-18"
+# 推薦/防呆閾值改為從 ml/thresholds.py 取，避免歷史上 OVERHEAT_THRESHOLD
+# 在 app.py (0.18) 與 ml/predict.py (0.30) drift 造成「explain 顯示應降級
+# 但 recommendation 仍是強力買進」的對外矛盾。
+from ml.thresholds import (  # noqa: E402
+    BUY_PROB_EDGE_MIN,
+    EXPENSIVE_MOMENTUM_MA60_THRESHOLD,
+    EXPENSIVE_MOMENTUM_PE_THRESHOLD,
+    EXPENSIVE_MOMENTUM_WEIGHT_CAP,
+    STRONG_BUY_PROB_EDGE_MIN,
+    RECOMMENDATION_OVERHEAT_THRESHOLD,
+    STRONG_BUY_MAX_INST_SELL_PCT,
+    TOP30_EXCLUDE_INST_SELL_PCT,
+    TURNAROUND_MARGIN_FLOOR,
+    TURNAROUND_GROSS_MARGIN_MIN,
+)
 PRODUCTION_PREDICTION_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
+T1_PREDICTION_RE = re.compile(r"^predictions_t1_\d{4}-\d{2}-\d{2}\.csv$")
+UNIFIED_SIGNALS_RE = re.compile(r"^unified_signals_\d{4}-\d{2}-\d{2}\.csv$")
+
+
+def _date_from_artifact_name(name: str) -> str | None:
+    match = re.search(r"(\d{4}-\d{2}-\d{2})", name)
+    return match.group(1) if match else None
+
+
+def _previous_trading_day(now: datetime | None = None) -> str:
+    return previous_taiwan_trading_day(now or datetime.now()).isoformat()
+
+
+def _expected_prediction_trading_day(now: datetime | None = None) -> str:
+    current = now or datetime.now()
+    if current.hour < 6:
+        current = current - timedelta(days=1)
+    return _previous_trading_day(current)
+
+
+def _file_info(path: str | None) -> dict | None:
+    if not path or not os.path.exists(path):
+        return None
+    st = os.stat(path)
+    return {
+        "path": os.path.abspath(path),
+        "name": os.path.basename(path),
+        "size": int(st.st_size),
+        "mtime": datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
+
+def _csv_row_count(path: str | None) -> int | None:
+    if not path or not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8-sig", errors="replace") as fh:
+            return max(0, sum(1 for _ in fh) - 1)
+    except Exception:
+        return None
+
+
+def _latest_artifact(directory: str, pattern: re.Pattern[str]) -> dict:
+    paths = [
+        path
+        for path in glob.glob(os.path.join(directory, "*.csv"))
+        if pattern.match(os.path.basename(path))
+    ]
+    if not paths:
+        return {"exists": False}
+    latest = max(paths, key=os.path.getmtime)
+    info = _file_info(latest) or {}
+    info.update(
+        {
+            "exists": True,
+            "date": _date_from_artifact_name(os.path.basename(latest)),
+            "rows": _csv_row_count(latest),
+        }
+    )
+    return info
+
+
+def _latest_phase_result(phase_prefix: str) -> dict | None:
+    log_dir = os.path.join(os.path.dirname(__file__), "logs")
+    pattern = re.compile(
+        rf"^(?P<ts>\d{{4}}-\d{{2}}-\d{{2}} \d{{2}}:\d{{2}}:\d{{2}}).*"
+        rf"===== {re.escape(phase_prefix)} finished in (?P<minutes>[\d.]+) min "
+        rf"\| all_ok=(?P<ok>True|False) ====="
+    )
+    for path in sorted(glob.glob(os.path.join(log_dir, "smart_update_auto_*.log")), key=os.path.getmtime, reverse=True):
+        try:
+            with open(path, "r", encoding="utf-8", errors="replace") as fh:
+                lines = fh.readlines()
+        except Exception:
+            continue
+        for line in reversed(lines):
+            match = pattern.search(line.strip())
+            if match:
+                return {
+                    "log": os.path.basename(path),
+                    "finished_at": match.group("ts"),
+                    "elapsed_min": float(match.group("minutes")),
+                    "all_ok": match.group("ok") == "True",
+                }
+    return None
+
+
+def _check_status(checks: list[dict], name: str, ok: bool, message: str, severity: str = "error") -> None:
+    checks.append(
+        {
+            "name": name,
+            "status": "ok" if ok else severity,
+            "message": message,
+        }
+    )
+
+
+def _build_daily_production_health() -> dict:
+    """Return daily data/prediction health independent of weekly retrain status."""
+    from ml.config import MODEL_DIR
+    from backend.config import BASE_DIR, DUCKDB_PATH
+    from backend.db.engine import get_conn
+    from scripts.latest_bar_coverage_runtime import build_stale_bar_coverage
+    from backend.db.integrity import read_ingest_consistency
+
+    expected_date = _previous_trading_day()
+    expected_prediction_date = _expected_prediction_trading_day()
+    checks: list[dict] = []
+    duckdb_status: dict = {
+        "path": os.path.abspath(DUCKDB_PATH),
+        "exists": os.path.exists(DUCKDB_PATH),
+    }
+
+    if duckdb_status["exists"]:
+        duckdb_status.update(_file_info(DUCKDB_PATH) or {})
+        try:
+            # Reuse the engine's connection configuration. A separate read-only
+            # connection conflicts when this process already owns a RW handle.
+            # Only this request's cursor is closed below, never the shared handle.
+            con = get_conn(read_only=True).cursor()
+            try:
+                latest_daily = con.execute("select max(Date) from daily_k").fetchone()[0]
+                latest_date = latest_daily.isoformat() if hasattr(latest_daily, "isoformat") else str(latest_daily)
+                latest_rows, latest_tickers, null_close, null_volume = con.execute(
+                    """
+                    select count(*) as rows,
+                           count(distinct Ticker) as tickers,
+                           sum(case when Close is null then 1 else 0 end) as null_close,
+                           sum(case when Volume is null then 1 else 0 end) as null_volume
+                    from daily_k
+                    where Date = ?
+                    """,
+                    [latest_daily],
+                ).fetchone()
+                stock_list_latest = con.execute(
+                    "select count(*) from stock_list where Last_Date = ?",
+                    [latest_daily],
+                ).fetchone()[0]
+                stock_list_stale = con.execute(
+                    "select count(*) from stock_list where Last_Date < ?",
+                    [latest_daily],
+                ).fetchone()[0]
+                duckdb_status.update(
+                    {
+                        "daily_k_latest_date": latest_date,
+                        "daily_k_rows_latest": int(latest_rows or 0),
+                        "daily_k_tickers_latest": int(latest_tickers or 0),
+                        "daily_k_null_close": int(null_close or 0),
+                        "daily_k_null_volume": int(null_volume or 0),
+                        "stock_list_rows_latest": int(stock_list_latest or 0),
+                        "stock_list_stale_rows": int(stock_list_stale or 0),
+                    }
+                )
+                try:
+                    duckdb_status["ingest_consistency"] = read_ingest_consistency(con)
+                except Exception as integrity_error:
+                    duckdb_status["ingest_consistency"] = {"ok": False, "error": str(integrity_error)}
+                try:
+                    duckdb_status["older_row_coverage"] = build_stale_bar_coverage(
+                        con, base_dir=BASE_DIR, model_dir=MODEL_DIR,
+                        target_date=expected_date, knowledge_date=datetime.now().date().isoformat(),
+                    )
+                except Exception as coverage_error:
+                    # No proof of suspension/no trade means UNKNOWN, never a
+                    # fabricated price or a silently green completeness claim.
+                    duckdb_status["older_row_coverage"] = {
+                        "status": "warn", "error": str(coverage_error),
+                        "target_date": expected_date,
+                    }
+            finally:
+                con.close()
+        except Exception as exc:
+            duckdb_status["error"] = str(exc)
+
+    _check_status(checks, "duckdb_exists", duckdb_status["exists"], "DuckDB file is present.")
+    latest_date = duckdb_status.get("daily_k_latest_date")
+    _check_status(
+        checks,
+        "daily_k_fresh",
+        bool(latest_date and str(latest_date) >= expected_date),
+        f"daily_k latest={latest_date}, expected_at_least={expected_date}.",
+    )
+    _check_status(
+        checks,
+        "daily_k_snapshot_size",
+        int(duckdb_status.get("daily_k_tickers_latest") or 0) >= 1000,
+        f"latest daily_k tickers={duckdb_status.get('daily_k_tickers_latest')}.",
+    )
+    _check_status(
+        checks,
+        "daily_k_required_values",
+        int(duckdb_status.get("daily_k_null_close") or 0) == 0
+        and int(duckdb_status.get("daily_k_null_volume") or 0) == 0,
+        (
+            f"null_close={duckdb_status.get('daily_k_null_close')}, "
+            f"null_volume={duckdb_status.get('daily_k_null_volume')}."
+        ),
+    )
+    coverage = duckdb_status.get("older_row_coverage", {})
+    integrity = duckdb_status.get("ingest_consistency", {})
+    _check_status(
+        checks, "ingest_layer_consistency", bool(integrity.get("ok")),
+        f"same_generation={integrity.get('same_generation')}, "
+        f"row_counts_match={integrity.get('row_counts_match')}, "
+        f"stock_list_mismatched_tickers={integrity.get('stock_list_mismatched_tickers')}; "
+        f"error={integrity.get('error')}",
+    )
+    _check_status(
+        checks, "daily_k_older_row_coverage", coverage.get("status") == "ok",
+        f"older-row coverage={coverage.get('status', 'unavailable')}; "
+        f"counts={coverage.get('counts', {})}; error={coverage.get('error')}",
+        severity="error" if coverage.get("status") == "fail" else "warn",
+    )
+
+    predictions = {
+        "twenty_day": _latest_artifact(MODEL_DIR, PRODUCTION_PREDICTION_RE),
+        "unified_signals": _latest_artifact(MODEL_DIR, UNIFIED_SIGNALS_RE),
+    }
+    for name, artifact in predictions.items():
+        _check_status(
+            checks,
+            f"{name}_prediction_fresh",
+            bool(artifact.get("exists") and str(artifact.get("date")) >= expected_prediction_date),
+            (
+                f"{name} latest={artifact.get('date')}, "
+                f"expected_at_least={expected_prediction_date}, rows={artifact.get('rows')}."
+            ),
+        )
+
+    phase1 = _latest_phase_result("Phase-1 (TW data)")
+    phase2 = _latest_phase_result("Phase-2 (predict)")
+    _check_status(
+        checks,
+        "phase1_latest_success",
+        bool(phase1 and phase1.get("all_ok")),
+        f"latest phase1={phase1}.",
+        severity="warn",
+    )
+    _check_status(
+        checks,
+        "phase2_latest_success",
+        bool(phase2 and phase2.get("all_ok")),
+        f"latest phase2={phase2}.",
+        severity="warn",
+    )
+
+    hard_fail = any(check["status"] == "error" for check in checks)
+    warnings = any(check["status"] == "warn" for check in checks)
+    if hard_fail:
+        status = "fail"
+    elif warnings:
+        status = "warn"
+    else:
+        status = "ok"
+
+    return {
+        "scope": "daily_production_health",
+        "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "expected_latest_trading_date": expected_date,
+        "expected_latest_prediction_date": expected_prediction_date,
+        "status": status,
+        "ok": not hard_fail,
+        "stale": hard_fail,
+        "duckdb": duckdb_status,
+        "predictions": predictions,
+        "automation": {
+            "phase1": phase1,
+            "phase2": phase2,
+        },
+        "checks": checks,
+    }
 
 
 def _artifact_fingerprint(path: str | None) -> dict | None:
@@ -125,6 +400,7 @@ def _glob_artifact_fingerprints(pattern: str, limit: int | None = None) -> list[
 
 
 def _prediction_context_key() -> str | None:
+    from ml.snapshot_lineage import source_state
     from ml.config import (
         DOWN_THRESHOLD,
         FORWARD_DAYS,
@@ -139,6 +415,8 @@ def _prediction_context_key() -> str | None:
     selected_meta_path = resolve_base_meta_path("production")
     if not selected_meta_path:
         return None
+    with open(selected_meta_path, "r", encoding="utf-8") as handle:
+        selected_model_path = json.load(handle).get("model_file")
 
     pred_files = [
         path
@@ -149,8 +427,10 @@ def _prediction_context_key() -> str | None:
     quarter_financial_dir = os.path.join(os.path.dirname(__file__), "季報財務")
     quarter_bs_dir = os.path.join(os.path.dirname(__file__), "資產負債")
     payload = {
-        "cache_schema": 4,
+        "cache_schema": 5,
+        "canonical_source_signature": source_state()["signature"],
         "meta": _artifact_fingerprint(selected_meta_path),
+        "selected_model": _artifact_fingerprint(selected_model_path),
         "model_selection": _artifact_fingerprint(MODEL_SELECTION_PATH),
         "predictions": _artifact_fingerprint(pred_files[-1]) if pred_files else None,
         "filters": {
@@ -200,7 +480,7 @@ def _prediction_context_key() -> str | None:
 
 
 def _load_snapshot_cache_from_disk(context_key: str):
-    import pandas as pd
+    from ml.snapshot_lineage import load_snapshot
 
     if not (
         os.path.exists(_SNAPSHOT_CACHE_PATH) and os.path.exists(_SNAPSHOT_CACHE_META_PATH)
@@ -208,35 +488,30 @@ def _load_snapshot_cache_from_disk(context_key: str):
         return None
 
     try:
-        with open(_SNAPSHOT_CACHE_META_PATH, "r", encoding="utf-8") as f:
-            meta = json.load(f)
-        if meta.get("context_key") != context_key:
-            return None
-        return pd.read_pickle(_SNAPSHOT_CACHE_PATH)
+        return load_snapshot(_SNAPSHOT_CACHE_PATH,
+                             manifest_path=_SNAPSHOT_CACHE_META_PATH,
+                             expected_metadata={"context_key": context_key})
     except Exception as e:
         pipeline_log.warning(f"載入 snapshot 快取失敗，將重新建置: {e}")
         return None
 
 
-def _save_snapshot_cache_to_disk(context_key: str, snapshot) -> None:
-    meta_tmp = _SNAPSHOT_CACHE_META_PATH + ".tmp"
-    data_tmp = _SNAPSHOT_CACHE_PATH + ".tmp"
-    snapshot.to_pickle(data_tmp)
-    with open(meta_tmp, "w", encoding="utf-8") as f:
-        json.dump({"context_key": context_key, "rows": int(len(snapshot))}, f, ensure_ascii=False)
-    os.replace(data_tmp, _SNAPSHOT_CACHE_PATH)
-    os.replace(meta_tmp, _SNAPSHOT_CACHE_META_PATH)
+def _save_snapshot_cache_to_disk(context_key: str, snapshot, sources) -> None:
+    from ml.snapshot_lineage import save_snapshot
+    save_snapshot(snapshot, _SNAPSHOT_CACHE_PATH, sources,
+                  manifest_path=_SNAPSHOT_CACHE_META_PATH,
+                  metadata={"context_key": context_key})
 
 
 def _load_pipeline_snapshot():
     """從 pipeline predict 階段存的 snapshot_cache.pkl 載入"""
-    import pandas as pd
+    from ml.snapshot_lineage import load_snapshot
     from ml.predict import SNAPSHOT_CACHE_PATH
 
     if not os.path.exists(SNAPSHOT_CACHE_PATH):
         return None
     try:
-        return pd.read_pickle(SNAPSHOT_CACHE_PATH)
+        return load_snapshot(SNAPSHOT_CACHE_PATH)
     except Exception as e:
         pipeline_log.warning(f"載入 pipeline snapshot 失敗: {e}")
         return None
@@ -694,7 +969,8 @@ def _get_prediction_context():
 
     with _PREDICTION_CACHE_LOCK:
         if (
-            _PREDICTION_CACHE["context_key"] == context_key
+            not _PREDICTION_CACHE["loading"]
+            and _PREDICTION_CACHE["context_key"] == context_key
             and _PREDICTION_CACHE["snapshot"] is not None
             and _PREDICTION_CACHE["model"] is not None
             and _PREDICTION_CACHE["meta"] is not None
@@ -704,10 +980,18 @@ def _get_prediction_context():
                 _PREDICTION_CACHE["model"],
                 _PREDICTION_CACHE["meta"],
             )
-        if _PREDICTION_CACHE["loading"] and _PREDICTION_CACHE["context_key"] == context_key:
+        # A single builder owns the shared cache even if sources change again.
+        # Starting K3 while K2 is running would let K2's completion or failure
+        # mutate K3's state. The running builder checks its key before publish.
+        if _PREDICTION_CACHE["loading"]:
             raise RuntimeError("模型解釋快取建置中，預測列表可正常瀏覽，explain 約需 10 分鐘。")
         _PREDICTION_CACHE["loading"] = True
         _PREDICTION_CACHE["context_key"] = context_key
+        # Never associate a new source key with the previous snapshot/model.
+        # A failed rebuild must leave an unavailable cache, not certify S1 as K2.
+        _PREDICTION_CACHE["snapshot"] = None
+        _PREDICTION_CACHE["model"] = None
+        _PREDICTION_CACHE["meta"] = None
         _PREDICTION_CACHE["last_error"] = None
         _PREDICTION_CACHE["pred_df"] = None
 
@@ -728,14 +1012,21 @@ def _get_prediction_context():
             # 最後才從頭建置
             started = time.time()
             pipeline_log.info("開始建置 explain snapshot 快取...")
+            from ml.snapshot_lineage import source_state, clear_source_memo_caches
+            snapshot_sources = source_state(include_hashes=True)
+            clear_source_memo_caches()
             snapshot = build_latest_snapshot(verbose=False)
-            _save_snapshot_cache_to_disk(context_key, snapshot)
+            _save_snapshot_cache_to_disk(context_key, snapshot, snapshot_sources)
             pipeline_log.info(
                 f"explain snapshot 快取建置完成: {len(snapshot):,} 筆, "
                 f"{time.time() - started:.1f}s"
             )
 
-        snapshot = _apply_live_latest_quarter_overrides(snapshot)
+        # Every accepted cache/build already has canonical source lineage and
+        # point-in-time features. Legacy latest-quarter replacement would alter
+        # that scoring frame and re-winsorize otherwise unchanged columns.
+        if _prediction_context_key() != context_key:
+            raise RuntimeError("來源或模型在快照建置期間更新，請重新請求以取得一致資料。")
 
         with _PREDICTION_CACHE_LOCK:
             _PREDICTION_CACHE["snapshot"] = snapshot
@@ -747,6 +1038,10 @@ def _get_prediction_context():
     except Exception as e:
         with _PREDICTION_CACHE_LOCK:
             _PREDICTION_CACHE["loading"] = False
+            _PREDICTION_CACHE["snapshot"] = None
+            _PREDICTION_CACHE["model"] = None
+            _PREDICTION_CACHE["meta"] = None
+            _PREDICTION_CACHE["pred_df"] = None
             _PREDICTION_CACHE["last_error"] = str(e)
         raise
 
@@ -786,6 +1081,14 @@ def _warm_prediction_context_async() -> None:
     ).start()
 
 
+def _model_scoring_snapshot(snapshot, meta):
+    """Use the producer's processor on the full universe before ticker slicing."""
+    from ml.dataset import apply_snapshot_zscore
+    from ml.predict import _model_needs_zscore
+
+    return apply_snapshot_zscore(snapshot) if _model_needs_zscore(meta) else snapshot
+
+
 def _build_live_prediction_df(snapshot, model, meta):
     import numpy as np
     import pandas as pd
@@ -798,9 +1101,10 @@ def _build_live_prediction_df(snapshot, model, meta):
     )
 
     feature_cols = meta["feature_columns"]
+    base_snapshot = _model_scoring_snapshot(snapshot, meta)
     X = pd.DataFrame(
         {
-            col: snapshot[col].values if col in snapshot.columns else np.full(len(snapshot), np.nan)
+            col: base_snapshot[col].values if col in base_snapshot.columns else np.full(len(base_snapshot), np.nan)
             for col in feature_cols
         }
     )
@@ -833,9 +1137,10 @@ def _build_live_prediction_df(snapshot, model, meta):
     v2_model, v2_meta = load_v2_model()
     if v2_model is not None and v2_meta is not None:
         v2_cols = v2_meta["feature_columns"]
+        v2_snapshot = _model_scoring_snapshot(snapshot, v2_meta)
         X_v2 = pd.DataFrame(
             {
-                col: snapshot[col].values if col in snapshot.columns else np.full(len(snapshot), np.nan)
+                col: v2_snapshot[col].values if col in v2_snapshot.columns else np.full(len(v2_snapshot), np.nan)
                 for col in v2_cols
             }
         )
@@ -887,11 +1192,38 @@ def _load_foreign_ownership():
         return {}
 
 
-def _load_predictions_csv_fallback():
+def _assert_prediction_runtime(certificate, *, loaded_models=None):
+    """Match the Web's selected/loaded artifacts to the successful CSV run."""
+    from ml.predict import _prediction_model_paths
+    from ml.prediction_provenance import assert_run_unchanged
+
+    selected = _prediction_model_paths("production", None)
+    recorded = certificate["models"]
+    normalize = lambda path: os.path.normcase(os.path.abspath(path))
+    if set(selected) != set(recorded):
+        raise RuntimeError("Web 模型角色與已驗證預測不一致，請確認啟動環境。")
+    for role, paths in selected.items():
+        for key in ("meta_path", "model_path"):
+            if normalize(paths[key]) != normalize(recorded[role][key]["path"]):
+                raise RuntimeError("Web 模型與已驗證預測不一致，請確認啟動環境。")
+    for role, metadata in (loaded_models or {}).items():
+        if metadata is None or role not in recorded:
+            raise RuntimeError("Web 載入的模型不在已驗證預測中。")
+        if normalize(metadata["model_file"]) != normalize(recorded[role]["model_path"]["path"]):
+            raise RuntimeError("Web 載入的模型權重與已驗證預測不一致。")
+        if metadata.get("meta_path") and normalize(metadata["meta_path"]) != normalize(recorded[role]["meta_path"]["path"]):
+            raise RuntimeError("Web 載入的模型設定與已驗證預測不一致。")
+    assert_run_unchanged(certificate)
+
+
+def _load_predictions_csv_fallback(*, include_certificate=False):
     """快取建置中時，從已存的 predictions CSV 提供預測（不含 explain）"""
     import pandas as pd
     from ml.config import MODEL_DIR
     from ml.predict import load_latest_model, _sort_prediction_df
+    from ml.prediction_provenance import load_prediction_csv
+
+    unavailable = (None, None, None) if include_certificate else (None, None)
 
     pred_files = [
         path
@@ -899,29 +1231,79 @@ def _load_predictions_csv_fallback():
         if PRODUCTION_PREDICTION_RE.match(os.path.basename(path))
     ]
     if not pred_files:
-        return None, None
+        return unavailable
     try:
+        verified = load_prediction_csv(pred_files[-1], expected_model_slot="production")
+        if verified is None:
+            return unavailable
+        df, certificate = verified
+        _assert_prediction_runtime(certificate)
         _, meta = load_latest_model()
-        df = pd.read_csv(pred_files[-1])
+        _assert_prediction_runtime(certificate, loaded_models={"base": meta})
+        if "ticker" in df.columns:
+            df["ticker"] = df["ticker"].astype(str)
         df = _sort_prediction_df(df)
-        return df, meta
+        return (df, meta, certificate) if include_certificate else (df, meta)
     except Exception:
-        return None, None
+        return unavailable
+
+
+def _assert_prediction_snapshot(snapshot, certificate):
+    """Reject any post-certificate mutation of the pre-model scoring frame."""
+    import hashlib
+    import io
+    import pickle
+    from pathlib import Path
+    import pandas as pd
+
+    buffer = io.BytesIO()
+    snapshot.to_pickle(buffer, protocol=pickle.HIGHEST_PROTOCOL)
+    evidence = certificate["snapshot"]
+    if len(snapshot) == evidence["rows"] and hashlib.sha256(buffer.getvalue()).hexdigest() == evidence["sha256"]:
+        return
+    # Reading a Series can change pandas' internal layout without changing any
+    # value. The certificate's bound SHA identifies the original bytes directly,
+    # even when the producer did not embed an optional source manifest.
+    try:
+        if len(snapshot) != evidence["rows"]:
+            raise ValueError("Snapshot row count differs")
+        from ml.predict import SNAPSHOT_CACHE_PATH
+        blob = Path(SNAPSHOT_CACHE_PATH).read_bytes()
+        if hashlib.sha256(blob).hexdigest() != evidence["sha256"]:
+            raise ValueError("Original snapshot bytes unavailable")
+        reference = pd.read_pickle(io.BytesIO(blob))
+        pd.testing.assert_frame_equal(snapshot, reference, check_exact=True, check_dtype=True,
+                                      check_index_type=True, check_column_type=True, check_flags=True)
+        if snapshot.attrs != reference.attrs:
+            raise ValueError("Snapshot processing attributes differ")
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, AssertionError, ImportError, EOFError, pickle.UnpicklingError) as exc:
+        raise RuntimeError("解釋快照與正式推論輸入不一致，請重新載入已驗證快照。") from exc
+
+
+def _load_explain_prediction_models(base_meta, snapshot=None):
+    """Keep explanation math and recommendation attached to one certified run."""
+    from ml.predict import load_v2_model
+
+    frame, _, certificate = _load_predictions_csv_fallback(include_certificate=True)
+    if frame is None:
+        raise RuntimeError("預測證據或 Web 模型設定不一致，請等待正式推論完成或確認啟動環境。")
+    if snapshot is not None:
+        _assert_prediction_snapshot(snapshot, certificate)
+    v2_model, v2_meta = load_v2_model()
+    loaded = {"base": base_meta}
+    if v2_model is not None:
+        loaded["v2"] = v2_meta
+    elif "v2" in certificate["models"]:
+        raise RuntimeError("已驗證預測的 V2 模型未能載入。")
+    _assert_prediction_runtime(certificate, loaded_models=loaded)
+    return v2_model, v2_meta, frame, certificate
 
 
 def _get_live_prediction_df():
     context_key = _prediction_context_key()
 
-    # 先檢查快取中是否已有 pred_df
-    with _PREDICTION_CACHE_LOCK:
-        if (
-            _PREDICTION_CACHE["context_key"] == context_key
-            and _PREDICTION_CACHE["pred_df"] is not None
-            and _PREDICTION_CACHE["meta"] is not None
-        ):
-            return _PREDICTION_CACHE["pred_df"].copy(), _PREDICTION_CACHE["meta"]
-
-    # 優先讀 pipeline 產出的 CSV — 確保 web、CSV、email 三端一致
+    # Validate the certificate before any memory hit: a model/CSV certificate
+    # can expire while the canonical feature-source key remains unchanged.
     csv_df, csv_meta = _load_predictions_csv_fallback()
     if csv_df is not None:
         with _PREDICTION_CACHE_LOCK:
@@ -930,7 +1312,10 @@ def _get_live_prediction_df():
                 _PREDICTION_CACHE["meta"] = csv_meta
         return csv_df, csv_meta
 
-    # CSV 不存在時才即時重算
+    with _PREDICTION_CACHE_LOCK:
+        _PREDICTION_CACHE["pred_df"] = None
+
+    # Missing or uncertified CSV uses the existing live calculation path.
     try:
         snapshot, model, meta = _get_prediction_context()
     except RuntimeError:
@@ -957,6 +1342,7 @@ def _prediction_unavailable_response(ticker: str):
             "ticker": ticker,
             "eligibility": eligibility,
             "diagnostics": diagnostics,
+            "narrative_labels": _load_prediction_narrative_labels(ticker),
         }
 
     return {
@@ -965,31 +1351,188 @@ def _prediction_unavailable_response(ticker: str):
         "ticker": ticker,
         "eligibility": eligibility,
         "diagnostics": diagnostics,
+        "narrative_labels": _load_prediction_narrative_labels(ticker),
     }
 
 
+def _load_prediction_narrative_labels(ticker: str) -> list[dict]:
+    """Read-only shadow narrative labels; never changes recommendation or weights."""
+    try:
+        from backend.features.narrative.heat import get_narrative_labels_for_ticker
+
+        return get_narrative_labels_for_ticker(str(ticker))
+    except Exception:
+        return []
+
+
 # ==============================================================================
-# FastAPI App
+# FastAPI App + Lifespan (取代已 deprecated 的 @app.on_event startup/shutdown)
 # ==============================================================================
+from contextlib import asynccontextmanager
+
+
+def _enable_web_champion_defaults():
+    """Use the same validated manifest/defaults as nightly, without running it."""
+    from scripts.model_pin_registry import champion_defaults, validate_registry
+
+    defaults = champion_defaults()
+    validation = validate_registry()
+    if not validation["passed"]:
+        raise RuntimeError("Champion model pin validation failed: " + "; ".join(validation["failures"]))
+    for key, value in defaults.items():
+        if value:
+            os.environ.setdefault(key, value)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ---- startup ----
+    _enable_web_champion_defaults()
+    from backend.db.engine import get_conn
+
+    pipeline_log.info("=== Web Server 啟動 ===")
+
+    conn = None
+    startup_read_only = False
+    startup_degraded = False
+    try:
+        conn = get_conn()
+    except Exception as exc:
+        pipeline_log.warning(
+            "Primary DuckDB startup connection failed, fallback to read-only snapshot: %s",
+            exc,
+        )
+        try:
+            conn = get_conn(read_only=True)
+            startup_read_only = True
+        except Exception as ro_exc:
+            pipeline_log.warning(
+                "Read-only DuckDB startup also failed; continue in degraded web mode: %s",
+                ro_exc,
+            )
+            startup_degraded = True
+    try:
+        if conn is None:
+            pipeline_log.warning("Startup DuckDB tasks skipped because no readable connection is available")
+            tables = []
+        else:
+            tables = [t[0] for t in conn.execute(
+                "SELECT table_name FROM information_schema.tables WHERE table_schema='main'"
+            ).fetchall()]
+
+        if startup_degraded:
+            pipeline_log.info("Web startup is running in degraded mode without DuckDB bootstrap")
+        elif startup_read_only:
+            pipeline_log.info("Web startup is using read-only DuckDB snapshot")
+        elif "daily_k" not in tables:
+            pipeline_log.info("首次啟動，匯入 CSV 到 DuckDB...")
+            from backend.db.ingest import ingest_all
+            ingest_all()
+        else:
+            db_max = conn.execute("SELECT MAX(date) FROM daily_k").fetchone()[0]
+            row_count = conn.execute("SELECT COUNT(*) FROM daily_k").fetchone()[0]
+            pipeline_log.info(f"DuckDB 已有 {row_count:,} 筆日K資料 (最新日期: {db_max})")
+
+            import glob as _g
+            from backend.config import DAILY_K_DIR
+            sample_csv = sorted(_g.glob(os.path.join(DAILY_K_DIR, "2330.csv")))
+            if sample_csv:
+                import pandas as _pd
+                try:
+                    tail = _pd.read_csv(sample_csv[0], usecols=[0], nrows=0)
+                    date_col = tail.columns[0]
+                    last_rows = _pd.read_csv(sample_csv[0], usecols=[date_col]).iloc[-1:]
+                    csv_max = str(last_rows.iloc[0, 0])[:10]
+                    db_max_str = str(db_max)[:10]
+                    if csv_max > db_max_str:
+                        pipeline_log.info(f"CSV 最新 {csv_max} > DB {db_max_str}，自動 ingest...")
+                        from backend.db.ingest import ingest_all
+                        ingest_all()
+                except Exception as e:
+                    pipeline_log.warning(f"自動 ingest 檢查失敗: {e}")
+
+        if startup_degraded:
+            pipeline_log.info("Degraded startup mode: skip stock_list rebuild")
+        elif startup_read_only and "stock_list" not in tables:
+            pipeline_log.info("Read-only startup mode: skip stock_list rebuild")
+        elif "stock_list" not in tables:
+            pipeline_log.info("建立 stock_list...")
+            _build_stock_list_safe(conn)
+
+    except Exception as e:
+        pipeline_log.error(f"啟動錯誤: {e}\n{traceback.format_exc()}")
+
+    _warm_prediction_context_async()
+
+    yield
+
+    # ---- shutdown ----
+    pipeline_log.info("=== Web Server 關閉 ===")
+
+
 app = FastAPI(
-    title="台股分析平台",
-    description="台股四大面向分析 + ML 預測系統",
+    title="Two-Stage Champion War Room",
+    description="Two-Stage Champion 策略戰情室與持股管理",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 
 # ==============================================================================
-# Middleware: 請求 log + 錯誤攔截
+# Admin auth: 保護寫入端點，避免 cloudflared tunnel 公開後被任意觸發
+# ==============================================================================
+# 寫入/管理類路由 prefix —— 命中時必須帶 X-Admin-Token: <ADMIN_TOKEN>
+ADMIN_PROTECTED_PREFIXES: tuple[str, ...] = (
+    "/api/pipeline/",
+    "/api/db/",
+)
+ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "").strip()
+if not ADMIN_TOKEN:
+    pipeline_log.warning(
+        "ADMIN_TOKEN 未設定 —— /api/pipeline/* 與 /api/db/* 將回 503，"
+        "請於 .env 設 ADMIN_TOKEN=<random> 後重啟。"
+    )
+
+
+def _is_admin_path(path: str) -> bool:
+    return any(path.startswith(p) for p in ADMIN_PROTECTED_PREFIXES)
+
+
+def _admin_unauthorized_response(reason: str, status: int) -> JSONResponse:
+    return JSONResponse(
+        status_code=status,
+        content={"error": "admin token required", "reason": reason},
+    )
+
+
+# ==============================================================================
+# Middleware: 請求 log + admin auth + 錯誤攔截
 # ==============================================================================
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    """記錄每個 API 請求的 endpoint、耗時、狀態碼、錯誤回應"""
+    """記錄每個 API 請求的 endpoint、耗時、狀態碼、錯誤回應；保護 admin 路由。"""
     start = time.time()
     client = request.client.host if request.client else "-"
     method = request.method
     path = request.url.path
     query = str(request.url.query) if request.url.query else ""
     q_str = f"?{query}" if query else ""
+
+    # --- Admin auth gate ---
+    if _is_admin_path(path):
+        if not ADMIN_TOKEN:
+            error_log.error(
+                f"{client} | {method} {path}{q_str} | ADMIN_TOKEN_NOT_CONFIGURED | blocked"
+            )
+            return _admin_unauthorized_response("server token not configured", 503)
+        token = request.headers.get("X-Admin-Token", "")
+        # 等長 compare 避免 timing attack
+        import hmac
+        if not hmac.compare_digest(token, ADMIN_TOKEN):
+            error_log.error(
+                f"{client} | {method} {path}{q_str} | ADMIN_TOKEN_INVALID | blocked"
+            )
+            return _admin_unauthorized_response("invalid or missing token", 401)
 
     try:
         response = await call_next(request)
@@ -1016,30 +1559,91 @@ async def log_requests(request: Request, call_next):
 
     except Exception as e:
         elapsed_ms = (time.time() - start) * 1000
+        # detail 內含 SQL / file path / key 名稱，不能往外送
         error_log.error(
             f"{client} | {method} {path}{q_str} | EXCEPTION | {elapsed_ms:.1f}ms\n"
             f"  {type(e).__name__}: {e}\n"
             f"{traceback.format_exc()}"
         )
+        if isinstance(e, DatabaseUnavailableError):
+            return JSONResponse(
+                status_code=503,
+                headers={"Retry-After": str(e.retry_after_seconds)},
+                content={
+                    "error": "Database temporarily unavailable",
+                    "retry_after_seconds": e.retry_after_seconds,
+                },
+            )
         return JSONResponse(
             status_code=500,
-            content={"error": "Internal Server Error", "detail": str(e)},
+            content={"error": "Internal Server Error"},
         )
 
 
 # === 前端錯誤回報 API ===
+# cloudflared tunnel 公開後若無防護，可被外部當作廉價 log 灌爆 disk。
+# 限制：(1) Content-Length ≤ 16 KB；(2) Origin/Referer 必須是自家 host
+# 或缺漏（直接 POST 無 Origin）；(3) 訊息欄位個別截斷 4 KB。
+LOG_ERROR_MAX_BYTES = 16 * 1024
+LOG_ERROR_FIELD_MAX = 4 * 1024
+# 接受的 host 來源；可由 ALLOWED_ORIGIN_HOSTS env 加入額外網域
+_DEFAULT_ALLOWED_HOSTS = {
+    "127.0.0.1", "localhost",
+    "trycloudflare.com",  # cloudflared tunnel auto-issued URL 結尾
+}
+
+
+def _origin_host_allowed(origin_or_referer: str | None) -> bool:
+    if not origin_or_referer:
+        # 後端腳本 / 直接 POST 沒 Origin 很常見，放行（仍受 size limit 保護）
+        return True
+    try:
+        from urllib.parse import urlparse
+        host = urlparse(origin_or_referer).hostname or ""
+    except Exception:
+        return False
+    if not host:
+        return False
+    extra = (os.environ.get("ALLOWED_ORIGIN_HOSTS") or "").split(",")
+    allowed = _DEFAULT_ALLOWED_HOSTS | {h.strip() for h in extra if h.strip()}
+    return any(host == h or host.endswith("." + h) for h in allowed)
+
+
 @app.post("/api/log/error", tags=["logging"])
 async def log_frontend_error(request: Request):
-    """前端 JS 錯誤回報端點"""
+    """前端 JS 錯誤回報端點."""
+    # --- size guard ---
+    content_length = request.headers.get("content-length")
+    if content_length and content_length.isdigit() and int(content_length) > LOG_ERROR_MAX_BYTES:
+        return JSONResponse(
+            status_code=413,
+            content={"error": "payload too large"},
+        )
+
+    # --- origin guard ---
+    origin = request.headers.get("origin") or request.headers.get("referer")
+    if not _origin_host_allowed(origin):
+        client = request.client.host if request.client else "-"
+        error_log.error(f"FRONTEND_ORIGIN_REJECTED | {client} | origin={origin}")
+        return JSONResponse(status_code=403, content={"error": "origin not allowed"})
+
+    # --- read body 不超過 limit (邊讀邊截斷防 chunked 規避 content-length) ---
+    raw = await request.body()
+    if len(raw) > LOG_ERROR_MAX_BYTES:
+        return JSONResponse(status_code=413, content={"error": "payload too large"})
+
     try:
-        body = await request.json()
-    except Exception:
-        body = {"raw": (await request.body()).decode("utf-8", errors="replace")}
+        body = json.loads(raw.decode("utf-8", errors="replace"))
+        if not isinstance(body, dict):
+            body = {"raw": str(body)[:LOG_ERROR_FIELD_MAX]}
+    except (ValueError, UnicodeDecodeError):
+        body = {"raw": raw.decode("utf-8", errors="replace")[:LOG_ERROR_FIELD_MAX]}
 
     client = request.client.host if request.client else "-"
-    msg = body.get("message", str(body))
-    url = body.get("url", "-")
-    stack = body.get("stack", "")
+    # 個別欄位截斷
+    msg = str(body.get("message", body))[:LOG_ERROR_FIELD_MAX]
+    url = str(body.get("url", "-"))[:LOG_ERROR_FIELD_MAX]
+    stack = str(body.get("stack", ""))[:LOG_ERROR_FIELD_MAX]
 
     error_log.error(
         f"FRONTEND | {client} | {url}\n"
@@ -1058,238 +1662,28 @@ app.include_router(charts.router)
 app.include_router(rankings.router)
 app.include_router(scoring.router)
 app.include_router(news.router)
-app.include_router(t1.router)
+app.include_router(unified.router)
 app.include_router(value.router)
 app.include_router(shadow.router)
+app.include_router(warroom.router)
+app.include_router(workbench.router)
+app.include_router(forecast.router)
+app.include_router(macro_events.router)
+app.include_router(agent_arena.router)
+app.include_router(chat.router)
+app.include_router(model_router.router)
+app.include_router(pipeline_router.router)
+app.include_router(pipeline_router.backtest_router)
+app.include_router(portfolio_router.router)
+app.include_router(my_holdings_router.router)
 
 
 # ==============================================================================
 # Paper Portfolio API
 # ==============================================================================
-def _load_duckdb_sqlite_extension(conn) -> None:
-    try:
-        conn.execute("LOAD sqlite")
-    except Exception:
-        conn.execute("INSTALL sqlite")
-        conn.execute("LOAD sqlite")
-
-
-def _empty_portfolio_summary() -> dict:
-    return {
-        "open_positions": 0,
-        "pending_positions": 0,
-        "open_tickers": 0,
-        "alerted_positions": 0,
-        "avg_unrealized_pct": None,
-        "latest_mark_date": None,
-    }
-
-
-def _load_portfolio_detail_and_summary():
-    import pandas as pd
-
-    columns = [
-        "ticker",
-        "position_count",
-        "selection_history",
-        "avg_entry_price",
-        "latest_price",
-        "avg_unrealized_pct",
-        "max_drawdown_pct",
-        "latest_mark_date",
-    ]
-    if not os.path.exists(PAPER_PORTFOLIO_DB_PATH):
-        return pd.DataFrame(columns=columns), _empty_portfolio_summary()
-
-    conn = None
-    try:
-        conn = duckdb.connect()
-        _load_duckdb_sqlite_extension(conn)
-        escaped_db_path = PAPER_PORTFOLIO_DB_PATH.replace("'", "''")
-        conn.execute(
-            f"ATTACH '{escaped_db_path}' AS ledger (TYPE SQLITE, READ_ONLY)"
-        )
-
-        latest_marks_cte = """
-            WITH latest_marks AS (
-                SELECT position_id, mark_date, close, close_return_pct
-                FROM (
-                    SELECT
-                        position_id,
-                        mark_date,
-                        close,
-                        close_return_pct,
-                        ROW_NUMBER() OVER (
-                            PARTITION BY position_id
-                            ORDER BY mark_date DESC
-                        ) AS rn
-                    FROM ledger.portfolio_marks
-                ) ranked_marks
-                WHERE rn = 1
-            )
-        """
-
-        detail_query = f"""
-            {latest_marks_cte}
-            SELECT
-                p.ticker AS ticker,
-                COUNT(*) AS position_count,
-                STRING_AGG(
-                    p.prediction_date || '|' ||
-                    '#' || CAST(p.selection_rank AS VARCHAR) || '|' ||
-                    COALESCE(p.recommendation, '未標記'),
-                    '\n'
-                    ORDER BY p.prediction_date DESC, p.selection_rank ASC
-                ) AS selection_history,
-                ROUND(AVG(p.entry_open), 2) AS avg_entry_price,
-                ROUND(ARG_MAX(lm.close, lm.mark_date), 2) AS latest_price,
-                ROUND(AVG(lm.close_return_pct) * 100, 2) AS avg_unrealized_pct,
-                ROUND(MIN(p.max_drawdown_pct) * 100, 2) AS max_drawdown_pct,
-                MAX(lm.mark_date) AS latest_mark_date
-            FROM ledger.portfolio_positions p
-            LEFT JOIN latest_marks lm
-                ON lm.position_id = p.id
-            WHERE p.status = 'open'
-              AND p.entry_open IS NOT NULL
-              AND p.prediction_date >= '{PAPER_PORTFOLIO_START_DATE}'
-            GROUP BY p.ticker
-            ORDER BY avg_unrealized_pct DESC NULLS LAST, p.ticker
-        """
-        detail_df = conn.execute(detail_query).df()
-
-        summary_query = f"""
-            {latest_marks_cte}
-            SELECT
-                SUM(CASE WHEN p.status = 'open' THEN 1 ELSE 0 END) AS open_positions,
-                SUM(CASE WHEN p.status = 'pending' THEN 1 ELSE 0 END) AS pending_positions,
-                COUNT(DISTINCT CASE WHEN p.status = 'open' THEN p.ticker END) AS open_tickers,
-                SUM(
-                    CASE
-                        WHEN p.status = 'open' AND p.max_drawdown_pct <= -0.10 THEN 1
-                        ELSE 0
-                    END
-                ) AS alerted_positions,
-                ROUND(
-                    AVG(
-                        CASE
-                            WHEN p.status = 'open' THEN lm.close_return_pct
-                            ELSE NULL
-                        END
-                    ) * 100,
-                    2
-                ) AS avg_unrealized_pct,
-                MAX(CASE WHEN p.status = 'open' THEN lm.mark_date END) AS latest_mark_date
-            FROM ledger.portfolio_positions p
-            LEFT JOIN latest_marks lm
-                ON lm.position_id = p.id
-            WHERE p.prediction_date >= '{PAPER_PORTFOLIO_START_DATE}'
-        """
-        summary_row = conn.execute(summary_query).fetchone()
-        summary = {
-            "open_positions": int(summary_row[0] or 0),
-            "pending_positions": int(summary_row[1] or 0),
-            "open_tickers": int(summary_row[2] or 0),
-            "alerted_positions": int(summary_row[3] or 0),
-            "avg_unrealized_pct": (
-                round(float(summary_row[4]), 2) if summary_row[4] is not None else None
-            ),
-            "latest_mark_date": summary_row[5],
-        }
-        return detail_df, summary
-
-    finally:
-        if conn is not None:
-            try:
-                conn.close()
-            except Exception:
-                pass
-
-
-def _format_selection_history_for_export(history: str) -> str:
-    if not history:
-        return ""
-
-    items = []
-    for raw_line in str(history).splitlines():
-        parts = raw_line.split("|", 2)
-        if len(parts) != 3:
-            continue
-        date, rank, recommendation = parts
-        items.append(f"{date} {rank} {recommendation}")
-    return " / ".join(items)
-
-
-def _prepare_portfolio_export_df(detail_df):
-    export_df = detail_df.copy()
-    if "selection_history" in export_df.columns:
-        export_df["selection_history"] = export_df["selection_history"].fillna("").apply(
-            _format_selection_history_for_export
-        )
-
-    rename_map = {
-        "ticker": "股票代號",
-        "position_count": "持有筆數",
-        "selection_history": "入選紀錄",
-        "avg_entry_price": "平均進場成本",
-        "latest_price": "最新收盤價",
-        "avg_unrealized_pct": "平均帳面損益(%)",
-        "max_drawdown_pct": "最大盤中回撤(%)",
-        "latest_mark_date": "最新更新日",
-    }
-    available = [col for col in rename_map if col in export_df.columns]
-    return export_df.loc[:, available].rename(columns=rename_map)
-
-
-@app.get("/api/portfolio", tags=["portfolio"])
-def get_paper_portfolio():
-    try:
-        detail_df, summary = _load_portfolio_detail_and_summary()
-
-        detail_records = []
-        if not detail_df.empty:
-            detail_df["name"] = detail_df["ticker"].map(_NAME_LOOKUP).fillna("")
-            detail_records = json.loads(
-                detail_df.to_json(orient="records", force_ascii=False)
-            )
-
-        return JSONResponse(
-            content={"status": "success", "data": detail_records, "summary": summary}
-        )
-
-    except Exception as e:
-        error_log.error(
-            "Paper portfolio API failed\n" + traceback.format_exc()
-        )
-        return JSONResponse(
-            content={"status": "error", "message": str(e)},
-            status_code=500,
-        )
-
-
-@app.get("/api/portfolio/download", tags=["portfolio"])
-def download_paper_portfolio():
-    try:
-        detail_df, summary = _load_portfolio_detail_and_summary()
-        export_df = _prepare_portfolio_export_df(detail_df)
-        file_date = summary.get("latest_mark_date") or datetime.now().strftime("%Y-%m-%d")
-        csv_bytes = export_df.to_csv(index=False).encode("utf-8-sig")
-        return StreamingResponse(
-            iter([csv_bytes]),
-            media_type="text/csv; charset=utf-8",
-            headers={
-                "Content-Disposition": (
-                    f'attachment; filename="paper_portfolio_{file_date}.csv"'
-                )
-            },
-        )
-    except Exception as e:
-        error_log.error(
-            "Paper portfolio download failed\n" + traceback.format_exc()
-        )
-        return JSONResponse(
-            content={"status": "error", "message": str(e)},
-            status_code=500,
-        )
+# ==============================================================================
+# Paper Portfolio API → backend/routers/portfolio.py
+# ==============================================================================
 
 
 # ==============================================================================
@@ -1392,6 +1786,51 @@ def latest_predictions(top_n: int = 30):
             rec["va_low_20d"] = round(float(row["va_low_20d"]), 2)
         if pd.notna(row.get("va_high_20d")):
             rec["va_high_20d"] = round(float(row["va_high_20d"]), 2)
+        if pd.notna(row.get("shortwave_entry_zone_low")):
+            rec["shortwave_entry_zone_low"] = round(float(row["shortwave_entry_zone_low"]), 2)
+        if pd.notna(row.get("shortwave_entry_zone_high")):
+            rec["shortwave_entry_zone_high"] = round(float(row["shortwave_entry_zone_high"]), 2)
+        for field in [
+            "shortwave_score",
+            "shortwave_preferred_hold_days",
+            "tactical_score",
+            "tactical_entry_limit",
+            "tactical_entry_zone_low",
+            "tactical_entry_zone_high",
+            "tactical_stop_loss",
+            "tactical_take_profit_2p",
+            "tactical_take_profit_4p",
+            "tactical_max_hold_days",
+            "swing_score",
+            "swing_entry_zone_low",
+            "swing_entry_zone_high",
+            "swing_preferred_hold_days",
+        ]:
+            if pd.notna(row.get(field)):
+                rec[field] = round(float(row[field]), 4)
+        for field in [
+            "shortwave_action",
+            "shortwave_strategy_tags",
+            "shortwave_entry_zone_status",
+            "shortwave_entry_zone_note",
+            "shortwave_missing_strategy_tags",
+            "shortwave_entry_strategy_advice",
+            "tactical_strategy_name",
+            "tactical_action",
+            "tactical_reason",
+            "tactical_missing_strategy_tags",
+            "tactical_entry_strategy_advice",
+            "tactical_position_size_hint",
+            "tactical_backtest_ref",
+            "swing_strategy_name",
+            "swing_action",
+            "swing_entry_zone_status",
+            "swing_entry_strategy_advice",
+            "swing_reason",
+            "swing_missing_strategy_tags",
+        ]:
+            if pd.notna(row.get(field)):
+                rec[field] = str(row[field])
         records.append(rec)
 
     # 推薦分佈
@@ -1547,8 +1986,8 @@ def _prediction_turnaround_signals(container) -> dict[str, object]:
         or (
             operating_margin is not None
             and gross_margin is not None
-            and operating_margin > -0.08
-            and gross_margin > 0.20
+            and operating_margin > TURNAROUND_MARGIN_FLOOR
+            and gross_margin > TURNAROUND_GROSS_MARGIN_MIN
         )
     )
     score = int(profit_recovery) + int(demand_recovery) + int(margin_recovery)
@@ -2058,28 +2497,93 @@ def stock_prediction(ticker: str):
         result["va_low_20d"] = round(float(r["va_low_20d"]), 2)
     if pd.notna(r.get("va_high_20d")):
         result["va_high_20d"] = round(float(r["va_high_20d"]), 2)
+    if pd.notna(r.get("shortwave_entry_zone_low")):
+        result["shortwave_entry_zone_low"] = round(float(r["shortwave_entry_zone_low"]), 2)
+    if pd.notna(r.get("shortwave_entry_zone_high")):
+        result["shortwave_entry_zone_high"] = round(float(r["shortwave_entry_zone_high"]), 2)
+    for field in [
+        "shortwave_score",
+        "shortwave_preferred_hold_days",
+        "tactical_score",
+        "tactical_entry_limit",
+        "tactical_entry_zone_low",
+        "tactical_entry_zone_high",
+        "tactical_stop_loss",
+        "tactical_take_profit_2p",
+        "tactical_take_profit_4p",
+        "tactical_max_hold_days",
+        "swing_score",
+        "swing_entry_zone_low",
+        "swing_entry_zone_high",
+        "swing_preferred_hold_days",
+    ]:
+        if pd.notna(r.get(field)):
+            result[field] = round(float(r[field]), 4)
+    for field in [
+        "shortwave_action",
+        "shortwave_strategy_tags",
+        "shortwave_entry_zone_status",
+        "shortwave_entry_zone_note",
+        "shortwave_missing_strategy_tags",
+        "shortwave_entry_strategy_advice",
+        "tactical_strategy_name",
+        "tactical_action",
+        "tactical_reason",
+        "tactical_missing_strategy_tags",
+        "tactical_entry_strategy_advice",
+        "tactical_position_size_hint",
+        "tactical_backtest_ref",
+        "swing_strategy_name",
+        "swing_action",
+        "swing_entry_zone_status",
+        "swing_entry_strategy_advice",
+        "swing_reason",
+        "swing_missing_strategy_tags",
+    ]:
+        if pd.notna(r.get(field)):
+            result[field] = str(r[field])
     return result
 
 
 @app.get("/api/pipeline/status", tags=["system"])
 def pipeline_status():
-    """回傳資料管線最新狀態，供前端顯示資料鮮度"""
+    """Daily production health plus isolated weekly retrain status."""
     import json as _json
     from datetime import datetime as _dt
+
+    daily_health = _build_daily_production_health()
     status_path = os.path.join(os.path.dirname(__file__), "ml", "models", "pipeline_status.json")
-    if not os.path.exists(status_path):
-        return {"error": "尚無 pipeline 執行紀錄", "stale": True}
-    with open(status_path, "r", encoding="utf-8") as f:
-        status = _json.load(f)
-    # 計算資料是否過期 (超過 24 小時視為過期)
-    try:
-        last_run = _dt.strptime(status["last_run"], "%Y-%m-%d %H:%M:%S")
-        hours_ago = (_dt.now() - last_run).total_seconds() / 3600
-        status["hours_since_update"] = round(hours_ago, 1)
-        status["stale"] = hours_ago > 24
-    except (KeyError, ValueError):
-        status["stale"] = True
-    return status
+    weekly_status: dict = {
+        "scope": "weekly_retrain",
+        "exists": os.path.exists(status_path),
+        "path": os.path.abspath(status_path),
+    }
+    if weekly_status["exists"]:
+        with open(status_path, "r", encoding="utf-8") as f:
+            weekly_status.update(_json.load(f))
+        try:
+            last_run = _dt.strptime(weekly_status["last_run"], "%Y-%m-%d %H:%M:%S")
+            hours_ago = (_dt.now() - last_run).total_seconds() / 3600
+            weekly_status["hours_since_update"] = round(hours_ago, 1)
+            weekly_status["stale"] = hours_ago > 24 * 7
+        except (KeyError, ValueError):
+            weekly_status["stale"] = True
+    else:
+        weekly_status["stale"] = True
+
+    return {
+        "scope": "daily_production_health",
+        "status": daily_health["status"],
+        "all_ok": daily_health["ok"],
+        "stale": daily_health["stale"],
+        "hours_since_update": None,
+        "daily_health": daily_health,
+        "weekly_retrain": weekly_status,
+        "steps": {
+            check["name"]: check["status"]
+            for check in daily_health.get("checks", [])
+        },
+    }
 
 
 @app.get("/api/predictions/{ticker}/explain", tags=["predictions"])
@@ -2089,7 +2593,7 @@ def prediction_explain(ticker: str):
     import pandas as pd
     from ml.dataset import load_single_stock, _load_twii
     from ml.features.institutional import INSTITUTIONAL_FEATURE_COLS
-    from ml.predict import load_v2_model, _DIMENSION_MAP
+    from ml.predict import _DIMENSION_MAP
 
     # 處置股硬擋（最優先）：不需要載入模型，直接回傳
     from ml.predict import _load_disposition_set
@@ -2097,6 +2601,7 @@ def prediction_explain(ticker: str):
         return {
             "ticker": ticker,
             "recommendation": "觀望（處置股）",
+            "narrative_labels": _load_prediction_narrative_labels(ticker),
             "domain_warnings": [
                 "此股票目前處於主管機關處置期間，採分盤撮合交易（每20分鐘撮合一次），"
                 "流動性極差，進場後難以迅速出場，系統強制觀望。"
@@ -2131,39 +2636,51 @@ def prediction_explain(ticker: str):
     }
 
     # 嘗試 v2 迴歸模型
-    v2_model, v2_meta = load_v2_model()
+    try:
+        v2_model, v2_meta, certified_predictions, prediction_certificate = _load_explain_prediction_models(meta, snapshot)
+    except (OSError, ValueError, KeyError, RuntimeError) as exc:
+        return {"error": str(exc), "status": "data_error", "ticker": ticker}
     use_v2 = v2_model is not None and v2_meta is not None
+    scoring_snapshot = _model_scoring_snapshot(snapshot, v2_meta if use_v2 else meta)
+    scoring_latest = scoring_snapshot[scoring_snapshot["ticker"] == ticker].tail(1)
 
     if use_v2:
         v2_cols = v2_meta["feature_columns"]
         X = pd.DataFrame(columns=v2_cols)
         display_values = []
         for col in v2_cols:
-            model_val = latest[col].values if col in latest.columns else [np.nan]
+            model_val = scoring_latest[col].values if col in scoring_latest.columns else [np.nan]
+            raw_value = latest[col].iloc[0] if col in latest.columns else np.nan
             X[col] = model_val
             if col in ranked_inst_cols and col in raw_latest.columns:
                 raw_val = raw_latest[col].iloc[0]
-                display_values.append(raw_val if not pd.isna(raw_val) else model_val[0])
+                display_values.append(raw_val if not pd.isna(raw_val) else raw_value)
             else:
-                display_values.append(model_val[0])
+                display_values.append(raw_value)
 
         contribs = v2_model.predict(X.values, pred_contrib=True)[0]
-        pred_return = v2_model.predict(X.values)[0]
+        model_pred_return = v2_model.predict(X.values)[0]
+        try:
+            _assert_prediction_runtime(prediction_certificate, loaded_models={"base": meta, "v2": v2_meta})
+        except (OSError, ValueError, KeyError, RuntimeError) as exc:
+            return {"error": str(exc), "status": "data_error", "ticker": ticker}
         # 迴歸 pred_contrib: shape = (n_features + 1,)
         n_feat = len(v2_cols)
         feat_contribs = contribs[:n_feat]  # 正=推高報酬(看多), 負=壓低報酬(看空)
-        feat_values = X.values[0]
+        # Domain guardrails consume raw facts; z-scores are model inputs only.
+        feat_values = np.array([latest[col].iloc[0] if col in latest.columns else np.nan for col in v2_cols])
         feat_display_values = np.array(display_values, dtype=object)
         active_feature_cols = v2_cols
         FEAT_GROUP = _DIMENSION_MAP  # 3 層次: 籌碼與波動引擎/總經與大盤環境/基本面防禦網
 
         # 推薦等級（與預測列表一致的百分位邏輯）
-        try:
-            df, _ = _get_live_prediction_df()
-            row = df[df["ticker"] == ticker]
-            recommendation = str(row.iloc[0].get("recommendation", "觀望")) if not row.empty else "觀望"
-        except Exception:
-            recommendation = "觀望"
+        row = certified_predictions[certified_predictions["ticker"] == ticker]
+        if row.empty or pd.isna(row.iloc[0].get("pred_return_20d")):
+            return {"error": "本檔股票缺少已驗證的正式預測。", "status": "data_error", "ticker": ticker}
+        recommendation = str(row.iloc[0].get("recommendation", "觀望"))
+        # CSV contains the producer's final return, including its existing ATR
+        # cap. SHAP continues to explain the independently computed raw score.
+        pred_return = float(row.iloc[0]["pred_return_20d"])
 
         signal = "UP" if pred_return > 0.02 else "DOWN" if pred_return < -0.02 else "FLAT"
         is_regression = True
@@ -2171,13 +2688,14 @@ def prediction_explain(ticker: str):
         X = pd.DataFrame(columns=feature_cols)
         display_values = []
         for col in feature_cols:
-            model_val = latest[col].values if col in latest.columns else [np.nan]
+            model_val = scoring_latest[col].values if col in scoring_latest.columns else [np.nan]
+            raw_value = latest[col].iloc[0] if col in latest.columns else np.nan
             X[col] = model_val
             if col in ranked_inst_cols and col in raw_latest.columns:
                 raw_val = raw_latest[col].iloc[0]
-                display_values.append(raw_val if not pd.isna(raw_val) else model_val[0])
+                display_values.append(raw_val if not pd.isna(raw_val) else raw_value)
             else:
-                display_values.append(model_val[0])
+                display_values.append(raw_value)
 
         contribs = model.predict(X.values, pred_contrib=True)[0]
         proba = model.predict(X.values)[0]
@@ -2188,7 +2706,7 @@ def prediction_explain(ticker: str):
         n_feat = len(feature_cols)
         contrib_matrix = contribs.reshape(n_feat + 1, n_classes)
         feat_contribs = contrib_matrix[:n_feat, signal_idx]
-        feat_values = X.values[0]
+        feat_values = np.array([latest[col].iloc[0] if col in latest.columns else np.nan for col in feature_cols])
         feat_display_values = np.array(display_values, dtype=object)
         active_feature_cols = feature_cols
         recommendation = None
@@ -2655,10 +3173,24 @@ def prediction_explain(ticker: str):
     eps_ttm_val = _feat_lookup.get("eps_ttm")
     pe_val = _feat_lookup.get("pe_ratio")
     eps_yoy_val = _feat_lookup.get("eps_yoy")
+    price_vs_ma60_val = _feat_lookup.get("price_vs_ma60")
     turnaround = _prediction_turnaround_signals(_feat_lookup)
     turnaround_active = turnaround["active"]
 
     domain_warnings = []  # 衝突警示
+    expensive_momentum_warning = (
+        pe_val is not None
+        and price_vs_ma60_val is not None
+        and pe_val > EXPENSIVE_MOMENTUM_PE_THRESHOLD
+        and price_vs_ma60_val > EXPENSIVE_MOMENTUM_MA60_THRESHOLD
+    )
+    if expensive_momentum_warning:
+        domain_warnings.append(
+            "高估值動能股風險："
+            f"PE {pe_val:.1f} > {EXPENSIVE_MOMENTUM_PE_THRESHOLD:.0f}，"
+            f"股價高於 MA60 {price_vs_ma60_val * 100:.1f}% > {EXPENSIVE_MOMENTUM_MA60_THRESHOLD * 100:.0f}%；"
+            f"Champion target weight 上限 {EXPENSIVE_MOMENTUM_WEIGHT_CAP * 100:.0f}%"
+        )
 
     def _append_manual_reason(target, text, group, sentiment):
         if any(item["text"] == text for item in bullish_reasons + bearish_reasons):
@@ -3087,12 +3619,25 @@ def prediction_explain(ticker: str):
         "negative_factors": negative_factors,
         "group_contributions": {k: round(v, 4) for k, v in sorted_groups},
         "is_v2": is_regression,
+        "narrative_labels": _load_prediction_narrative_labels(ticker),
     }
+    if expensive_momentum_warning:
+        result["expensive_momentum_warning"] = {
+            "code": "EXPENSIVE_MOMENTUM_RISK",
+            "label": "高估值動能股風險",
+            "pe_ratio": round(float(pe_val), 2),
+            "price_vs_ma60_pct": round(float(price_vs_ma60_val) * 100, 2),
+            "target_weight_cap_pct": round(float(EXPENSIVE_MOMENTUM_WEIGHT_CAP) * 100, 2),
+        }
     if domain_warnings:
         result["domain_warnings"] = domain_warnings
     if is_regression:
         ret_pct = round(float(pred_return) * 100, 2)
         result["pred_return_20d"] = ret_pct
+        result["model_pred_return_20d"] = round(float(model_pred_return) * 100, 2)
+        result["prediction_postprocessed"] = not bool(np.isclose(model_pred_return, pred_return, rtol=0, atol=1e-12))
+        if result["prediction_postprocessed"]:
+            result["prediction_postprocess_note"] = "正式報酬已套用既有風險限制；特徵貢獻解釋模型原始估計。"
 
         # === V2.1 風險標籤：寬進嚴選，風險以警示為主 ===
         _risk_tags = []
@@ -3120,6 +3665,8 @@ def prediction_explain(ticker: str):
             _risk_tags.append(f"⚠️法人10日賣壓占量過高（>{TOP30_EXCLUDE_INST_SELL_PCT:.0f}%），不列入Top30")
         if _chip_bear is not None and _chip_bear >= 1.0:
             _risk_tags.append("⚠️籌碼頂部背離")
+        if expensive_momentum_warning:
+            _risk_tags.append("高估值動能股風險")
 
         if _risk_tags:
             result["risk_tags"] = " ".join(_risk_tags)
@@ -3187,336 +3734,39 @@ def model_accuracy():
     }
 
 
+@app.get("/api/health_check", tags=["model"])
+@app.get("/api/strategy/health", tags=["model"])
+def strategy_health():
+    """Latest replay monitor report for production strategy health."""
+    from ml.config import REPORT_DIR
+
+    path = os.path.join(REPORT_DIR, "daily_replay_monitor_latest.json")
+    if not os.path.exists(path):
+        return {
+            "status": "no_data",
+            "message": "尚無 replay monitor 報告。請先執行 daily_replay_monitor.py。",
+        }
+
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    return {
+        "status": "ok",
+        **data,
+    }
+
+
 # ==============================================================================
 # 大盤紅綠燈 (Market Regime Filter)
 # ==============================================================================
-@app.get("/api/market/regime", tags=["market"])
-def market_regime():
-    """大盤多空燈號 — ML 預測的保護傘。
-
-    綠燈：正常進場
-    黃燈：減碼操作（建議資金部位砍半）
-    紅燈：禁止進場（大盤系統性風險過高）
-    """
-    import pandas as pd
-    import numpy as np
-    from ml.config import INDEX_DIR
-
-    indicators = {}
-    reasons = []
-
-    # --- 載入大盤指數 ---
-    twii_path = os.path.join(INDEX_DIR, "index_TWII.csv")
-    vix_path = os.path.join(INDEX_DIR, "index_VIX.csv")
-    sox_path = os.path.join(INDEX_DIR, "index_SOX.csv")
-
-    try:
-        twii = pd.read_csv(twii_path, dtype={"Date": str})
-        twii["Date"] = pd.to_datetime(twii["Date"])
-        twii = twii.sort_values("Date").tail(60)
-        twii_close = twii["Close"].values
-        twii_latest = float(twii_close[-1])
-        twii_ma20 = float(np.mean(twii_close[-20:]))
-        twii_ma5 = float(np.mean(twii_close[-5:]))
-        twii_5d_ret = (twii_close[-1] / twii_close[-6] - 1) * 100 if len(twii_close) >= 6 else 0
-        twii_1d_ret = (twii_close[-1] / twii_close[-2] - 1) * 100 if len(twii_close) >= 2 else 0
-        twii_vs_ma20 = (twii_latest / twii_ma20 - 1) * 100
-
-        indicators["twii"] = round(twii_latest, 0)
-        indicators["twii_ma20"] = round(twii_ma20, 0)
-        indicators["twii_vs_ma20"] = round(twii_vs_ma20, 2)
-        indicators["twii_5d_ret"] = round(twii_5d_ret, 2)
-        indicators["twii_1d_ret"] = round(twii_1d_ret, 2)
-        indicators["twii_date"] = twii["Date"].iloc[-1].strftime("%Y-%m-%d")
-    except Exception:
-        twii_vs_ma20 = 0
-        twii_5d_ret = 0
-        twii_1d_ret = 0
-
-    try:
-        vix = pd.read_csv(vix_path, dtype={"Date": str})
-        vix["Date"] = pd.to_datetime(vix["Date"])
-        vix = vix.sort_values("Date").tail(10)
-        vix_latest = float(vix["Close"].iloc[-1])
-        vix_prev = float(vix["Close"].iloc[-2]) if len(vix) >= 2 else vix_latest
-        vix_5d_ago = float(vix["Close"].iloc[-6]) if len(vix) >= 6 else vix_latest
-        vix_1d_chg = vix_latest - vix_prev
-        vix_5d_chg = vix_latest - vix_5d_ago
-
-        indicators["vix"] = round(vix_latest, 1)
-        indicators["vix_1d_chg"] = round(vix_1d_chg, 1)
-        indicators["vix_5d_chg"] = round(vix_5d_chg, 1)
-    except Exception:
-        vix_latest = 15
-        vix_1d_chg = 0
-        vix_5d_chg = 0
-
-    try:
-        sox = pd.read_csv(sox_path, dtype={"Date": str})
-        sox["Date"] = pd.to_datetime(sox["Date"])
-        sox = sox.sort_values("Date").tail(10)
-        sox_latest = float(sox["Close"].iloc[-1])
-        sox_5d_ago = float(sox["Close"].iloc[-6]) if len(sox) >= 6 else sox_latest
-        sox_5d_ret = (sox_latest / sox_5d_ago - 1) * 100
-
-        indicators["sox_5d_ret"] = round(sox_5d_ret, 2)
-    except Exception:
-        sox_5d_ret = 0
-
-    # --- 紅綠燈判定邏輯 ---
-    red_flags = 0
-    yellow_flags = 0
-
-    # 規則 1: VIX 恐慌指標
-    if vix_latest >= 30:
-        red_flags += 2
-        reasons.append(f"VIX={vix_latest:.1f} 極度恐慌（>30），市場處於恐慌拋售狀態")
-    elif vix_latest >= 25:
-        red_flags += 1
-        reasons.append(f"VIX={vix_latest:.1f} 偏高（>25），市場恐慌升溫")
-    elif vix_latest >= 20:
-        yellow_flags += 1
-        reasons.append(f"VIX={vix_latest:.1f} 警戒區（>20），市場不安情緒升高")
-
-    # 規則 2: VIX 單日暴漲（突發事件偵測）
-    if vix_1d_chg >= 5:
-        red_flags += 1
-        reasons.append(f"VIX 單日暴漲 {vix_1d_chg:+.1f} 點，可能有突發利空事件")
-    elif vix_1d_chg >= 3:
-        yellow_flags += 1
-        reasons.append(f"VIX 單日上升 {vix_1d_chg:+.1f} 點，恐慌情緒升溫中")
-
-    # 規則 3: 大盤跌破月線
-    if twii_vs_ma20 < -3:
-        red_flags += 1
-        reasons.append(f"加權指數跌破月線 {twii_vs_ma20:+.1f}%，中期趨勢轉空")
-    elif twii_vs_ma20 < 0:
-        yellow_flags += 1
-        reasons.append(f"加權指數低於月線 {twii_vs_ma20:+.1f}%，注意趨勢轉弱")
-
-    # 規則 4: 大盤短線暴跌
-    if twii_5d_ret < -5:
-        red_flags += 1
-        reasons.append(f"大盤近5日跌 {twii_5d_ret:+.1f}%，短線急殺")
-    elif twii_5d_ret < -3:
-        yellow_flags += 1
-        reasons.append(f"大盤近5日跌 {twii_5d_ret:+.1f}%，下行壓力增加")
-
-    # 規則 5: 費半（半導體風向球）
-    if sox_5d_ret < -7:
-        red_flags += 1
-        reasons.append(f"費半近5日跌 {sox_5d_ret:+.1f}%，半導體系統性風險")
-    elif sox_5d_ret < -4:
-        yellow_flags += 1
-        reasons.append(f"費半近5日跌 {sox_5d_ret:+.1f}%，半導體轉弱")
-
-    # --- 綜合判定 ---
-    if red_flags >= 2:
-        signal = "red"
-        label = "紅燈 — 禁止進場"
-        advice = "系統性風險過高，建議暫停所有新買進操作，持股考慮減碼"
-    elif red_flags >= 1:
-        signal = "yellow"
-        label = "黃燈 — 減碼操作"
-        advice = "市場出現風險訊號，建議新進場資金減半，嚴格執行停損"
-    elif yellow_flags >= 2:
-        signal = "yellow"
-        label = "黃燈 — 減碼操作"
-        advice = "多項指標轉弱，建議縮減部位、謹慎操作"
-    elif yellow_flags >= 1:
-        signal = "light_green"
-        label = "淺綠燈 — 正常但留意"
-        advice = "大盤大致正常，但有輕微警訊，正常操作但注意風控"
-    else:
-        signal = "green"
-        label = "綠燈 — 正常進場"
-        advice = "大盤環境穩定，ML 預測可信度較高，正常執行策略"
-        if not reasons:
-            reasons.append("大盤站穩月線，VIX 平穩，無系統性風險訊號")
-
-    return {
-        "signal": signal,
-        "label": label,
-        "advice": advice,
-        "reasons": reasons,
-        "indicators": indicators,
-    }
+# ==============================================================================
+# 大盤多空燈號 → backend/routers/market.py
+# ==============================================================================
 
 
 # ==============================================================================
-# 回測 API
+# 回測讀取 / Pipeline trigger / Logs API → backend/routers/pipeline.py
 # ==============================================================================
-@app.get("/api/backtest/latest", tags=["backtest"])
-def backtest_latest():
-    """取得最新回測結果."""
-    import json
-    from ml.config import REPORT_DIR
-    path = os.path.join(REPORT_DIR, "backtest_latest.json")
-    if not os.path.exists(path):
-        return {"error": "尚無回測結果，請先執行 python -m ml.backtest"}
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-@app.post("/api/pipeline/backtest", tags=["pipeline"])
-def trigger_backtest(top_n: int = 10):
-    """觸發回測 (背景執行)."""
-    import subprocess, sys
-    pipeline_log.info(f"=== 手動觸發回測 (Top {top_n}) ===")
-    try:
-        subprocess.Popen(
-            [sys.executable, "-m", "ml.backtest", "--top", str(top_n)],
-            cwd=os.path.dirname(__file__),
-        )
-        return {"status": "started", "top_n": top_n}
-    except Exception as e:
-        pipeline_log.error(f"回測啟動失敗: {e}")
-        return {"status": "error", "detail": str(e)}
-
-
-# ==============================================================================
-# Pipeline API (觸發更新 / 重訓 / 預測)
-# ==============================================================================
-@app.post("/api/pipeline/update", tags=["pipeline"])
-def trigger_update():
-    """觸發資料更新 (twstock + valuation + news)"""
-    import subprocess, sys
-    pipeline_log.info("=== 手動觸發資料更新 ===")
-
-    results = {}
-    for name, cmd in [
-        ("twstock", [sys.executable, "twstock.py"]),
-        ("valuation", [sys.executable, "scripts/backfill_valuation.py",
-                        "--start-date", datetime.now().strftime("%Y-%m-%d")]),
-        ("news", [sys.executable, "scripts/fetch_daily_news.py"]),
-    ]:
-        try:
-            t0 = time.time()
-            r = subprocess.run(cmd, cwd=os.path.dirname(__file__),
-                               capture_output=True, text=True, timeout=600)
-            elapsed = time.time() - t0
-            ok = r.returncode == 0
-            results[name] = {"success": ok, "elapsed_sec": round(elapsed, 1)}
-            pipeline_log.info(f"  {name}: {'OK' if ok else 'FAIL'} ({elapsed:.1f}s)")
-            if not ok:
-                pipeline_log.error(f"  {name} stderr: {r.stderr[:500]}")
-        except Exception as e:
-            results[name] = {"success": False, "error": str(e)}
-            pipeline_log.error(f"  {name} exception: {e}")
-
-    pipeline_log.info(f"=== 資料更新完成: {results} ===")
-    return {"status": "done", "results": results}
-
-
-@app.post("/api/pipeline/ingest", tags=["pipeline"])
-def trigger_ingest():
-    """觸發 CSV → DuckDB 匯入 (在 server process 內執行，不需另開 process)"""
-    pipeline_log.info("=== 手動觸發 ingest ===")
-    try:
-        t0 = time.time()
-        from backend.db.ingest import ingest_all
-        results = ingest_all()
-        elapsed = time.time() - t0
-        pipeline_log.info(f"  ingest 完成: {results} ({elapsed:.1f}s)")
-        return {"success": True, "elapsed_sec": round(elapsed, 1), "results": results}
-    except Exception as e:
-        pipeline_log.error(f"  ingest exception: {e}")
-        return {"success": False, "error": str(e)}
-
-
-@app.post("/api/db/release", tags=["pipeline"])
-def release_db():
-    """釋放 DuckDB 連線，讓外部 process 可以寫入。"""
-    from backend.db.engine import close_conn
-    close_conn()
-    pipeline_log.info("DuckDB 連線已釋放 (via /api/db/release)")
-    return {"success": True}
-
-
-@app.post("/api/db/reconnect", tags=["pipeline"])
-def reconnect_db():
-    """重新建立 DuckDB 連線 (ingest 完成後呼叫)。"""
-    from backend.db.engine import reconnect
-    reconnect()
-    pipeline_log.info("DuckDB 連線已重建 (via /api/db/reconnect)")
-    return {"success": True}
-
-
-@app.post("/api/pipeline/retrain", tags=["pipeline"])
-def trigger_retrain():
-    """觸發模型重新訓練"""
-    import subprocess, sys
-    pipeline_log.info("=== 手動觸發模型重訓 ===")
-
-    try:
-        t0 = time.time()
-        r = subprocess.run(
-            [sys.executable, "-m", "ml.train"],
-            cwd=os.path.dirname(__file__),
-            capture_output=True, text=True, timeout=1800,
-        )
-        elapsed = time.time() - t0
-        ok = r.returncode == 0
-        pipeline_log.info(f"  重訓: {'OK' if ok else 'FAIL'} ({elapsed:.1f}s)")
-        if not ok:
-            pipeline_log.error(f"  重訓 stderr: {r.stderr[:1000]}")
-        return {"success": ok, "elapsed_sec": round(elapsed, 1)}
-    except Exception as e:
-        pipeline_log.error(f"  重訓 exception: {e}")
-        return {"success": False, "error": str(e)}
-
-
-@app.post("/api/pipeline/predict", tags=["pipeline"])
-def trigger_predict():
-    """觸發預測"""
-    import subprocess, sys
-    pipeline_log.info("=== 手動觸發預測 ===")
-
-    try:
-        t0 = time.time()
-        r = subprocess.run(
-            [sys.executable, "-m", "ml.predict"],
-            cwd=os.path.dirname(__file__),
-            capture_output=True, text=True, timeout=600,
-        )
-        elapsed = time.time() - t0
-        ok = r.returncode == 0
-        pipeline_log.info(f"  預測: {'OK' if ok else 'FAIL'} ({elapsed:.1f}s)")
-        return {"success": ok, "elapsed_sec": round(elapsed, 1)}
-    except Exception as e:
-        pipeline_log.error(f"  預測 exception: {e}")
-        return {"success": False, "error": str(e)}
-
-
-@app.get("/api/pipeline/logs", tags=["pipeline"])
-def get_logs(type: str = "access", lines: int = 100):
-    """查看 log 檔案最後 N 行
-
-    type: access | error | pipeline
-    """
-    file_map = {
-        "access": "web_access.log",
-        "error": "web_error.log",
-        "pipeline": "pipeline.log",
-    }
-    if type not in file_map:
-        return {"error": f"不支援的 log 類型: {type}", "valid": list(file_map.keys())}
-
-    fpath = os.path.join(LOG_DIR, file_map[type])
-    if not os.path.exists(fpath):
-        return {"type": type, "lines": [], "total": 0}
-
-    with open(fpath, "r", encoding="utf-8") as f:
-        all_lines = f.readlines()
-
-    tail = all_lines[-lines:] if len(all_lines) > lines else all_lines
-    return {
-        "type": type,
-        "file": file_map[type],
-        "total_lines": len(all_lines),
-        "showing": len(tail),
-        "lines": [l.rstrip() for l in tail],
-    }
 
 
 # ==============================================================================
@@ -3527,79 +3777,56 @@ os.makedirs(STATIC_DIR, exist_ok=True)
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
+@app.get("/api/entry/canonical", tags=["entry"])
+def entry_canonical_list():
+    """Canonical 進場名單(dataA 新模型主 lane + rere lane)。
+    來源:generate_entry_candidates.py 產出的最新 logs/entry_list_*.json
+    (PM 2026-07-02 裁示:日常名單=新模型+rere lane,取代舊 champion)。"""
+    import glob as _glob
+    files = sorted(path for path in _glob.glob(os.path.join(os.path.dirname(__file__), "logs", "entry_list_*.json"))
+                   if not path.endswith(".manifest.json"))
+    if not files:
+        return JSONResponse({"status": "data_error", "error": "尚無已驗證的進場名單。"}, status_code=503)
+    try:
+        from scripts.entry_artifact_lineage import load_entry_artifact
+        payload = load_entry_artifact(files[-1])
+        payload["source_file"] = os.path.basename(files[-1])
+        return JSONResponse(payload)
+    except Exception as exc:
+        return JSONResponse({"status": "data_error", "error": str(exc)}, status_code=503)
+
+
 @app.get("/", tags=["frontend"])
 def index():
     """首頁 Dashboard"""
     return FileResponse(
-        os.path.join(os.path.dirname(__file__), "frontend", "index.html")
+        os.path.join(os.path.dirname(__file__), "frontend", "index.html"),
+        headers={
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
     )
 
 
 @app.get("/sw.js", tags=["frontend"], include_in_schema=False)
 def service_worker():
-    """Service Worker 需從根路徑提供以控制全站快取範圍"""
+    """清除舊 service worker / app shell cache，避免舊版介面復活。"""
     return FileResponse(
         os.path.join(STATIC_DIR, "sw.js"),
         media_type="application/javascript",
-        headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+        headers={
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
     )
 
 
 # ==============================================================================
 # 啟動事件
 # ==============================================================================
-@app.on_event("startup")
-async def startup():
-    from backend.db.engine import get_conn
-
-    pipeline_log.info("=== Web Server 啟動 ===")
-
-    conn = get_conn()
-    try:
-        tables = [t[0] for t in conn.execute(
-            "SELECT table_name FROM information_schema.tables WHERE table_schema='main'"
-        ).fetchall()]
-
-        if "daily_k" not in tables:
-            pipeline_log.info("首次啟動，匯入 CSV 到 DuckDB...")
-            from backend.db.ingest import ingest_all
-            ingest_all()
-        else:
-            db_max = conn.execute("SELECT MAX(date) FROM daily_k").fetchone()[0]
-            row_count = conn.execute("SELECT COUNT(*) FROM daily_k").fetchone()[0]
-            pipeline_log.info(f"DuckDB 已有 {row_count:,} 筆日K資料 (最新日期: {db_max})")
-
-            import glob as _g
-            from backend.config import DAILY_K_DIR
-            sample_csv = sorted(_g.glob(os.path.join(DAILY_K_DIR, "2330.csv")))
-            if sample_csv:
-                import pandas as _pd
-                try:
-                    tail = _pd.read_csv(sample_csv[0], usecols=[0], nrows=0)
-                    date_col = tail.columns[0]
-                    last_rows = _pd.read_csv(sample_csv[0], usecols=[date_col]).iloc[-1:]
-                    csv_max = str(last_rows.iloc[0, 0])[:10]
-                    db_max_str = str(db_max)[:10]
-                    if csv_max > db_max_str:
-                        pipeline_log.info(f"CSV 最新 {csv_max} > DB {db_max_str}，自動 ingest...")
-                        from backend.db.ingest import ingest_all
-                        ingest_all()
-                except Exception as e:
-                    pipeline_log.warning(f"自動 ingest 檢查失敗: {e}")
-
-        if "stock_list" not in tables:
-            pipeline_log.info("建立 stock_list...")
-            _build_stock_list_safe(conn)
-
-    except Exception as e:
-        pipeline_log.error(f"啟動錯誤: {e}\n{traceback.format_exc()}")
-
-    _warm_prediction_context_async()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    pipeline_log.info("=== Web Server 關閉 ===")
+# startup/shutdown 邏輯已搬到上方 lifespan() context manager (取代 deprecated @app.on_event)
 
 
 def _build_stock_list_safe(conn=None):
@@ -3659,13 +3886,13 @@ def _build_stock_list_safe(conn=None):
 if __name__ == "__main__":
     import uvicorn
 
-    parser = argparse.ArgumentParser(description="台股分析平台")
+    parser = argparse.ArgumentParser(description="Two-Stage Champion War Room")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--reload", action="store_true")
     args = parser.parse_args()
 
-    print(f"\n  台股分析平台啟動中...")
+    print(f"\n  Two-Stage Champion War Room 啟動中...")
     print(f"  http://{args.host}:{args.port}")
     print(f"  Log 目錄: {LOG_DIR}")
     print()

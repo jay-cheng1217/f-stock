@@ -1,0 +1,72 @@
+# REQ-004: sector-conditioned Champion unified OVERHEAT_RISK thresholds.
+#
+# Matching is keyword-based against the `sector` value in unified_signals.
+# High-risk cyclical groups are allowed to tighten only. Missing or unmatched
+# sectors fall back to default_threshold (40%), never to a relaxed threshold.
+# The calibrated thresholds differ from the PM seed values where needed to pass
+# REQ-004 shadow gates on the available production-active artifacts.
+# This file is shadow/audit-only unless SECTOR_OVERHEAT_THRESHOLDS_ENABLED=1.
+default_threshold: 0.40
+
+groups:
+  petrochemical:
+    label: "塑化 / 石化"
+    threshold: 0.25
+    keywords:
+      - "塑膠"
+      - "化工"
+      - "化學"
+      - "石化"
+
+  steel_metal:
+    label: "鋼鐵 / 金屬"
+    threshold: 0.25
+    keywords:
+      - "鋼鐵"
+      - "金屬"
+
+  shipping:
+    label: "航運"
+    threshold: 0.25
+    keywords:
+      - "航運"
+      - "貨運"
+
+  traditional_other:
+    label: "傳產其他"
+    threshold: 0.35
+    keywords:
+      - "食品"
+      - "紡織"
+      - "橡膠"
+      - "玻璃"
+      - "造紙"
+
+  electronics_other:
+    label: "其他電子"
+    threshold: 0.40
+    keywords:
+      - "其他電子"
+      - "電子零組件"
+      - "電腦及週邊"
+      - "電腦周邊"
+
+  semiconductor:
+    label: "半導體"
+    threshold: 0.55
+    keywords:
+      - "半導體"
+
+  biotech_medical:
+    label: "生技 / 醫材"
+    threshold: 0.50
+    keywords:
+      - "生技"
+      - "醫療器材"
+      - "醫材"
+
+  default:
+    label: "未分類 / 其他"
+    threshold: 0.40
+    keywords:
+      - "其他"

@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-08T11:39:50.428054+00:00",
+    "requested_start": "2024-01-01",
+    "requested_end": "2026-05-08",
+    "actual_start": "2026-03-11",
+    "actual_end": "2026-05-07",
+    "prediction_file_count": 36,
+    "include_open_mtm": true,
+    "top_n": 30,
+    "summary_csv": "F:\\stock\\ml\\reports\\exit_policy_sensitivity_20260508_summary.csv",
+    "daily_csv": "F:\\stock\\ml\\reports\\exit_policy_sensitivity_20260508_daily.csv",
+    "trades_csv": "F:\\stock\\ml\\reports\\exit_policy_sensitivity_20260508_trades.csv"
+  },
+  "summary": [
+    {
+      "variant": "Current_MA5",
+      "signal_days": 35,
+      "trades": 956,
+      "monthly_avg_return_pct": 0.005451153301590596,
+      "monthly_avg_alpha_pct": -0.012279167258321072,
+      "compound_return_pct": 0.7380064256263423,
+      "mdd_pct": -0.2219979547489237,
+      "avg_hold_days": 3.711297071129707,
+      "turnover_per_month": 318.6666666666667,
+      "ma_exit_count": 740,
+      "stop_exit_count": 126,
+      "timeout_count": 3,
+      "open_mtm_count": 87
+    },
+    {
+      "variant": "Variant_A_MA10",
+      "signal_days": 35,
+      "trades": 956,
+      "monthly_avg_return_pct": 0.006991135229984498,
+      "monthly_avg_alpha_pct": -0.016391682440151017,
+      "compound_return_pct": 0.8169476966743447,
+      "mdd_pct": -0.25799942395172415,
+      "avg_hold_days": 4.49163179916318,
+      "turnover_per_month": 318.6666666666667,
+      "ma_exit_count": 638,
+      "stop_exit_count": 186,
+      "timeout_count": 19,
+      "open_mtm_count": 113
+    },
+    {
+      "variant": "Variant_B_StopOnly",
+      "signal_days": 35,
+      "trades": 956,
+      "monthly_avg_return_pct": 0.0571030233330278,
+      "monthly_avg_alpha_pct": -0.012158555707338772,
+      "compound_return_pct": 13.98096055568229,
+      "mdd_pct": -0.17338797748223866,
+      "avg_hold_days": 10.482217573221757,
+      "turnover_per_month": 318.6666666666667,
+      "ma_exit_count": 0,
+      "stop_exit_count": 376,
+      "timeout_count": 294,
+      "open_mtm_count": 286
+    },
+    {
+      "variant": "Variant_C_MA5_2Day",
+      "signal_days": 35,
+      "trades": 956,
+      "monthly_avg_return_pct": 0.014559598366059323,
+      "monthly_avg_alpha_pct": -0.017484269671890908,
+      "compound_return_pct": 1.5508734231874346,
+      "mdd_pct": -0.21716808759167805,
+      "avg_hold_days": 5.642259414225942,
+      "turnover_per_month": 318.6666666666667,
+      "ma_exit_count": 547,
+      "stop_exit_count": 228,
+      "timeout_count": 22,
+      "open_mtm_count": 159
+    }
+  ]
+}

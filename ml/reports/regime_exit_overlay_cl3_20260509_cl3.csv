@@ -1,0 +1,5 @@
+﻿variant,alpha_sacrifice,alpha_pass,mdd_delta,mdd_pass,sharpe_regression,sharpe_pass,calmar_regression,calmar_pass,overall_pass
+Variant_A_regime_ma20_3pct,0.002239312744136598,True,0.0,False,0.0,True,0.0,True,False
+Variant_B_regime_ma20_5pct,0.001288753488691903,True,0.0,False,0.0,True,0.0,True,False
+Variant_C_regime_20d_return_8pct,0.0,True,-0.032674058104831594,False,0.0,True,0.22816547806288548,False,False
+Variant_D_regime_ma20_5pct_hwm,0.002330809170726353,True,0.0,False,0.031610348063522316,True,0.031742495254136756,True,False

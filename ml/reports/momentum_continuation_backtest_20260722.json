@@ -1,0 +1,156 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20260722"
+  },
+  "rows": 1197168,
+  "setup_count": 5852,
+  "filled_count": 5059,
+  "missed_gap_up_count": 1275,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5059,
+      "mean_return": -0.008783951807503281,
+      "median_return": -0.012264462809917328,
+      "win_rate": 0.341371812611188,
+      "p25": -0.03279299123904883,
+      "p75": 0.009440134291865968
+    },
+    {
+      "hold_days": 2,
+      "n": 5052,
+      "mean_return": -0.007634406976945419,
+      "median_return": -0.015106459408390668,
+      "win_rate": 0.3778701504354711,
+      "p25": -0.045292584979433864,
+      "p75": 0.02031719651608244
+    },
+    {
+      "hold_days": 3,
+      "n": 5043,
+      "mean_return": -0.006657846423506544,
+      "median_return": -0.01727433628318586,
+      "win_rate": 0.3866745984533016,
+      "p25": -0.05511505050241716,
+      "p75": 0.028666307062700017
+    },
+    {
+      "hold_days": 5,
+      "n": 5029,
+      "mean_return": -0.003554635197807981,
+      "median_return": -0.01991511936339529,
+      "win_rate": 0.4012726188108968,
+      "p25": -0.06942056074766356,
+      "p75": 0.04055445544554459
+    },
+    {
+      "hold_days": 10,
+      "n": 4991,
+      "mean_return": 0.002747926746776286,
+      "median_return": -0.02200720288115243,
+      "win_rate": 0.42075736325385693,
+      "p25": -0.09126640245313583,
+      "p75": 0.06644616693449279
+    },
+    {
+      "hold_days": 20,
+      "n": 4909,
+      "mean_return": 0.014812897143325876,
+      "median_return": -0.030362038664323406,
+      "win_rate": 0.42656345487879405,
+      "p25": -0.12261313868613144,
+      "p75": 0.10543396226415092
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-07-21",
+      "ticker": "6243",
+      "name": "迅杰",
+      "sector": "半導體業",
+      "Close": 51.0,
+      "momentum_score": 0.669849,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 49.215,
+      "momentum_entry_limit": 51.0,
+      "momentum_entry_high": 51.765,
+      "price_vs_ma5": 0.0598503741,
+      "price_vs_ma20": 0.1987307557,
+      "price_vs_ma60": 0.3936647462,
+      "volume_ratio_20d": 1.7341704668,
+      "RSI_14": 65.6381505246,
+      "MACDh_12_26_9": 0.9213249154,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-07-21",
+      "ticker": "1326",
+      "name": "台化",
+      "sector": "塑膠工業",
+      "Close": 68.6,
+      "momentum_score": 0.609628,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 67.3814,
+      "momentum_entry_limit": 68.6,
+      "momentum_entry_high": 69.629,
+      "price_vs_ma5": 0.012994684,
+      "price_vs_ma20": 0.1013003692,
+      "price_vs_ma60": 0.2884728659,
+      "volume_ratio_20d": 1.0415331577,
+      "RSI_14": 60.9364679443,
+      "MACDh_12_26_9": 0.0744601789,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-07-21",
+      "ticker": "1301",
+      "name": "台塑",
+      "sector": "塑膠工業",
+      "Close": 63.0,
+      "momentum_score": 0.586559,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 62.055,
+      "momentum_entry_limit": 63.0,
+      "momentum_entry_high": 63.945,
+      "price_vs_ma5": -0.0084985836,
+      "price_vs_ma20": 0.0791955009,
+      "price_vs_ma60": 0.2315340473,
+      "volume_ratio_20d": 0.7557426694,
+      "RSI_14": 59.9961125318,
+      "MACDh_12_26_9": 0.1833872931,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-07-21",
+      "ticker": "3625",
+      "name": "西勝",
+      "sector": "電腦及週邊設備業",
+      "Close": 19.0,
+      "momentum_score": 0.569794,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 18.335,
+      "momentum_entry_limit": 19.0,
+      "momentum_entry_high": 19.285,
+      "price_vs_ma5": 0.0698198198,
+      "price_vs_ma20": 0.1189634865,
+      "price_vs_ma60": 0.1926557514,
+      "volume_ratio_20d": 2.5489236791,
+      "RSI_14": 62.5206073612,
+      "MACDh_12_26_9": 0.1306707702,
+      "missed_gap_up": false
+    }
+  ]
+}

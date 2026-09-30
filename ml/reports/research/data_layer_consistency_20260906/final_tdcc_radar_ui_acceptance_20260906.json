@@ -1,0 +1,2181 @@
+{
+  "status": "PASS_FINAL_FORMAL_HTML_BROWSER_QA",
+  "observed_at": "2026-09-06T23:11:33.921515+08:00",
+  "artifact": {
+    "receipt": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_html_resume_20260906\\00_html.result.json",
+    "receipt_sha256": "099ecd3bc162d88820f2227a9078238b2a79e6dc30705da4ba5c7dffb3ed848b",
+    "source": "F:\\stock\\ml\\reports\\entry_dashboard_latest.html",
+    "preview": "F:\\stock\\output\\playwright\\final_tdcc_radar_20260906.html",
+    "bytes": 9489910,
+    "sha256": "2f42e26080846e6bf0691b1b1d49529e16b130025fca242214e99c8485c28113",
+    "served_sha256": "2f42e26080846e6bf0691b1b1d49529e16b130025fca242214e99c8485c28113",
+    "url": "http://127.0.0.1:8876/final_tdcc_radar_20260906.html"
+  },
+  "source_unchanged_after_QA": true,
+  "canonical": {
+    "path": "F:\\stock\\logs\\entry_list_20260907.json",
+    "sha256": "936a19c2a0b1e40416aa0aa406f4df0213115c0d1b46cbb7bb99b333b0a4c01a",
+    "rows": 18,
+    "rere_tickers": [
+      "3605",
+      "3189",
+      "3066",
+      "2364",
+      "3176",
+      "6472"
+    ],
+    "trade_date": "2026-09-07",
+    "source_date": "2026-09-04"
+  },
+  "desktop": {
+    "url": "http://127.0.0.1:8876/final_tdcc_radar_20260906.html",
+    "title": "台股選股觀察",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "scroll": {
+      "document": 1440,
+      "body": 1440
+    },
+    "horizontalOverflow": false,
+    "jsErrors": [],
+    "meta": {
+      "trade_date": "2026-09-07",
+      "subtitle": "canonical 產生器(型態 gate → 模型確認,Claude/Codex 共用)",
+      "intro": "由 scripts/generate_entry_candidates.py 產生;來源 dataA_predictions_2026-09-04.csv。型態硬 gate 先、模型確認;籌碼否決僅接受人工截圖(桌面自動源已退役)。本日 rere lane 新訊號:6 檔(rere 為日條件:深洗盤+外資當日由賣轉買,無訊號日為 0 屬正常)。",
+      "data_status": "OK",
+      "data_warnings": [],
+      "discipline": [
+        "盤中進區間守15-30分才算;跌破停損=型態失敗就砍,別凹。",
+        "出場:賣壓力減碼、砍型態失敗(非當日紅)、龍頭留基本倉、波段來回。",
+        "rere 系統掃描為方法代理；主力成本與盤中守穩仍需人工確認，不能視為 KOL 本人薦股。"
+      ],
+      "sources": [
+        {
+          "key": "snapshot",
+          "label": "四面向",
+          "asof": "2026-09-04",
+          "expected": "2026-09-04",
+          "status": "fresh"
+        },
+        {
+          "key": "data_a",
+          "label": "20D模型",
+          "asof": "2026-09-04",
+          "expected": "2026-09-04",
+          "status": "fresh"
+        },
+        {
+          "key": "production",
+          "label": "正式標籤",
+          "asof": "2026-09-04",
+          "expected": "2026-09-04",
+          "status": "fresh"
+        },
+        {
+          "key": "tdcc",
+          "label": "集保週報",
+          "asof": "2026-09-04",
+          "expected": "2026-08-28",
+          "status": "fresh"
+        },
+        {
+          "key": "whale",
+          "label": "大戶雷達",
+          "asof": "2026-09-04",
+          "expected": "2026-08-28",
+          "status": "fresh"
+        }
+      ],
+      "generated": "2026-09-06 23:04"
+    },
+    "cardCount": 18,
+    "rereCount": 6,
+    "rereTickers": [
+      "3605",
+      "3189",
+      "3066",
+      "2364",
+      "3176",
+      "6472"
+    ],
+    "rows": [
+      {
+        "ticker": "3605",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "skip",
+        "riskText": "🔴 跳過:籌碼發散(大戶-2.9pp/散戶+1.0pp)",
+        "card": {
+          "label": "暫緩 · 有否決條件",
+          "tone": "skip",
+          "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 118,
+            "date": "2026-09-04",
+            "position": "below",
+            "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "3189",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "skip",
+        "riskText": "🔴 跳過:籌碼發散(大戶-2.7pp/散戶+2.4pp)",
+        "card": {
+          "label": "暫緩 · 有否決條件",
+          "tone": "skip",
+          "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 819,
+            "date": "2026-09-04",
+            "position": "below",
+            "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "3066",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "check",
+        "riskText": "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 24.7,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "2364",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "skip",
+        "riskText": "🔴 跳過:籌碼發散(大戶+0.0pp/散戶+2.3pp)",
+        "card": {
+          "label": "暫緩 · 有否決條件",
+          "tone": "skip",
+          "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 67.4,
+            "date": "2026-09-04",
+            "position": "below",
+            "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "3176",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "check",
+        "riskText": "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 35,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "6472",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "check",
+        "riskText": "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 416,
+            "date": "2026-09-04",
+            "position": "below",
+            "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "5471",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 61.1,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "3287",
+        "strategy": "main",
+        "kind": "small",
+        "state": "small",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 36.6,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "3265",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "warn",
+        "riskText": "外資5日-1,443張，賣壓需先釐清",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 176.5,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "3264",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 227,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "1712",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 40.65,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "6907",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 181.5,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "3024",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "warn",
+        "riskText": "外資5日-854張，賣壓需先釐清",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 14.05,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "4540",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "warn",
+        "riskText": "外資5日-895張，賣壓需先釐清",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 60.8,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "4904",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "check",
+        "riskText": "外資5日+7,415張，仍待分點與盤中支撐確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 104,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "6829",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 243.5,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "2605",
+        "strategy": "main",
+        "kind": "small",
+        "state": "small",
+        "risk": "check",
+        "riskText": "外資5日-734張，其他結構訊號較強；仍待人工確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 35.85,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "5608",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "check",
+        "riskText": "外資5日+2,279張，仍待分點與盤中支撐確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 17.2,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      }
+    ],
+    "cards": [
+      {
+        "ticker": "3066",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 69.390625,
+          "right": 493.796875,
+          "width": 424.40625,
+          "height": 574.375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 24.7 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3176",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 507.796875,
+          "right": 932.203125,
+          "width": 424.40625,
+          "height": 574.375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 35 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "6472",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 946.203125,
+          "right": 1370.609375,
+          "width": 424.40625,
+          "height": 574.375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 416 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3605",
+        "classes": "card c-small c-skip",
+        "opacity": "1",
+        "rect": {
+          "left": 69.390625,
+          "right": 493.796875,
+          "width": 424.40625,
+          "height": 632.65625
+        },
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 118 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3189",
+        "classes": "card c-small c-skip",
+        "opacity": "1",
+        "rect": {
+          "left": 507.796875,
+          "right": 932.203125,
+          "width": 424.40625,
+          "height": 632.65625
+        },
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 819 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "2364",
+        "classes": "card c-small c-skip",
+        "opacity": "1",
+        "rect": {
+          "left": 946.203125,
+          "right": 1370.609375,
+          "width": 424.40625,
+          "height": 632.65625
+        },
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 67.4 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "5471",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 69.390625,
+          "right": 493.796875,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 61.1 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3265",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 507.796875,
+          "right": 932.203125,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 176.5 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3264",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 946.203125,
+          "right": 1370.609375,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 227 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "1712",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 69.390625,
+          "right": 493.796875,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 40.65 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "6907",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 507.796875,
+          "right": 932.203125,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 181.5 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3024",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 946.203125,
+          "right": 1370.609375,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 14.05 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "4540",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 69.390625,
+          "right": 493.796875,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 60.8 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "4904",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 507.796875,
+          "right": 932.203125,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 104 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "6829",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 946.203125,
+          "right": 1370.609375,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 243.5 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "5608",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 69.390625,
+          "right": 493.796875,
+          "width": 424.40625,
+          "height": 534.53125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 17.2 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3287",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 69.390625,
+          "right": 493.796875,
+          "width": 424.40625,
+          "height": 574.375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 36.6 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "2605",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 507.796875,
+          "right": 932.203125,
+          "width": 424.40625,
+          "height": 574.375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 35.85 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      }
+    ],
+    "overflowElements": []
+  },
+  "mobile": {
+    "url": "http://127.0.0.1:8876/final_tdcc_radar_20260906.html",
+    "title": "台股選股觀察",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "scroll": {
+      "document": 390,
+      "body": 390
+    },
+    "horizontalOverflow": false,
+    "jsErrors": [],
+    "meta": {
+      "trade_date": "2026-09-07",
+      "subtitle": "canonical 產生器(型態 gate → 模型確認,Claude/Codex 共用)",
+      "intro": "由 scripts/generate_entry_candidates.py 產生;來源 dataA_predictions_2026-09-04.csv。型態硬 gate 先、模型確認;籌碼否決僅接受人工截圖(桌面自動源已退役)。本日 rere lane 新訊號:6 檔(rere 為日條件:深洗盤+外資當日由賣轉買,無訊號日為 0 屬正常)。",
+      "data_status": "OK",
+      "data_warnings": [],
+      "discipline": [
+        "盤中進區間守15-30分才算;跌破停損=型態失敗就砍,別凹。",
+        "出場:賣壓力減碼、砍型態失敗(非當日紅)、龍頭留基本倉、波段來回。",
+        "rere 系統掃描為方法代理；主力成本與盤中守穩仍需人工確認，不能視為 KOL 本人薦股。"
+      ],
+      "sources": [
+        {
+          "key": "snapshot",
+          "label": "四面向",
+          "asof": "2026-09-04",
+          "expected": "2026-09-04",
+          "status": "fresh"
+        },
+        {
+          "key": "data_a",
+          "label": "20D模型",
+          "asof": "2026-09-04",
+          "expected": "2026-09-04",
+          "status": "fresh"
+        },
+        {
+          "key": "production",
+          "label": "正式標籤",
+          "asof": "2026-09-04",
+          "expected": "2026-09-04",
+          "status": "fresh"
+        },
+        {
+          "key": "tdcc",
+          "label": "集保週報",
+          "asof": "2026-09-04",
+          "expected": "2026-08-28",
+          "status": "fresh"
+        },
+        {
+          "key": "whale",
+          "label": "大戶雷達",
+          "asof": "2026-09-04",
+          "expected": "2026-08-28",
+          "status": "fresh"
+        }
+      ],
+      "generated": "2026-09-06 23:04"
+    },
+    "cardCount": 18,
+    "rereCount": 6,
+    "rereTickers": [
+      "3605",
+      "3189",
+      "3066",
+      "2364",
+      "3176",
+      "6472"
+    ],
+    "rows": [
+      {
+        "ticker": "3605",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "skip",
+        "riskText": "🔴 跳過:籌碼發散(大戶-2.9pp/散戶+1.0pp)",
+        "card": {
+          "label": "暫緩 · 有否決條件",
+          "tone": "skip",
+          "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 118,
+            "date": "2026-09-04",
+            "position": "below",
+            "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "3189",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "skip",
+        "riskText": "🔴 跳過:籌碼發散(大戶-2.7pp/散戶+2.4pp)",
+        "card": {
+          "label": "暫緩 · 有否決條件",
+          "tone": "skip",
+          "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 819,
+            "date": "2026-09-04",
+            "position": "below",
+            "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "3066",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "check",
+        "riskText": "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 24.7,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "2364",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "skip",
+        "riskText": "🔴 跳過:籌碼發散(大戶+0.0pp/散戶+2.3pp)",
+        "card": {
+          "label": "暫緩 · 有否決條件",
+          "tone": "skip",
+          "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 67.4,
+            "date": "2026-09-04",
+            "position": "below",
+            "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "3176",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "check",
+        "riskText": "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 35,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "6472",
+        "strategy": "rere",
+        "kind": "small",
+        "state": "small",
+        "risk": "check",
+        "riskText": "需人工確認分點、主力成本與盤中支撐；僅考慮最小試單",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "洗盤轉強型態入列，仍需盤中守住支撐",
+            "模型分數不否決 rere；進場前人工查分點與主力成本"
+          ],
+          "last_close": {
+            "price": 416,
+            "date": "2026-09-04",
+            "position": "below",
+            "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 60,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "5471",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 61.1,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "3287",
+        "strategy": "main",
+        "kind": "small",
+        "state": "small",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 36.6,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "3265",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "warn",
+        "riskText": "外資5日-1,443張，賣壓需先釐清",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 176.5,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "3264",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 227,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "1712",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 40.65,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "6907",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 181.5,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "3024",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "warn",
+        "riskText": "外資5日-854張，賣壓需先釐清",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 14.05,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "4540",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "warn",
+        "riskText": "外資5日-895張，賣壓需先釐清",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 60.8,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "4904",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "check",
+        "riskText": "外資5日+7,415張，仍待分點與盤中支撐確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 104,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "6829",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "ok",
+        "riskText": "已讀取的籌碼欄位未見上述警訊；不代表分點或盤中已確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 243.5,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      },
+      {
+        "ticker": "2605",
+        "strategy": "main",
+        "kind": "small",
+        "state": "small",
+        "risk": "check",
+        "riskText": "外資5日-734張，其他結構訊號較強；仍待人工確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 35.85,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "只考慮最小試單"
+        }
+      },
+      {
+        "ticker": "5608",
+        "strategy": "main",
+        "kind": "go",
+        "state": "go",
+        "risk": "check",
+        "riskText": "外資5日+2,279張，仍待分點與盤中支撐確認",
+        "card": {
+          "label": "觀察 · 待盤中確認",
+          "tone": "check",
+          "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+          "basis": [
+            "價格接近月線，型態與量能通過篩選",
+            "dataA 模型提供方向參考；不是確定報酬"
+          ],
+          "last_close": {
+            "price": 17.2,
+            "date": "2026-09-04",
+            "position": "inside",
+            "message": "僅上次收盤在區間；盤中是否守穩仍待確認。"
+          },
+          "warnings": [],
+          "source_date": "2026-09-04",
+          "model_source_date": "2026-09-04",
+          "horizon": 20,
+          "size": "確認條件後再決定部位"
+        }
+      }
+    ],
+    "cards": [
+      {
+        "ticker": "3066",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 608.96875
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 24.7 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3176",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 608.96875
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 35 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "6472",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 608.96875
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 416 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3605",
+        "classes": "card c-small c-skip",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 605.3125
+        },
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 118 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3189",
+        "classes": "card c-small c-skip",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 605.3125
+        },
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 819 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "2364",
+        "classes": "card c-small c-skip",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 644.15625
+        },
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04（不作否決）",
+        "close": "上次收盤 67.4 · 2026-09-04（盤後）\n上次收盤低於區間；等站回下緣後再確認守穩。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "5471",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 61.1 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3265",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 176.5 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3264",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 227 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "1712",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 40.65 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "6907",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 181.5 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3024",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 14.05 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "4540",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 60.8 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "4904",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 104 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "6829",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 243.5 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "5608",
+        "classes": "card c-go",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 17.2 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "3287",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 588.828125
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 36.6 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      },
+      {
+        "ticker": "2605",
+        "classes": "card c-small",
+        "opacity": "1",
+        "rect": {
+          "left": 23,
+          "right": 367,
+          "width": 344,
+          "height": 548.984375
+        },
+        "action": "進入區間後，仍須確認支撐守穩 15–30 分鐘；超過上緣不追。",
+        "source": "型態截至 2026-09-04 · 模型截至 2026-09-04",
+        "close": "上次收盤 35.85 · 2026-09-04（盤後）\n僅上次收盤在區間；盤中是否守穩仍待確認。",
+        "unknown": "尚缺：盤中進區間守穩、人工籌碼確認。",
+        "detailsOpen": false
+      }
+    ],
+    "overflowElements": [
+      {
+        "tag": "TABLE",
+        "cls": "ltbl",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 2014.40625
+        }
+      },
+      {
+        "tag": "THEAD",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 70.78125
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 70.78125
+        }
+      },
+      {
+        "tag": "TH",
+        "cls": "",
+        "rect": {
+          "left": 341.421875,
+          "right": 415.1875,
+          "width": 73.765625,
+          "height": 70.78125
+        }
+      },
+      {
+        "tag": "TBODY",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 1943.125
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 149.125
+        }
+      },
+      {
+        "tag": "TD",
+        "cls": "",
+        "rect": {
+          "left": 341.421875,
+          "right": 415.1875,
+          "width": 73.765625,
+          "height": 149.125
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 125.4375
+        }
+      },
+      {
+        "tag": "TD",
+        "cls": "",
+        "rect": {
+          "left": 341.421875,
+          "right": 415.1875,
+          "width": 73.765625,
+          "height": 125.4375
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 148.125
+        }
+      },
+      {
+        "tag": "TD",
+        "cls": "",
+        "rect": {
+          "left": 341.421875,
+          "right": 415.1875,
+          "width": 73.765625,
+          "height": 148.125
+        }
+      },
+      {
+        "tag": "SPAN",
+        "cls": "rp neg",
+        "rect": {
+          "left": 355.421875,
+          "right": 401.1875,
+          "width": 45.765625,
+          "height": 19
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 148.125
+        }
+      },
+      {
+        "tag": "TD",
+        "cls": "",
+        "rect": {
+          "left": 341.421875,
+          "right": 415.1875,
+          "width": 73.765625,
+          "height": 148.125
+        }
+      },
+      {
+        "tag": "SPAN",
+        "cls": "rp neg",
+        "rect": {
+          "left": 355.421875,
+          "right": 401.1875,
+          "width": 45.765625,
+          "height": 19
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 148.125
+        }
+      },
+      {
+        "tag": "TD",
+        "cls": "",
+        "rect": {
+          "left": 341.421875,
+          "right": 415.1875,
+          "width": 73.765625,
+          "height": 148.125
+        }
+      },
+      {
+        "tag": "SPAN",
+        "cls": "rp neg",
+        "rect": {
+          "left": 355.421875,
+          "right": 401.1875,
+          "width": 45.765625,
+          "height": 19
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 126.4375
+        }
+      },
+      {
+        "tag": "TD",
+        "cls": "",
+        "rect": {
+          "left": 341.421875,
+          "right": 415.1875,
+          "width": 73.765625,
+          "height": 126.4375
+        }
+      },
+      {
+        "tag": "SPAN",
+        "cls": "rp neg",
+        "rect": {
+          "left": 355.421875,
+          "right": 393.125,
+          "width": 37.703125,
+          "height": 19
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 148.125
+        }
+      },
+      {
+        "tag": "TD",
+        "cls": "",
+        "rect": {
+          "left": 341.421875,
+          "right": 415.1875,
+          "width": 73.765625,
+          "height": 148.125
+        }
+      },
+      {
+        "tag": "SPAN",
+        "cls": "rp neg",
+        "rect": {
+          "left": 355.421875,
+          "right": 401.1875,
+          "width": 45.765625,
+          "height": 19
+        }
+      },
+      {
+        "tag": "TR",
+        "cls": "",
+        "rect": {
+          "left": 13,
+          "right": 415.1875,
+          "width": 402.1875,
+          "height": 126.4375
+        }
+      }
+    ]
+  },
+  "functional_checks": {
+    "details_initially_closed": true,
+    "actual_click_expands_first_card": true,
+    "open_state_read_back_true": true,
+    "second_actual_click_collapses": true,
+    "mobile_all_details_closed": true,
+    "console_errors": 0,
+    "console_warnings": 0,
+    "uncaught_JS_errors_or_rejections": 0
+  },
+  "risk_cards": [
+    {
+      "ticker": "3605",
+      "strategy": "rere",
+      "kind": "small",
+      "state": "small",
+      "risk": "skip",
+      "riskText": "🔴 跳過:籌碼發散(大戶-2.9pp/散戶+1.0pp)",
+      "card": {
+        "label": "暫緩 · 有否決條件",
+        "tone": "skip",
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "basis": [
+          "洗盤轉強型態入列，仍需盤中守住支撐",
+          "模型分數不否決 rere；進場前人工查分點與主力成本"
+        ],
+        "last_close": {
+          "price": 118,
+          "date": "2026-09-04",
+          "position": "below",
+          "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+        },
+        "warnings": [],
+        "source_date": "2026-09-04",
+        "model_source_date": "2026-09-04",
+        "horizon": 60,
+        "size": "只考慮最小試單"
+      }
+    },
+    {
+      "ticker": "3189",
+      "strategy": "rere",
+      "kind": "small",
+      "state": "small",
+      "risk": "skip",
+      "riskText": "🔴 跳過:籌碼發散(大戶-2.7pp/散戶+2.4pp)",
+      "card": {
+        "label": "暫緩 · 有否決條件",
+        "tone": "skip",
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "basis": [
+          "洗盤轉強型態入列，仍需盤中守住支撐",
+          "模型分數不否決 rere；進場前人工查分點與主力成本"
+        ],
+        "last_close": {
+          "price": 819,
+          "date": "2026-09-04",
+          "position": "below",
+          "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+        },
+        "warnings": [],
+        "source_date": "2026-09-04",
+        "model_source_date": "2026-09-04",
+        "horizon": 60,
+        "size": "只考慮最小試單"
+      }
+    },
+    {
+      "ticker": "2364",
+      "strategy": "rere",
+      "kind": "small",
+      "state": "small",
+      "risk": "skip",
+      "riskText": "🔴 跳過:籌碼發散(大戶+0.0pp/散戶+2.3pp)",
+      "card": {
+        "label": "暫緩 · 有否決條件",
+        "tone": "skip",
+        "action": "先處理卡上的否決或過期條件，再重新確認型態。",
+        "basis": [
+          "洗盤轉強型態入列，仍需盤中守住支撐",
+          "模型分數不否決 rere；進場前人工查分點與主力成本"
+        ],
+        "last_close": {
+          "price": 67.4,
+          "date": "2026-09-04",
+          "position": "below",
+          "message": "上次收盤低於區間；等站回下緣後再確認守穩。"
+        },
+        "warnings": [],
+        "source_date": "2026-09-04",
+        "model_source_date": "2026-09-04",
+        "horizon": 60,
+        "size": "只考慮最小試單"
+      }
+    }
+  ],
+  "semantic_checks": {
+    "all18_last_close_explicitly_dated_after_market": true,
+    "zone_words_do_not_imply_live_trigger": true,
+    "all_cards_pending_intraday_and_manual_chip_confirmation": true,
+    "rere_model_not_veto_60d_small_trial": true,
+    "KOL_personal_endorsement_not_claimed": true,
+    "all5_source_header_dates_20260904": true,
+    "prediction_warning_separate_from_unified_Champion_authorization": true,
+    "opacity_all18_equal1": true
+  },
+  "visual_review": {
+    "desktop": "1440x1000: header clear, three-column rere cards, no page or card clipping; current3 chip risks readable.",
+    "mobile": "390x844: header wraps, cards single-column; action/zone/date/unknown/risk text readable.",
+    "table_scope": "Existing lower-page tables have overflow-x:auto wrappers; some local scrollWidth exceeds wrapper width. Document/body stay390px. Contained horizontal scrolling is not whole-page overflow.",
+    "browser": "Actual Playwright HeadlessChrome/152.0.0.0 onWindows; two viewport sizes. Not a physical iOS/Android/all-browser certification."
+  },
+  "screenshots": [
+    {
+      "path": "F:\\stock\\output\\playwright\\final_tdcc_desktop_expanded_card_20260906.png",
+      "bytes": 50831,
+      "sha256": "7a4045ad7fa86c30d5ed080190fd68998569a5887383b4b80911b7ea90aaf0a7"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_tdcc_desktop_header_20260906.png",
+      "bytes": 127686,
+      "sha256": "79a893a6cfd5aa6e1b188a19bc78cd92524223672e63fc5de7ed98e986c86c35"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_tdcc_desktop_rere_20260906.png",
+      "bytes": 206346,
+      "sha256": "05d2e1e818909fbeda53a2841724050916dbd5911fb2ba9f5d3b24f21ea64628"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_tdcc_mobile_card_20260906.png",
+      "bytes": 35637,
+      "sha256": "c05f98332cceb7bdc2850e3dbbd1c3ec44cbfcfdcba66dfa65724b35adc772ba"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_tdcc_mobile_header_20260906.png",
+      "bytes": 51520,
+      "sha256": "f23e81f25840b3627e94e0258b21b3547573a9bae21370508cdc668944d7768b"
+    },
+    {
+      "path": "F:\\stock\\output\\playwright\\final_tdcc_mobile_risk_20260906.png",
+      "bytes": 37717,
+      "sha256": "960878855e16e01d66609bce267a37a5c1e4371430020dd809cdf0d7620b495c"
+    }
+  ],
+  "cli_input": "F:\\stock\\output\\playwright\\final_tdcc_metrics_20260906.js",
+  "receipts": {
+    "first_html_failure": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_pinned_20260906\\05_html.result.json",
+    "successful_resume": "F:\\stock\\output\\data_layer_consistency_20260906\\formal_downstream_html_resume_20260906\\00_html.result.json",
+    "note": "Original CLI importfailure retained; root fixed root importpath and rebuilt via originaldirectentrypoint. Only successfulnewHTML tested."
+  },
+  "deployment": {
+    "loopback_preview": "http://127.0.0.1:8876/final_tdcc_radar_20260906.html",
+    "artifact_url": "https://claude.ai/code/artifact/8705d1fe-77ce-411e-a162-895c7c8fb22b",
+    "artifact_status": "NOT_REDEPLOYED_BY_THIS_QA; existing static Artifact requires separate originalurl redeploy",
+    "github_repo": "private kol-watch, has_pages=false; push is source mirror and not Artifact deployment",
+    "formal_API": "Root separately validates Web; pending app-only latest-quarter override repair does not modify this testedHTML."
+  },
+  "mutations": "Only exact HTML preview copy, browser state, screenshots and thisreport. No formalHTML/code/ledger/model edits, push, email or commit."
+}

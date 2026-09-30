@@ -30,7 +30,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # ==============================================================================
 # 設定
 # ==============================================================================
-BASE_DIR = r"F:\stock"
+BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NEWS_DIR = os.path.join(BASE_DIR, "新聞資料")
 os.makedirs(NEWS_DIR, exist_ok=True)
 
@@ -173,8 +173,10 @@ def main():
         fpath = os.path.join(NEWS_DIR, f"announcements_{ym}.csv")
         group_out = group.drop(columns=["_ym"])
 
+        old_count = 0
         if os.path.exists(fpath):
             df_old = pd.read_csv(fpath, encoding="utf-8-sig")
+            old_count = len(df_old)
             # 去重: 同 Ticker + Date + Time 視為同一則
             combined = pd.concat([df_old, group_out], ignore_index=True)
             combined = combined.drop_duplicates(
@@ -184,7 +186,7 @@ def main():
             combined = group_out
 
         combined.to_csv(fpath, index=False, encoding="utf-8-sig")
-        new_count = len(combined) - (len(df_old) if os.path.exists(fpath) else 0)
+        new_count = len(combined) - old_count
         total_added += max(new_count, 0)
         print(f"  {ym}: 檔案共 {len(combined)} 則公告")
 

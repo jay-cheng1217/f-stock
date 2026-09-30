@@ -1,9 +1,4 @@
-"""Cross-model confirmation: merge T+1 and 20D signals.
-
-When both the short-term (T+1) and medium-term (20D) models agree on a
-stock, the combined signal is stronger than either alone.  This module
-provides lightweight utilities to compute dual-timeframe agreement.
-"""
+"""Legacy cross-confirm helpers backed by unified daily signal artifacts."""
 
 from __future__ import annotations
 
@@ -12,122 +7,112 @@ import os
 import re
 from typing import Any
 
-import numpy as np
 import pandas as pd
 
 from ml.config import MODEL_DIR
 
-PRODUCTION_PREDICTION_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
+UNIFIED_SIGNAL_RE = re.compile(r"^unified_signals_(\d{4}-\d{2}-\d{2})\.csv$")
+SIGNAL_TYPE_DUAL = "Dual"
 
 
-def _latest_csv(pattern: str) -> str | None:
-    files = sorted(glob.glob(os.path.join(MODEL_DIR, pattern)))
-    return files[-1] if files else None
+def _latest_unified_signal_path() -> str | None:
+    candidates = [
+        path
+        for path in sorted(glob.glob(os.path.join(MODEL_DIR, "unified_signals_*.csv")))
+        if UNIFIED_SIGNAL_RE.match(os.path.basename(path))
+    ]
+    return candidates[-1] if candidates else None
+
+
+def _load_latest_unified_df() -> pd.DataFrame:
+    signal_path = _latest_unified_signal_path()
+    if signal_path is None:
+        return pd.DataFrame()
+
+    return pd.read_csv(signal_path, encoding="utf-8-sig", dtype={"ticker": str})
+
+
+def _prepare_legacy_cross_confirm_df(unified_df: pd.DataFrame) -> pd.DataFrame:
+    if unified_df.empty:
+        return pd.DataFrame(
+            columns=[
+                "ticker",
+                "close_ref",
+                "signal_type",
+                "t1_prob",
+                "t1_rank",
+                "d20_pred_return",
+                "d20_recommendation",
+                "t1_setup_tags",
+                "cross_score",
+                "cross_both_buy",
+                "cross_conflict",
+                "cross_label",
+            ]
+        )
+
+    df = unified_df.copy()
+    for column in ["hit_prob_3pct", "rank_t1", "pred_return_20d", "risk_adjusted_return", "target_units"]:
+        if column in df.columns:
+            df[column] = pd.to_numeric(df[column], errors="coerce")
+
+    df["signal_type"] = df.get("signal_type", "").fillna("")
+    df["close_ref"] = pd.to_numeric(df.get("close_ref"), errors="coerce")
+    df["t1_prob"] = pd.to_numeric(df.get("hit_prob_3pct"), errors="coerce")
+    df["t1_rank"] = pd.to_numeric(df.get("rank_t1"), errors="coerce")
+    df["d20_pred_return"] = pd.to_numeric(df.get("pred_return_20d"), errors="coerce")
+    df["d20_recommendation"] = df.get("recommendation_20d", "").fillna("")
+    df["t1_setup_tags"] = df.get("setup_tags_t1", "").fillna("")
+    df["cross_score"] = pd.to_numeric(df.get("risk_adjusted_return"), errors="coerce")
+    df["cross_both_buy"] = df["signal_type"].eq(SIGNAL_TYPE_DUAL)
+    df["cross_conflict"] = False
+    df["cross_label"] = df["signal_type"].map(
+        lambda value: "Dual" if value == SIGNAL_TYPE_DUAL else (str(value) if value else "")
+    )
+
+    sort_columns: list[str] = []
+    ascending: list[bool] = []
+    for column, direction in [
+        ("cross_both_buy", False),
+        ("target_units", False),
+        ("cross_score", False),
+        ("t1_prob", False),
+        ("t1_rank", True),
+        ("ticker", True),
+    ]:
+        if column in df.columns:
+            sort_columns.append(column)
+            ascending.append(direction)
+    if sort_columns:
+        df = df.sort_values(sort_columns, ascending=ascending, na_position="last").reset_index(drop=True)
+
+    return df
 
 
 def load_cross_confirmed(
     t1_df: pd.DataFrame | None = None,
     d20_df: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
-    """Merge T+1 and 20D predictions, compute agreement signals.
+    """Expose unified signals through the legacy cross-confirm interface.
 
-    Returns a DataFrame with one row per ticker, containing columns from
-    both models plus cross-confirmation metrics.
+    The old API contract is intentionally preserved for zero-downtime migration.
+    `t1_df` and `d20_df` are retained only for backward compatibility; when a
+    DataFrame containing `signal_type` is provided, it is treated as the unified
+    artifact directly.
     """
-    if t1_df is None:
-        t1_path = _latest_csv("predictions_t1_*.csv")
-        if t1_path is None:
-            return pd.DataFrame()
-        t1_df = pd.read_csv(t1_path, dtype={"ticker": str})
 
-    if d20_df is None:
-        candidates = [
-            f
-            for f in sorted(glob.glob(os.path.join(MODEL_DIR, "predictions_*.csv")))
-            if PRODUCTION_PREDICTION_RE.match(os.path.basename(f))
-        ]
-        d20_path = candidates[-1] if candidates else None
-        if d20_path is None:
-            return pd.DataFrame()
-        d20_df = pd.read_csv(d20_path, dtype={"ticker": str})
+    candidate_df = t1_df if t1_df is not None and "signal_type" in t1_df.columns else None
+    if candidate_df is None and d20_df is not None and "signal_type" in d20_df.columns:
+        candidate_df = d20_df
+    if candidate_df is None:
+        candidate_df = _load_latest_unified_df()
 
-    # Rename columns to avoid collisions
-    t1_cols = {
-        "hit_prob_3pct": "t1_prob",
-        "t1_score": "t1_score",
-        "recommendation": "t1_recommendation",
-        "selected_for_trade": "t1_selected",
-        "selection_rank": "t1_rank",
-        "setup_tags": "t1_setup_tags",
-        "risk_tags": "t1_risk_tags",
-    }
-    d20_cols = {
-        "pred_return_20d": "d20_pred_return",
-        "recommendation": "d20_recommendation",
-        "signal": "d20_signal",
-        "risk_tags": "d20_risk_tags",
-    }
-
-    t1_keep = ["ticker"] + [c for c in t1_cols if c in t1_df.columns]
-    t1 = t1_df[t1_keep].rename(columns=t1_cols).copy()
-
-    d20_keep = ["ticker"] + [c for c in d20_cols if c in d20_df.columns]
-    d20 = d20_df[d20_keep].rename(columns=d20_cols).copy()
-
-    merged = pd.merge(t1, d20, on="ticker", how="inner")
-    if merged.empty:
-        return merged
-
-    # --- Cross-confirmation signals ---
-
-    # T+1 bullish: use selection status or top probability
-    t1_selected = merged["t1_selected"].fillna(False).astype(bool) if "t1_selected" in merged.columns else pd.Series(False, index=merged.index)
-    t1_bullish = t1_selected  # use the model's own selection as bullish signal
-
-    # 20D bullish: recommendation contains buy
-    d20_bullish = pd.Series(False, index=merged.index)
-    if "d20_recommendation" in merged.columns:
-        d20_bullish = merged["d20_recommendation"].fillna("").str.contains("買進", na=False)
-    elif "d20_signal" in merged.columns:
-        d20_bullish = merged["d20_signal"].fillna("") == "UP"
-
-    # 20D bearish
-    d20_bearish = pd.Series(False, index=merged.index)
-    if "d20_recommendation" in merged.columns:
-        d20_bearish = merged["d20_recommendation"].fillna("").str.contains("賣出|觀望", na=False)
-
-    # Agreement levels
-    merged["cross_both_buy"] = t1_bullish & d20_bullish
-    merged["cross_conflict"] = (t1_bullish & d20_bearish) | (~t1_bullish & d20_bullish)
-
-    # Combined confidence score (simple weighted average)
-    t1_norm = merged["t1_prob"].fillna(0.5) if "t1_prob" in merged.columns else 0.5
-    d20_norm = pd.Series(0.5, index=merged.index)
-    if "d20_pred_return" in merged.columns:
-        # Normalize 20D predicted return to [0, 1] range
-        ret = merged["d20_pred_return"].fillna(0)
-        d20_norm = (ret.clip(-0.10, 0.10) / 0.10 + 1) / 2  # maps [-10%, +10%] to [0, 1]
-
-    merged["cross_score"] = (0.5 * t1_norm + 0.5 * d20_norm).round(4)
-
-    # Agreement label
-    def _label(row):
-        if row.get("cross_both_buy"):
-            return "雙重確認買進"
-        if row.get("cross_conflict"):
-            return "訊號矛盾"
-        return "中性"
-
-    merged["cross_label"] = merged.apply(_label, axis=1)
-
-    # Sort by cross_score descending
-    merged = merged.sort_values("cross_score", ascending=False).reset_index(drop=True)
-
-    return merged
+    return _prepare_legacy_cross_confirm_df(candidate_df)
 
 
 def get_dual_confirmed_tickers(top_n: int = 10) -> list[dict[str, Any]]:
-    """Return top N tickers confirmed by both models (for API/email use)."""
+    """Return top N Dual names for legacy email/API consumers."""
+
     merged = load_cross_confirmed()
     if merged.empty:
         return []
@@ -135,14 +120,25 @@ def get_dual_confirmed_tickers(top_n: int = 10) -> list[dict[str, Any]]:
     confirmed = merged[merged["cross_both_buy"]].head(top_n)
     results = []
     for _, row in confirmed.iterrows():
-        results.append({
-            "ticker": row["ticker"],
-            "t1_prob": round(float(row.get("t1_prob", 0)), 4),
-            "t1_rank": int(row["t1_rank"]) if pd.notna(row.get("t1_rank")) else None,
-            "d20_pred_return": round(float(row.get("d20_pred_return", 0)), 4) if pd.notna(row.get("d20_pred_return")) else None,
-            "d20_recommendation": str(row.get("d20_recommendation", "")),
-            "cross_score": round(float(row.get("cross_score", 0)), 4),
-            "cross_label": str(row.get("cross_label", "")),
-            "t1_setup_tags": str(row.get("t1_setup_tags", "")),
-        })
+        results.append(
+            {
+                "ticker": str(row.get("ticker", "")),
+                "close_ref": round(float(row.get("close_ref", 0)), 2) if pd.notna(row.get("close_ref")) else None,
+                "t1_prob": round(float(row.get("t1_prob", 0)), 4) if pd.notna(row.get("t1_prob")) else None,
+                "t1_rank": int(row["t1_rank"]) if pd.notna(row.get("t1_rank")) else None,
+                "d20_pred_return": (
+                    round(float(row.get("d20_pred_return", 0)), 4)
+                    if pd.notna(row.get("d20_pred_return"))
+                    else None
+                ),
+                "d20_recommendation": str(row.get("d20_recommendation", "")),
+                "cross_score": (
+                    round(float(row.get("cross_score", 0)), 4)
+                    if pd.notna(row.get("cross_score"))
+                    else None
+                ),
+                "cross_label": str(row.get("cross_label", "")),
+                "t1_setup_tags": str(row.get("t1_setup_tags", "")),
+            }
+        )
     return results

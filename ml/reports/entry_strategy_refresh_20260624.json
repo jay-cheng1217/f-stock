@@ -1,0 +1,22 @@
+{
+  "status": "ok",
+  "prediction_path": "ml\\models\\predictions_2026-06-23.csv",
+  "output_path": "ml\\models\\predictions_2026-06-23.csv",
+  "rows": 1196,
+  "prediction_date": "2026-06-23",
+  "chipk_status": "ok",
+  "tactical_actions": {
+    "TACTICAL_NO_TRADE": 1096,
+    "TACTICAL_WATCH": 51,
+    "TACTICAL_LIMIT_BUY": 33,
+    "TACTICAL_WAIT_PULLBACK": 16
+  },
+  "swing_actions": {
+    "BLOCK": 704,
+    "EXIT_BIAS": 432,
+    "WAIT_NEW_STRATEGY": 43,
+    "SMALL_ENTRY": 12,
+    "NO_CHASE": 4,
+    "NORMAL_ENTRY": 1
+  }
+}

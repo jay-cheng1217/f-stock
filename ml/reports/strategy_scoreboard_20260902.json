@@ -1,0 +1,167 @@
+{
+  "generated_at": "2026-09-02T20:20:43",
+  "recent_months": 6,
+  "data_end": "2026-06-08",
+  "board": {
+    "momentum": {
+      "20d": {
+        "full": {
+          "n": 160556,
+          "mean": 1.9,
+          "median": -0.4,
+          "win": 47.7
+        },
+        "recent": {
+          "n": 15404,
+          "mean": 7.81,
+          "median": 2.06,
+          "win": 56.1
+        },
+        "decay_pp": 5.91
+      },
+      "60d": {
+        "full": {
+          "n": 160556,
+          "mean": 7.18,
+          "median": 0.8,
+          "win": 52.2
+        },
+        "recent": {
+          "n": 15404,
+          "mean": 19.63,
+          "median": 6.29,
+          "win": 60.5
+        },
+        "decay_pp": 12.45
+      }
+    },
+    "ma20_combo": {
+      "20d": {
+        "full": {
+          "n": 42963,
+          "mean": 2.41,
+          "median": -0.4,
+          "win": 48.6
+        },
+        "recent": {
+          "n": 4648,
+          "mean": 8.05,
+          "median": 2.34,
+          "win": 56.9
+        },
+        "decay_pp": 5.64
+      },
+      "60d": {
+        "full": {
+          "n": 42963,
+          "mean": 7.74,
+          "median": 0.98,
+          "win": 52.0
+        },
+        "recent": {
+          "n": 4648,
+          "mean": 20.08,
+          "median": 7.22,
+          "win": 62.0
+        },
+        "decay_pp": 12.34
+      }
+    },
+    "chase": {
+      "20d": {
+        "full": {
+          "n": 51300,
+          "mean": 3.66,
+          "median": -1.07,
+          "win": 47.2
+        },
+        "recent": {
+          "n": 9410,
+          "mean": 10.74,
+          "median": 4.03,
+          "win": 57.3
+        },
+        "decay_pp": 7.08
+      },
+      "60d": {
+        "full": {
+          "n": 51300,
+          "mean": 10.06,
+          "median": 0.18,
+          "win": 50.4
+        },
+        "recent": {
+          "n": 9410,
+          "mean": 17.76,
+          "median": 4.09,
+          "win": 54.7
+        },
+        "decay_pp": 7.7
+      }
+    },
+    "ma5_wash": {
+      "20d": {
+        "full": {
+          "n": 44585,
+          "mean": 2.86,
+          "median": -0.74,
+          "win": 47.3
+        },
+        "recent": {
+          "n": 5792,
+          "mean": 9.78,
+          "median": 2.73,
+          "win": 57.1
+        },
+        "decay_pp": 6.92
+      },
+      "60d": {
+        "full": {
+          "n": 44585,
+          "mean": 9.22,
+          "median": 0.67,
+          "win": 51.4
+        },
+        "recent": {
+          "n": 5792,
+          "mean": 22.85,
+          "median": 7.84,
+          "win": 60.4
+        },
+        "decay_pp": 13.63
+      }
+    },
+    "rere_lane": {
+      "20d": {
+        "full": {
+          "n": 5840,
+          "mean": 2.41,
+          "median": -0.63,
+          "win": 47.7
+        },
+        "recent": {
+          "n": 1000,
+          "mean": 9.94,
+          "median": 4.09,
+          "win": 59.8
+        },
+        "decay_pp": 7.53
+      },
+      "60d": {
+        "full": {
+          "n": 5840,
+          "mean": 8.55,
+          "median": -0.4,
+          "win": 49.1
+        },
+        "recent": {
+          "n": 1000,
+          "mean": 24.21,
+          "median": 7.09,
+          "win": 58.2
+        },
+        "decay_pp": 15.66
+      }
+    }
+  }
+}

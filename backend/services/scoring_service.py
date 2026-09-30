@@ -6,6 +6,7 @@
 import math
 from backend.db.engine import query_df
 from backend.services.cache_service import cached
+from backend.services.news_service import score_stock_news_sentiment
 from backend.utils.indicator_utils import (
     _safe, score_ma_alignment, score_rsi, score_macd,
     score_kd, score_bollinger, score_volume,
@@ -276,11 +277,11 @@ def _chip_score(ticker: str) -> tuple[float, str]:
 
 
 def _sentiment_score(ticker: str) -> tuple[float, str]:
-    """消息面評分 (15%) — Phase 2A 先用大盤情緒代替."""
+    """Sentiment score (15%): combine market context with recent announcements."""
     scores = []
     details = []
 
-    # 大盤情緒: VIX + TWII 趨勢
+    # Market context: VIX + TWII 5-day move
     vix_df = query_df("""
         SELECT Close FROM indices
         WHERE Index_Name = 'VIX'
@@ -305,7 +306,7 @@ def _sentiment_score(ticker: str) -> tuple[float, str]:
                 details.append(f"VIX={vix:.1f}(正常)")
             else:
                 scores.append(25)
-                details.append(f"VIX={vix:.1f}(高檔，市場恐慌)")
+                details.append(f"VIX={vix:.1f}(高檔，市場偏保守)")
 
     if not twii_df.empty and len(twii_df) >= 2:
         now = _safe(twii_df.iloc[0]["Close"])
@@ -317,17 +318,21 @@ def _sentiment_score(ticker: str) -> tuple[float, str]:
                 details.append(f"大盤近5日漲{chg:.1f}%")
             elif chg > -1:
                 scores.append(55)
-                details.append("大盤持平")
+                details.append("大盤近5日持平")
             else:
                 scores.append(30)
                 details.append(f"大盤近5日跌{chg:.1f}%")
 
+    # Company-specific event context: recent 3-day announcements
+    news_score, news_detail = score_stock_news_sentiment(ticker, days=3, limit=3)
+    scores.append(news_score)
+    details.append(news_detail)
+
     if not scores:
-        return 50, "消息面資料不足(待Phase 2F新聞整合)"
+        return 50, "消息面資料不足"
 
     avg = sum(scores) / len(scores)
     return round(avg, 1), "、".join(details)
-
 
 def _make_signal(total: float, tech: float, fund: float, chip: float, sent: float) -> str:
     """依總分與各面向分數產生投資訊號."""

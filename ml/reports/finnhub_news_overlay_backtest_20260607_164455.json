@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-06-07T16:44:55",
+  "promotion": "not_promoted",
+  "dated_json_path": "F:\\stock\\ml\\reports\\finnhub_news_overlay_backtest_20260607_164455.json",
+  "dated_md_path": "F:\\stock\\ml\\reports\\finnhub_news_overlay_backtest_20260607_164455.md",
+  "reason": "insufficient_historical_finnhub_snapshots_no_lookahead_backtest_blocked",
+  "fold_path": "F:\\stock\\ml\\reports\\v2_fold_top30_20260606_135928.csv",
+  "snapshot_days": 0,
+  "joined_rows": 0,
+  "top_minus_bottom_excess_return": null,
+  "spearman": null
+}

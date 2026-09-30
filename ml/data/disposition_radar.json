@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-30",
+  "hits": [
+    {
+      "ticker": "3467",
+      "name": "台灣精材",
+      "sector": "半導體業",
+      "released": "2026-09-24",
+      "days_since": 6,
+      "known_yoy": 49.81,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "8227",
+      "name": "巨有科技",
+      "sector": "半導體業",
+      "released": "2026-09-24",
+      "days_since": 6,
+      "known_yoy": 42.25,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "8358",
+      "name": "金居",
+      "sector": "電子零組件業",
+      "released": "2026-09-24",
+      "days_since": 6,
+      "known_yoy": 59.71,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "6221",
+      "name": "晉泰",
+      "sector": "資訊服務業",
+      "released": "2026-09-29",
+      "days_since": 1,
+      "known_yoy": 21.48,
+      "rev_window": false,
+      "dual_fuse": false
+    }
+  ]
+}

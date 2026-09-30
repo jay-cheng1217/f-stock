@@ -1,0 +1,146 @@
+{
+  "generated_at": "2026-05-08T12:36:04.930146+00:00",
+  "source_detail": "ml\\reports\\req009_regime_overlap_detail_20260508_detail.csv",
+  "month": "2026-04",
+  "prediction_date": [
+    "2026-04-08"
+  ],
+  "summary": [
+    {
+      "source": "production_only",
+      "count": 22,
+      "avg_return_20d": 0.23718416673893278,
+      "median_return_20d": 0.16944011300802225,
+      "positive_rate": 0.8636363636363636,
+      "avg_alpha_20d": 0.030851696702567023,
+      "median_alpha_20d": -0.03689235448837275,
+      "avg_beta": 1.2963084871461221,
+      "large_liquidity_proxy_count": 18
+    },
+    {
+      "source": "regime_only",
+      "count": 22,
+      "avg_return_20d": 0.22530462660572745,
+      "median_return_20d": 0.19145154207944864,
+      "positive_rate": 0.8181818181818182,
+      "avg_alpha_20d": 0.018972156400030308,
+      "median_alpha_20d": -0.01488092541694635,
+      "avg_beta": 1.210181844260641,
+      "large_liquidity_proxy_count": 15
+    }
+  ],
+  "sector_summary": [
+    {
+      "source": "production_only",
+      "sector": "其他電子業",
+      "count": 5,
+      "avg_return_20d": 0.22493193298578257,
+      "avg_alpha_20d": 0.01859945952892303
+    },
+    {
+      "source": "production_only",
+      "sector": "電子零組件業",
+      "count": 5,
+      "avg_return_20d": 0.4960717737674713,
+      "avg_alpha_20d": 0.2897393062710762
+    },
+    {
+      "source": "production_only",
+      "sector": "半導體業",
+      "count": 4,
+      "avg_return_20d": 0.1798716792836785,
+      "avg_alpha_20d": -0.026460789144039126
+    },
+    {
+      "source": "production_only",
+      "sector": "光電業",
+      "count": 2,
+      "avg_return_20d": 0.02098360657691955,
+      "avg_alpha_20d": -0.1853488609194755
+    },
+    {
+      "source": "production_only",
+      "sector": "通信網路業",
+      "count": 2,
+      "avg_return_20d": 0.22038897871971136,
+      "avg_alpha_20d": 0.014056503772735596
+    },
+    {
+      "source": "production_only",
+      "sector": "玻璃陶瓷",
+      "count": 1,
+      "avg_return_20d": 0.1512195616960525,
+      "avg_alpha_20d": -0.0551129058003425
+    },
+    {
+      "source": "production_only",
+      "sector": "綠能環保",
+      "count": 1,
+      "avg_return_20d": 0.0871964693069458,
+      "avg_alpha_20d": -0.1191359981894493
+    },
+    {
+      "source": "production_only",
+      "sector": "電腦及週邊設備業",
+      "count": 1,
+      "avg_return_20d": 0.068584069609642,
+      "avg_alpha_20d": -0.1377484053373336
+    },
+    {
+      "source": "production_only",
+      "sector": "食品工業",
+      "count": 1,
+      "avg_return_20d": 0.1038011461496353,
+      "avg_alpha_20d": -0.1025313213467598
+    },
+    {
+      "source": "regime_only",
+      "sector": "半導體業",
+      "count": 11,
+      "avg_return_20d": 0.23242112045938318,
+      "avg_alpha_20d": 0.026088650931011537
+    },
+    {
+      "source": "regime_only",
+      "sector": "通信網路業",
+      "count": 3,
+      "avg_return_20d": 0.09768812855084737,
+      "avg_alpha_20d": -0.10864434142907453
+    },
+    {
+      "source": "regime_only",
+      "sector": "其他電子業",
+      "count": 2,
+      "avg_return_20d": 0.1252839788794518,
+      "avg_alpha_20d": -0.0810484886169434
+    },
+    {
+      "source": "regime_only",
+      "sector": "電子零組件業",
+      "count": 2,
+      "avg_return_20d": 0.40285827219486237,
+      "avg_alpha_20d": 0.1965258009731769
+    },
+    {
+      "source": "regime_only",
+      "sector": "電腦及週邊設備業",
+      "count": 2,
+      "avg_return_20d": 0.35660944879055023,
+      "avg_alpha_20d": 0.15027697756886485
+    },
+    {
+      "source": "regime_only",
+      "sector": "光電業",
+      "count": 1,
+      "avg_return_20d": -0.1905882060527801,
+      "avg_alpha_20d": -0.3969206809997558
+    },
+    {
+      "source": "regime_only",
+      "sector": "電機機械",
+      "count": 1,
+      "avg_return_20d": 0.5280898809432983,
+      "avg_alpha_20d": 0.3217574059963226
+    }
+  ]
+}

@@ -1,0 +1,485 @@
+{
+  "status": "LATEST_TDCC_FEATURE_AB_COMPLETE_NOT_PROMOTED",
+  "completed_at": "2026-09-06T22:02:45.712382",
+  "source_weeks": [
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_feature_ab_2031\\new_raw\\tdcc_20251009.csv",
+      "normalized_input_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\tdcc_20251009.csv",
+      "sha256": "070caa3c540cc4c6490a0c3e423d479dd6b83cb93df5863f6ac153f8f12c14fb",
+      "rows": 61435,
+      "observed_tickers": 3835
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_feature_ab_2031\\new_raw\\tdcc_20251023.csv",
+      "normalized_input_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\tdcc_20251023.csv",
+      "sha256": "21ce88a46800f1e877debf7fefe8ab594f0208d8140bff417352c3dc58ea4d35",
+      "rows": 61608,
+      "observed_tickers": 3846
+    },
+    {
+      "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_feature_ab_2031\\new_raw\\tdcc_20260226.csv",
+      "normalized_input_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\tdcc_20260226.csv",
+      "sha256": "ba20b5b671140a673e0a625c99d5a2a5f45206a5de7118e0159fadc041435fe4",
+      "rows": 62997,
+      "observed_tickers": 3928
+    }
+  ],
+  "official_no_data": [
+    {
+      "date": "20251009",
+      "ticker": "00673O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\00673O_attempt2.html",
+      "raw_sha256": "d0b0361e7532feba64192819f3c589ced95f060defb30dd2bc57338b5fd3d24d",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "00706O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\00706O_attempt2.html",
+      "raw_sha256": "2166b58e267e323aff43f9ef2065c715595abbc3cde26de8b7e2e95e0b70fb5c",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "009813",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\009813_attempt2.html",
+      "raw_sha256": "afed5e6db31fc23fda119bead6137e4732863e11ccdfc979b0c4159cc96edd6a",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "1766",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\1766_attempt2.html",
+      "raw_sha256": "d26866d636d964321ce900b4f62a444cd9b8cd2aceff3eb2b347f29ac15af50c",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2314O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2314O_attempt2.html",
+      "raw_sha256": "3af1573e644564dd814aacbffa0d0349b13d4b11c97669398c357a284c9c0617",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2352O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2352O_attempt2.html",
+      "raw_sha256": "015e45b035e61dc988b75c14796879283d66250df053cbb9fda6be225e278a1a",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2489O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2489O_attempt2.html",
+      "raw_sha256": "48b15adb8738893066f1d82d7268bfcdb98908767c9c7d0a40d7b105b5550333",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2607O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2607O_attempt2.html",
+      "raw_sha256": "eaa5432df333f8895012c260cb28d40dfd723b33721ead944fdf9c8c69db1f36",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "3057O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\3057O_attempt2.html",
+      "raw_sha256": "069907c1331eeddf88194c8f64c697a7ec22773a38a9ffa4a825f9e8863000bc",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "6167O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6167O_attempt2.html",
+      "raw_sha256": "f1a346f22348916aa73f1281ff0c4282a3b3c2483ff480fdfb9f999dd877fa0a",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "6611O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6611O_attempt2.html",
+      "raw_sha256": "f0f5284b64475fbc430142441308935d793de61a23145cb113d4d2cd416c63a7",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "6897",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6897_attempt2.html",
+      "raw_sha256": "781b5202d96777164136e79f1a621da2e6c10fac35e2d45f624f46b62d012a0c",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "7793",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7793_attempt2.html",
+      "raw_sha256": "c157ab3b081bcf4fe54b621d5a9f3fa00f03c59d9641b4bb1fe1dbb923dd7677",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "7862",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7862_attempt2.html",
+      "raw_sha256": "ffd646810f115a02d8033420f0a437f5ecba0a4c28723f5109b3df22deb55d40",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "7866",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7866_attempt2.html",
+      "raw_sha256": "866871a2b9db13dc4f98f384697676daf1c453f781e953c7cbc0de008e4bc16a",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "7868",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7868_attempt2.html",
+      "raw_sha256": "ff75149fd014c1e6b059f95939ec7dc897f47e11d33211e44a1857f3bb579f68",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "9924O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\9924O_attempt2.html",
+      "raw_sha256": "d7cb24874041f31b714ec6709a9620276a85fced6a94b14b5f57b4742490fc81",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YEV6",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YEV6_attempt2.html",
+      "raw_sha256": "01ebbc8c686cebed1d0bdc349f8fabe594d3ef0e08ce3ea08bd60158ea7c198d",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YJR6",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YJR6_attempt2.html",
+      "raw_sha256": "4cefc433bb021a64915374361b9f59b344733d1a7b3c344e7079b12ed4cf0cf0",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YKN9O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YKN9O_attempt2.html",
+      "raw_sha256": "d2c276a313f7e2f0694f1e57a61474afb6f3f2a7de3a98ccbb7b1cb9ffa21ade",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YKP7",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YKP7_attempt2.html",
+      "raw_sha256": "8030c4f6337d54fbd1f0fc4926f86ac885ebcd58dc9482fd74f79f5e9ff56f1f",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLB2",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLB2_attempt2.html",
+      "raw_sha256": "c7ce91c4a0c976d4343c77770e8098bacfd7a11f891c33594da0c1c41388cf3c",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLB8",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLB8_attempt2.html",
+      "raw_sha256": "05879ea88a5d842cb0d7ea975cb2e422a930521ad6d6c18d2bb8caa0894c3421",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLH8",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLH8_attempt2.html",
+      "raw_sha256": "80ddcd98af33ae4f6d576b46d13de68ed0faa47d2f3dad9125d55c6d231358ee",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLJ1",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLJ1_attempt2.html",
+      "raw_sha256": "5f20c3ff2e10a0f2367e2d5560c847b536e620a4d6ab34c6bd533bc87b3a5956",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLK4",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLK4_attempt2.html",
+      "raw_sha256": "eb7b9043a260b248b819d6c66976447ecace00c159d38b435a443a6a5be55a15",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "00673O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\00673O_attempt2.html",
+      "raw_sha256": "aebb3350ca7aa69a2da651b61e3ba5fbdea5247df7c99f6bf4e63c3ec5d30a5d",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "00706O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\00706O_attempt2.html",
+      "raw_sha256": "d9dedd0e53045da8bc3c6ab768b9500f92130cb73691ef94582c434f7ad0cacf",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "2314O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\2314O_attempt2.html",
+      "raw_sha256": "2b88205a3d6bc959ca4c3a05866d20a10c34c396cbfe3f4b70ba6bfcc36dfa0d",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "2832O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\2832O_attempt2.html",
+      "raw_sha256": "6da280fa4a74ff2a8fcc6ab270cb2ac390bcdcbbe477b8a2197d585e46ae0ee7",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "3688O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\3688O_attempt2.html",
+      "raw_sha256": "095b56c9b092aed360567035e6d6da8e5bc3f3a0059d283aa94be1b7d394e1d0",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "6167O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\6167O_attempt2.html",
+      "raw_sha256": "0ea285fa6959e8015db0bb617efa58f0a34a630f4f2e2a4f709a3626fc8acd22",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "6611O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\6611O_attempt2.html",
+      "raw_sha256": "8627da1d3d2306dd7cad1facf6d6304e3ad5baf26a922c7463545d979e491ee3",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YJT9O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YJT9O_attempt2.html",
+      "raw_sha256": "30e2d06ae86c1773f30ebb621632b4750af46627940eb9d0306161aef85ae0af",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YKN9O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YKN9O_attempt2.html",
+      "raw_sha256": "63763f08a9e9e6acc9090d9b27cfabfceae1004cc13b737118cb98f1dd91a7c3",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLB2O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLB2O_attempt2.html",
+      "raw_sha256": "9a466b0728fa92fdd4e21a623527af9dc21fc23e983a4824e59be64dfdaa7d85",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLJ4",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLJ4_attempt2.html",
+      "raw_sha256": "400c07781589634c373adf384e8263cb451f8dfc0a079c170402a6baaee636b8",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLJ7",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLJ7_attempt2.html",
+      "raw_sha256": "adaf9284338e11a8e6ef82fb8500dd02c5d186fb839d04f99858067b0dda276c",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLK5",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK5_attempt2.html",
+      "raw_sha256": "e027ccd13270f824a28dcead45e6bcc92936e2ef7b8b5db5f46baf0f0269bce9",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLK7",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK7_attempt2.html",
+      "raw_sha256": "12a3319e38a33e7677ba8c06e4106e908e1508834a98a00a04697f7ff011c12b",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLK8",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK8_attempt2.html",
+      "raw_sha256": "db02917d44643fd42c56656d5fb35ce0facf3722e820c1a60277f4ef52dfe32b",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLL3",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLL3_attempt2.html",
+      "raw_sha256": "d87efeb59fcd813a50ccbc564f7449f355aece4c04f093313e85a01b2da2442a",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLL6",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLL6_attempt2.html",
+      "raw_sha256": "69c93228b6697d4b0313aa1ffefe8afbeaa70ba440e4f43e5d6ec78f6ed2b92c",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20260226",
+      "ticker": "3089",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\3089_attempt2.html",
+      "raw_sha256": "f57e2d138dcae295087f9403e5dcc0e896b7014d9a4b34eb299077e9ebaea7bd",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20260226",
+      "ticker": "8932O",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\8932O_attempt2.html",
+      "raw_sha256": "ffa4afb6541a96b0269ee317dd9e715e96107558c0fd2cf6eb15a591c8533626",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLT1",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLT1_attempt2.html",
+      "raw_sha256": "f4dcc30561a65fa8a0b6d6b19852db29c187ec25d7b488f9f156a34b3efe5cab",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLT9",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLT9_attempt2.html",
+      "raw_sha256": "272f9c0b61e0ef0ccf5c08156152fac70e7bb1e037132daf7b1c158f29d369f6",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLU2",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU2_attempt2.html",
+      "raw_sha256": "75c9ad9043cf8011e7d7383c2c2fa8e2d4e7c1ab869b1a4826dd8ba3a6e96ec7",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLU4",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU4_attempt2.html",
+      "raw_sha256": "98d3d7cf0530c17ff5e83606bbfd2d6e5431a4f9d50a23d83878ed087d13e0fb",
+      "status": "SOURCE_NO_DATA"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLU7",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU7_attempt2.html",
+      "raw_sha256": "d14294d1ffaef88c98d503cdbad2395946ecec45d46b4b14fdac3d89ebb2aac7",
+      "status": "SOURCE_NO_DATA"
+    }
+  ],
+  "priority_only": false,
+  "coverage": [
+    {
+      "date": "20251009",
+      "full_plan": 3861,
+      "attempted": 3861,
+      "required_source_pool_jobs": 3861,
+      "required_terminal": true,
+      "source_pool_not_in_frozen_historical_union": [
+        "3718",
+        "6907",
+        "7823"
+      ],
+      "whole_plan_terminal": true
+    },
+    {
+      "date": "20251023",
+      "full_plan": 3863,
+      "attempted": 3863,
+      "required_source_pool_jobs": 3863,
+      "required_terminal": true,
+      "source_pool_not_in_frozen_historical_union": [
+        "3718",
+        "6907",
+        "7823"
+      ],
+      "whole_plan_terminal": true
+    },
+    {
+      "date": "20260226",
+      "full_plan": 3935,
+      "attempted": 3935,
+      "required_source_pool_jobs": 3935,
+      "required_terminal": true,
+      "source_pool_not_in_frozen_historical_union": [
+        "3718"
+      ],
+      "whole_plan_terminal": true
+    }
+  ],
+  "whole_plan_terminal": true,
+  "summary_before_rows": 899102,
+  "summary_added_rows": 11609,
+  "summary_after_rows": 910711,
+  "existing_summary_cells_exact": true,
+  "summary_before_sha256": "8154a3a61fba91553c2293f188dbbb12d53f5a0d675af7835e583591a55b58ea",
+  "summary_after_sha256": "01ce584e7666c6e34d6ca38214cf4e656fb22c3f969ad37f8d85343061b34a81",
+  "feature_code_sha256": "f75087000eebbed4841e427db4553c4223a361c9055110f3c715d3e1735c3b14",
+  "daily_frame_sha256": "0243dc528c239921c64cc77e7a58f20c517ba5fae223d81e325cc1da45a71715",
+  "tickers": 2031,
+  "features": [
+    "retail_pct",
+    "whale_pct",
+    "whale_pct_chg",
+    "retail_pct_chg",
+    "holders_chg_pct",
+    "whale_retail_ratio",
+    "whale_trend_4w",
+    "retail_capitulation",
+    "whale_acc_weeks",
+    "whale_trend_8w",
+    "whale_acc_momentum",
+    "whale_pct_rank_12w",
+    "whale_retail_diverge"
+  ],
+  "compared_cells": 26403,
+  "changed_cells": 5,
+  "changes": [
+    {
+      "ticker": "1589",
+      "date": "2026-04-02",
+      "feature": "retail_capitulation",
+      "before": 0.699999988079071,
+      "after": 0.7272727489471436
+    },
+    {
+      "ticker": "1589",
+      "date": "2026-04-02",
+      "feature": "whale_trend_8w",
+      "before": -0.6427569389343262,
+      "after": -0.6741394996643066
+    },
+    {
+      "ticker": "1589",
+      "date": "2026-04-02",
+      "feature": "whale_pct_rank_12w",
+      "before": 0.30000001192092896,
+      "after": 0.27272728085517883
+    },
+    {
+      "ticker": "4804",
+      "date": "2026-04-13",
+      "feature": "retail_capitulation",
+      "before": 0.10000000149011612,
+      "after": 0.09090909361839294
+    },
+    {
+      "ticker": "4804",
+      "date": "2026-04-13",
+      "feature": "whale_trend_8w",
+      "before": 0.20857183635234833,
+      "after": 0.15642888844013214
+    }
+  ],
+  "method": "Actual canonical _summarize_tdcc on all recovered raw tickers, append only new date/ticker keys to one frozen existing summary. All existing summary cells remain exact. Both canonical compute_tdcc_features branches receive the full historical summary prefix and identical actual latest daily rows; streak/rolling history is not truncated.",
+  "limits": "Complete traversal of frozen adjacent-week union does not independently prove an exact-date market census. Explicit official no-data rows remain absent, never zeros. Historical feature/prediction impacts are not claimed absent. Root reviews coverage and latest changes before any promotion/invalidation."
+}

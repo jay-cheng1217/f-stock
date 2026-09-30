@@ -1,0 +1,254 @@
+{
+  "status": "PASS_SOURCE_CONTRACT_REFERENCE_ONLY",
+  "day": "20260904",
+  "tickers": [
+    "2330",
+    "2357",
+    "2603",
+    "6488"
+  ],
+  "bulk_source": "F:\\stock\\集保分散\\tdcc_20260904.csv",
+  "bulk_source_sha256": "2e16ed91d1cca9565c9419d2c365a270ecca6c1aaf4f4886d022b028209d7cc1",
+  "public_rows": 65,
+  "bulk_rows": 68,
+  "common_normal_and_total_cells_exact": true,
+  "source_adjustment_format_differences": [
+    {
+      "key": [
+        "20260904",
+        "6488",
+        16
+      ],
+      "public": {
+        "人數": null,
+        "股數": -4000.0,
+        "占集保庫存數比例%": -0.0
+      },
+      "bulk": {
+        "人數": 1.0,
+        "股數": 4000.0,
+        "占集保庫存數比例%": 0.0
+      },
+      "policy": "Preserve public source signed adjustment and blank people. The two official source formats are not claimed identical. Canonical summary excludes level16."
+    }
+  ],
+  "bulk_zero_adjustment_rows_absent_from_public": [
+    [
+      "20260904",
+      "2330",
+      16
+    ],
+    [
+      "20260904",
+      "2357",
+      16
+    ],
+    [
+      "20260904",
+      "2603",
+      16
+    ]
+  ],
+  "canonical_summary_exact": true,
+  "summary": [
+    {
+      "Date": "20260904",
+      "Ticker": "2330",
+      "Retail_Pct": 9.92,
+      "Whale_Pct": 84.74,
+      "Total_Holders": 3058627.0
+    },
+    {
+      "Date": "20260904",
+      "Ticker": "2357",
+      "Retail_Pct": 16.9,
+      "Whale_Pct": 65.49,
+      "Total_Holders": 111067.0
+    },
+    {
+      "Date": "20260904",
+      "Ticker": "2603",
+      "Retail_Pct": 19.9,
+      "Whale_Pct": 70.44,
+      "Total_Holders": 271873.0
+    },
+    {
+      "Date": "20260904",
+      "Ticker": "6488",
+      "Retail_Pct": 15.17,
+      "Whale_Pct": 70.6,
+      "Total_Holders": 110133.0
+    }
+  ],
+  "source_metadata": [
+    {
+      "actual_date": "20260904",
+      "ticker": "2330",
+      "levels": 15,
+      "total_shares": 25932370067,
+      "adjustment_shares": 0,
+      "whale_pct": 84.74,
+      "canonical_observed_levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17
+      ],
+      "canonical_rows": 16,
+      "source_extra_rows": [
+        {
+          "canonical_level": 17,
+          "source_serial": 16,
+          "source_label": "合　計",
+          "source_people_blank": false
+        }
+      ],
+      "adjustment_row_present": false,
+      "total_holders": 3058627,
+      "absent_adjustment_policy": "Absent source adjustment is not fabricated as a zero row. Source total is always level17; only actual15holding levels enter canonical summary.",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized\\20260904_2330.html",
+      "raw_sha256": "93b49b2e4713aff806fc40bab448e935f0ea3a2d6650d077e9c22c85601fc6da"
+    },
+    {
+      "actual_date": "20260904",
+      "ticker": "2357",
+      "levels": 15,
+      "total_shares": 742760280,
+      "adjustment_shares": 0,
+      "whale_pct": 65.49,
+      "canonical_observed_levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17
+      ],
+      "canonical_rows": 16,
+      "source_extra_rows": [
+        {
+          "canonical_level": 17,
+          "source_serial": 16,
+          "source_label": "合　計",
+          "source_people_blank": false
+        }
+      ],
+      "adjustment_row_present": false,
+      "total_holders": 111067,
+      "absent_adjustment_policy": "Absent source adjustment is not fabricated as a zero row. Source total is always level17; only actual15holding levels enter canonical summary.",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized\\20260904_2357.html",
+      "raw_sha256": "47bc3b85714ea53f9d4e3b954dace06a64aac1e1c792079e8d9201060193b06d"
+    },
+    {
+      "actual_date": "20260904",
+      "ticker": "2603",
+      "levels": 15,
+      "total_shares": 2165042996,
+      "adjustment_shares": 0,
+      "whale_pct": 70.44,
+      "canonical_observed_levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17
+      ],
+      "canonical_rows": 16,
+      "source_extra_rows": [
+        {
+          "canonical_level": 17,
+          "source_serial": 16,
+          "source_label": "合　計",
+          "source_people_blank": false
+        }
+      ],
+      "adjustment_row_present": false,
+      "total_holders": 271873,
+      "absent_adjustment_policy": "Absent source adjustment is not fabricated as a zero row. Source total is always level17; only actual15holding levels enter canonical summary.",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized\\20260904_2603.html",
+      "raw_sha256": "0386f297446c14e7445906235bbf8cb8314fa8ede481eb5bbadeb4f38c3a8b54"
+    },
+    {
+      "actual_date": "20260904",
+      "ticker": "6488",
+      "levels": 15,
+      "total_shares": 478113725,
+      "adjustment_shares": -4000,
+      "whale_pct": 70.6,
+      "canonical_observed_levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "canonical_rows": 17,
+      "source_extra_rows": [
+        {
+          "canonical_level": 16,
+          "source_serial": 16,
+          "source_label": "差異數調整（說明4）",
+          "source_people_blank": true
+        },
+        {
+          "canonical_level": 17,
+          "source_serial": 17,
+          "source_label": "合　計",
+          "source_people_blank": false
+        }
+      ],
+      "adjustment_row_present": true,
+      "total_holders": 110133,
+      "absent_adjustment_policy": "Absent source adjustment is not fabricated as a zero row. Source total is always level17; only actual15holding levels enter canonical summary.",
+      "raw_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized\\20260904_6488.html",
+      "raw_sha256": "21cadb20da30058205523f52c7cb89c9ffedf1e0f61991e3decbbed56f5321d9"
+    }
+  ],
+  "http_events": [],
+  "limits": "Four real same-week ticker source comparisons validate schema semantics, not historical whole-week coverage. Public absent adjustment rows remain absent; bulk's explicit zero rows are reported rather than invented."
+}

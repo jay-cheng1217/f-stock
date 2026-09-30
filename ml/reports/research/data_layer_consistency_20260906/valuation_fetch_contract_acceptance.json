@@ -1,0 +1,21 @@
+{
+  "status": "PASS_REAL_FETCH_AND_WRONG_DAY_REJECTION",
+  "asof": "2026-09-06T16:06:23.568468",
+  "requested_date": "20210510",
+  "source_statuses": [
+    "ok",
+    "ok"
+  ],
+  "source_rows": [
+    950,
+    785
+  ],
+  "combined_rows": 1735,
+  "candidate_sha256": "6bfcc6faf5b77b29ced51638631e243069fc8958daeaeed1c039f44f4600a27c",
+  "exact_candidate_equal": true,
+  "actual_official20210518_as20210510_rejection": "Official valuation response date mismatch or missing",
+  "production_fetch_sha256": "6f3d73d4e9f144a2725f1cf3a5014c55def1233b566e5cab26789844b3944f56",
+  "pure_contract_sha256": "41996d20175b02a10850699388a6bbee3d0ea757608b555dc76aa7e7555e5d18",
+  "scope": "Real network and production fetch functions, only source rows in memory. No source promotion, DB, cache, ledger, model training or prediction performed.",
+  "empty_policy": "Empty, missing-date or unrecognized-schema payload now returns error after bounded existing retries, not legal no_data. A holiday must be established by its calendar/official closure workflow."
+}

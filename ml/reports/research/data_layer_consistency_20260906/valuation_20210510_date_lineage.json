@@ -1,0 +1,32 @@
+{
+  "status": "READ_ONLY_DATE_LINEAGE_AUDIT",
+  "fetched_at": "2026-09-06T15:55:21.682185",
+  "url": "https://www.twse.com.tw/rwd/zh/afterTrading/BWIBBU_d?date=20210518&response=json",
+  "http_status": 200,
+  "frozen_bad_may10_sha256": "4fff924e7084742473c1cfbfe4785f8f053314d25f700db8d50db8c72e26f8fe",
+  "local_may18_sha256": "2fadea0cddc11be5acc641bd05f0bc8a66ef9e36e09ac33647ec99fa15b8b172",
+  "official_may18_sha256": "4ddc681d5a9b9d2694e9ec469f29a58e0bbd326c00fe60dc1272a9d8cc518e6c",
+  "comparisons": [
+    {
+      "reference": "local20210518",
+      "bad_may10_rows": 951,
+      "reference_rows": 951,
+      "common_tickers": 951,
+      "keys_exact": true,
+      "name_cells_equal": 951,
+      "numeric_cells": 2853,
+      "numeric_changed_cells": 0
+    },
+    {
+      "reference": "official20210518",
+      "bad_may10_rows": 951,
+      "reference_rows": 951,
+      "common_tickers": 951,
+      "keys_exact": true,
+      "name_cells_equal": 951,
+      "numeric_cells": 2853,
+      "numeric_changed_cells": 0
+    }
+  ],
+  "conclusion": "Whole-market numeric/date fingerprint can establish wrong-day content if the exact keys and all values match May18. Original acquisition request/overwrite mechanism remains unproven without historical logs."
+}

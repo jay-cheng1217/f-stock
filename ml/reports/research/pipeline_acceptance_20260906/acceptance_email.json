@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "delivery": "NOT_RUN",
+  "preview": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\logs\\acceptance_email.html",
+  "html_bytes": 21822,
+  "sha256": "9126a80de3abb9e1529dd20be2a6d35271f3b882105bb246ce20fee2a7943886",
+  "subject": "[Stock ML] 2026-09-04 每日投資總結",
+  "mime": "plain/html UTF-8 base64",
+  "credentials": "dummy .invalid addresses only",
+  "hash_scope": "Original sha256 measures UTF-8 text after newline normalization",
+  "exact_file_sha256": "4157930ff71c158279be29f2b144825d65330d8b334d6f9acbe485f2f53d2c00",
+  "exact_file_bytes": 22352
+}

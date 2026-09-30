@@ -23,6 +23,26 @@ _QUARTER_AVAILABLE = {
 _BS_CACHE: dict = {}
 
 
+class BalanceSheetSourceError(RuntimeError):
+    """Raised when a recognized quarterly source cannot be read safely."""
+
+
+def _read_quarter_csv(fpath: str, *, source: str, required: set[str]) -> pd.DataFrame:
+    try:
+        df = pd.read_csv(fpath, dtype={"Ticker": str})
+    except Exception as exc:
+        raise BalanceSheetSourceError(
+            f"{source} source unreadable: {fpath}: {exc}"
+        ) from exc
+
+    missing = sorted(required - set(df.columns))
+    if missing:
+        raise BalanceSheetSourceError(
+            f"{source} source schema drift: {fpath}: missing {missing}"
+        )
+    return df
+
+
 def _get_available_date(year: int, season: int) -> pd.Timestamp:
     year_offset, month, day = _QUARTER_AVAILABLE[season]
     return pd.Timestamp(year=year + year_offset, month=month, day=day)
@@ -44,11 +64,12 @@ def _load_bs_cache(bs_dir: str) -> dict:
         except (ValueError, IndexError):
             continue
         fpath = os.path.join(bs_dir, fname)
-        try:
-            df = pd.read_csv(fpath, dtype={"Ticker": str})
-            cache[(year, season)] = df
-        except Exception:
-            continue
+        df = _read_quarter_csv(
+            fpath,
+            source="balance_sheet",
+            required={"Ticker", "Total_Assets", "Total_Liabilities", "Total_Equity"},
+        )
+        cache[(year, season)] = df
 
     _BS_CACHE[bs_dir] = cache
     return cache
@@ -96,21 +117,22 @@ def compute_balance_sheet_features(
             except (ValueError, IndexError):
                 continue
             fpath = os.path.join(financial_dir, fname)
-            try:
-                fdf = pd.read_csv(fpath, dtype={"Ticker": str})
-                row = fdf[fdf["Ticker"] == str(ticker)]
-                if not row.empty:
-                    r = row.iloc[0]
-                    ni = pd.to_numeric(r.get("Net_Income_M", np.nan), errors="coerce")
-                    # 若無 Net_Income_M，從 Revenue_M * Net_Margin_Pct 推算
-                    if pd.isna(ni):
-                        rev = pd.to_numeric(r.get("Revenue_M", np.nan), errors="coerce")
-                        npm = pd.to_numeric(r.get("Net_Margin_Pct", np.nan), errors="coerce")
-                        if pd.notna(rev) and pd.notna(npm):
-                            ni = rev * npm / 100.0
-                    net_income_map[(year, season)] = ni
-            except Exception:
-                continue
+            fdf = _read_quarter_csv(
+                fpath,
+                source="financial",
+                required={"Ticker", "Revenue_M", "Net_Margin_Pct"},
+            )
+            row = fdf[fdf["Ticker"] == str(ticker)]
+            if not row.empty:
+                r = row.iloc[0]
+                ni = pd.to_numeric(r.get("Net_Income_M", np.nan), errors="coerce")
+                # 若無 Net_Income_M，從 Revenue_M * Net_Margin_Pct 推算
+                if pd.isna(ni):
+                    rev = pd.to_numeric(r.get("Revenue_M", np.nan), errors="coerce")
+                    npm = pd.to_numeric(r.get("Net_Margin_Pct", np.nan), errors="coerce")
+                    if pd.notna(rev) and pd.notna(npm):
+                        ni = rev * npm / 100.0
+                net_income_map[(year, season)] = ni
 
     records = []
     for (year, season), qdf in bs_cache.items():

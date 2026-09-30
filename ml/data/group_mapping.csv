@@ -1,0 +1,103 @@
+﻿ticker,name,sector,group_code,group_name
+2308,台達電,電子零組件業,AI_SERVER_ODM_THERMAL,AI server ODM / thermal / power
+3017,奇鋐,電腦及週邊設備業,AI_SERVER_ODM_THERMAL,AI server ODM / thermal / power
+3653,健策,電子零組件業,AI_SERVER_ODM_THERMAL,AI server ODM / thermal / power
+6669,緯穎,電腦及週邊設備業,AI_SERVER_ODM_THERMAL,AI server ODM / thermal / power
+6805,富世達,電子零組件業,AI_SERVER_ODM_THERMAL,AI server ODM / thermal / power
+8210,勤誠,電腦及週邊設備業,AI_SERVER_ODM_THERMAL,AI server ODM / thermal / power
+2243,宏旭-KY,汽車工業,AUTO_COMPONENTS,Auto components
+6657,華安,生技醫療業,BIOTECH_MEDICAL,Biotech / medical
+6919,康霈*,生技醫療業,BIOTECH_MEDICAL,Biotech / medical
+1815,富喬,電子零組件業,CCL_MATERIALS,CCL / fiberglass cloth
+2383,台光電,電子零組件業,CCL_MATERIALS,CCL / fiberglass cloth
+6213,聯茂,電子零組件業,CCL_MATERIALS,CCL / fiberglass cloth
+6274,台燿,電子零組件業,CCL_MATERIALS,CCL / fiberglass cloth
+2480,敦陽科,資訊服務業,CLOUD_SOFTWARE_SI,Cloud software / system integration
+3147,大綜,資訊服務業,CLOUD_SOFTWARE_SI,Cloud software / system integration
+5278,尚凡*,數位雲端,CLOUD_SOFTWARE_SI,Cloud software / system integration
+6231,系微,資訊服務業,CLOUD_SOFTWARE_SI,Cloud software / system integration
+7547,碩網,數位雲端,CLOUD_SOFTWARE_SI,Cloud software / system integration
+7721,微程式,數位雲端,CLOUD_SOFTWARE_SI,Cloud software / system integration
+1436,華友聯,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+1808,潤隆,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+2516,新建,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+2527,宏璟,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+2528,皇普,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+2534,宏盛,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+3188,鑫龍騰,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+4113,聯上,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+4416,三圓,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+6219,富旺,建材營造業,CONSTRUCTION_DEVELOPER,Construction / property developer
+1519,華城,電機機械,ELECTRIC_MACHINERY_POWER,Electric machinery / power equipment
+1570,力肯,電機機械,ELECTRIC_MACHINERY_POWER,Electric machinery / power equipment
+1591,駿吉-KY,電機機械,ELECTRIC_MACHINERY_POWER,Electric machinery / power equipment
+3379,彬台,電機機械,ELECTRIC_MACHINERY_POWER,Electric machinery / power equipment
+4513,福裕,電機機械,ELECTRIC_MACHINERY_POWER,Electric machinery / power equipment
+4534,慶騰,電機機械,ELECTRIC_MACHINERY_POWER,Electric machinery / power equipment
+4564,元翎,電機機械,ELECTRIC_MACHINERY_POWER,Electric machinery / power equipment
+6609,瀧澤科,電機機械,ELECTRIC_MACHINERY_POWER,Electric machinery / power equipment
+3528,安馳,電子通路業,ELECTRONICS_CHANNEL,Electronics channel / distributor
+6265,方土昶,電子通路業,ELECTRONICS_CHANNEL,Electronics channel / distributor
+9955,佳龍,綠能環保,GREEN_ENVIRONMENT,Green energy / environment
+3081,聯亞,通信網路業,OPTICAL_COMM,Optical communication / networking
+6109,亞元,通信網路業,OPTICAL_COMM,Optical communication / networking
+6442,光聖,通信網路業,OPTICAL_COMM,Optical communication / networking
+6465,威潤,通信網路業,OPTICAL_COMM,Optical communication / networking
+8045,達運光電,通信網路業,OPTICAL_COMM,Optical communication / networking
+8059,凱碩,通信網路業,OPTICAL_COMM,Optical communication / networking
+2466,冠西電,光電業,OPTO_DISPLAY_LED,Optoelectronics / display / LED
+3049,精金,光電業,OPTO_DISPLAY_LED,Optoelectronics / display / LED
+3066,李洲,光電業,OPTO_DISPLAY_LED,Optoelectronics / display / LED
+3543,州巧,光電業,OPTO_DISPLAY_LED,Optoelectronics / display / LED
+6419,京晨科,光電業,OPTO_DISPLAY_LED,Optoelectronics / display / LED
+1569,濱川,電腦及週邊設備業,OTHER,Other / uncapped
+2327,國巨*,電子零組件業,OTHER,Other / uncapped
+2404,漢唐,其他電子業,OTHER,Other / uncapped
+3040,遠見,其他業,OTHER,Other / uncapped
+3054,立萬利,食品工業,OTHER,Other / uncapped
+3349,寶德,電腦及週邊設備業,OTHER,Other / uncapped
+3498,陽程,其他電子業,OTHER,Other / uncapped
+4989,榮科,電子零組件業,OTHER,Other / uncapped
+5225,東科-KY,其他電子業,OTHER,Other / uncapped
+5228,鈺鎧,電子零組件業,OTHER,Other / uncapped
+5314,世紀*,其他業,OTHER,Other / uncapped
+5488,松普,電子零組件業,OTHER,Other / uncapped
+5530,龍巖,其他業,OTHER,Other / uncapped
+6199,天品,其他業,OTHER,Other / uncapped
+6217,中探針,電子零組件業,OTHER,Other / uncapped
+6739,竹陞科技,其他電子業,OTHER,Other / uncapped
+6913,鴻呈,電子零組件業,OTHER,Other / uncapped
+8935,邦泰,其他業,OTHER,Other / uncapped
+8937,合騏,其他業,OTHER,Other / uncapped
+1595,川寶,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+2368,金像電,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+3044,健鼎,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+4542,科嶠,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+4927,泰鼎-KY,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+5475,德宏,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+6141,柏承,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+6220,岳豐,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+6727,亞泰金屬,電子零組件業,PCB_ABF_SUBSTRATE,PCB / ABF substrate
+2330,台積電,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+2379,瑞昱,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+3135,凌航,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+3228,金麗科,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+3555,博士旺,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+4971,IET-KY,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+4991,環宇-KY,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+5274,信驊,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+6643,M31,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+6770,力積電,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+8110,華東,半導體業,SEMI_DESIGN_FOUNDRY,Semiconductor design / foundry / IP
+2360,致茂,其他電子業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+3131,弘塑,其他電子業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+4577,達航科技,其他電子業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+6510,精測,半導體業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+6640,均華,半導體業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+6691,洋基工程,其他電子業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+6735,美達科技,其他電子業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+6823,濾能,半導體業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+6944,兆聯實業,綠能環保,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+7728,光焱科技,其他電子業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+7734,印能科技,半導體業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials
+7751,竑騰,半導體業,SEMI_EQUIP_MATERIALS,Semiconductor equipment / materials

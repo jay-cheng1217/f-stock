@@ -1,0 +1,56 @@
+{
+  "start": "2024-01-01",
+  "end": "2026-04-30",
+  "summaries": [
+    {
+      "variant": "fixed20",
+      "trades": 2746,
+      "months": 28,
+      "monthly_return": 0.017720359815013992,
+      "monthly_twii": 0.029823224336965055,
+      "monthly_alpha": -0.012102864521951062,
+      "position_win_rate": 0.47997086671522216,
+      "position_beat_twii_rate": 0.40021849963583395,
+      "mdd": -0.1903666303972824,
+      "avg_hold_days": 20.0
+    },
+    {
+      "variant": "foreign_flip",
+      "trades": 3839,
+      "months": 28,
+      "monthly_return": 0.002466260146773601,
+      "monthly_twii": 0.002721885328143463,
+      "monthly_alpha": -0.00025562518136986156,
+      "position_win_rate": 0.40296952331336283,
+      "position_beat_twii_rate": 0.39567595728054183,
+      "mdd": -0.012150235735527537,
+      "avg_hold_days": 2.982547538421464
+    }
+  ],
+  "monthly_paths": {
+    "fixed20": "F:\\stock\\ml\\reports\\diag005_institutional_flow_20260510_fixed20_monthly.csv",
+    "foreign_flip": "F:\\stock\\ml\\reports\\diag005_institutional_flow_20260510_foreign_flip_monthly.csv"
+  },
+  "trade_paths": {
+    "fixed20": "F:\\stock\\ml\\reports\\diag005_institutional_flow_20260510_fixed20_trades.csv",
+    "foreign_flip": "F:\\stock\\ml\\reports\\diag005_institutional_flow_20260510_foreign_flip_trades.csv"
+  },
+  "liquidity_bucket_path": "F:\\stock\\ml\\reports\\diag005_institutional_flow_20260510_liquidity_buckets.csv",
+  "champion_reference": {
+    "variant": "Treatment_TwoStage_N75",
+    "months": 28,
+    "monthly_return": 0.0763737187457289,
+    "monthly_alpha": 0.0353732983440892,
+    "mdd": -0.0556941181041485,
+    "sharpe": 2.969360601268965,
+    "calmar": 25.4705689785858,
+    "win_rate": 0.8571428571428571
+  },
+  "method": {
+    "rule": "Foreign_BuySell > 0 for 3 consecutive ticker trading days AND Trust_BuySell > 0 AND Close > MA20",
+    "entry": "next trading day open",
+    "primary_exit": "20 trading-day timeout",
+    "secondary_exit": "foreign flip sell or 20 trading-day timeout",
+    "maturity": "signals without full forward holding window are excluded"
+  }
+}

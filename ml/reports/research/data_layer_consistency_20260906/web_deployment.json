@@ -1,0 +1,1011 @@
+{
+  "checked_at": "2026-09-06T15:08:12.846669+08:00",
+  "http_status": 200,
+  "elapsed_sec": 0.322,
+  "health": {
+    "scope": "daily_production_health",
+    "status": "ok",
+    "all_ok": true,
+    "stale": false,
+    "hours_since_update": null,
+    "daily_health": {
+      "scope": "daily_production_health",
+      "checked_at": "2026-09-06 15:08:12",
+      "expected_latest_trading_date": "2026-09-04",
+      "expected_latest_prediction_date": "2026-09-04",
+      "status": "ok",
+      "ok": true,
+      "stale": false,
+      "duckdb": {
+        "path": "F:\\stock\\stock.duckdb",
+        "exists": true,
+        "name": "stock.duckdb",
+        "size": 1003237376,
+        "mtime": "2026-09-05 12:35:00",
+        "daily_k_latest_date": "2026-09-04",
+        "daily_k_rows_latest": 1911,
+        "daily_k_tickers_latest": 1911,
+        "daily_k_null_close": 0,
+        "daily_k_null_volume": 0,
+        "stock_list_rows_latest": 1917,
+        "stock_list_stale_rows": 36,
+        "older_row_coverage": {
+          "schema_version": 1,
+          "scope": "latest_bar_coverage_only",
+          "target_date": "2026-09-04",
+          "knowledge_date": "2026-09-06",
+          "status": "ok",
+          "official_market_rows": {
+            "twse": 1380,
+            "tpex": 1013
+          },
+          "classified_tickers": 36,
+          "counts": {
+            "official_no_ohlc_reported_volume": 2,
+            "official_suspended": 6,
+            "official_no_ohlc_zero_volume": 25,
+            "official_terminated": 3
+          },
+          "error_tickers": [],
+          "unknown_tickers": [],
+          "rows": [
+            {
+              "ticker": "1538",
+              "classification": "official_no_ohlc_reported_volume",
+              "csv_date": "2026-08-24",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "1538",
+                "name": "正峰",
+                "market": "twse",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_reported_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 218.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-08-24"
+            },
+            {
+              "ticker": "1563",
+              "classification": "official_suspended",
+              "csv_date": "2026-08-26",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "1563_suspended_2026-08-27",
+                "ticker": "1563",
+                "status": "suspended",
+                "effective_from": "2026-08-27",
+                "effective_until": "2026-09-07",
+                "available_on": "2026-08-06",
+                "verified_on": "2026-09-06",
+                "source_url": "https://dsp.twse.com.tw/public/static/downloads/announcement/official/ABS-11500154501-1.pdf",
+                "source_sha256": "8e0504888dd472261b913171d98f05820fbe0b3f3a6e6f223d89994b37f08153",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/ABS-11500154501-1.pdf",
+                "reason": "現金減資換股；原 PDF 第 1 頁人工核對；減資 25%，每股退 2.5 元",
+                "scheduled_resumption": "2026-09-07"
+              },
+              "layer_issues": [],
+              "ml_row_current": false,
+              "db_date": "2026-08-26",
+              "ml_date": "2026-08-26"
+            },
+            {
+              "ticker": "1589",
+              "classification": "official_suspended",
+              "csv_date": "2026-04-02",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "1589_suspended_2026-04-07",
+                "ticker": "1589",
+                "status": "suspended",
+                "effective_from": "2026-04-07",
+                "effective_until": null,
+                "available_on": "2026-04-01",
+                "verified_on": "2026-09-06",
+                "source_url": "https://dsp.twse.com.tw/public/static/downloads/announcement/official/S-11517009561-1.pdf",
+                "source_sha256": "0ab6c05f415395343f413beac86db65fbb5b7899791707ad5ed94c6408cf2a55",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/S-11517009561-1.pdf",
+                "reason": "未如期申報財報；PDF第1頁及9/6官方停止買賣表交叉核對",
+                "scheduled_resumption": null
+              },
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-04-02"
+            },
+            {
+              "ticker": "2724",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "2724",
+                "name": "藝舍-KY",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "2867",
+              "classification": "official_terminated",
+              "csv_date": "2026-08-19",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "2867_terminated_2026-09-01",
+                "ticker": "2867",
+                "status": "terminated",
+                "effective_from": "2026-09-01",
+                "effective_until": null,
+                "available_on": "2026-07-28",
+                "verified_on": "2026-09-06",
+                "source_url": "https://dsp.twse.com.tw/public/static/downloads/announcement/official/S-11500135581-1.pdf",
+                "source_sha256": "29cc73fa5d21a2ef78f99ab568eb7555fe4346f089e2004444fb6b95a67d2f17",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/S-11500135581-1.pdf",
+                "reason": "股份轉換為2884子公司，終止上市；PDF第1頁人工核對",
+                "scheduled_resumption": null
+              },
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-08-19"
+            },
+            {
+              "ticker": "2949",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-01",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "2949",
+                "name": "欣新網",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-01"
+            },
+            {
+              "ticker": "3064",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-08-26",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "3064",
+                "name": "泰偉",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-08-26"
+            },
+            {
+              "ticker": "3067",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "3067",
+                "name": "全域",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "3632",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "3632",
+                "name": "研勤",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "4130",
+              "classification": "official_terminated",
+              "csv_date": "2026-07-21",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "4130_terminated_2026-07-28",
+                "ticker": "4130",
+                "status": "terminated",
+                "effective_from": "2026-07-28",
+                "effective_until": null,
+                "available_on": "2026-07-03",
+                "verified_on": "2026-09-06",
+                "source_url": "https://www.tpex.org.tw/storage/eb_data/11507/11502017631.html",
+                "source_sha256": "51268f6ad2b94b8af2d4607c7cad4ee258643662f21c7f2a825d6bb77f02a355",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11502017631.json",
+                "reason": "股份轉換為1799子公司，終止上櫃",
+                "scheduled_resumption": null
+              },
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-07-21"
+            },
+            {
+              "ticker": "4154",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "4154",
+                "name": "樂威科-KY",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "4406",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "4406",
+                "name": "新昕纖",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "4550",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "4550",
+                "name": "長佳",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "4804",
+              "classification": "official_suspended",
+              "csv_date": "2026-04-13",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "4804_suspended_2026-04-14",
+                "ticker": "4804",
+                "status": "suspended",
+                "effective_from": "2026-04-14",
+                "effective_until": null,
+                "available_on": "2026-04-10",
+                "verified_on": "2026-09-06",
+                "source_url": "https://www.tpex.org.tw/storage/eb_data/11504/11502007761.html",
+                "source_sha256": "50e3cb1da2bc1196b8476c0e0a4856447903a36cf7c63c624a9703bf7754634b",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11502007761.json",
+                "reason": "繼續經營重大不確定性三年未消除",
+                "scheduled_resumption": null
+              },
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-04-13"
+            },
+            {
+              "ticker": "5205",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "5205",
+                "name": "中茂",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "5310",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-02",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "5310",
+                "name": "天剛",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-02"
+            },
+            {
+              "ticker": "5371",
+              "classification": "official_terminated",
+              "csv_date": "2026-08-21",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "5371_terminated_2026-09-03",
+                "ticker": "5371",
+                "status": "terminated",
+                "effective_from": "2026-09-03",
+                "effective_until": null,
+                "available_on": "2026-09-06",
+                "verified_on": "2026-09-06",
+                "source_url": "https://www.tpex.org.tw/www/zh-tw/company/deListed?date=2026&reason=-1&response=json&start=0&length=100",
+                "source_sha256": "6ad1b7962cdb379c6baf172e6b8ee2a55f7396a360656cc6a1d3d780f9b9582d",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_delisted.json",
+                "reason": "官方終止上櫃表；未含原公告日，以首次驗證日作保守available_on；新投控3718不得自行串接舊5371價歷史",
+                "scheduled_resumption": null
+              },
+              "layer_issues": [],
+              "ml_row_current": false,
+              "db_date": "2026-08-21",
+              "ml_date": "2026-08-21"
+            },
+            {
+              "ticker": "5520",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-02",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "5520",
+                "name": "力泰",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-02"
+            },
+            {
+              "ticker": "5703",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "5703",
+                "name": "亞都",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "5906",
+              "classification": "official_no_ohlc_reported_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "5906",
+                "name": "台南-KY",
+                "market": "twse",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_reported_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 716.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "6129",
+              "classification": "official_suspended",
+              "csv_date": "2026-09-02",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "6129_suspended_2026-09-03",
+                "ticker": "6129",
+                "status": "suspended",
+                "effective_from": "2026-09-03",
+                "effective_until": "2026-09-14",
+                "available_on": "2026-08-20",
+                "verified_on": "2026-09-06",
+                "source_url": "https://www.tpex.org.tw/storage/eb_data/11508/11500054161.html",
+                "source_sha256": "8b9439d865a9215f14e728d9b1e50e1546d3737eafc0d958c3e3b9c4ab04075c",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11500054161.json",
+                "reason": "減資彌補虧損換股；官方停交易9/3至9/11，9/12-13非交易日",
+                "scheduled_resumption": "2026-09-14"
+              },
+              "layer_issues": [],
+              "ml_row_current": false,
+              "db_date": "2026-09-02",
+              "ml_date": "2026-09-02"
+            },
+            {
+              "ticker": "6228",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-08-27",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "6228",
+                "name": "全譜",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-08-27"
+            },
+            {
+              "ticker": "6236",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-01",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "6236",
+                "name": "中湛",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-01"
+            },
+            {
+              "ticker": "6461",
+              "classification": "official_suspended",
+              "csv_date": "2026-09-01",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "6461_suspended_2026-09-02",
+                "ticker": "6461",
+                "status": "suspended",
+                "effective_from": "2026-09-02",
+                "effective_until": "2026-09-09",
+                "available_on": "2026-08-20",
+                "verified_on": "2026-09-06",
+                "source_url": "https://www.tpex.org.tw/storage/eb_data/11508/11500054121.html",
+                "source_sha256": "de8c17647f974929df6de5f61bb07fd8fbb3ac1c3239dae387181d6bc1a61d08",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11500054121.json",
+                "reason": "減資彌補虧損換股",
+                "scheduled_resumption": "2026-09-09"
+              },
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-01"
+            },
+            {
+              "ticker": "6496",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "6496",
+                "name": "科懋",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "6615",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "6615",
+                "name": "慧智",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "6762",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "6762",
+                "name": "達亞",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "6767",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-01",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "6767",
+                "name": "台微醫",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-01"
+            },
+            {
+              "ticker": "6904",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-02",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "6904",
+                "name": "伯鑫",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-02"
+            },
+            {
+              "ticker": "6949",
+              "classification": "official_suspended",
+              "csv_date": "2026-08-26",
+              "target_date": "2026-09-04",
+              "source": null,
+              "event": {
+                "id": "6949_suspended_2026-08-27",
+                "ticker": "6949",
+                "status": "suspended",
+                "effective_from": "2026-08-27",
+                "effective_until": "2026-09-07",
+                "available_on": "2026-09-06",
+                "verified_on": "2026-09-06",
+                "source_url": "https://www.twse.com.tw/exchangeReport/TWTB7U?response=json",
+                "source_sha256": "c5547d0fbfa0dfccb2c5bf0f100be8c606edc4822fb59ab14a14831f6d14200d",
+                "source_snapshot": "output/latest_bar_coverage_20260906/staging/twse_TWTB7U.json",
+                "reason": "面額 10 元改 0.5 元，1 股換 20 股；來源未列公告日，以首次驗證日作保守 available_on",
+                "scheduled_resumption": "2026-09-07"
+              },
+              "layer_issues": [],
+              "ml_row_current": false,
+              "db_date": "2026-08-26",
+              "ml_date": "2026-08-26"
+            },
+            {
+              "ticker": "6997",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "6997",
+                "name": "博弘",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "8077",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "8077",
+                "name": "洛碁",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            },
+            {
+              "ticker": "8342",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-02",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "8342",
+                "name": "益張",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-02"
+            },
+            {
+              "ticker": "8416",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-02",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "8416",
+                "name": "實威",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-02"
+            },
+            {
+              "ticker": "8923",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-01",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "8923",
+                "name": "時報",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-01"
+            },
+            {
+              "ticker": "8929",
+              "classification": "official_no_ohlc_zero_volume",
+              "csv_date": "2026-09-03",
+              "target_date": "2026-09-04",
+              "source": {
+                "ticker": "8929",
+                "name": "富堡",
+                "market": "tpex",
+                "source_date": "2026-09-04",
+                "state": "official_no_ohlc_zero_volume",
+                "open": null,
+                "high": null,
+                "low": null,
+                "close": null,
+                "volume": 0.0
+              },
+              "event": null,
+              "layer_issues": [],
+              "ml_row_current": null,
+              "db_date": "2026-09-03"
+            }
+          ],
+          "limitations": [
+            "No historical gap or price-value audit is implied.",
+            "No-OHLC is a valid source absence, not a tradeable quote.",
+            "Scheduled resumption requires a new official bar to establish freshness."
+          ],
+          "runtime_scope": "Stock-list rows older than expected or stale prediction rows; current-row price equality is outside this check."
+        }
+      },
+      "predictions": {
+        "twenty_day": {
+          "path": "F:\\stock\\ml\\models\\predictions_2026-09-04.csv",
+          "name": "predictions_2026-09-04.csv",
+          "size": 3379412,
+          "mtime": "2026-09-05 12:06:24",
+          "exists": true,
+          "date": "2026-09-04",
+          "rows": 1080
+        },
+        "unified_signals": {
+          "path": "F:\\stock\\ml\\models\\unified_signals_2026-09-04.csv",
+          "name": "unified_signals_2026-09-04.csv",
+          "size": 17413,
+          "mtime": "2026-09-05 12:14:26",
+          "exists": true,
+          "date": "2026-09-04",
+          "rows": 1
+        }
+      },
+      "automation": {
+        "phase1": {
+          "log": "smart_update_auto_20260904.log",
+          "finished_at": "2026-09-04 20:34:29",
+          "elapsed_min": 64.5,
+          "all_ok": true
+        },
+        "phase2": {
+          "log": "smart_update_auto_20260904.log",
+          "finished_at": "2026-09-04 07:25:52",
+          "elapsed_min": 25.9,
+          "all_ok": true
+        }
+      },
+      "checks": [
+        {
+          "name": "duckdb_exists",
+          "status": "ok",
+          "message": "DuckDB file is present."
+        },
+        {
+          "name": "daily_k_fresh",
+          "status": "ok",
+          "message": "daily_k latest=2026-09-04, expected_at_least=2026-09-04."
+        },
+        {
+          "name": "daily_k_snapshot_size",
+          "status": "ok",
+          "message": "latest daily_k tickers=1911."
+        },
+        {
+          "name": "daily_k_required_values",
+          "status": "ok",
+          "message": "null_close=0, null_volume=0."
+        },
+        {
+          "name": "daily_k_older_row_coverage",
+          "status": "ok",
+          "message": "older-row coverage=ok; counts={'official_no_ohlc_reported_volume': 2, 'official_suspended': 6, 'official_no_ohlc_zero_volume': 25, 'official_terminated': 3}; error=None"
+        },
+        {
+          "name": "twenty_day_prediction_fresh",
+          "status": "ok",
+          "message": "twenty_day latest=2026-09-04, expected_at_least=2026-09-04, rows=1080."
+        },
+        {
+          "name": "unified_signals_prediction_fresh",
+          "status": "ok",
+          "message": "unified_signals latest=2026-09-04, expected_at_least=2026-09-04, rows=1."
+        },
+        {
+          "name": "phase1_latest_success",
+          "status": "ok",
+          "message": "latest phase1={'log': 'smart_update_auto_20260904.log', 'finished_at': '2026-09-04 20:34:29', 'elapsed_min': 64.5, 'all_ok': True}."
+        },
+        {
+          "name": "phase2_latest_success",
+          "status": "ok",
+          "message": "latest phase2={'log': 'smart_update_auto_20260904.log', 'finished_at': '2026-09-04 07:25:52', 'elapsed_min': 25.9, 'all_ok': True}."
+        }
+      ]
+    },
+    "weekly_retrain": {
+      "scope": "weekly_retrain",
+      "exists": true,
+      "path": "F:\\stock\\ml\\models\\pipeline_status.json",
+      "last_run": "2026-09-05 10:00:02",
+      "elapsed_min": 155.0,
+      "steps": {
+        "K": "ok",
+        "PE_PB": "ok",
+        "MOPS": "ok",
+        "step_4": "ok",
+        "step_5": "ok",
+        "TDCC": "ok",
+        "DuckDB": "ok",
+        "step_8": "ok",
+        "step_9": "ok",
+        "step_10": "ok",
+        "T+1": "ok",
+        "UnifiedSignals": "ok",
+        "UnifiedPortfolio": "ok",
+        "step_14": "ok",
+        "AgentArena": "failed",
+        "ResearchOutputLayer": "ok",
+        "EntryCandidateRefresh": "ok",
+        "Shadow": "ok",
+        "V4Rank15Shadow": "ok",
+        "step_22": "ok",
+        "Replay": "ok",
+        "Email": "ok"
+      },
+      "all_ok": false,
+      "hours_since_update": 29.1,
+      "stale": false
+    },
+    "steps": {
+      "duckdb_exists": "ok",
+      "daily_k_fresh": "ok",
+      "daily_k_snapshot_size": "ok",
+      "daily_k_required_values": "ok",
+      "daily_k_older_row_coverage": "ok",
+      "twenty_day_prediction_fresh": "ok",
+      "unified_signals_prediction_fresh": "ok",
+      "phase1_latest_success": "ok",
+      "phase2_latest_success": "ok"
+    }
+  },
+  "start": {
+    "stdout": "F:\\stock\\logs\\web_consistency_20260906_150746.out.log",
+    "port": 8001,
+    "pid": 32708,
+    "previous_listener": 13804,
+    "started_at": "2026-09-06T15:07:46.9803771+08:00",
+    "stderr": "F:\\stock\\logs\\web_consistency_20260906_150746.err.log"
+  }
+}

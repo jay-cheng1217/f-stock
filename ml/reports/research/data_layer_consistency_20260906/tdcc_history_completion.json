@@ -1,0 +1,1319 @@
+{
+  "status": "SOURCE_REVIEW_PACKAGE_COMPLETE_NOT_PROMOTED",
+  "completed_at": "2026-09-06T22:04:45.361120+08:00",
+  "weeks": [
+    {
+      "date": "20251009",
+      "planned": 3861,
+      "validated": 3835,
+      "official_no_data_confirmed_twice": 26,
+      "unresolved_acquisition": 0,
+      "remaining_unattempted": 0,
+      "raw_rows": 61435,
+      "raw_sha256": "070caa3c540cc4c6490a0c3e423d479dd6b83cb93df5863f6ac153f8f12c14fb",
+      "raw_manifest_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\20251009_manifest.json",
+      "raw_manifest_sha256": "ebdbe79cab3c572995aac565c899f5353844057e0b7aef831a1e1180760857d7",
+      "observed_level_patterns": [
+        {
+          "levels": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            17
+          ],
+          "tickers": 3760
+        },
+        {
+          "levels": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "tickers": 75
+        }
+      ]
+    },
+    {
+      "date": "20251023",
+      "planned": 3863,
+      "validated": 3846,
+      "official_no_data_confirmed_twice": 17,
+      "unresolved_acquisition": 0,
+      "remaining_unattempted": 0,
+      "raw_rows": 61608,
+      "raw_sha256": "21ce88a46800f1e877debf7fefe8ab594f0208d8140bff417352c3dc58ea4d35",
+      "raw_manifest_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\20251023_manifest.json",
+      "raw_manifest_sha256": "b6ef86707a36ff3259f3f1f8bf0b2fa9a79f983a9a00be2fe95e537c5575f0f5",
+      "observed_level_patterns": [
+        {
+          "levels": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            17
+          ],
+          "tickers": 3774
+        },
+        {
+          "levels": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "tickers": 72
+        }
+      ]
+    },
+    {
+      "date": "20260226",
+      "planned": 3935,
+      "validated": 3928,
+      "official_no_data_confirmed_twice": 7,
+      "unresolved_acquisition": 0,
+      "remaining_unattempted": 0,
+      "raw_rows": 62997,
+      "raw_sha256": "ba20b5b671140a673e0a625c99d5a2a5f45206a5de7118e0159fadc041435fe4",
+      "raw_manifest_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized_complete_2134\\20260226_manifest.json",
+      "raw_manifest_sha256": "ab80f0911a01ac819fe529225ac53ae038409f1e41b381d380027365b1b7c989",
+      "observed_level_patterns": [
+        {
+          "levels": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "tickers": 149
+        },
+        {
+          "levels": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            17
+          ],
+          "tickers": 3779
+        }
+      ]
+    }
+  ],
+  "fixed_plan_sha256": "c5df9a6d723986b141dd60ded68c2ee2fbff4e369797aa55f0fc38e38a41a878",
+  "progress_snapshot_sha256": "92810bc21bcc89293abc0a1de18287592fd34650bde1d2d3ef88d6d6e42a64ed",
+  "planned_queries": 11659,
+  "validated_queries": 11609,
+  "official_no_data_count": 50,
+  "unresolved_acquisition_count": 0,
+  "official_no_data": [
+    {
+      "date": "20251009",
+      "ticker": "00673O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\00673O_attempt1.html",
+          "sha256": "8ec9ca980087783bb1053103399d24fd46590a55db7e5c36868596cbfeda725e",
+          "queried_at": "2026-09-06T15:22:02.787755",
+          "original_logged_status": "UNRESOLVED"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\00673O_attempt2.html",
+          "sha256": "d0b0361e7532feba64192819f3c589ced95f060defb30dd2bc57338b5fd3d24d",
+          "queried_at": "2026-09-06T21:40:27.945142",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "00706O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\00706O_attempt1.html",
+          "sha256": "df176389f2a3a7d8fb95b808cbd43ee074b1510d48453d177e2727960181b3c7",
+          "queried_at": "2026-09-06T15:22:37.801274",
+          "original_logged_status": "UNRESOLVED"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\00706O_attempt2.html",
+          "sha256": "2166b58e267e323aff43f9ef2065c715595abbc3cde26de8b7e2e95e0b70fb5c",
+          "queried_at": "2026-09-06T21:40:28.488934",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "009813",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\009813_attempt1.html",
+          "sha256": "7f3b6e42b530fddd86cb441da9196842c91a4ca27d0aa6f9f4455d2d2a484a63",
+          "queried_at": "2026-09-06T15:26:38.086892",
+          "original_logged_status": "UNRESOLVED"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\009813_attempt2.html",
+          "sha256": "afed5e6db31fc23fda119bead6137e4732863e11ccdfc979b0c4159cc96edd6a",
+          "queried_at": "2026-09-06T21:40:28.861512",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "1766",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\1766_attempt1.html",
+          "sha256": "6d99b3a04e8c880bbea2c73dc3af7ddac786f952c21698173a06034c0f74d4fe",
+          "queried_at": "2026-09-06T15:32:03.113157",
+          "original_logged_status": "UNRESOLVED"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\1766_attempt2.html",
+          "sha256": "d26866d636d964321ce900b4f62a444cd9b8cd2aceff3eb2b347f29ac15af50c",
+          "queried_at": "2026-09-06T21:40:29.184033",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2314O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2314O_attempt1.html",
+          "sha256": "b6f3cfe2141ce1d284dad90c648794b4dc8d9afac3aceca97a0a4a1f4b0eefb7",
+          "queried_at": "2026-09-06T15:34:44.363977",
+          "original_logged_status": "UNRESOLVED"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2314O_attempt2.html",
+          "sha256": "3af1573e644564dd814aacbffa0d0349b13d4b11c97669398c357a284c9c0617",
+          "queried_at": "2026-09-06T21:40:30.147771",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2352O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2352O_attempt1.html",
+          "sha256": "2eaf5744cd4d9c3b6b473f53c6bc51bef47a44979fdda3ae39952523ce40aa16",
+          "queried_at": "2026-09-06T15:35:47.604597",
+          "original_logged_status": "UNRESOLVED"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2352O_attempt2.html",
+          "sha256": "015e45b035e61dc988b75c14796879283d66250df053cbb9fda6be225e278a1a",
+          "queried_at": "2026-09-06T21:40:31.392211",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2489O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2489O_attempt1.html",
+          "sha256": "14c46a147f88d59c369abf1d238f983dae65d0d90d958fdf398e519763a85019",
+          "queried_at": "2026-09-06T15:41:17.262815",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2489O_attempt2.html",
+          "sha256": "48b15adb8738893066f1d82d7268bfcdb98908767c9c7d0a40d7b105b5550333",
+          "queried_at": "2026-09-06T21:40:32.671134",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2607O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2607O_attempt1.html",
+          "sha256": "ab13138c43e6a380d93b27995829b1cd7c79fda8b04ca1f1867872519a79d4b1",
+          "queried_at": "2026-09-06T15:41:36.956772",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\2607O_attempt2.html",
+          "sha256": "eaa5432df333f8895012c260cb28d40dfd723b33721ead944fdf9c8c69db1f36",
+          "queried_at": "2026-09-06T21:40:33.937643",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "3057O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\3057O_attempt1.html",
+          "sha256": "901c30d53287b99e030740acfad7fa9a32cb57292f8d1f6a3a41e3cf45c197d4",
+          "queried_at": "2026-09-06T15:42:51.148566",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\3057O_attempt2.html",
+          "sha256": "069907c1331eeddf88194c8f64c697a7ec22773a38a9ffa4a825f9e8863000bc",
+          "queried_at": "2026-09-06T21:40:35.164211",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "6167O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6167O_attempt1.html",
+          "sha256": "4fd1bb9e2ff3df1d5614233f15ad8d5a87754fcdc86f3fc57b04529487aafb20",
+          "queried_at": "2026-09-06T15:48:57.673268",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6167O_attempt2.html",
+          "sha256": "f1a346f22348916aa73f1281ff0c4282a3b3c2483ff480fdfb9f999dd877fa0a",
+          "queried_at": "2026-09-06T21:40:36.396084",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "6611O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6611O_attempt1.html",
+          "sha256": "9c98e8c333a317a7750d1f58f09a7f77d62612396271542ce7c7168a0534eef2",
+          "queried_at": "2026-09-06T15:50:40.972811",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6611O_attempt2.html",
+          "sha256": "f0f5284b64475fbc430142441308935d793de61a23145cb113d4d2cd416c63a7",
+          "queried_at": "2026-09-06T21:40:38.066468",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "6897",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6897_attempt1.html",
+          "sha256": "f8578564cd02d86b15ca828ffb157d0faefe3608edd6a21691990999e99032aa",
+          "queried_at": "2026-09-06T15:52:06.159163",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\6897_attempt2.html",
+          "sha256": "781b5202d96777164136e79f1a621da2e6c10fac35e2d45f624f46b62d012a0c",
+          "queried_at": "2026-09-06T21:40:39.148742",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "7793",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7793_attempt1.html",
+          "sha256": "d9f49059902418c0c3cb846b336aff6fac73e36b8bff9238d3cc9ebf9f8d2fee",
+          "queried_at": "2026-09-06T15:54:59.020196",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7793_attempt2.html",
+          "sha256": "c157ab3b081bcf4fe54b621d5a9f3fa00f03c59d9641b4bb1fe1dbb923dd7677",
+          "queried_at": "2026-09-06T21:40:40.548474",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "7862",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7862_attempt1.html",
+          "sha256": "c51a39d6d037ae39030ca95e5ee376a5f42ecbb6a1ab4d7824822c8bb7bc61de",
+          "queried_at": "2026-09-06T15:55:52.641248",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7862_attempt2.html",
+          "sha256": "ffd646810f115a02d8033420f0a437f5ecba0a4c28723f5109b3df22deb55d40",
+          "queried_at": "2026-09-06T21:40:41.785386",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "7866",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7866_attempt1.html",
+          "sha256": "9bb3d8c6e5e160192efc73a49b8afaf32a3e201f7b40ee8844b7a0d20d7fe56b",
+          "queried_at": "2026-09-06T15:55:53.960820",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7866_attempt2.html",
+          "sha256": "866871a2b9db13dc4f98f384697676daf1c453f781e953c7cbc0de008e4bc16a",
+          "queried_at": "2026-09-06T21:40:42.898305",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "7868",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7868_attempt1.html",
+          "sha256": "1b0ab7d20b9774001c15b30d1441c38bd1b97575423f1d49ea50219c71e60c3e",
+          "queried_at": "2026-09-06T15:55:54.803224",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\7868_attempt2.html",
+          "sha256": "ff75149fd014c1e6b059f95939ec7dc897f47e11d33211e44a1857f3bb579f68",
+          "queried_at": "2026-09-06T21:40:44.061748",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "9924O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\9924O_attempt1.html",
+          "sha256": "eec6ccc13c4eef24a5673161be3b8a443a077d0bc8ccbaee1d875dfc1e39af5e",
+          "queried_at": "2026-09-06T15:57:41.144309",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\9924O_attempt2.html",
+          "sha256": "d7cb24874041f31b714ec6709a9620276a85fced6a94b14b5f57b4742490fc81",
+          "queried_at": "2026-09-06T21:40:45.160905",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YEV6",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YEV6_attempt1.html",
+          "sha256": "d9a8c9f8fe38ff6aa23443757ebe7be4d4bb04196b4450868ff9d281e3787aa7",
+          "queried_at": "2026-09-06T15:58:03.236827",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YEV6_attempt2.html",
+          "sha256": "01ebbc8c686cebed1d0bdc349f8fabe594d3ef0e08ce3ea08bd60158ea7c198d",
+          "queried_at": "2026-09-06T21:40:46.300896",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YJR6",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YJR6_attempt1.html",
+          "sha256": "40d143dbab944bd619572b412606ef5c73f1ad39a1fec4c68d33d402c62cb688",
+          "queried_at": "2026-09-06T15:59:46.767812",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YJR6_attempt2.html",
+          "sha256": "4cefc433bb021a64915374361b9f59b344733d1a7b3c344e7079b12ed4cf0cf0",
+          "queried_at": "2026-09-06T21:40:47.488101",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YKN9O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YKN9O_attempt1.html",
+          "sha256": "c79ac177b66f6a6c0116554bf5ca8ef57ee920e6d3e4bb75f0ed4470379d5479",
+          "queried_at": "2026-09-06T16:05:30.109563",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YKN9O_attempt2.html",
+          "sha256": "d2c276a313f7e2f0694f1e57a61474afb6f3f2a7de3a98ccbb7b1cb9ffa21ade",
+          "queried_at": "2026-09-06T21:40:49.305156",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YKP7",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YKP7_attempt1.html",
+          "sha256": "7fb5fd70964056644341f14bfbc6b653c621e7674c89e195da818449d2e4764e",
+          "queried_at": "2026-09-06T16:05:56.327577",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YKP7_attempt2.html",
+          "sha256": "8030c4f6337d54fbd1f0fc4926f86ac885ebcd58dc9482fd74f79f5e9ff56f1f",
+          "queried_at": "2026-09-06T21:40:50.697006",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLB2",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLB2_attempt1.html",
+          "sha256": "f7d0981a00bfe7fbb7eeca14a64781bcf1ddac0562dfad4528b0eb3890e0323c",
+          "queried_at": "2026-09-06T16:09:44.438880",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLB2_attempt2.html",
+          "sha256": "c7ce91c4a0c976d4343c77770e8098bacfd7a11f891c33594da0c1c41388cf3c",
+          "queried_at": "2026-09-06T21:38:14.015417",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLB8",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLB8_attempt1.html",
+          "sha256": "c021e7c572560940201e9f79fac420c63cb8c9c90adabad79e96f6e479de8c17",
+          "queried_at": "2026-09-06T16:10:08.440985",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLB8_attempt2.html",
+          "sha256": "05879ea88a5d842cb0d7ea975cb2e422a930521ad6d6c18d2bb8caa0894c3421",
+          "queried_at": "2026-09-06T21:40:52.054915",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLH8",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLH8_attempt1.html",
+          "sha256": "a178e76d0ebc5bad8dfcde4d2cfdae143d228e72b3c951559fb5f7cae306f9a4",
+          "queried_at": "2026-09-06T16:13:43.362432",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLH8_attempt2.html",
+          "sha256": "80ddcd98af33ae4f6d576b46d13de68ed0faa47d2f3dad9125d55c6d231358ee",
+          "queried_at": "2026-09-06T21:40:53.211979",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLJ1",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLJ1_attempt1.html",
+          "sha256": "1329eedb6d116db914776ec8afe8a30ba427a3549d78e4d816425a51c97ecd3a",
+          "queried_at": "2026-09-06T16:13:50.009498",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLJ1_attempt2.html",
+          "sha256": "5f20c3ff2e10a0f2367e2d5560c847b536e620a4d6ab34c6bd533bc87b3a5956",
+          "queried_at": "2026-09-06T21:40:54.489697",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251009",
+      "ticker": "YLK4",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLK4_attempt1.html",
+          "sha256": "6e3ef05b8e74085e7498c1f42282f61042ebb1bac85d992265bb5426f1bc4005",
+          "queried_at": "2026-09-06T16:14:09.015553",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251009\\raw\\YLK4_attempt2.html",
+          "sha256": "eb7b9043a260b248b819d6c66976447ecace00c159d38b435a443a6a5be55a15",
+          "queried_at": "2026-09-06T21:40:55.644939",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "00673O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\00673O_attempt1.html",
+          "sha256": "8b2d14b54b5fb68de8af9814819198f1b52de8b779c0edee5617356b0e556a0d",
+          "queried_at": "2026-09-06T17:01:26.890958",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\00673O_attempt2.html",
+          "sha256": "aebb3350ca7aa69a2da651b61e3ba5fbdea5247df7c99f6bf4e63c3ec5d30a5d",
+          "queried_at": "2026-09-06T21:40:58.615418",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "00706O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\00706O_attempt1.html",
+          "sha256": "32854cb044c786d335473001782cd878acf33a880f9fb11189c8f56c841a1a54",
+          "queried_at": "2026-09-06T17:01:35.322892",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\00706O_attempt2.html",
+          "sha256": "d9dedd0e53045da8bc3c6ab768b9500f92130cb73691ef94582c434f7ad0cacf",
+          "queried_at": "2026-09-06T21:40:59.943903",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "2314O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\2314O_attempt1.html",
+          "sha256": "cac5e50090e4c0b78f742699e197aa7131a51e33e51d1fc3cd2b5df0b4c25699",
+          "queried_at": "2026-09-06T17:02:55.479389",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\2314O_attempt2.html",
+          "sha256": "2b88205a3d6bc959ca4c3a05866d20a10c34c396cbfe3f4b70ba6bfcc36dfa0d",
+          "queried_at": "2026-09-06T21:41:01.029639",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "2832O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\2832O_attempt1.html",
+          "sha256": "1e1d7f1084c09e795a10dd249ae0930f76dafe5df5871eaa76bac140dd366535",
+          "queried_at": "2026-09-06T17:02:56.596930",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\2832O_attempt2.html",
+          "sha256": "6da280fa4a74ff2a8fcc6ab270cb2ac390bcdcbbe477b8a2197d585e46ae0ee7",
+          "queried_at": "2026-09-06T21:41:02.168146",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "3688O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\3688O_attempt1.html",
+          "sha256": "51735d457e62153d6de1d95c6b6e5b368e12acab87f7f5de540da171c0de0e2e",
+          "queried_at": "2026-09-06T17:03:03.298618",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\3688O_attempt2.html",
+          "sha256": "095b56c9b092aed360567035e6d6da8e5bc3f3a0059d283aa94be1b7d394e1d0",
+          "queried_at": "2026-09-06T21:41:03.284002",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "6167O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\6167O_attempt1.html",
+          "sha256": "cdccc32132a4da2a437eae41ad56a5f24d1f4ed207efa8f328c4c262c040ab66",
+          "queried_at": "2026-09-06T17:03:04.155122",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\6167O_attempt2.html",
+          "sha256": "0ea285fa6959e8015db0bb617efa58f0a34a630f4f2e2a4f709a3626fc8acd22",
+          "queried_at": "2026-09-06T21:41:04.207327",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "6611O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\6611O_attempt1.html",
+          "sha256": "a7690c417e17c34399bee32010fbc633baed68cd803b01ad30dc83b3d922f242",
+          "queried_at": "2026-09-06T17:03:05.154807",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\6611O_attempt2.html",
+          "sha256": "8627da1d3d2306dd7cad1facf6d6304e3ad5baf26a922c7463545d979e491ee3",
+          "queried_at": "2026-09-06T21:41:05.236833",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YJT9O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YJT9O_attempt1.html",
+          "sha256": "576bbcfcf8afea70547f2fddee1ae5d193fe7d38c74251239e9af0da804634ed",
+          "queried_at": "2026-09-06T17:05:27.118132",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YJT9O_attempt2.html",
+          "sha256": "30e2d06ae86c1773f30ebb621632b4750af46627940eb9d0306161aef85ae0af",
+          "queried_at": "2026-09-06T21:41:06.292067",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YKN9O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YKN9O_attempt1.html",
+          "sha256": "79e4062d35303fb82a7eb399b918c03bf9527496e2795743f9088cbccc8c7dba",
+          "queried_at": "2026-09-06T17:06:01.809778",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YKN9O_attempt2.html",
+          "sha256": "63763f08a9e9e6acc9090d9b27cfabfceae1004cc13b737118cb98f1dd91a7c3",
+          "queried_at": "2026-09-06T21:41:07.237239",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLB2O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLB2O_attempt1.html",
+          "sha256": "442b591e3387c1a1d755c4eb6d1658cb7c91dceba9a583d3b4f82e8ddd0ba291",
+          "queried_at": "2026-09-06T17:06:21.207345",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLB2O_attempt2.html",
+          "sha256": "9a466b0728fa92fdd4e21a623527af9dc21fc23e983a4824e59be64dfdaa7d85",
+          "queried_at": "2026-09-06T21:41:08.237592",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLJ4",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLJ4_attempt1.html",
+          "sha256": "2f57e8adf23a9e28874e89a560fb918148ce00953c0c42635a5761cf3577f726",
+          "queried_at": "2026-09-06T17:06:42.050769",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLJ4_attempt2.html",
+          "sha256": "400c07781589634c373adf384e8263cb451f8dfc0a079c170402a6baaee636b8",
+          "queried_at": "2026-09-06T21:41:09.750036",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLJ7",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLJ7_attempt1.html",
+          "sha256": "13dd45146f63c808a9e7e68d78f8ff32be25981a4b16f78aa1dc7b8e2805e23a",
+          "queried_at": "2026-09-06T17:06:42.677211",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLJ7_attempt2.html",
+          "sha256": "adaf9284338e11a8e6ef82fb8500dd02c5d186fb839d04f99858067b0dda276c",
+          "queried_at": "2026-09-06T21:41:10.670223",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLK5",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK5_attempt1.html",
+          "sha256": "73a9ba05b4db4b3205607f881e87ce4847fcc30e98d0da7fcca82b6707ebc1fa",
+          "queried_at": "2026-09-06T17:06:44.207663",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK5_attempt2.html",
+          "sha256": "e027ccd13270f824a28dcead45e6bcc92936e2ef7b8b5db5f46baf0f0269bce9",
+          "queried_at": "2026-09-06T21:41:11.693025",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLK7",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK7_attempt1.html",
+          "sha256": "a6b14b656b2d81a2802c8e18bd19ad7023e9b64b28225bfd078bfe8de798a350",
+          "queried_at": "2026-09-06T17:06:44.475157",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK7_attempt2.html",
+          "sha256": "12a3319e38a33e7677ba8c06e4106e908e1508834a98a00a04697f7ff011c12b",
+          "queried_at": "2026-09-06T21:41:12.839962",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLK8",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK8_attempt1.html",
+          "sha256": "df4fc301bff1f6e62e7e229bf21538094cca4d868c39072b9029ed0fdf39a1d4",
+          "queried_at": "2026-09-06T17:06:44.826119",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLK8_attempt2.html",
+          "sha256": "db02917d44643fd42c56656d5fb35ce0facf3722e820c1a60277f4ef52dfe32b",
+          "queried_at": "2026-09-06T21:41:13.898751",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLL3",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLL3_attempt1.html",
+          "sha256": "226455409a3f13489dbcf63491a333f22a72197488f0a1423159a47770de1c0a",
+          "queried_at": "2026-09-06T17:06:45.886695",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLL3_attempt2.html",
+          "sha256": "d87efeb59fcd813a50ccbc564f7449f355aece4c04f093313e85a01b2da2442a",
+          "queried_at": "2026-09-06T21:41:15.052427",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YLL6",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLL6_attempt1.html",
+          "sha256": "d5e70d7543708e17acd6c316ab41d860e0e1679c3df1af5895b9158119b9af58",
+          "queried_at": "2026-09-06T17:06:46.163144",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20251023\\raw\\YLL6_attempt2.html",
+          "sha256": "69c93228b6697d4b0313aa1ffefe8afbeaa70ba440e4f43e5d6ec78f6ed2b92c",
+          "queried_at": "2026-09-06T21:41:16.076241",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20260226",
+      "ticker": "3089",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\3089_attempt1.html",
+          "sha256": "4c94305de1e616088c6c8a2d5f11d8aff46b051de85c4eaef52a2987bcdf4596",
+          "queried_at": "2026-09-06T16:56:26.608676",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\3089_attempt2.html",
+          "sha256": "f57e2d138dcae295087f9403e5dcc0e896b7014d9a4b34eb299077e9ebaea7bd",
+          "queried_at": "2026-09-06T21:41:17.412919",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20260226",
+      "ticker": "8932O",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\8932O_attempt1.html",
+          "sha256": "dfa11aa2760b8ec6f03cf913fb4998bd9d6de4ec3b518b7a8473841d169ad942",
+          "queried_at": "2026-09-06T17:09:04.576702",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\8932O_attempt2.html",
+          "sha256": "ffa4afb6541a96b0269ee317dd9e715e96107558c0fd2cf6eb15a591c8533626",
+          "queried_at": "2026-09-06T21:41:18.332056",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLT1",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLT1_attempt1.html",
+          "sha256": "f82aa8958837a39d64b00ba5273c47de0976a8be3086f222a6d671cce3764be1",
+          "queried_at": "2026-09-06T17:13:30.092310",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLT1_attempt2.html",
+          "sha256": "f4dcc30561a65fa8a0b6d6b19852db29c187ec25d7b488f9f156a34b3efe5cab",
+          "queried_at": "2026-09-06T21:41:19.552112",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLT9",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLT9_attempt1.html",
+          "sha256": "325ab038b57edb7723a0278e824403989c428e8cc5c644532052d318cea043d4",
+          "queried_at": "2026-09-06T17:13:31.559239",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLT9_attempt2.html",
+          "sha256": "272f9c0b61e0ef0ccf5c08156152fac70e7bb1e037132daf7b1c158f29d369f6",
+          "queried_at": "2026-09-06T21:41:20.448794",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLU2",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU2_attempt1.html",
+          "sha256": "ef9ae421dced03c318b5ad9c300eca67570a3c60b41fdbcd141b990ea7aba830",
+          "queried_at": "2026-09-06T17:13:32.483728",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU2_attempt2.html",
+          "sha256": "75c9ad9043cf8011e7d7383c2c2fa8e2d4e7c1ab869b1a4826dd8ba3a6e96ec7",
+          "queried_at": "2026-09-06T21:41:21.653315",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLU4",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU4_attempt1.html",
+          "sha256": "ff07b3f5c9839110572d11e74e15b1c3a4921d18fe6ccba115923cb478a8640f",
+          "queried_at": "2026-09-06T17:13:32.755417",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU4_attempt2.html",
+          "sha256": "98d3d7cf0530c17ff5e83606bbfd2d6e5431a4f9d50a23d83878ed087d13e0fb",
+          "queried_at": "2026-09-06T21:41:22.527586",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YLU7",
+      "status": "OFFICIAL_NO_DATA_CONFIRMED_TWICE",
+      "responses": [
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU7_attempt1.html",
+          "sha256": "7d9fb02f866756f5ee6cedb6efb9bb93cc84a0f7242c7fbd916ff44d2ad194f6",
+          "queried_at": "2026-09-06T17:13:33.074963",
+          "original_logged_status": "SOURCE_NO_DATA"
+        },
+        {
+          "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_public_collect\\20260226\\raw\\YLU7_attempt2.html",
+          "sha256": "d14294d1ffaef88c98d503cdbad2395946ecec45d46b4b14fdac3d89ebb2aac7",
+          "queried_at": "2026-09-06T21:41:23.440973",
+          "original_logged_status": "SOURCE_NO_DATA"
+        }
+      ],
+      "eligibility": "Not inferred; exact-date issuer eligibility remains unproven"
+    }
+  ],
+  "bounded_recheck_recoveries": [
+    {
+      "date": "20251023",
+      "ticker": "YFK2",
+      "before_status": "UNRESOLVED",
+      "status": "VALIDATED",
+      "prior_raw_sha256": "0a7a77c257676ae3b7db5e429439bb3f3180a49a597bff5850b473f751a618bf",
+      "raw_sha256": "219b36140d418dc6971f1ac1f00c6bd475d0a3850fc9a35c0df2ab7db8106c66"
+    },
+    {
+      "date": "20251023",
+      "ticker": "YGM3",
+      "before_status": "UNRESOLVED",
+      "status": "VALIDATED",
+      "prior_raw_sha256": "9c034fe94052dc0aefaf10f868ee83dee9ccbe4a4747a46c66f988440808be13",
+      "raw_sha256": "b66b8dfc4acfff903b4acd6c8c8844b55d3089c4cd49fbaf7e7bc4befe65c92b"
+    },
+    {
+      "date": "20260226",
+      "ticker": "2616",
+      "before_status": "UNRESOLVED",
+      "status": "VALIDATED",
+      "prior_raw_sha256": "9c034fe94052dc0aefaf10f868ee83dee9ccbe4a4747a46c66f988440808be13",
+      "raw_sha256": "3b390e63e9e166201894ba612df1e6374d5284a3cf946180ba5ba8dd92917b07"
+    },
+    {
+      "date": "20260226",
+      "ticker": "YGB3",
+      "before_status": "UNRESOLVED",
+      "status": "VALIDATED",
+      "prior_raw_sha256": "136d2ab354d9f7bc636a5113363c5dc9f88a12ed94eacb2e1c85c33627ae6f87",
+      "raw_sha256": "3651077c5011026b5e092e09b7aff199b662b99dc2b9832419b9454dd8c8207a"
+    },
+    {
+      "date": "20251009",
+      "ticker": "2347",
+      "before_status": "SOURCE_NO_DATA",
+      "status": "VALIDATED",
+      "prior_raw_sha256": "7fa047db77c30e6f1c92e16087ab47185e42e38a410dbb5b127684098401409a",
+      "raw_sha256": "0734693674dc4eb6ca5634022ba01b8844b5f2848d1667f22e33e1b7144125bd"
+    },
+    {
+      "date": "20251023",
+      "ticker": "000815",
+      "before_status": "SOURCE_NO_DATA",
+      "status": "VALIDATED",
+      "prior_raw_sha256": "dd6ef73b03d439d528bd47c9eac55b61d30b3a5d8dd300c094558513bf6665d7",
+      "raw_sha256": "4d19a84b9aa2ebec11dbab1cdba7d0bb180b3d85623e26174f63a3cb4b7b7139"
+    }
+  ],
+  "latest_feature_ab": {
+    "tickers": 2031,
+    "features": [
+      "retail_pct",
+      "whale_pct",
+      "whale_pct_chg",
+      "retail_pct_chg",
+      "holders_chg_pct",
+      "whale_retail_ratio",
+      "whale_trend_4w",
+      "retail_capitulation",
+      "whale_acc_weeks",
+      "whale_trend_8w",
+      "whale_acc_momentum",
+      "whale_pct_rank_12w",
+      "whale_retail_diverge"
+    ],
+    "compared_cells": 26403,
+    "changed_cells": 5,
+    "changes": [
+      {
+        "ticker": "1589",
+        "date": "2026-04-02",
+        "feature": "retail_capitulation",
+        "before": 0.699999988079071,
+        "after": 0.7272727489471436
+      },
+      {
+        "ticker": "1589",
+        "date": "2026-04-02",
+        "feature": "whale_trend_8w",
+        "before": -0.6427569389343262,
+        "after": -0.6741394996643066
+      },
+      {
+        "ticker": "1589",
+        "date": "2026-04-02",
+        "feature": "whale_pct_rank_12w",
+        "before": 0.30000001192092896,
+        "after": 0.27272728085517883
+      },
+      {
+        "ticker": "4804",
+        "date": "2026-04-13",
+        "feature": "retail_capitulation",
+        "before": 0.10000000149011612,
+        "after": 0.09090909361839294
+      },
+      {
+        "ticker": "4804",
+        "date": "2026-04-13",
+        "feature": "whale_trend_8w",
+        "before": 0.20857183635234833,
+        "after": 0.15642888844013214
+      }
+    ],
+    "summary_before_rows": 899102,
+    "summary_added_rows": 11609,
+    "summary_after_rows": 910711,
+    "existing_summary_cells_exact": true,
+    "summary_before_sha256": "8154a3a61fba91553c2293f188dbbb12d53f5a0d675af7835e583591a55b58ea",
+    "summary_after_sha256": "01ce584e7666c6e34d6ca38214cf4e656fb22c3f969ad37f8d85343061b34a81",
+    "feature_code_sha256": "f75087000eebbed4841e427db4553c4223a361c9055110f3c715d3e1735c3b14",
+    "daily_frame_sha256": "0243dc528c239921c64cc77e7a58f20c517ba5fae223d81e325cc1da45a71715"
+  },
+  "requires_separate_prediction_D_review": true,
+  "raw_contract_reference": {
+    "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\output\\historical_gaps_20260906\\tdcc_normalized\\reference.json",
+    "sha256": "046bb4268eeecee5bd3516b497afbf3920b52208cac693d5959869a98f63d6a6"
+  },
+  "parser_backend_equivalence": {
+    "path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\ml\\reports\\research\\data_layer_consistency_20260906\\tdcc_normalization_backend.json",
+    "sha256": "b03f40c7d2595ef8e5cf9cd1078168a1689d2fb97bed9ee1442e7b5e317ecee3",
+    "actual_samples": 414
+  },
+  "latest_base_features_match_four_official_reference_tickers": true,
+  "limits": [
+    "Complete traversal covers a frozen adjacent-week ticker union, not an independently certified exact-date market census.",
+    "Fifty no-data outcomes were independently rechecked after two transient false-empty cases were proven. Two no-data replies do not establish issuer eligibility.",
+    "Normal levels 1-15 and actual total17 are retained; source adjustment16 is retained only if present. Never synthesize an absent zero adjustment or issuer.",
+    "Latest comparison uses all2031actual source rows including inactive tickers at their own latest dates and new84classic-source overlay; full historical TDCC prefix is preserved.",
+    "This is source/feature reconciliation, not a strategy backtest or a claim that historical predictions are unchanged.",
+    "Older unobserved buckets remain35with trading days plus1settlement-only week;4full-closure weeks are not fabricated. No paid access was purchased."
+  ]
+}

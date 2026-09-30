@@ -1,0 +1,48 @@
+{
+  "status": "PASS_HISTORICAL_YEAR_CALENDAR_AND_FIXTURES",
+  "asof": "2026-09-06T16:26:23.712517",
+  "code": [
+    {
+      "production_path": "F:\\stock\\scripts\\valuation_source_contract.py",
+      "physical_test_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\scripts\\valuation_source_contract_calendar.py",
+      "sha256": "a023b69b6ef1252510243b753a45b499a54ae5acd18f67fc48422257a2457ac8"
+    },
+    {
+      "production_path": "F:\\stock\\scripts\\backfill_valuation.py",
+      "physical_test_path": "F:\\stock\\output\\pipeline_acceptance_20260906\\workspace\\scripts\\backfill_valuation_calendar.py",
+      "sha256": "965f5d2ee3076c9e5dae943af0cb8c021c4bbdda6fed12e3e665d55eab70b2f0"
+    }
+  ],
+  "year": 2021,
+  "official_url": "https://www.twse.com.tw/holidaySchedule/holidaySchedule?date=20210101&response=json",
+  "calendar_sessions": 244,
+  "existing_valuation_dates": 244,
+  "date_sets_exact": true,
+  "official_closure_dates": [
+    "2021-01-01",
+    "2021-02-08",
+    "2021-02-09",
+    "2021-02-10",
+    "2021-02-11",
+    "2021-02-12",
+    "2021-02-13",
+    "2021-02-14",
+    "2021-02-15",
+    "2021-02-16",
+    "2021-02-28",
+    "2021-03-01",
+    "2021-04-02",
+    "2021-04-03",
+    "2021-04-04",
+    "2021-04-05",
+    "2021-04-30",
+    "2021-05-01",
+    "2021-06-14",
+    "2021-09-20",
+    "2021-09-21",
+    "2021-10-10",
+    "2021-10-11",
+    "2021-12-31"
+  ],
+  "scope": "Real production calendar acquisition, exact response year validated; all2021sessions match actual244source dates. Unsupported years never inherit current-year holidays. Source rows/files and strategy/model rules unchanged."
+}

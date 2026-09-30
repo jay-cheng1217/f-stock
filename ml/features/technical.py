@@ -9,6 +9,28 @@ import warnings
 import pandas as pd
 import numpy as np
 
+from ml.corporate_actions import action_adjusted_ohlc
+
+
+_PRICE_LEVEL_OUTPUTS = [
+    "MA_5", "MA_20", "MA_60",
+    "BBM_20_2.0", "BBU_20_2.0", "BBL_20_2.0",
+    "MACD_12_26_9", "MACDs_12_26_9", "MACDh_12_26_9",
+    "ATR_14", "AMOUNT_MA_5", "AMOUNT_MA_20", "force_index_13", "lr_slope_20",
+]
+
+# A regular Taiwan-market closure is far shorter than 30 calendar days.  A
+# larger gap means the stock was suspended/delisted rather than continuously
+# trading, so lag/rolling features must restart instead of bridging the gap.
+MAX_TECHNICAL_GAP_DAYS = 30
+
+CLASSIC_INDICATOR_COLUMNS = [
+    "MA_5", "MA_20", "MA_60", "RSI_6", "RSI_14",
+    "BBL_20_2.0", "BBM_20_2.0", "BBU_20_2.0",
+    "MACD_12_26_9", "MACDh_12_26_9", "MACDs_12_26_9",
+    "K", "D", "ATR_14", "VOL_MA_5", "VOL_MA_20",
+]
+
 
 def _rma(series: pd.Series, period: int) -> pd.Series:
     """Wilder's RMA，供 RSI / ATR 使用。"""
@@ -67,8 +89,68 @@ def _stoch_kd(
     return k, d
 
 
-def compute_technical_features(df: pd.DataFrame) -> pd.DataFrame:
-    """從單檔股票日K資料計算技術面特徵。"""
+def _compute_classic_technical_indicators_contiguous(
+    df: pd.DataFrame,
+    ticker: str | None = None,
+    action_calendar: pd.DataFrame | None = None,
+) -> pd.DataFrame:
+    """Compute the classic indicators persisted in ``日K資料``.
+
+    This smaller path is shared by the nightly writer and the official-price
+    reconciliation job; it avoids calculating the full ML feature catalog when
+    only the persisted dashboard columns are needed.
+    """
+    out = df.copy()
+    for column in ("Open", "High", "Low", "Close", "Volume"):
+        if column not in out:
+            out[column] = np.nan
+        out[column] = pd.to_numeric(out[column], errors="coerce")
+    adjusted, _ = action_adjusted_ohlc(out, ticker, action_calendar)
+    close = adjusted["Close"]
+    high = adjusted["High"]
+    low = adjusted["Low"]
+    volume = out["Volume"]
+
+    out["MA_5"] = close.rolling(5, min_periods=5).mean()
+    out["MA_20"] = close.rolling(20, min_periods=20).mean()
+    out["MA_60"] = close.rolling(60, min_periods=60).mean()
+    out["RSI_6"] = _rsi_wilder(close, 6)
+    out["RSI_14"] = _rsi_wilder(close, 14)
+    std20 = close.rolling(20, min_periods=20).std()
+    out["BBM_20_2.0"] = out["MA_20"]
+    out["BBU_20_2.0"] = out["MA_20"] + 2 * std20
+    out["BBL_20_2.0"] = out["MA_20"] - 2 * std20
+    ema12 = close.ewm(span=12, adjust=False).mean()
+    ema26 = close.ewm(span=26, adjust=False).mean()
+    macd = ema12 - ema26
+    out["MACD_12_26_9"] = macd
+    out["MACDs_12_26_9"] = macd.ewm(span=9, adjust=False).mean()
+    out["MACDh_12_26_9"] = out["MACD_12_26_9"] - out["MACDs_12_26_9"]
+    out["K"], out["D"] = _stoch_kd(high, low, close)
+    out["ATR_14"] = _atr_wilder(high, low, close)
+    out["VOL_MA_5"] = volume.rolling(5, min_periods=5).mean()
+    out["VOL_MA_20"] = volume.rolling(20, min_periods=20).mean()
+
+    scale_to_raw = out["Close"] / close.replace(0, np.nan)
+    for column in (
+        "MA_5", "MA_20", "MA_60", "BBM_20_2.0", "BBU_20_2.0", "BBL_20_2.0",
+        "MACD_12_26_9", "MACDs_12_26_9", "MACDh_12_26_9", "ATR_14",
+    ):
+        out[column] = out[column] * scale_to_raw
+    return out.replace([np.inf, -np.inf], np.nan)
+
+
+def _compute_technical_features_contiguous(
+    df: pd.DataFrame,
+    ticker: str | None = None,
+    action_calendar: pd.DataFrame | None = None,
+) -> pd.DataFrame:
+    """從單檔原始日 K 計算公司行動連續的技術面特徵。
+
+    原始 O/H/L/C 保留不動。指標先在官方公司行動因子調整後的連續價格上
+    計算，再把價格量綱欄位換回該列原始價格尺度，避免 future-event scale
+    改變歷史特徵的數值口徑。
+    """
     warnings.filterwarnings("ignore", category=pd.errors.PerformanceWarning)
     out = df.copy()
 
@@ -77,10 +159,11 @@ def compute_technical_features(df: pd.DataFrame) -> pd.DataFrame:
             out[col] = np.nan
         out[col] = pd.to_numeric(out[col], errors="coerce")
 
-    close = out["Close"]
-    high = out["High"]
-    low = out["Low"]
-    open_ = out["Open"]
+    adjusted, _ = action_adjusted_ohlc(out, ticker, action_calendar)
+    close = adjusted["Close"]
+    high = adjusted["High"]
+    low = adjusted["Low"]
+    open_ = adjusted["Open"]
     volume = out["Volume"]
 
     out["MA_5"] = close.rolling(5, min_periods=5).mean()
@@ -111,6 +194,9 @@ def compute_technical_features(df: pd.DataFrame) -> pd.DataFrame:
 
     out["VOL_MA_5"] = volume.rolling(5, min_periods=5).mean()
     out["VOL_MA_20"] = volume.rolling(20, min_periods=20).mean()
+    traded_amount = close * volume
+    out["AMOUNT_MA_5"] = traded_amount.rolling(5, min_periods=5).mean()
+    out["AMOUNT_MA_20"] = traded_amount.rolling(20, min_periods=20).mean()
 
     out["price_vs_ma5"] = ((close - out["MA_5"]) / out["MA_5"]).astype(np.float32)
     out["price_vs_ma20"] = ((close - out["MA_20"]) / out["MA_20"]).astype(np.float32)
@@ -575,8 +661,74 @@ def compute_technical_features(df: pd.DataFrame) -> pd.DataFrame:
         (price_up & vol_shrink) | ((~price_up) & (~vol_shrink))
     ).astype(np.float32)
 
+    raw_close = pd.to_numeric(out["Close"], errors="coerce")
+    scale_to_raw = raw_close / close.replace(0, np.nan)
+    for column in _PRICE_LEVEL_OUTPUTS:
+        if column in out.columns:
+            out[column] = out[column] * scale_to_raw
+
     out = out.copy()
     return out.replace([np.inf, -np.inf], np.nan)
+
+
+def _compute_by_trading_segment(
+    df: pd.DataFrame,
+    calculator,
+    *,
+    ticker: str | None,
+    action_calendar: pd.DataFrame | None,
+) -> pd.DataFrame:
+    """Run rolling indicators separately across long trading suspensions."""
+    if "Date" not in df.columns or len(df) < 2:
+        return calculator(df, ticker=ticker, action_calendar=action_calendar)
+
+    dates = pd.to_datetime(df["Date"], errors="coerce")
+    reset = dates.diff().dt.days.gt(MAX_TECHNICAL_GAP_DAYS).fillna(False)
+    reset_positions = np.flatnonzero(reset.to_numpy())
+    if not len(reset_positions):
+        return calculator(df, ticker=ticker, action_calendar=action_calendar)
+
+    boundaries = [0, *reset_positions.tolist(), len(df)]
+    pieces = []
+    for start, end in zip(boundaries[:-1], boundaries[1:]):
+        segment = df.iloc[start:end].copy()
+        original_index = segment.index
+        computed = calculator(
+            segment.reset_index(drop=True),
+            ticker=ticker,
+            action_calendar=action_calendar,
+        )
+        computed.index = original_index
+        pieces.append(computed)
+    return pd.concat(pieces, axis=0)
+
+
+def compute_classic_technical_indicators(
+    df: pd.DataFrame,
+    ticker: str | None = None,
+    action_calendar: pd.DataFrame | None = None,
+) -> pd.DataFrame:
+    """Compute persisted indicators without bridging long suspensions."""
+    return _compute_by_trading_segment(
+        df,
+        _compute_classic_technical_indicators_contiguous,
+        ticker=ticker,
+        action_calendar=action_calendar,
+    )
+
+
+def compute_technical_features(
+    df: pd.DataFrame,
+    ticker: str | None = None,
+    action_calendar: pd.DataFrame | None = None,
+) -> pd.DataFrame:
+    """Compute ML technical features without bridging long suspensions."""
+    return _compute_by_trading_segment(
+        df,
+        _compute_technical_features_contiguous,
+        ticker=ticker,
+        action_calendar=action_calendar,
+    )
 
 
 # 本模組產出的特徵欄位名稱
