@@ -113,7 +113,8 @@
   兩個組合帳本各鎖一筆假 run(`unified_runs` 同日「已鎖定就跳過」,隔日真實 run 會被擋)→ 投資賽
   38 筆等開盤單被判 SKIPPED(missing_open_price)。**鐵律**:(1) 交易時段(09:00-13:30)不得啟動
   Phase-1,任何「補跑」先核系統時鐘與 `is_taiwan_trading_day`;(2) 任何被中止的抓取 run 之後,
-  ingest 前必須掃日K是否有 `>= TODAY`(未收盤)的列,有則隔離備份後移除;(3) 修復順序=清 CSV →
+  ingest 前必須掃日K是否有 `>= TODAY`(未收盤)的列,有則隔離備份後移除;(3) 修復順序=清 CSV → 刪 DuckDB 當日列 **並把 `ingest_meta.freshness_value` 退回前一交易日**(新鮮度防護比對的是
+  meta 記錄值,不退回會永遠「regressed」拒絕重 ingest)→
   重 ingest → 隔離假預測檔(`model_cleanup_precheck` 先過)→ 移除同日假 `unified_runs` 列 →
   投資賽假 SKIPPED 還原 PENDING/假訊號單刪除 → 重跑 Phase-2 重新認證;所有刪改前備份到
   `logs/quarantine_partial_bars_<date>/`。
