@@ -541,7 +541,11 @@ def ingest_all():
             except Exception:
                 pass
             errors["stock_list"] = f"{type(exc).__name__}: {exc}"
-            print(f"[ingest] ⚠️ stock_list 失敗: {errors['stock_list']}")
+            msg = f"[ingest] [WARN] stock_list failed: {errors['stock_list']}"
+            try:
+                print(msg)
+            except UnicodeEncodeError:
+                print(msg.encode("ascii", "replace").decode("ascii"))
 
     print("[ingest] 確認敘事 shadow schema...")
     ensure_narrative_schema()
