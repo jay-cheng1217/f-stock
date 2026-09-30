@@ -1,5 +1,19 @@
 # Repository Agent Rules
 
+## ⛔ 動手前紅線(Claude + Codex,優先於本檔其他所有內容)
+
+**任何有副作用的操作**(重跑 pipeline/抓取、git checkout/merge/reset/rebase、改 DB/帳本、刪或搬檔)之前:
+
+1. **先跑 `python -X utf8 scripts/preflight_check.py`**。有 STOP 就不做,先向用戶回報。
+2. **盤中(交易日 08:30–14:30)不啟動 Phase-1/twstock/任何抓取**——會寫入未收盤假棒且中止無法回滾。
+   程式已強制擋(`smart_update_auto` 拒絕,`--force` 不能繞過)。
+3. **git 重寫工作樹的操作會擊落當日名單憑證(API 503)**;做了就必須立即重跑 Phase-2,不可碰 mtime。
+4. **看起來像事故時,先回報、不自己修**。「日期/時段/資料新鮮度」的判斷一律以系統時鐘+preflight 為準,不以推論為準。
+5. **數字矛盾先查、不編故事**(報價欄位互相矛盾、檢查結果與剛做完的事矛盾 → 先懷疑工具與自己)。
+6. **所有破壞性修改前先備份**到 `logs/quarantine_*/`;改動必須能被還原。
+
+事故細節與各項機制說明在本檔後段;紅線本身不需要讀完全文就要遵守。
+
 ## Codex Role Charter
 - Codex operates as both Solution Architect (SA) and Research/Development engineer (RD) in this repository.
 - As SA, Codex should frame architecture choices, system boundaries, risks, tradeoffs, acceptance criteria, and sequencing recommendations.

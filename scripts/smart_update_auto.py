@@ -2106,6 +2106,26 @@ def _run_resume_after_special_status() -> list[tuple[str, bool]]:
     return step_results
 
 
+INTRADAY_BLOCK_START = (8, 30)
+INTRADAY_BLOCK_END = (14, 30)
+
+
+def _intraday_phase1_blocked(now: datetime, phase: str, allow_intraday: bool) -> str | None:
+    """交易日盤中拒絕 Phase-1(2026-09-30 事故:盤中啟動後中止,twstock 已寫入 103 檔
+    未收盤假棒,連鎖污染 DuckDB/預測/組合帳本/投資賽)。--force 不能繞過,只有
+    --allow-intraday 能明示放行。回傳拒絕原因,None = 放行。"""
+    if phase not in ("1", "all") or allow_intraday:
+        return None
+    if not is_taiwan_trading_day(now.date()):
+        return None
+    hm = (now.hour, now.minute)
+    if INTRADAY_BLOCK_START <= hm < INTRADAY_BLOCK_END:
+        return (f"Phase-1 during TW market hours ({now:%H:%M}, trading day {now:%Y-%m-%d}): "
+                "Yahoo returns partial intraday bars that get written to 日K資料 and cannot be "
+                "rolled back by aborting. Run after 14:30, or pass --allow-intraday explicitly.")
+    return None
+
+
 def main(argv: list[str] | None = None) -> int:
     _install_safe_stdio()
     parser = argparse.ArgumentParser(
@@ -2127,7 +2147,17 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Refresh special status, then rerun prediction, portfolio, web, and email only.",
     )
+    parser.add_argument(
+        "--allow-intraday",
+        action="store_true",
+        help="Explicitly allow Phase-1 during TW market hours (writes partial bars; see AGENTS.md red lines).",
+    )
     args = parser.parse_args(argv)
+
+    blocked = _intraday_phase1_blocked(datetime.now(), args.phase, args.allow_intraday)
+    if blocked:
+        LOGGER.error("REFUSED %s", blocked)
+        return 2
 
     lock_handle, existing_lock = acquire_lock(LOCK_PATH, "smart_update_auto")
     if lock_handle is None:
