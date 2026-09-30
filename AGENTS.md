@@ -107,6 +107,16 @@
 - If the precheck aborts, stop and escalate. Model retirement requires explicit PM/SA approval, replacement pins or `model_selection.json` updates, registry validation, and required A/B evidence when production behavior can change.
 
 ## Git Commit Policy
+- **盤中中止 Phase-1 會留下盤中假棒(2026-09-30 事故)**:twstock Step1 在交易時段跑會把 Yahoo 的
+  「進行中」當日棒寫進日K CSV(103 檔,1101 起字母序);中止父程序不會回滾已寫檔案。後續 Phase-2
+  ingest 把假棒進 DuckDB → 快照 as_of 變當日 → 假 predictions_<today>/unified_signals_<today> →
+  兩個組合帳本各鎖一筆假 run(`unified_runs` 同日「已鎖定就跳過」,隔日真實 run 會被擋)→ 投資賽
+  38 筆等開盤單被判 SKIPPED(missing_open_price)。**鐵律**:(1) 交易時段(09:00-13:30)不得啟動
+  Phase-1,任何「補跑」先核系統時鐘與 `is_taiwan_trading_day`;(2) 任何被中止的抓取 run 之後,
+  ingest 前必須掃日K是否有 `>= TODAY`(未收盤)的列,有則隔離備份後移除;(3) 修復順序=清 CSV →
+  重 ingest → 隔離假預測檔(`model_cleanup_precheck` 先過)→ 移除同日假 `unified_runs` 列 →
+  投資賽假 SKIPPED 還原 PENDING/假訊號單刪除 → 重跑 Phase-2 重新認證;所有刪改前備份到
+  `logs/quarantine_partial_bars_<date>/`。
 - **Git 分支操作會擊落 lineage 憑證(2026-09-30 事故)**:entry/prediction/snapshot 憑證的快速簽章
   含來源檔 `mtime_ns`;`git checkout` 到舊 commit 再 merge 回來會把幾百個追蹤檔以相同內容重寫
   (sha 不變、mtime 全變)→ 當日所有憑證失效 → 名單 API 503、canonical 產生器拒絕生成。
