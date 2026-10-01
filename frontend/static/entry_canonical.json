@@ -1,7 +1,7 @@
 {
   "trade_date": "2026-10-01",
   "as_of_date": "2026-09-30",
-  "generated_at": "2026-10-01T07:25:37",
+  "generated_at": "2026-10-01T14:32:01",
   "data_status": "OK",
   "data_warnings": [],
   "special_status": {
@@ -398,9 +398,30 @@
       "stale": "",
       "reason": "【watchlist】回踩進區間才觸發,照 5 步紀律執行",
       "source_date": "2026-09-30"
+    },
+    {
+      "priority": "18",
+      "stock": "8150 南茂",
+      "sector": "半導體業",
+      "lane": "rere_watch",
+      "ptype": null,
+      "status": "觀察·等回檔",
+      "data_status": "OK",
+      "data_warnings": [],
+      "model_source_date": null,
+      "intraday_verified": false,
+      "kind": "watch",
+      "zone": "105.5-110.0",
+      "stop": "104.5",
+      "no_chase": ">110.0",
+      "ret20d": "n/a",
+      "stale": "",
+      "reason": "貼MA20+21% 量1.9x RSI69 外資20d+73645張",
+      "source_date": "2026-09-30"
     }
   ],
   "discipline": [
+    "【夜盤】大盤 48353 vs 昨收 47940(+0.9%)→ 溫和,照計畫執行",
     "盤中進區間守15-30分才算;跌破停損=型態失敗就砍,別凹。",
     "出場:賣壓力減碼、砍型態失敗(非當日紅)、龍頭留基本倉、波段來回。",
     "rere 系統掃描為方法代理；主力成本與盤中守穩仍需人工確認，不能視為 KOL 本人薦股。"
@@ -408,10 +429,10 @@
   "artifact_lineage": {
     "schema": 1,
     "scope": "successful_live_entry_generation",
-    "run_id": "1369f06597f64946b505c37c22bd82bf",
+    "run_id": "77e6a8b9a2704bcab7780599c26822b6",
     "as_of_date": "2026-09-30",
     "trade_date": "2026-10-01",
-    "result_sha256": "6dbaeb84ac0cf25a628789407031ee6904a80e32e6c72c242f167bfbfd6ea646",
-    "payload_sha256": "d3439dd81f65b8721e426904dd8f8412fe57035b8578084178487254da15e2c9"
+    "result_sha256": "72e041d2a7fa4de8737310b0af60202fae6b6adc62a589b2342fec21a8e11c20",
+    "payload_sha256": "fa7a5e2a35773c4a33f21210cb360db0bd844aa1b2bce5d80f5411ef696de9bf"
   }
 }
