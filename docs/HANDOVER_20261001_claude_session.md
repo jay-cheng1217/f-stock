@@ -44,7 +44,11 @@
 
 1. **南茂 8150 watch 卡**(本 session 收盤後掛,若未完成見下節):區間 105.5-110(發動日低~前平台頂)、失效 104.5;掛入 `logs/entry_watchlist.json` 後**必須重跑認證鏈**(`_run_canonical_entry_plan`)否則 API 503
 2. **明晨 10/2 驗證**:Phase-2 應 all_ok=True(TAIEX 修復首驗);投資賽單據成交正常
-3. **REQ-034 每日持股風險報告仍為 dry-run**(5 月至今從未寄出;判了 30 天 EXIT 無人收到)——待 PM(用戶)核可改正式寄送
+3. **REQ-034 每日持股風險報告:已在正式寄送**(勘誤 10/1:原寫「dry-run 從未寄出」有誤)。排程
+   `TW_Stock_My_Holdings_Risk_Cut_0630` 平日 06:30 跑 `run_my_holdings_risk_cut_report.bat`(未帶 `--dry-run`),
+   5/16 起每日寄信(logs 共 96 份)。報告 JSON 的 `status: dry_run_only_pm_review_required` 是**判定規則
+   尚未經 PM 核定為交易指令**的標籤,不是寄送狀態——寄送與否看 log 的 `email_sent=`/排程 LastResult。
+   待辦改為:PM 決定是否退役信首的 synthetic-tested 註記(`--no-synthetic-note`)
 4. **SA 票**:lineage 快速簽章 mtime→sha 語意(`docs/TICKETS_post_review.md` #4,免 git 操作誤傷)
 5. **下次策略審查議程**:蹲點型核心條件跑輸 base rate(見 B);momentum 回測完整對齊(P1-3)、research-only 警告下沉輸出、舊勝率評估器、T+1 命名口徑(9/23 審查補遺)
 6. repo 歷史 7.5GB 瘦身(大型每日產物移出版控/LFS)——中期票
