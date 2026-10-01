@@ -54,11 +54,11 @@
    5/16 起每日寄信(logs 共 96 份)。報告 JSON 的 `status: dry_run_only_pm_review_required` 是**判定規則
    尚未經 PM 核定為交易指令**的標籤,不是寄送狀態——寄送與否看 log 的 `email_sent=`/排程 LastResult。
    待辦改為:PM 決定是否退役信首的 synthetic-tested 註記(`--no-synthetic-note`)
-3b. **週六重訓排程連續回傳失敗(10/1 自我稽核新發現,未修)**:`TW_Stock_Weekly_Retrain` 9/26 rc=1。
-   模型訓練本身每週都跑完,失敗的是尾段「更新 Agent 投資模擬賽」步驟——9/5 DuckDB 被 web 鎖、
-   9/12 與 9/26 `WinError 32` 檔案被佔用;9/19 則是 twstock 抓取 rc=1。平日 Phase-2 的 arena 更新正常,
-   所以影響限於週六。根因疑為重訓 guard 釋放 web DB 連線的範圍沒涵蓋 arena 寫檔(見 `logs/retrain_202609*.log`),
-   需先查清楚被佔用的是哪個檔再修。
+3b. **週六重訓排程「投資模擬賽」步驟失敗——已修(10/1)**:9/5、9/12、9/26 失敗(9/19 是 twstock 抓取另案)。
+   根因:重訓中的 ingest 結束時會呼叫 `/api/db/reconnect` 讓 web 重新拿回 DuckDB,之後 `daily_pipeline.run_agent_arena`
+   沒有再 release 就開 DB → 唯讀連線失敗 → 快照複製撞到 web 佔用的檔(WinError 32)。平日 Phase-2 的
+   `smart_update_auto.exec_agent_arena` 早在 9/7 就有先 release,週六路徑漏了。修法:run_agent_arena 開跑前同樣
+   release(2 個新測試)。**10/3 週六首驗**:`logs/retrain_20261003.log` 應無「失敗: 更新 Agent 投資模擬賽」。
 4. **SA 票**:lineage 快速簽章 mtime→sha 語意(`docs/TICKETS_post_review.md` #4,免 git 操作誤傷)
 5. **下次策略審查議程**:蹲點型核心條件跑輸 base rate(見 B);momentum 回測完整對齊(P1-3)、research-only 警告下沉輸出、舊勝率評估器、T+1 命名口徑(9/23 審查補遺)
 6. repo 歷史 7.5GB 瘦身(大型每日產物移出版控/LFS)——中期票

@@ -417,8 +417,14 @@ def run_agent_arena():
         pipeline_log.warning(message)
         return
 
+    from scripts import smart_update
     from scripts.agent_arena import run_daily_competition
 
+    # Ingest reconnects the web's DuckDB handle mid-run; without a fresh release the
+    # arena's read-only open fails and its snapshot copy hits WinError 32
+    # (weekly retrain 9/12, 9/26). Same release as smart_update_auto.exec_agent_arena.
+    if smart_update._api_post("/api/db/release", timeout=30):
+        pipeline_log.info("agent arena: web server released its DuckDB connection")
     run_daily_competition()
 
 
