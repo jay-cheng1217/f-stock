@@ -7,7 +7,7 @@
 
 | 項目 | 狀態 |
 |---|---|
-| 名單 API `/api/entry/canonical` | ✅ 200,17 檔,trade_date 2026-10-01 |
+| 名單 API `/api/entry/canonical` | ✅ 200,18 檔(14:31 加掛 8150 觀察卡後),trade_date 2026-10-01 |
 | 排程 | Phase-1 19:30 / Phase-2 07:00 正常;10/1 晨唯一 FAIL=TAIEX 月初假警報,**已修**(`d506d27f`),明晨 10/2 應全綠 |
 | Git | **main 唯一長駐分支**,本地=遠端(GitHub jay-cheng1217/f-stock),每日產物由 Phase-2 尾端白名單自動 commit+push |
 | 資料 | 日K/DuckDB 至 9/30(正式收盤資料);9/30 盤中污染事故已全數清除(備份在 `logs/quarantine_partial_bars_20260930/`) |
@@ -15,6 +15,11 @@
 | 儀表板 | 固定 Artifact 網址每平日 07:45 自動重發;rere 區塊置頂 |
 
 ## 二、本期完成(按主題)
+
+> **commit hash 查法(10/1 勘誤)**:下列 hash 中 `38e1d754`、`16cce5df`、`d0af395b`、`7905ae7a`、
+> `4672764d`、`d506d27f` 及其後在 main 上;**其餘(`597bffe0`…`37f22ab8`)是 9/30 快照重接前的歷史,
+> 不在 main、也不在遠端**,只存在本機 tag `archive/main-full-history-20260930`
+> (`git log archive/main-full-history-20260930 -1 <hash>`)。新 clone 查不到屬正常。
 
 ### A. 9/23 Codex 審查修復(P1 全數完成)
 - 盤中未確認不亮綠燈(`597bffe0`/`00ee23b3`)、rere 法人缺值標待確認(同上)
@@ -49,6 +54,11 @@
    5/16 起每日寄信(logs 共 96 份)。報告 JSON 的 `status: dry_run_only_pm_review_required` 是**判定規則
    尚未經 PM 核定為交易指令**的標籤,不是寄送狀態——寄送與否看 log 的 `email_sent=`/排程 LastResult。
    待辦改為:PM 決定是否退役信首的 synthetic-tested 註記(`--no-synthetic-note`)
+3b. **週六重訓排程連續回傳失敗(10/1 自我稽核新發現,未修)**:`TW_Stock_Weekly_Retrain` 9/26 rc=1。
+   模型訓練本身每週都跑完,失敗的是尾段「更新 Agent 投資模擬賽」步驟——9/5 DuckDB 被 web 鎖、
+   9/12 與 9/26 `WinError 32` 檔案被佔用;9/19 則是 twstock 抓取 rc=1。平日 Phase-2 的 arena 更新正常,
+   所以影響限於週六。根因疑為重訓 guard 釋放 web DB 連線的範圍沒涵蓋 arena 寫檔(見 `logs/retrain_202609*.log`),
+   需先查清楚被佔用的是哪個檔再修。
 4. **SA 票**:lineage 快速簽章 mtime→sha 語意(`docs/TICKETS_post_review.md` #4,免 git 操作誤傷)
 5. **下次策略審查議程**:蹲點型核心條件跑輸 base rate(見 B);momentum 回測完整對齊(P1-3)、research-only 警告下沉輸出、舊勝率評估器、T+1 命名口徑(9/23 審查補遺)
 6. repo 歷史 7.5GB 瘦身(大型每日產物移出版控/LFS)——中期票
