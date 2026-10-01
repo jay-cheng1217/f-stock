@@ -59,6 +59,9 @@ def _build_session() -> requests.Session:
 
 SESSION = _build_session()
 
+# TWSE「查無資料」stat 判別字串(月初邊界用,見 _fetch_month)
+NO_DATA_STAT_MARKERS = ("沒有符合條件", "查無資料")
+
 
 def _month_starts(start: pd.Timestamp, end: pd.Timestamp) -> list[pd.Timestamp]:
     return list(pd.date_range(start.to_period("M").start_time, end, freq="MS"))
@@ -81,6 +84,14 @@ def _fetch_month(month: pd.Timestamp, retries: int = 3) -> pd.DataFrame:
             response.raise_for_status()
             payload = json.loads(response.content.decode("utf-8"))
             if payload.get("stat") != "OK":
+                stat_text = str(payload.get("stat") or "")
+                # 月初首個交易日 07:00 向 TWSE 要「本月」月報時,該月尚無任何收盤,
+                # TWSE 回「很抱歉,沒有符合條件的資料!」——8/3、9/1、10/1 連三個月
+                # 的假警報皆此因,屬正常邊界,視為空月份即可。
+                # 歷史月份收到同訊息仍是真錯誤,維持 fail-closed。
+                is_current_month = month.to_period("M") == pd.Timestamp(date.today()).to_period("M")
+                if is_current_month and any(marker in stat_text for marker in NO_DATA_STAT_MARKERS):
+                    return pd.DataFrame(columns=["Date", "Close"])
                 raise RuntimeError(
                     f"TWSE MFI94U {month:%Y-%m} stat={payload.get('stat')!r}"
                 )
