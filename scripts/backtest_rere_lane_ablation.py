@@ -38,6 +38,8 @@ TECH_SECTORS = {"半導體業", "電子零組件業", "光電業", "電腦及週
                 "電子通路業", "資訊服務業"}   # 證交所「電子類」八個子產業
 _sec = pd.read_csv(BASE / "ml" / "data" / "sector_mapping.csv", dtype=str, encoding="utf-8-sig")
 SECTOR = dict(zip(_sec["Ticker"], _sec["Sector"]))   # 現況分類(非 point-in-time)
+# 電子/半導體原物料供應商中,被交易所歸在化學/塑膠/玻璃/電機而未進電子八類者(人工清單,依公開業務認知,未逐檔查證營收占比)
+MATERIAL_EXTRA = {"1303", "1802", "4722", "1717", "1711", "4755", "1773", "4772", "4770", "1560", "4763", "1727", "4739"}
 
 
 def _ret(k, c, ma60, events, t, n, stop_mult=0.97):
@@ -108,7 +110,7 @@ for f in sorted(DAILY.glob("*.csv")):
                 continue
             last = t
             d = k["Date"].iloc[t]
-            rows.append({"grp": name, "year": d[:4], "bull": BULL.get(d), "ret": r, "sec": SECTOR.get(tk, "")})
+            rows.append({"grp": name, "year": d[:4], "bull": BULL.get(d), "ret": r, "sec": SECTOR.get(tk, ""), "tk": tk})
     # 停損變體:BASE 條件、停損改 MA60×1.00 / 0.94
     for mult, label in ((1.00, "H BASE 停損改MA60×1.00"), (0.94, "H BASE 停損改MA60×0.94")):
         last = -10_000
@@ -120,7 +122,7 @@ for f in sorted(DAILY.glob("*.csv")):
                 continue
             last = t
             d = k["Date"].iloc[t]
-            rows.append({"grp": label, "year": d[:4], "bull": BULL.get(d), "ret": r, "sec": SECTOR.get(tk, "")})
+            rows.append({"grp": label, "year": d[:4], "bull": BULL.get(d), "ret": r, "sec": SECTOR.get(tk, ""), "tk": tk})
 
 df_all = pd.DataFrame(rows)
 
@@ -137,6 +139,8 @@ UNIVERSES = [
     ("科技股(電子八類)", df_all["sec"].isin(TECH_SECTORS)),
     ("半導體業", df_all["sec"] == "半導體業"),
     ("非科技股", ~df_all["sec"].isin(TECH_SECTORS)),
+    ("原物料供應商(未列入電子類的13檔)", df_all["tk"].isin(MATERIAL_EXTRA)),
+    ("科技股+這13檔", df_all["sec"].isin(TECH_SECTORS) | df_all["tk"].isin(MATERIAL_EXTRA)),
 ]
 KEY = ("CONTROL 貼線量縮", "BASE 深洗盤+拐點(現行)", "E CONTROL+季線上揚")
 for uname, umask in UNIVERSES:
