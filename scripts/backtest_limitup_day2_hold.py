@@ -3,7 +3,7 @@
 import glob, os, re, sys
 import numpy as np, pandas as pd
 
-BASE = r"F:\stock\日K資料"
+BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "日K資料")
 rows = []
 for p in glob.glob(os.path.join(BASE, "*.csv")):
     t = os.path.basename(p)[:-4]

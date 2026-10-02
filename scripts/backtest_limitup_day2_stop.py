@@ -1,7 +1,7 @@
 """A 組:D2 收盤進場,D3~D7 跌破 D1 漲停價即出(跳空則開盤價出),否則 D7 收盤出。含 0.4% 來回成本。"""
 import glob, os, re
 import numpy as np, pandas as pd
-BASE = r"F:\stock\日K資料"; FR = 0.004
+BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "日K資料"); FR = 0.004
 res = []
 for p in glob.glob(os.path.join(BASE, "*.csv")):
     t = os.path.basename(p)[:-4]
