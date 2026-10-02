@@ -48,7 +48,7 @@
 ## 三、待辦(優先序)
 
 1. **南茂 8150 watch 卡**(本 session 收盤後掛,若未完成見下節):區間 105.5-110(發動日低~前平台頂)、失效 104.5;掛入 `logs/entry_watchlist.json` 後**必須重跑認證鏈**(`_run_canonical_entry_plan`)否則 API 503
-2. **明晨 10/2 驗證**:Phase-2 應 all_ok=True(TAIEX 修復首驗);投資賽單據成交正常
+2. ~~明晨 10/2 驗證~~ **已驗(10/2)**:Phase-2 `all_ok=True`、TAIEX 步驟 DONE(修復首驗通過);持股風險信 send log `email_sent=True`
 3. **REQ-034 每日持股風險報告:已在正式寄送**(勘誤 10/1:原寫「dry-run 從未寄出」有誤)。排程
    `TW_Stock_My_Holdings_Risk_Cut_0630` 平日 06:30 跑 `run_my_holdings_risk_cut_report.bat`(未帶 `--dry-run`),
    5/16 起每日寄信(logs 共 96 份)。報告 JSON 的 `status: dry_run_only_pm_review_required` 是**判定規則
