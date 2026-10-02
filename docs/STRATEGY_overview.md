@@ -350,4 +350,11 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
    尾部風險 2.7 倍——「深洗盤+拐點」在集中尾部風險而非增加報酬。此發現與 9/6 審查
    「rere 邊際在裁量非機械」一致;forward 驗證進行中不改條件,待完整 60 日 cohort 與
    PM 審查後決定 lane 條件是否重構(候選方向:去拐點要求、以盤整 base + 產業/大戶排序取代)。
+7. BT-rere-quiet-base(2026-10-02,她 9 月這批的形狀:台表科/瑞耘布局期「外資投信幾乎沒進出+量縮到均量 0.3-0.45 倍
+   +自10日高回落 5-11%+貼MA20+>MA60」)。事前判準寫死於腳本(n≥300、平均≥CONTROL+1.5pp、勝率≥CONTROL+3pp、
+   左尾≤CONTROL),只收完整 60 棒樣本,2020-04~2026-07。**判決:❌ 4 項判準 3 項 FAIL,不開子型態、不改 gate**——
+   QUIET n=8,153 +3.61%/勝率34.3%/左尾5.1% vs CONTROL n=38,741 +3.87%/38.0%/左尾3.6%;拆開看「極度量縮」
+   (DRY +3.75%/37.9%)與「法人靜默」(FLOWQ +3.94%/37.5%)各自也無邊際;逐年僅 2020 勝 CONTROL。
+   同口徑 BASE(蹲點型)+3.20%/33.4%/左尾9.1%,#6「蹲點型跑輸 base rate」的發現在完整 60 棒口徑下重現。
+   腳本:scripts/backtest_rere_quiet_base.py;明細:ml/reports/bt_rere_quiet_base.csv。
    明細 ml/reports/bt_rere_pre_trust_accumulation.csv。
