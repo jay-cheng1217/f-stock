@@ -34,6 +34,11 @@ idx = idx.sort_values("Date")
 idx["bull"] = idx["Close"] > idx["Close"].rolling(60).mean()
 BULL = dict(zip(idx["Date"], idx["bull"]))
 
+TECH_SECTORS = {"半導體業", "電子零組件業", "光電業", "電腦及週邊設備業", "其他電子業", "通信網路業",
+                "電子通路業", "資訊服務業"}   # 證交所「電子類」八個子產業
+_sec = pd.read_csv(BASE / "ml" / "data" / "sector_mapping.csv", dtype=str, encoding="utf-8-sig")
+SECTOR = dict(zip(_sec["Ticker"], _sec["Sector"]))   # 現況分類(非 point-in-time)
+
 
 def _ret(k, c, ma60, events, t, n, stop_mult=0.97):
     e = t + 1
@@ -103,7 +108,7 @@ for f in sorted(DAILY.glob("*.csv")):
                 continue
             last = t
             d = k["Date"].iloc[t]
-            rows.append({"grp": name, "year": d[:4], "bull": BULL.get(d), "ret": r})
+            rows.append({"grp": name, "year": d[:4], "bull": BULL.get(d), "ret": r, "sec": SECTOR.get(tk, "")})
     # 停損變體:BASE 條件、停損改 MA60×1.00 / 0.94
     for mult, label in ((1.00, "H BASE 停損改MA60×1.00"), (0.94, "H BASE 停損改MA60×0.94")):
         last = -10_000
@@ -115,29 +120,39 @@ for f in sorted(DAILY.glob("*.csv")):
                 continue
             last = t
             d = k["Date"].iloc[t]
-            rows.append({"grp": label, "year": d[:4], "bull": BULL.get(d), "ret": r})
+            rows.append({"grp": label, "year": d[:4], "bull": BULL.get(d), "ret": r, "sec": SECTOR.get(tk, "")})
 
-df = pd.DataFrame(rows)
+df_all = pd.DataFrame(rows)
 
 
 def line(name, v):
+    if not len(v):
+        return f"{name:26} n=0"
     return (f"{name:26} n={len(v):6} 平均{v.mean()*100:+6.2f}% 中位{v.median()*100:+6.2f}% 勝率{(v>0).mean()*100:5.1f}% "
             f"左尾<-20%:{(v<-0.20).mean()*100:4.1f}% 大賺>+30%:{(v>0.30).mean()*100:4.1f}%")
 
 
-print(f"=== BT-rere-lane-ablation(完整60棒,{len(df)} 筆)===")
-for g in df["grp"].drop_duplicates():
-    print(line(g, df[df.grp == g]["ret"]))
-print("\n--- 依大盤(加權>MA60=多頭)拆分 ---")
-for g in ("CONTROL 貼線量縮", "BASE 深洗盤+拐點(現行)", "E CONTROL+季線上揚"):
-    for flag, lab in ((True, "多頭"), (False, "空頭")):
-        v = df[(df.grp == g) & (df.bull == flag)]["ret"]
-        if len(v):
-            print(line(f"{g[:14]}|{lab}", v))
-print("\n--- 逐年 平均報酬:CONTROL / BASE / E ---")
-for y in sorted(df["year"].unique()):
-    out = []
-    for g in ("CONTROL 貼線量縮", "BASE 深洗盤+拐點(現行)", "E CONTROL+季線上揚"):
-        v = df[(df.grp == g) & (df.year == y)]["ret"]
-        out.append(f"{v.mean()*100:+6.2f}%(n={len(v)})" if len(v) else "n=0")
-    print(f"  {y}: " + " | ".join(out))
+UNIVERSES = [
+    ("全市場", df_all["sec"].notna()),
+    ("科技股(電子八類)", df_all["sec"].isin(TECH_SECTORS)),
+    ("半導體業", df_all["sec"] == "半導體業"),
+    ("非科技股", ~df_all["sec"].isin(TECH_SECTORS)),
+]
+KEY = ("CONTROL 貼線量縮", "BASE 深洗盤+拐點(現行)", "E CONTROL+季線上揚")
+for uname, umask in UNIVERSES:
+    df = df_all[umask]
+    print()
+    print(f"=== BT-rere-lane-ablation|{uname}(完整60棒,{len(df)} 筆)===")
+    for g in df_all["grp"].drop_duplicates():
+        print(line(g, df[df.grp == g]["ret"]))
+    print("--- 依大盤(加權>MA60=多頭)拆分 ---")
+    for g in KEY:
+        for flag, lab in ((True, "多頭"), (False, "空頭")):
+            print(line(f"{g[:14]}|{lab}", df[(df.grp == g) & (df.bull == flag)]["ret"]))
+    print("--- 逐年 平均報酬:CONTROL / BASE / E ---")
+    for y in sorted(df_all["year"].unique()):
+        out = []
+        for g in KEY:
+            v = df[(df.grp == g) & (df.year == y)]["ret"]
+            out.append(f"{v.mean()*100:+6.2f}%(n={len(v)})" if len(v) else "n=0")
+        print(f"  {y}: " + " | ".join(out))
