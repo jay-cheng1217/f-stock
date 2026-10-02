@@ -106,3 +106,28 @@ def test_dry_run_writes_red_and_synthetic_split_artifacts(tmp_path):
     synthetic_text = (tmp_path / "req034_v3_synthetic_boundary_20260517.md").read_text(encoding="utf-8")
     assert "LOW_LIQUIDITY" in red_text
     assert "synthetic_case_etf_rule_subset_boundary" in synthetic_text
+
+
+def test_load_reviews_skips_fully_sold_holdings(tmp_path, monkeypatch):
+    import sqlite3
+
+    from backend.routers import my_holdings
+    from scripts import req034_my_holdings_dry_run as dry_run
+
+    db_path = tmp_path / "my_holdings.db"
+    with sqlite3.connect(db_path) as conn:
+        conn.execute(
+            "CREATE TABLE holdings (id INTEGER PRIMARY KEY, ticker TEXT, asset_type TEXT, shares REAL, "
+            "avg_cost REAL, breakeven_price REAL, entry_date TEXT, note TEXT, created_at TEXT, updated_at TEXT)"
+        )
+        conn.execute("INSERT INTO holdings (ticker, asset_type, shares, avg_cost) VALUES ('1111', 'stock', 1000, 10)")
+        conn.execute("INSERT INTO holdings (ticker, asset_type, shares, avg_cost) VALUES ('2222', 'stock', 0, 10)")
+    monkeypatch.setattr(
+        my_holdings,
+        "_build_review",
+        lambda row: {"holding": {"ticker": row["ticker"], "asset_type": "stock"}, "signal": "HOLD"},
+    )
+
+    reviews = dry_run._load_reviews(db_path)
+
+    assert [item["ticker"] for item in reviews] == ["1111"]

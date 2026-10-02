@@ -78,7 +78,8 @@ def _load_reviews(db_path: Path) -> list[dict[str, Any]]:
     my_holdings.MY_HOLDINGS_DB_PATH = str(db_path)
     with sqlite3.connect(db_path) as conn:
         conn.row_factory = sqlite3.Row
-        rows = conn.execute("SELECT * FROM holdings ORDER BY ticker, id").fetchall()
+        # Fully sold positions keep their row (and transaction history) with shares = 0.
+        rows = conn.execute("SELECT * FROM holdings WHERE shares > 0 ORDER BY ticker, id").fetchall()
     return [_sanitize_review(my_holdings._build_review(row)) for row in rows]
 
 
