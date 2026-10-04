@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-02",
+  "date": "2026-10-05",
   "hits": [
     {
       "ticker": "6221",
       "name": "晉泰",
       "sector": "資訊服務業",
       "released": "2026-09-29",
-      "days_since": 3,
+      "days_since": 6,
       "known_yoy": 21.48,
       "rev_window": true,
       "dual_fuse": false
@@ -16,7 +16,7 @@
       "name": "全友",
       "sector": "電腦及週邊設備業",
       "released": "2026-09-30",
-      "days_since": 2,
+      "days_since": 5,
       "known_yoy": 239.99,
       "rev_window": true,
       "dual_fuse": true
@@ -26,7 +26,7 @@
       "name": "聯一光",
       "sector": "光電業",
       "released": "2026-09-30",
-      "days_since": 2,
+      "days_since": 5,
       "known_yoy": 0.86,
       "rev_window": true,
       "dual_fuse": false
@@ -36,7 +36,7 @@
       "name": "世紀*",
       "sector": "其他業",
       "released": "2026-09-30",
-      "days_since": 2,
+      "days_since": 5,
       "known_yoy": 102.52,
       "rev_window": true,
       "dual_fuse": true
@@ -46,7 +46,7 @@
       "name": "光鼎",
       "sector": "光電業",
       "released": "2026-10-01",
-      "days_since": 1,
+      "days_since": 4,
       "known_yoy": 13.06,
       "rev_window": true,
       "dual_fuse": false
@@ -56,7 +56,7 @@
       "name": "嘉基",
       "sector": "電子零組件業",
       "released": "2026-10-01",
-      "days_since": 1,
+      "days_since": 4,
       "known_yoy": 113.02,
       "rev_window": true,
       "dual_fuse": true
@@ -66,7 +66,7 @@
       "name": "圓祥生技",
       "sector": "生技醫療業",
       "released": "2026-10-01",
-      "days_since": 1,
+      "days_since": 4,
       "known_yoy": 999999.99,
       "rev_window": true,
       "dual_fuse": true
@@ -76,8 +76,38 @@
       "name": "尖點",
       "sector": "其他電子業",
       "released": "2026-10-01",
-      "days_since": 1,
+      "days_since": 4,
       "known_yoy": 97.75,
+      "rev_window": true,
+      "dual_fuse": true
+    },
+    {
+      "ticker": "2468",
+      "name": "華經",
+      "sector": "資訊服務業",
+      "released": "2026-10-02",
+      "days_since": 3,
+      "known_yoy": -28.59,
+      "rev_window": true,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "6168",
+      "name": "宏齊",
+      "sector": "光電業",
+      "released": "2026-10-02",
+      "days_since": 3,
+      "known_yoy": 18.52,
+      "rev_window": true,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "7772",
+      "name": "耀穎",
+      "sector": "半導體業",
+      "released": "2026-10-02",
+      "days_since": 3,
+      "known_yoy": 54.2,
       "rev_window": true,
       "dual_fuse": true
     }
