@@ -91,7 +91,10 @@ def _restore_inherited_acl(path):
         return
     import subprocess
     try:
-        result = subprocess.run(["icacls", str(path), "/reset"], capture_output=True, text=True, timeout=30)
+        # icacls prints cp950 on zh-TW consoles; without errors="replace" the capture thread
+        # raises UnicodeDecodeError (seen 2026-10-05) even though the reset itself succeeded.
+        result = subprocess.run(["icacls", str(path), "/reset"], capture_output=True, text=True,
+                                errors="replace", timeout=30)
     except Exception as exc:  # noqa: BLE001 - permission healing is advisory
         print(f"  ACL reset skipped for {path}: {exc}")
         return
