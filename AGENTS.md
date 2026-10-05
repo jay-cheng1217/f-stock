@@ -74,6 +74,13 @@
   買一/日高並標 🔒。**盤中判讀鐵律**:單源報價下結論前必查欄位一致性(現價 vs 當日高低、
   五檔結構);「高點=漲停幅度 + 賣一空」= 鎖死指紋,不是回落;矛盾欄位未解釋前不得編敘事
   (先射箭再畫靶的盤中版)。
+- **TDCC 週資料只保留最新一週(2026-10-05 PM 提醒)**:集保 opendata `getOD.ashx?id=1-5` 每週被新一週覆蓋,
+  **錯過就無法從同一來源補抓**(`backfill_tdcc.py` 的逐檔歷史查詢是另一條慢路徑,保留期未查證)。
+  系統靠平日晚上 Phase-1「Update TDCC weekly data」入檔(常態=週一 20:1x);週六重訓失敗**不影響**這一步,
+  但若整週 Phase-1 的 TDCC 步驟都失敗,該週資料永久缺失。操作規則:(1) 發現官方資料日期 > 本地最新 raw 週時,
+  先下載原始檔到 `logs/quarantine_tdcc_<date>/` 當保險(格式與 `集保分散/tdcc_<date>.csv` 相同,可直接轉入);
+  (2) **盤中不可跑正式 fetcher**——它會重建 `集保分散/tdcc_summary.csv`,該檔在快照/名單憑證簽章內
+  (`ml/dataset._raw_cache_source_patterns`),一動名單 API 即 503;正式入檔留給 Phase-1 或收盤後。
 - **Yahoo 非交易日假棒(2026-09-21)**:yfinance 對冷門上櫃股(5276/5878)回傳日期落在週日 9/20 的即時報價棒,
   有量且非平價,逃過 `_drop_fake_flat_bars` 的零量平價檢查;`verify_otc_bars._recent_local_dates` 把 9/20 納入
   查詢窗口→TWSE MI_INDEX 回「沒有符合條件的資料」→verifier fail closed→SKIP ingest/DataA/entry 整條 Phase-1。
