@@ -952,7 +952,7 @@ def build(path: Path) -> str:
                         "sources": source_status,
                         "generated": datetime.now().strftime("%Y-%m-%d %H:%M")},
                "rows": [{k: r.get(k) for k in
-                         ("tk", "stock", "sector", "strategy", "state", "status", "kind",
+                         ("tk", "stock", "sector", "strategy", "state", "status", "kind", "ptype",
                           "priority", "zone", "stop", "no_chase", "ret20d", "reason",
                           "zlo", "zhi", "stopv", "vt", "vtx", "stale", "card",
                           "source_date", "model_source_date", "data_status", "data_warnings")}
@@ -1144,6 +1144,15 @@ details.dled summary:hover{background:var(--sm-wash)}
 .card-source{font-size:11.5px;color:var(--ink2);margin:8px 0;overflow-wrap:anywhere}
 .card-details{border-top:1px solid var(--line);margin-top:12px;padding-top:8px;font-size:12.5px}
 .card-details summary{cursor:pointer;color:var(--ink2)}.card-details .rsn{border:0;overflow-wrap:anywhere}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.card-top .card-state{margin-bottom:0}
+.card-tag{font-size:11.5px;color:var(--ink2);background:var(--sm-wash);border-radius:4px;padding:2px 8px;white-space:nowrap}
+.card-tag.is-rere{color:var(--go);background:var(--go-wash)}
+.card-prices{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6px;margin:8px 0}
+.card-prices>div{background:var(--page);padding:6px 8px;border-radius:5px;min-width:0}
+.card-prices .zlab{display:block;font-size:11px;color:var(--muted);margin:0 0 2px}
+.card-prices b{overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.card-why{font-size:13px;color:var(--ink2);line-height:1.5;margin:6px 0 2px}
 .guard{background:var(--wt-wash);border:1px solid var(--wt);border-radius:8px;color:var(--wt);
   font-family:Consolas,monospace;font-size:13px;padding:8px 14px;margin:2px 0 6px}
 footer{color:var(--muted);font-size:12.5px;margin-top:36px;font-family:Consolas,monospace}
@@ -1259,27 +1268,39 @@ function card(r){
   const verd = r.vtx ? `<div class="verdict ${VCLS[r.vt]||''}">籌碼提示 · ${esc(r.vtx)}</div>` : '';
   const isStale = r.state==='watch' && r.stale;
   const tone = info.tone==='skip'?'v-skip':info.tone==='check'?'v-check':'v-warn';
+  // 收斂(2026-10-07 PM):卡面只放「這檔才有的資訊」——狀態、代號、收盤相對區間、三個價位、一行篩選理由、硬風險 chip。
+  // 每張卡相同的制式句(動作提示/依據/尚缺/資料日期)移入展開區;共同紀律在頁首 #disc 講一次。
+  const PT = {shakeout:'蹲點型', ignition:'發動型', shallow:'淺洗盤型', shakeout_v2:'蹲點型v2', shallow_v2:'淺洗盤型v2'};
+  const laneTag = r.strategy==='rere' ? `rere · ${PT[r.ptype]||'蹲點型'} · ${info.horizon} 日`
+                : (r.state==='watch' ? `觀察卡 · ${info.horizon} 日` : `主策略 · ${info.horizon} 日`);
+  const lc = info.last_close||{};
+  const POS = {inside:'在區間內', within:'在區間內', above:'高於區間', below:'低於區間'};
+  const closeLine = (lc.price!==null && lc.price!==undefined)
+    ? `收盤 <b>${esc(lc.price)}</b>（${esc(String(lc.date||'').slice(5))}）· ${esc(POS[lc.position]||lc.message||'')}`
+    : esc(lc.message||'盤後價格日期未確認');
+  const shortLabel = String(info.label||'').replace(/^(觀察|暫緩)\\s*·\\s*/,'');
+  // 一行篩選理由:去掉【lane】前綴與「;60日波段…」制式尾句
+  const why = String(r.reason||'').replace(/^【[^】]*】/,'').split(/[;；]/)[0].trim();
   return `<article class="card c-${r.state}${info.tone==='skip'?' c-skip':''}">
-    <div class="card-state ${tone}">${esc(info.label)}</div>
+    <div class="card-top"><span class="card-state ${tone}">${esc(shortLabel||info.label)}</span><span class="card-tag${r.strategy==='rere'?' is-rere':''}">${esc(laneTag)}</span></div>
     <div class="card-title"><button type="button" class="stock-link tk" data-tk="${esc(r.tk)}" aria-label="查看 ${esc(r.stock)} 詳情">${esc(r.stock)}</button>${r.sector?`<span class="mkt">${esc(r.sector)}</span>`:''}</div>
-    <div class="card-horizon">${r.strategy==='rere'?'rere 方法系統篩選':'主策略'} · ${info.horizon} 個交易日觀察 · ${esc(info.size)}</div>
-    <div class="card-action">${esc(info.action)}</div>
-    <div class="card-close">${(info.last_close||{}).price!==null&&(info.last_close||{}).price!==undefined?
-      `上次收盤 <b>${esc(info.last_close.price)}</b> · ${esc(info.last_close.date)}（盤後）<br>`:''}
-      ${esc((info.last_close||{}).message||'盤後價格日期未確認，暫不比較區間。')}</div>
-    <div class="card-price-grid"><div class="observe"><span class="zlab">觀察區間</span><b class="zval">${esc(r.zone||'待重估')}</b></div>
-      <div><span class="zlab">高於此價不追</span><b>${esc(r.no_chase||'待重估')}</b></div>
-      <div><span class="zlab">失效參考價</span><b class="up">${esc(r.stop||'待重估')}</b></div></div>
-    <ul class="card-evidence">${info.basis.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
+    <div class="card-close">${closeLine}</div>
+    <div class="card-prices"><div class="observe"><span class="zlab">區間</span><b class="zval">${esc(r.zone||'待重估')}</b></div>
+      <div><span class="zlab">不追</span><b>${esc(r.no_chase||'待重估')}</b></div>
+      <div><span class="zlab">失效</span><b class="up">${esc(r.stop||'待重估')}</b></div></div>
+    ${why?`<div class="card-why">${esc(why)}</div>`:''}
     ${isStale?`<div class="verdict v-skip">${esc(r.stale)}</div>`:''}
     ${chips?`<div class="tags">${chips}</div>`:''}
     ${r.kind==='veto'?`<div class="verdict v-skip">否決原因 · ${esc(r.status||r.reason||'需確認原始否決條件')}</div>`:r.vt==='skip'?verd:''}
-    <div class="card-unknown">${info.warnings.length?info.warnings.map(esc).join('；')+'。':''}尚缺：盤中進區間守穩、人工籌碼確認。</div>
-    <div class="card-source">型態截至 ${esc(info.source_date||'未提供')} · 模型截至 ${esc(info.model_source_date||'未提供')}${r.strategy==='rere'?'（不作否決）':''}</div>
-    <details class="card-details"><summary>查看數據、完整理由與個股分析</summary>
+    ${info.warnings.length?`<div class="card-unknown">${info.warnings.map(esc).join('；')}</div>`:''}
+    <details class="card-details"><summary>詳細 · 動作提示、資料日期、模型值、完整理由</summary>
+      <div class="stat">${esc(info.action)} ${esc(info.size)}。</div>
+      <ul class="card-evidence">${info.basis.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
+      <div class="stat">尚缺：盤中進區間守穩、人工籌碼確認。</div>
+      <div class="stat">型態截至 ${esc(info.source_date||'未提供')} · 模型截至 ${esc(info.model_source_date||'未提供')}${r.strategy==='rere'?'（不作否決）':''}</div>
       <div class="rsn">${esc(r.reason||'未提供篩選理由')}</div>
       <div class="stat">原始狀態：${esc(r.status||'未提供')} · 名單順位 #${esc(r.priority||'—')}</div>
-      <div class="stat">20 日模型值：${esc(r.ret20d||'未提供')}（模型參考值，不是報酬保證${r.strategy==='rere'?'，不決定 rere 入列':''}）</div>
+      <div class="stat">20 日模型值：${esc(r.ret20d||'未提供')}（模型參考值，不是報酬保證；2026-10-07 起不過濾、不排序${r.strategy==='rere'?'，不決定 rere 入列':''}）</div>
       ${r.kind==='veto'||r.vt==='skip'?'':verd}
       <button type="button" class="back" data-tk="${esc(r.tk)}">查看 K 線與四面向</button>
     </details>
