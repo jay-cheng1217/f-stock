@@ -397,3 +397,16 @@ def test_archived_zone_alerts_flags_price_back_in_zone(tmp_path):
     assert gen._archived_zone_alerts(date(2026, 9, 15), set(), archive_path=arch, technical=tech) == [
         a for a in gen._archived_zone_alerts(date(2026, 9, 15), set(), archive_path=arch, technical=tech) if a["ticker"] == "6532"]
     assert gen._archived_zone_alerts(date(2026, 9, 15), set(), archive_path=tmp_path / "missing.json", technical=tech) == []
+
+
+def test_rere_stop_is_40pct_below_signal_close_and_pattern_line_is_reported():
+    assert gen.RERE_STOP_LOSS_PCT == 0.40 and gen.RERE_PATTERN_LINE_MULT == 0.97
+    row = {"ticker": "6278", "sector": "光電業", "lane": "rere", "ptype": "shallow_v2", "status": "rere·淺洗盤型v2·小倉(60日,配停損)",
+           "kind": "small", "zone_low": 179.4, "zone_high": 185.8, "stop": round(183.0 * 0.6, 2), "pattern_line": 173.0,
+           "pred20": float("nan"), "wash": 0.093, "v20": -0.044, "vol_ratio": 0.41}
+    out = gen._format_entry_row(1, row, {"6278": "台表科"})
+    assert out["stop"] == "109.8" and out["pattern_line"] == "173.0"
+    assert "停損=訊號收盤−40%" in out["reason"] and "型態參考線 173.0" in out["reason"]
+    main_row = {"ticker": "2330", "sector": "半導體業", "status": "可小倉觸發", "kind": "go", "zone_low": 1, "zone_high": 2, "stop": 0.9,
+                "pred20": 0.01, "v20": 0.03, "vol_ratio": 0.8, "rsi": 55, "foreign20": 10, "bucket": ""}
+    assert gen._format_entry_row(1, main_row, {})["pattern_line"] is None   # 主 lane 不受影響

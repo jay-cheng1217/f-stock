@@ -307,6 +307,12 @@ RERE_WASH_SHALLOW = 0.08    # 淺洗盤型下限(2026-09-24 PM 核准,BT-rere-sh
 RERE_MA20_LOW, RERE_MA20_HIGH = -0.05, 0.05   # 貼MA20 ±5%
 RERE_VOL_MAX = 1.2          # 蹲點型:今日量/20日均量 < 1.2(量縮)
 RERE_IGNITE_VOL = 1.5       # 發動型:今日量/20日均量 >= 1.5(放量,BT-ignition-day)
+# rere lane 停損(2026-10-07 PM 裁示「放寬到 −40」,BT-rere-stop-width 5/5 PASS,2026-10-08 訊號起適用):
+#   停損價 = 訊號日收盤 × (1 − 0.40),只當災難停損(六年樣本僅 2.06% 的訊號會觸發)。
+#   舊規則 MA60×0.97 六年 +4.00%/勝率 35.4%,−40% 版 +6.55%/47.6%、逐年 7/7 較高;代價是最差 1% 由 −31.4% 擴大到 −41.1%。
+#   MA60×0.97 保留為「型態參考線」只供裁量,不再觸發帳本出場。只適用 rere lane;主 lane 與 Champion rule 14 不受影響。
+RERE_STOP_LOSS_PCT = 0.40
+RERE_PATTERN_LINE_MULT = 0.97
 RERE_MAX = 6                # 現行三型呈現上限(2026-07-06 起)
 RERE_V2_MAX = 6             # v2 兩型另計上限(2026-10-07 起,並行驗證);兩型平分,見 _pick_rere_v2
 MAIN_MAX = 12               # 主 lane 呈現上限
@@ -665,7 +671,8 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
             "pred20": pred20, "bucket": bucket, "decision": "rere_lane",
             "kind": "small", "status": f"rere·{ptxt}·小倉(60日,配停損){tier_txt}{regime_txt}",
             "zone_low": elow, "zone_high": ehigh,
-            "stop": round(ma60 * 0.97, 2),
+            "stop": round(t["close"] * (1 - RERE_STOP_LOSS_PCT), 2),
+            "pattern_line": round(ma60 * RERE_PATTERN_LINE_MULT, 2),
             # 排序:族群強勢優先(輪動當紅)→ 洗盤深度;弱勢族群自動沉底但不封殺
             "score": (2 if tier == "strong" else (0 if tier == "weak" else 1)) + t["wash_from_hi10"],
             "lane": "rere", "ptype": ptype, "sec_tier": tier,
@@ -957,7 +964,9 @@ def _format_entry_row(i: int, r: dict[str, Any], nm: dict[str, str]) -> dict[str
         ptype = r.get("ptype")
         reason = (f"【rere lane·{RERE_PTYPE_LABEL.get(ptype, '蹲點型')}】洗盤{r['wash']*100:.0f}%後貼MA20{r['v20']*100:+.0f}% "
                   f"{'放量' if ptype == 'ignition' else '量縮'}{r['vol_ratio']:.1f}x "
-                  f"{'不要求外資拐點(v2 並行驗證)' if ptype in RERE_V2_PTYPES else '外資轉買'};60日波段,模型pred不採計,務必小倉")
+                  f"{'不要求外資拐點(v2 並行驗證)' if ptype in RERE_V2_PTYPES else '外資轉買'};60日波段,模型pred不採計,務必小倉"
+                  + (f";停損=訊號收盤−{RERE_STOP_LOSS_PCT:.0%}(災難停損),型態參考線 {r['pattern_line']}(MA60×{RERE_PATTERN_LINE_MULT},跌破=型態轉弱,不觸發帳本出場)"
+                     if r.get("pattern_line") else ""))
     else:
         reason = (f"貼MA20{r['v20']*100:+.0f}% 量{r['vol_ratio']:.1f}x RSI{r['rsi']:.0f} "
                   f"外資20d{r['foreign20']:+.0f}張" + (f" 籌碼{r['bucket']}" if r.get("bucket") else ""))
@@ -976,6 +985,7 @@ def _format_entry_row(i: int, r: dict[str, Any], nm: dict[str, str]) -> dict[str
         "no_chase": f">{r['zone_high']}", "ret20d": f"{r['pred20']*100:+.2f}%" if r["pred20"] == r["pred20"] else "n/a",
         "stale": r.get("stale", ""),
         "reason": reason,
+        "pattern_line": (str(r["pattern_line"]) if r.get("pattern_line") else None),
         "source_date": r.get("source_date"),
     }
 

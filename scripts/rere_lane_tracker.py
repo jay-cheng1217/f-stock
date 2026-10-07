@@ -36,6 +36,8 @@ HOLD_DAYS = 60
 #   _nostop  = 同一批訊號不停損、抱到第 60 棒(或最新)的結果(BT-rere-stop-width 的前瞻對照)
 #   campaign = 她「已公開」持有的標的 ∩ 系統訊號(公開日 <= 訊號日才算,避免事後得知的偷看)
 CAMPAIGNS = BASE_DIR / "ml" / "data" / "rere_public_campaigns.csv"
+# 2026-10-08 訊號起,產生器給的 rere 停損由 MA60×0.97 改為訊號日收盤 −40%(帳本逐列保存自己的 stop,舊列不回改)
+STOP_RULE_CHANGE_DATE = "2026-10-08"
 # 基準 2026-07-15 重定(PM核可):scripts/backtest_rere_lane_baseline.py adj 模式
 # = 與本帳本同慣例(MA60×0.97停損+除息還原)。舊 +9.40%/50.6% 為無停損純持有之
 # legacy 數字,不可重現且慣例不符,已作廢。純持有參考值:+6.77%/45.1%。
@@ -356,9 +358,14 @@ def check(as_of: str | None = None) -> None:
         shadow.to_csv(nostop_path, index=False, encoding="utf-8-sig")
         done = shadow[shadow["nostop_status"] == "matured"]
         lines += ["## 並列模擬：同一批訊號不停損（抱到第 60 棒或最新）", "",
-                  "現行規則（收盤破 MA60×0.97 停損）不變；此處只並列對照。未扣成本；樣本重疊；不含已下市股票。", "",
+                  "「照規則」＝各列記錄當時的停損價：2026-10-07 以前的訊號為 MA60×0.97，2026-10-08 起為訊號日收盤 −40%（PM 2026-10-07 裁示）。"
+                  "兩個時期不可混為一談；未扣成本；樣本重疊；不含已下市股票。", "",
                   _stat_line("全部已進場｜照規則", shadow["rule_ret_pct"]), _stat_line("全部已進場｜不停損", shadow["nostop_ret_pct"]),
                   _stat_line("完整 60 棒｜照規則", done["rule_ret_pct"]), _stat_line("完整 60 棒｜不停損", done["nostop_ret_pct"]), ""]
+        new_rule = shadow[shadow["signal_date"].astype(str) >= STOP_RULE_CHANGE_DATE]
+        if len(new_rule):
+            lines += [_stat_line(f"{STOP_RULE_CHANGE_DATE} 起（−40% 停損）｜照規則", new_rule["rule_ret_pct"]),
+                      _stat_line(f"{STOP_RULE_CHANGE_DATE} 起｜不停損", new_rule["nostop_ret_pct"]), ""]
         book, missed = campaign_book(shadow)
         if len(book):
             book.to_csv(campaign_path, index=False, encoding="utf-8-sig")

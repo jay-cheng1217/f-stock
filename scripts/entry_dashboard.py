@@ -980,7 +980,7 @@ def build(path: Path) -> str:
                         "sources": source_status,
                         "generated": datetime.now().strftime("%Y-%m-%d %H:%M")},
                "rows": [{k: r.get(k) for k in
-                         ("tk", "stock", "sector", "strategy", "state", "status", "kind", "ptype",
+                         ("tk", "stock", "sector", "strategy", "state", "status", "kind", "ptype", "pattern_line",
                           "priority", "zone", "stop", "no_chase", "ret20d", "reason",
                           "zlo", "zhi", "stopv", "vt", "vtx", "stale", "card",
                           "source_date", "model_source_date", "data_status", "data_warnings")}
@@ -1327,6 +1327,7 @@ function card(r){
       <div class="stat">${esc(info.action)} ${esc(info.size)}。</div>
       <ul class="card-evidence">${info.basis.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
       <div class="stat">尚缺：盤中進區間守穩、人工籌碼確認。</div>
+      ${r.pattern_line?`<div class="stat">型態參考線 ${esc(r.pattern_line)}（季線×0.97，跌破代表型態轉弱）；卡面的失效價是 −40% 災難停損。</div>`:''}
       <div class="stat">型態截至 ${esc(info.source_date||'未提供')} · 模型截至 ${esc(info.model_source_date||'未提供')}${r.strategy==='rere'?'（不作否決）':''}</div>
       <div class="rsn">${esc(r.reason||'未提供篩選理由')}</div>
       <div class="stat">原始狀態：${esc(r.status||'未提供')} · 名單順位 #${esc(r.priority||'—')}</div>
@@ -1845,7 +1846,7 @@ function hideD(){
     <div class="meta">這裡呈現逐筆模擬結果，沒有實際成交確認。主策略與 rere 的觀察期不同；提前停損先結束，不能只拿已平倉勝率判斷策略好壞。策略評估須使用完整觀察期的同批樣本，並分開比較。</div>`;
   const RS = D.rere_shadow||null;
   if(RS){
-    h += `<div class="meta">rere 並列模擬（${RS.n} 筆已進場訊號，60 日）：照規則停損 均 ${fmtPct(RS.rule_mean)}、勝率 ${RS.rule_win}%、漲逾 20% 有 ${RS.rule_big} 筆；同一批不停損 均 ${fmtPct(RS.nostop_mean)}、勝率 ${RS.nostop_win}%、漲逾 20% 有 ${RS.nostop_big} 筆。現行停損規則未變，僅並列對照；未扣成本、不含已下市股票。${RS.camp?` 她已公開標的且系統有訊號者 ${RS.camp.n} 筆：照規則 均 ${fmtPct(RS.camp.rule_mean)}、不停損 均 ${fmtPct(RS.camp.nostop_mean)}（樣本極小，僅供觀察）。`:''}</div>`;
+    h += `<div class="meta">rere 並列模擬（${RS.n} 筆已進場訊號，60 日）：照規則停損 均 ${fmtPct(RS.rule_mean)}、勝率 ${RS.rule_win}%、漲逾 20% 有 ${RS.rule_big} 筆；同一批不停損 均 ${fmtPct(RS.nostop_mean)}、勝率 ${RS.nostop_win}%、漲逾 20% 有 ${RS.nostop_big} 筆。2026-10-08 起新訊號的停損改為訊號日收盤 −40%，舊訊號維持當時的 MA60×0.97；未扣成本、不含已下市股票。${RS.camp?` 她已公開標的且系統有訊號者 ${RS.camp.n} 筆：照規則 均 ${fmtPct(RS.camp.rule_mean)}、不停損 均 ${fmtPct(RS.camp.nostop_mean)}（樣本極小，僅供觀察）。`:''}</div>`;
   }
   if(LG && LG.since){
     h += `<div class="meta">主 lane 排序自 ${LG.since} 起改為型態乾淨度（模型分數只顯示，不過濾、不排序）。舊規則（模型不反對→模型分數排序）以影子帳本並行：已結束 ${LG.closed} 筆 均 ${fmtPct(LG.mean)} 勝率 ${LG.win===null?'—':LG.win+'%'} · 持有中 ${LG.holding}；同期新排序主 lane 已結束 ${LG.new_closed} 筆 均 ${fmtPct(LG.new_mean)} 勝率 ${LG.new_win===null?'—':LG.new_win+'%'}。累積 ≥60 日後再比較，不據此提前下判決。</div>`;
