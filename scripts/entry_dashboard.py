@@ -241,6 +241,33 @@ def load_legacy_ledger_summary(main_ledger_path) -> dict | None:
         return None
 
 
+def load_rere_shadow_summary() -> dict | None:
+    """rere 並列模擬摘要(不停損影子、她已公開標的帳本);缺檔回 None。只做呈現,不影響名單。"""
+    reports = BASE_DIR / "ml" / "reports"
+    nostop_path = reports / "rere_lane_ledger_nostop.csv"
+    if not nostop_path.exists():
+        return None
+    try:
+        shadow = pd.read_csv(nostop_path, dtype={"ticker": str})
+        rule = pd.to_numeric(shadow["rule_ret_pct"], errors="coerce")
+        hold = pd.to_numeric(shadow["nostop_ret_pct"], errors="coerce")
+        both = rule.notna() & hold.notna()
+        if not both.any():
+            return None
+        out = {"n": int(both.sum()), "rule_mean": round(float(rule[both].mean()), 2), "nostop_mean": round(float(hold[both].mean()), 2),
+               "rule_win": int(round(float((rule[both] > 0).mean() * 100))), "nostop_win": int(round(float((hold[both] > 0).mean() * 100))),
+               "rule_big": int((rule[both] >= 20).sum()), "nostop_big": int((hold[both] >= 20).sum()), "camp": None}
+        camp_path = reports / "rere_public_campaign_book.csv"
+        if camp_path.exists():
+            book = pd.read_csv(camp_path, dtype={"ticker": str})
+            cr, ch = pd.to_numeric(book["rule_ret_pct"], errors="coerce"), pd.to_numeric(book["nostop_ret_pct"], errors="coerce")
+            if len(book):
+                out["camp"] = {"n": int(len(book)), "rule_mean": round(float(cr.mean()), 2), "nostop_mean": round(float(ch.mean()), 2)}
+        return out
+    except Exception:  # noqa: BLE001 - 摘要缺失不影響儀表板
+        return None
+
+
 def strategy_of(row: dict) -> str:
     lane = str(row.get("lane") or "")
     return "rere" if lane.startswith("rere") else "main"
@@ -961,6 +988,7 @@ def build(path: Path) -> str:
                "radar": radar,
                "idx": idx, "mkt": {**mkt, "guard_context": guard_context(mkt.get("guard"))}, "stocks": stocks, "ledger": ledger,
                "ledger_legacy": ledger_legacy,
+               "rere_shadow": load_rere_shadow_summary(),
                "news_html": load_news_html(), "arena": load_arena(),
                "holdings": load_holdings(),
                "daytrade": load_daytrade()}
@@ -1815,6 +1843,10 @@ function hideD(){
   let h = `<div class="sec">▼ 模擬進場紀錄
     <span class="hint">已結束 ${closedAll.length} 筆 · 持有中 ${holdAll.length} 筆</span></div>
     <div class="meta">這裡呈現逐筆模擬結果，沒有實際成交確認。主策略與 rere 的觀察期不同；提前停損先結束，不能只拿已平倉勝率判斷策略好壞。策略評估須使用完整觀察期的同批樣本，並分開比較。</div>`;
+  const RS = D.rere_shadow||null;
+  if(RS){
+    h += `<div class="meta">rere 並列模擬（${RS.n} 筆已進場訊號，60 日）：照規則停損 均 ${fmtPct(RS.rule_mean)}、勝率 ${RS.rule_win}%、漲逾 20% 有 ${RS.rule_big} 筆；同一批不停損 均 ${fmtPct(RS.nostop_mean)}、勝率 ${RS.nostop_win}%、漲逾 20% 有 ${RS.nostop_big} 筆。現行停損規則未變，僅並列對照；未扣成本、不含已下市股票。${RS.camp?` 她已公開標的且系統有訊號者 ${RS.camp.n} 筆：照規則 均 ${fmtPct(RS.camp.rule_mean)}、不停損 均 ${fmtPct(RS.camp.nostop_mean)}（樣本極小，僅供觀察）。`:''}</div>`;
+  }
   if(LG && LG.since){
     h += `<div class="meta">主 lane 排序自 ${LG.since} 起改為型態乾淨度（模型分數只顯示，不過濾、不排序）。舊規則（模型不反對→模型分數排序）以影子帳本並行：已結束 ${LG.closed} 筆 均 ${fmtPct(LG.mean)} 勝率 ${LG.win===null?'—':LG.win+'%'} · 持有中 ${LG.holding}；同期新排序主 lane 已結束 ${LG.new_closed} 筆 均 ${fmtPct(LG.new_mean)} 勝率 ${LG.new_win===null?'—':LG.new_win+'%'}。累積 ≥60 日後再比較，不據此提前下判決。</div>`;
   }
