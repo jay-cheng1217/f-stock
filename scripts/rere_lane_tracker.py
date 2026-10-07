@@ -61,11 +61,15 @@ def _load_ledger() -> pd.DataFrame:
 
 def _subtype(row: dict) -> str:
     explicit = str(row.get("subtype") or row.get("ptype") or "")
-    if explicit in ("shakeout", "ignition", "shallow"):
+    if explicit in ("shakeout", "ignition", "shallow", "shakeout_v2", "shallow_v2"):
         return explicit
     description = f"{row.get('status', '')} {row.get('reason', '')}"
     if "發動" in description:
         return "ignition"
+    if "淺洗盤型v2" in description:   # v2(2026-10-07):不要求外資拐點,帳本分開累積
+        return "shallow_v2"
+    if "蹲點型v2" in description:
+        return "shakeout_v2"
     if "淺洗盤" in description:
         return "shallow"
     if "蹲點" in description:

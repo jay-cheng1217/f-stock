@@ -71,8 +71,14 @@ Champion 自動帳本與 pin 不動;新舊模型每日對決帳本(shadow_dataA)
 數據若打臉可隨時 fallback(刪 dataA csv 即回舊源)。
 
 canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
-- **主 lane(溫和動能)**:貼MA20型態 gate → 模型買進+pred>0 → 籌碼K veto。
-- **rere lane(暴力轉機)**:深洗盤≥10% + 貼MA20±5% + 量縮<1.2x + 外資由賣轉買 + 收>MA60。
+- **主 lane(溫和動能)**:貼MA20型態 gate → 籌碼K veto → 型態乾淨度排序取 12。**2026-10-07 起模型 pred20
+  只顯示、不過濾、不排序**(PM 核可;回測票 #11 PASS 4/4:同一型態池上模型過濾+分數挑出的是池內最差一群)。
+  舊規則(模型不反對→clean+pred20)改為影子名單 `shadow_legacy_main` → `ml/reports/entry_filter_ledger_legacy_main.csv`
+  (每日 Phase-2 `run_kol_tracker_daily` 的 `entry_filter_tracker.py backfill --legacy`),與新排序並行 ≥60 日後 PM 裁決。
+- **rere lane(暴力轉機)**:深洗盤≥10% + 貼MA20±5% + 量縮<1.2x + 外資由賣轉買 + 收>MA60;淺洗盤型 8-10%。
+  **v2 兩型(2026-10-07 起)**:蹲點型v2 / 淺洗盤型v2 = 同條件但**不要求外資拐點**(回測票 #10 PASS 12/12;
+  來源釐清確認拐點不是她的規則、ablation 證明貢獻 0)。現行三型不成立時才掛 v2,另計上限 6 檔,
+  帳本 `subtype` 分開累積(`shakeout_v2`/`shallow_v2`),現行 forward cohort 零變動;發動型不動。
   **模型不得用 pred 否決此 lane**(V2 系統性看不懂此型:合晶 6182 於 78 元符合、模型全程
   判強力賣出、其後 +73%);籌碼K 硬風險(trap/distribution)仍可 veto。強制小倉、60 日
   horizon、停損 MA60 下 3%、每日最多 6 檔(2026-07-06 雙型態並存後由 5 略放寬,與

@@ -5,9 +5,11 @@ description: Verify rere system-proxy forward cohorts and backtests while preser
 
 # rere 前瞻驗證
 
-系統掃描只是 rere 方法的可計算代理，並非 KOL 本人薦股或實際成交。三個子型態分開記錄：
+系統掃描只是 rere 方法的可計算代理，並非 KOL 本人薦股或實際成交。五個子型態分開記錄：
 蹲點(shakeout)、發動(ignition)、淺洗盤(shallow，2026-09-24 PM 核准，8%≤洗盤<10% 其餘同
-蹲點，BT-rere-shallow-wash 背書，帳本 subtype 自帶標籤從零累積、與既有子型態分開評估)；
+蹲點，BT-rere-shallow-wash 背書)、**蹲點v2(shakeout_v2)、淺洗盤v2(shallow_v2)**(2026-10-07 PM
+核可，BT-rere-no-foreign-turn 12/12 PASS：同帶但不要求「外資前5日賣→當日買」；只在現行型態不成立時
+掛 v2 標籤，另計 6 檔上限，從零累積、與現行子型態分開評估，現行 forward cohort 零變動)；
 模型分數不能否決 rere，固定小倉。訊號與主力成本／盤中人工確認顺序見
 `skills/stock-entry-decision-workflow/SKILL.md`。
 

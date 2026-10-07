@@ -211,6 +211,36 @@ def _source_freshness(
     return result
 
 
+def load_legacy_ledger_summary(main_ledger_path) -> dict | None:
+    """舊主 lane 規則影子帳本(2026-10-07 起)與同期新排序主 lane 的已平倉摘要;缺檔回 None。"""
+    legacy_path = BASE_DIR / "ml" / "reports" / "entry_filter_ledger_legacy_main.csv"
+    if not legacy_path.exists():
+        return None
+    try:
+        lg = pd.read_csv(legacy_path, dtype={"ticker": str, "trade_date": str})
+        if lg.empty:
+            return None
+        since = str(lg["trade_date"].min())
+
+        def _closed_stat(frame):
+            closed = frame[frame["status"].isin(["stopped", "expired"])]
+            ret = pd.to_numeric(closed.get("ret_pct"), errors="coerce").dropna()
+            return (int(len(closed)), (round(float(ret.mean()), 2) if len(ret) else None),
+                    (int(round(float((ret > 0).mean() * 100))) if len(ret) else None))
+
+        closed_n, mean, win = _closed_stat(lg)
+        new_closed, new_mean, new_win = 0, None, None
+        if main_ledger_path.exists():
+            mf = pd.read_csv(main_ledger_path, dtype={"ticker": str, "trade_date": str})
+            mf = mf[(mf["lane"] == "main") & (mf["trade_date"] >= since)]
+            new_closed, new_mean, new_win = _closed_stat(mf)
+        return {"since": since, "closed": closed_n, "mean": mean, "win": win,
+                "holding": int((lg["status"] == "holding").sum()),
+                "new_closed": new_closed, "new_mean": new_mean, "new_win": new_win}
+    except Exception:  # noqa: BLE001 - 摘要缺失不影響儀表板
+        return None
+
+
 def strategy_of(row: dict) -> str:
     lane = str(row.get("lane") or "")
     return "rere" if lane.startswith("rere") else "main"
@@ -912,6 +942,7 @@ def build(path: Path) -> str:
         lf = pd.read_csv(lp, dtype={"ticker": str, "trade_date": str}).fillna("")
         lf["ticker"] = lf["ticker"].str.zfill(4)
         ledger = lf.to_dict("records")
+    ledger_legacy = load_legacy_ledger_summary(lp)
 
     payload = {"meta": {"trade_date": d.get("trade_date"), "subtitle": d.get("subtitle"),
                         "intro": d.get("intro"),
@@ -928,6 +959,7 @@ def build(path: Path) -> str:
                         for r in rows],
                "radar": radar,
                "idx": idx, "mkt": {**mkt, "guard_context": guard_context(mkt.get("guard"))}, "stocks": stocks, "ledger": ledger,
+               "ledger_legacy": ledger_legacy,
                "news_html": load_news_html(), "arena": load_arena(),
                "holdings": load_holdings(),
                "daytrade": load_daytrade()}
@@ -1755,9 +1787,14 @@ function hideD(){
   const dates = Object.keys(byDate).sort().reverse();
   const closedAll = L.filter(r=>['stopped','expired'].includes(r.status));
   const holdAll = L.filter(r=>r.status==='holding');
+  const LG = D.ledger_legacy||null;
+  const fmtPct = v => (v===null||v===undefined||v==='') ? '—' : ((+v>=0?'+':'')+(+v).toFixed(2)+'%');
   let h = `<div class="sec">▼ 模擬進場紀錄
     <span class="hint">已結束 ${closedAll.length} 筆 · 持有中 ${holdAll.length} 筆</span></div>
     <div class="meta">這裡呈現逐筆模擬結果，沒有實際成交確認。主策略與 rere 的觀察期不同；提前停損先結束，不能只拿已平倉勝率判斷策略好壞。策略評估須使用完整觀察期的同批樣本，並分開比較。</div>`;
+  if(LG && LG.since){
+    h += `<div class="meta">主 lane 排序自 ${LG.since} 起改為型態乾淨度（模型分數只顯示，不過濾、不排序）。舊規則（模型不反對→模型分數排序）以影子帳本並行：已結束 ${LG.closed} 筆 均 ${fmtPct(LG.mean)} 勝率 ${LG.win===null?'—':LG.win+'%'} · 持有中 ${LG.holding}；同期新排序主 lane 已結束 ${LG.new_closed} 筆 均 ${fmtPct(LG.new_mean)} 勝率 ${LG.new_win===null?'—':LG.new_win+'%'}。累積 ≥60 日後再比較，不據此提前下判決。</div>`;
+  }
   const stMap = {holding:['持有中','st-h'], stopped:['🔴 停損','st-s'], expired:['⏱ 到期','st-e'],
                  untriggered:['— 未觸發','st-u'], pending:['… 待判定','st-p']};
   dates.forEach((dt,di)=>{

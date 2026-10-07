@@ -107,8 +107,8 @@ python scripts/generate_entry_candidates.py --date <YYYY-MM-DD> -o logs/entry_li
 Do NOT start from `chipk_model_diagnosis` and back into a list (that puts the veto layer first and lets strong ChipK rescue weak 型態 — a recurring error). The script's 型態 gate runs first; ChipK only vetoes/downgrades. Thresholds live at the top of the script (change → backtest first, per CLAUDE.md).
 
 The generator outputs TWO lanes:
-- **Main lane** (溫和動能): 貼MA20 pattern gate → model buy+pred>0 → ChipK veto. Kinds: go/small.
-- **rere lane**: 蹲點型＝high10/close−1 ≥10%、MA20±5%、當日/20日均量<1.2、外資前5日淨賣且今日買、收在MA60上；發動型＝同深洗盤與外資轉買、量比≥1.5、站回MA20（昨在下方或今漲>2%）且投信同買。兩型 OR、20日均量≥500張，族群強度再洗盤深度排序，最多6檔。**模型負分與本業虧損不可否決 rere**；固定小倉、60日、失效參考 MA60×0.97。保留賣壓力/砍失敗/基本倉/波段裁量；系統掃描不等於KOL本人薦股。
+- **Main lane** (溫和動能): 貼MA20 pattern gate → ChipK veto → **型態乾淨度排序取 12**(2026-10-07 PM 核可,BT-main-lane-ranking 4/4 PASS)。模型 pred20 只是顯示欄位,**不過濾、不排序**;OM<0 防呆仍擋。舊規則(模型不反對→clean+pred20 排序)改為 plan 的 `shadow_legacy_main` 影子列,`entry_filter_tracker.py --legacy` 記入 `ml/reports/entry_filter_ledger_legacy_main.csv` 並行 ≥60 日。Kinds: go/small.
+- **rere lane**: 蹲點型＝high10/close−1 ≥10%、MA20±5%、當日/20日均量<1.2、外資前5日淨賣且今日買、收在MA60上；發動型＝同深洗盤與外資轉買、量比≥1.5、站回MA20（昨在下方或今漲>2%）且投信同買；淺洗盤型＝8%≤洗盤<10% 其餘同蹲點型。**v2 兩型(2026-10-07 PM 核可,BT-rere-no-foreign-turn 12/12 PASS)**:蹲點型v2 / 淺洗盤型v2 = 同帶、**不要求外資拐點**;現行三型不成立時才掛 v2 標籤(ptype `shakeout_v2`/`shallow_v2`),另計上限 6 檔、帳本 subtype 分開累積,現行 forward cohort 零變動。全部 20日均量≥500張,族群強度再洗盤深度排序。**模型負分與本業虧損不可否決 rere**；固定小倉、60日、失效參考 MA60×0.97。保留賣壓力/砍失敗/基本倉/波段裁量；系統掃描不等於KOL本人薦股。
 - Rankings are **snapshots, not permanent truths** (regimes rotate). `scripts/strategy_scoreboard.py` re-scores all validated strategies monthly (auto, day 1-3, in the nightly pipeline) — full-period vs recent-6-month edge; big negative decay ⇒ downgrade the strategy. A recent window far ABOVE full-period = bull-regime inflation, do not extrapolate.
 - Tactical (MA60 support bounce) zones were backtested NEGATIVE at 5-10d holds (2026-07-02) — treat tactical zone fields as reference levels only, not entry justification.
 

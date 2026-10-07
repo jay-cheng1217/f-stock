@@ -301,3 +301,13 @@ def test_early_stop_only_report_does_not_downgrade(tmp_path, monkeypatch):
     assert "完整 60 日觀察 cohort：0 筆" in report
     assert "累積中" in report
     assert "低於基準,樣本夠 30 筆時考慮降權" not in report
+
+
+def test_subtype_recognises_v2_labels():
+    from scripts import rere_lane_tracker as t
+    assert t._subtype({"ptype": "shakeout_v2"}) == "shakeout_v2"
+    assert t._subtype({"ptype": "shallow_v2"}) == "shallow_v2"
+    assert t._subtype({"status": "rere·淺洗盤型v2·小倉(60日,配停損)"}) == "shallow_v2"
+    assert t._subtype({"status": "rere·蹲點型v2·小倉(60日,配停損)"}) == "shakeout_v2"
+    assert t._subtype({"status": "rere·蹲點型·小倉(60日,配停損)"}) == "shakeout"
+    assert t._subtype({"status": "rere·淺洗盤型·小倉(60日,配停損)"}) == "shallow"

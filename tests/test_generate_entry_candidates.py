@@ -76,10 +76,33 @@ def test_rere_lane_wash_10pct_stays_shakeout():
     assert gen._rere_lane_ok(_rt(wash=0.10)) == "shakeout"
 
 
-def test_rere_lane_rejects_no_foreign_turn():
-    # 外資沒轉買(前5日就是買的,或今日仍賣);兩型皆需外資轉買
-    assert gen._rere_lane_ok(_rt(prev5=500)) is None
-    assert gen._rere_lane_ok(_rt(today=-100)) is None
+def test_rere_lane_without_foreign_turn_falls_to_v2():
+    # 2026-10-07 PM 核可:外資拐點不再是門檻;只差拐點的訊號改掛 v2 標籤(帳本分開累積)
+    assert gen._rere_lane_ok(_rt(prev5=500)) == "shakeout_v2"
+    assert gen._rere_lane_ok(_rt(today=-100)) == "shakeout_v2"
+    assert gen._rere_lane_ok(_rt(wash=0.09, prev5=500)) == "shallow_v2"
+    assert gen._rere_lane_ok(_rt()) == "shakeout"  # 現行標籤優先,forward cohort 不變
+    assert gen._rere_lane_ok(_rt(wash=0.09)) == "shallow"
+
+
+def test_rere_lane_v2_keeps_other_gates():
+    assert gen._rere_lane_ok(_rt(wash=0.05, prev5=500)) is None
+    assert gen._rere_lane_ok(_rt(prev5=500, vr=1.3)) is None
+    assert gen._rere_lane_ok(_rt(prev5=500, v60=-0.03)) is None
+    assert gen._rere_lane_ok(_rt(prev5=500, v20=0.07)) is None
+
+
+def test_legacy_main_rank_uses_model_filter_and_pred_score():
+    rows = [dict(ticker="1", model_buy=True, clean=-0.05, pred20=0.02, chip_bonus=0.0, kind="go"),
+            dict(ticker="2", model_buy=True, clean=-0.01, pred20=0.001, chip_bonus=0.0, kind="go"),
+            dict(ticker="3", model_buy=False, clean=0.0, pred20=0.05, chip_bonus=0.0, kind="go"),
+            dict(ticker="4", model_buy=True, clean=0.0, pred20=0.05, chip_bonus=0.0, kind="watch")]
+    out = gen._legacy_main_rank(rows, top_n=12)
+    assert [r["ticker"] for r in out] == ["2", "1"]
+    assert all(r["lane"] == "main_legacy" for r in out)
+    rows[0]["kind"] = "veto"
+    assert out[1]["kind"] == "go"  # 獨立副本,後續 overlay 不影響影子名單
+    assert gen._legacy_main_rank(rows, top_n=1)[0]["ticker"] == "2"
 
 
 def test_rere_lane_shakeout_rejects_volume_not_quiet():

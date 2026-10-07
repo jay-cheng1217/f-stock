@@ -27,6 +27,11 @@ ENTRY_STEPS: tuple[tuple[str, tuple[str, ...], int], ...] = (
         (sys.executable, "-X", "utf8", "scripts/entry_filter_tracker.py", "backfill"),
         900,
     ),
+    (   # 2026-10-07 起:舊主 lane 規則(模型過濾+分數)的影子名單,獨立帳本並行 ≥60 日
+        "Backfill legacy-main shadow tracker",
+        (sys.executable, "-X", "utf8", "scripts/entry_filter_tracker.py", "backfill", "--legacy"),
+        900,
+    ),
     ("Build entry dashboard", (sys.executable, "-X", "utf8", "scripts/entry_dashboard.py"), 600),
 )
 

@@ -31,9 +31,13 @@ sys.path.insert(0, str(BASE_DIR))
 from scripts.exdiv_utils import cum_dividend
 
 LEDGER = BASE_DIR / "ml" / "reports" / "entry_filter_ledger.csv"
+# 2026-10-07 起主 lane 排序不再用模型;舊規則(模型不反對 → clean+pred20)改為 plan 的 `shadow_legacy_main`
+# 影子列,記入獨立帳本並行比較(≥60 日後 PM 裁決)。同一套觸發/失效價/到期規則。
+LEGACY_LEDGER = BASE_DIR / "ml" / "reports" / "entry_filter_ledger_legacy_main.csv"
+LEGACY_ROWS_KEY = "shadow_legacy_main"
 DAILY = BASE_DIR / "日K資料"
 STATIC_LEDGER = BASE_DIR / "frontend" / "static" / "entry_filter_ledger.json"
-HORIZON = {"main": 20, "rere": 60}
+HORIZON = {"main": 20, "rere": 60, "main_legacy": 20}
 
 COLS = ["trade_date", "ticker", "name", "lane", "state", "zone_low", "zone_high",
         "stop", "horizon", "status", "entry_date", "entry_price",
@@ -54,9 +58,10 @@ def _names() -> dict:
 NAMES = _names()
 
 
-def _load() -> pd.DataFrame:
-    if LEDGER.exists():
-        d = pd.read_csv(LEDGER, dtype={"ticker": str, "trade_date": str})
+def _load(ledger: Path | None = None) -> pd.DataFrame:
+    ledger = ledger or LEDGER
+    if ledger.exists():
+        d = pd.read_csv(ledger, dtype={"ticker": str, "trade_date": str})
         d["ticker"] = d["ticker"].str.zfill(4)
         return d
     return pd.DataFrame(columns=COLS)
@@ -67,16 +72,20 @@ def _lane(row: dict) -> str | None:
     kind = str(row.get("kind") or "")
     if kind == "watch" or "watch" in lane:
         return None  # 觀察股需人工觸發,不入帳本
+    if lane == "main_legacy":
+        return "main_legacy"
     return "rere" if lane == "rere" else "main"
 
 
-def record(plan_path: Path) -> int:
+def record(plan_path: Path, *, rows_key: str = "rows", ledger: Path | None = None) -> int:
+    plan_path = Path(plan_path)
+    ledger = ledger or LEDGER
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
     m = re.search(r"(\d{8})", plan_path.name)
     trade_date = f"{m.group(1)[:4]}-{m.group(1)[4:6]}-{m.group(1)[6:]}" if m else ""
-    led = _load()
+    led = _load(ledger)
     added = 0
-    for r in plan.get("rows", []):
+    for r in plan.get(rows_key, []):
         lane = _lane(r)
         if lane is None:
             continue
@@ -100,13 +109,14 @@ def record(plan_path: Path) -> int:
             "stop": stop, "horizon": HORIZON[lane], "status": "pending",
         }])], ignore_index=True)
         added += 1
-    led.to_csv(LEDGER, index=False, encoding="utf-8-sig")
-    print(f"{plan_path.name}: 新增 {added} 筆(帳本共 {len(led)})")
+    led.to_csv(ledger, index=False, encoding="utf-8-sig")
+    print(f"{plan_path.name}[{rows_key}]: 新增 {added} 筆(帳本 {ledger.name} 共 {len(led)})")
     return added
 
 
-def check() -> None:
-    led = _load()
+def check(*, ledger: Path | None = None) -> None:
+    ledger = ledger or LEDGER
+    led = _load(ledger)
     if led.empty:
         print("帳本為空")
         return
@@ -195,42 +205,52 @@ def check() -> None:
             ]
             led.loc[i, "ret_pct"] = round((adjusted_close / entry_px - 1) * 100, 2)
 
-    led.to_csv(LEDGER, index=False, encoding="utf-8-sig")
-    # web app 用 static JSON(與 entry_canonical.json 同機制)
-    import json as _json
-    try:
-        STATIC_LEDGER.write_text(_json.dumps({
-            "updated": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"),
-            "rows": led.fillna("").to_dict("records")}, ensure_ascii=False),
-            encoding="utf-8")
-    except Exception as e:  # noqa: BLE001
-        print(f"[warn] static json 寫入失敗: {e}")
+    led.to_csv(ledger, index=False, encoding="utf-8-sig")
+    # web app 用 static JSON(與 entry_canonical.json 同機制);影子帳本不發布 static
+    if ledger == LEDGER:
+        import json as _json
+        try:
+            STATIC_LEDGER.write_text(_json.dumps({
+                "updated": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"),
+                "rows": led.fillna("").to_dict("records")}, ensure_ascii=False),
+                encoding="utf-8")
+        except Exception as e:  # noqa: BLE001
+            print(f"[warn] static json 寫入失敗: {e}")
     trig = led[led["status"].isin(["holding", "stopped", "expired"])]
     closed = led[led["status"].isin(["stopped", "expired"])]
-    print(f"帳本 {len(led)} 筆:觸發 {len(trig)}、持有中 {(led['status']=='holding').sum()}、"
+    print(f"帳本 {ledger.name} {len(led)} 筆:觸發 {len(trig)}、持有中 {(led['status']=='holding').sum()}、"
           f"停損 {(led['status']=='stopped').sum()}、到期 {(led['status']=='expired').sum()}、"
           f"未觸發 {(led['status']=='untriggered').sum()}、待判定 {(led['status']=='pending').sum()}")
     if len(closed):
         print(f"已平倉:平均 {closed['ret_pct'].mean():+.2f}%、勝率 {(closed['ret_pct']>0).mean()*100:.0f}%")
 
 
-def backfill() -> None:
+def backfill(*, rows_key: str = "rows", ledger: Path | None = None) -> None:
+    # 預設路徑維持無參數呼叫(既有測試/呼叫者相容);影子帳本才帶 rows_key / ledger
+    rec_kw = ({"rows_key": rows_key} if rows_key != "rows" else {}) | ({"ledger": ledger} if ledger else {})
+    chk_kw = {"ledger": ledger} if ledger else {}
     for f in sorted(glob.glob(str(BASE_DIR / "logs" / "entry_list_*.json"))):
         if not re.fullmatch(r"entry_list_[0-9]{8}\.json", Path(f).name):
             continue
-        record(Path(f))
-    check()
+        record(Path(f), **rec_kw)
+    check(**chk_kw)
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["record", "check", "backfill"])
     ap.add_argument("--plan")
+    ap.add_argument("--rows-key", default="rows", help="plan JSON 的列鍵;影子帳本用 shadow_legacy_main")
+    ap.add_argument("--ledger", default=None, help="帳本路徑;省略=正式 entry_filter_ledger.csv")
+    ap.add_argument("--legacy", action="store_true",
+                    help=f"快捷:--rows-key {LEGACY_ROWS_KEY} --ledger {LEGACY_LEDGER.name}")
     a = ap.parse_args()
+    rows_key = LEGACY_ROWS_KEY if a.legacy else a.rows_key
+    ledger = LEGACY_LEDGER if a.legacy else (Path(a.ledger) if a.ledger else None)
     if a.cmd == "record":
-        record(Path(a.plan))
-        check()
+        record(Path(a.plan), rows_key=rows_key, ledger=ledger)
+        check(ledger=ledger)
     elif a.cmd == "backfill":
-        backfill()
+        backfill(rows_key=rows_key, ledger=ledger)
     else:
-        check()
+        check(ledger=ledger)

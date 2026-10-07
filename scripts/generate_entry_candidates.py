@@ -287,6 +287,11 @@ RERE_WASH_SHALLOW = 0.08    # 淺洗盤型下限(2026-09-24 PM 核准,BT-rere-sh
 RERE_MA20_LOW, RERE_MA20_HIGH = -0.05, 0.05   # 貼MA20 ±5%
 RERE_VOL_MAX = 1.2          # 蹲點型:今日量/20日均量 < 1.2(量縮)
 RERE_IGNITE_VOL = 1.5       # 發動型:今日量/20日均量 >= 1.5(放量,BT-ignition-day)
+RERE_MAX = 6                # 現行三型呈現上限(2026-07-06 起)
+RERE_V2_MAX = 6             # v2 兩型另計上限(2026-10-07 起,並行驗證)
+MAIN_MAX = 12               # 主 lane 呈現上限
+RERE_PTYPE_LABEL = {"ignition": "發動型", "shallow": "淺洗盤型", "shakeout": "蹲點型",
+                    "shakeout_v2": "蹲點型v2", "shallow_v2": "淺洗盤型v2"}
 
 
 def _twii_above_ma60(as_of: date | None = None) -> bool | None:
@@ -349,14 +354,45 @@ def _rere_shallow_ok(t: dict[str, Any]) -> bool:
     )
 
 
+def _rere_shakeout_v2_ok(t: dict[str, Any]) -> bool:
+    """蹲點型 v2(2026-10-07 PM 核可,BT-rere-no-foreign-turn 12/12 PASS):
+    與蹲點型完全相同,但**不要求**「外資前5日賣→當日買」。該條件經 ablation(#8)證明邊際貢獻 0,
+    來源釐清確認是 6/23 我方翻譯時加的、不是她的規則;台表科 9/16-17 正是只卡此條件而漏掉。
+    僅在現行蹲點型不成立時才回此標籤(帳本 subtype 分開累積,現行 forward cohort 零變動)。"""
+    return (
+        (t["wash_from_hi10"] >= RERE_WASH_MIN)
+        and (RERE_MA20_LOW <= t["v20"] <= RERE_MA20_HIGH)
+        and (not np.isnan(t["vr_today"]) and t["vr_today"] < RERE_VOL_MAX)
+        and (t["v60"] > 0)
+    )
+
+
+def _rere_shallow_v2_ok(t: dict[str, Any]) -> bool:
+    """淺洗盤型 v2:8%<=洗盤<10%,其餘同蹲點型 v2(不要求外資拐點)。同票 PASS 6/6。"""
+    return (
+        (RERE_WASH_SHALLOW <= t["wash_from_hi10"] < RERE_WASH_MIN)
+        and (RERE_MA20_LOW <= t["v20"] <= RERE_MA20_HIGH)
+        and (not np.isnan(t["vr_today"]) and t["vr_today"] < RERE_VOL_MAX)
+        and (t["v60"] > 0)
+    )
+
+
+RERE_V2_PTYPES = ("shakeout_v2", "shallow_v2")
+
+
 def _rere_lane_ok(t: dict[str, Any]) -> str | None:
-    """回進場型態標籤:'shakeout'/'ignition'/'shallow'/None。三型 OR 並存(不覆蓋)。"""
+    """回進場型態標籤:'shakeout'/'ignition'/'shallow'/'shakeout_v2'/'shallow_v2'/None。
+    先判現行三型(標籤與既有 forward cohort 一致),都不成立才判 v2(= 只差外資拐點的那批)。"""
     if _rere_shakeout_ok(t):
         return "shakeout"
     if _rere_ignition_ok(t):
         return "ignition"
     if _rere_shallow_ok(t):
         return "shallow"
+    if _rere_shakeout_v2_ok(t):
+        return "shakeout_v2"
+    if _rere_shallow_v2_ok(t):
+        return "shallow_v2"
     return None
 
 
@@ -464,9 +500,11 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
     sect = _sector_map()
     ck_by = {r["ticker"]: r.to_dict() for _, r in chipk.iterrows()} if not chipk.empty else {}
 
-    # 模型層:買進 + pred>0(先縮小掃描範圍,但型態才是硬 gate)
-    buy = pred[pred["recommendation"].astype(str).str.contains("買進", na=False) &
-               (pd.to_numeric(pred["pred_return_20d"], errors="coerce") > 0)].copy()
+    # 主 lane 模型層(2026-10-07 PM 核可,BT-main-lane-ranking 4/4 PASS):模型**不再過濾、不再排序**,
+    # pred20 只作顯示欄位。回測:同一型態池上,模型過濾+分數挑出的是池內最差一群(5/18~9/2:LIVE −1.34%/32%
+    # vs 不用模型 +0.72%/41.7% vs 池等權 −0.13%)。舊規則(模型不反對 → clean+pred20 排序)改為影子名單
+    # `shadow_legacy_main`,由 entry_filter_tracker 記入獨立帳本並行觀察 ≥60 日。
+    buy = pred.copy()
 
     snapshot_dates, om_map = _snapshot_fields(required)
     if "operating_margin_latest" in pred:
@@ -501,7 +539,8 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
             continue
         # 分類(籌碼K已退役:無新鮮資料時不得以缺籌碼降級——skill 規範
         # stale 檔不得 rescue/rank/block/degrade;啟用且新鮮時才參與分級)
-        pred20 = float(pr["pred_return_20d"])
+        pred20 = float(pd.to_numeric(pr["pred_return_20d"], errors="coerce"))
+        model_buy = ("買進" in str(pr.get("recommendation", ""))) and np.isfinite(pred20) and pred20 > 0
         chipk_active = bool(ck_by)
         if t["foreign20"] < -FOREIGN_SELL_LOTS:
             kind, status = "small", "小倉·盯外資(外資續賣)"
@@ -526,25 +565,26 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
         if elow > ehigh:
             elow, ehigh = ehigh, elow  # 防護:momentum entry 欄位偶發反轉(4721 案例)
         stop = round(t["ma20"] * 0.96, 2)
-        # 型態乾淨度分:貼MA20 甜蜜點(~+4%)近者佳、量縮者佳、pred 高者佳、ChipK strong 加分
+        # 型態乾淨度分:貼MA20 甜蜜點(~+4%)近者佳、量縮者佳、ChipK strong 加分;pred20 不入分(見上)
         clean = -abs(t["v20"] - 0.04) - 0.1 * (t["vol_ratio"] if not np.isnan(t["vol_ratio"]) else 1.5)
         chip_bonus = {"strong": 0.03, "supportive": 0.015}.get(bucket, 0.0)
-        score = clean + pred20 + chip_bonus
+        score = clean + chip_bonus
         rows.append({
             "ticker": tk, "sector": sect.get(tk, ""), "close": t["close"], "v20": t["v20"],
             "source_date": t["signal_date"], "model_source_date": pr.get("source_date"),
             "data_warnings": (["本業營益率缺資料，待確認"] if om is None else [])
                 + (["技術指標缺資料，待確認"] if not all(np.isfinite(t[k]) for k in ("vol_ratio", "rsi", "macd_delta_rel")) else []),
             "vol_ratio": t["vol_ratio"], "rsi": t["rsi"], "foreign20": t["foreign20"],
-            "pred20": pred20, "bucket": bucket, "decision": decision,
+            "pred20": pred20, "model_buy": model_buy, "bucket": bucket, "decision": decision,
             "kind": kind, "status": status, "zone_low": round(elow, 2), "zone_high": round(ehigh, 2),
-            "stop": stop, "score": score,
+            "stop": stop, "score": score, "clean": clean, "chip_bonus": chip_bonus,
         })
 
     for row in rows:
         _apply_data_quality(row, required, special_gate, None)
+    shadow_legacy_main = _legacy_main_rank(rows)  # 舊規則影子名單(2026-10-07 前的正式規則)
     rows.sort(key=lambda x: (x["kind"] == "watch", -x["score"]))
-    rows = rows[:12]  # 主 lane 呈現上限(dataA 模型候選較多;純呈現,非訊號變更)
+    rows = rows[:MAIN_MAX]  # 主 lane 呈現上限(純呈現,非訊號變更)
 
     # --- rere lane(第二獵場):掃全 universe,模型不得用 pred 否決 ---
     # 基準 2026-07-15 重定:60日 +4.58%/勝率35.8%(停損+除息還原;舊9.4%為無停損legacy)。
@@ -589,10 +629,10 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
             ehigh = round(t["close"] * 1.005, 2)
             ptxt = "發動型"
         else:
-            # 蹲點型/淺洗盤型共用支撐區間(差別只在洗盤深度帶)
+            # 蹲點型/淺洗盤型(含 v2)共用支撐區間(差別只在洗盤深度帶與是否要求外資拐點)
             elow = round(t["ma20"] * 0.98, 2)
             ehigh = round(t["close"] * 1.015, 2)
-            ptxt = "淺洗盤型" if ptype == "shallow" else "蹲點型"
+            ptxt = RERE_PTYPE_LABEL.get(ptype, "蹲點型")
         if elow > ehigh:
             elow, ehigh = ehigh, elow
         tier_txt = {"strong": "·族群強勢", "weak": "·族群弱勢(降級)", "neutral": ""}[tier]
@@ -611,14 +651,16 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
             "lane": "rere", "ptype": ptype, "sec_tier": tier,
             "wash": t["wash_from_hi10"],
             # 法人缺值≠零(2026-09-23 審查):轉買判定視窗有缺日 → data_warnings
-            # 走既有認證流程降為「資料待確認」,門檻本身不動。
+            # 走既有認證流程降為「資料待確認」,門檻本身不動。v2 不用外資條件,不掛此警示。
             "data_warnings": ([f"法人買賣超近6日缺{t['inst_gap_days']}日,外資轉買判定待確認"]
-                              if t.get("inst_gap_days") else []),
+                              if (t.get("inst_gap_days") and ptype not in RERE_V2_PTYPES) else []),
         })
     rere_rows.sort(key=lambda x: x["score"], reverse=True)
     # rere lane 卡片排主 lane 前面(2026-08-31 用戶指示:南亞 1303 案例 priority 16
     # 沉在名單後段,實戰有效的 lane 不該被淹沒)。純呈現順序,非訊號變更。
-    chosen_rere = rere_rows[:6]
+    # v2 子型態另計上限,不佔現行三型的 6 個名額(現行 forward cohort 零變動)。
+    chosen_rere = ([r for r in rere_rows if r["ptype"] not in RERE_V2_PTYPES][:RERE_MAX]
+                   + [r for r in rere_rows if r["ptype"] in RERE_V2_PTYPES][:RERE_V2_MAX])
     rere_tickers = {r["ticker"] for r in chosen_rere}
     rows = chosen_rere + [r for r in rows if r["ticker"] not in rere_tickers]
 
@@ -764,8 +806,22 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
         "chipk_desktop_enabled": _chipk_desktop_enabled(),
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "rows": rows,
+        "shadow_legacy_main": shadow_legacy_main,
         "night_gap": _night_session_gap() if include_live else None,
     }
+
+
+def _legacy_main_rank(candidates: list[dict[str, Any]], top_n: int | None = None) -> list[dict[str, Any]]:
+    """2026-10-07 前的主 lane 正式規則(影子名單,只供帳本並行比較,不上名單):
+    模型不反對(推薦含「買進」且 pred>0)→ score = clean + pred20 + chip_bonus → 取前 N。
+    輸入為已過型態 gate / ChipK veto / 資料品質的候選列;回傳獨立副本(後續 MOPS overlay 不影響)。"""
+    top_n = MAIN_MAX if top_n is None else top_n
+    picked = [dict(r) for r in candidates if r.get("model_buy") and r.get("kind") != "watch"]
+    for r in picked:
+        r["score"] = float(r.get("clean", 0.0)) + float(r.get("pred20", 0.0)) + float(r.get("chip_bonus", 0.0))
+        r["lane"] = "main_legacy"
+    picked.sort(key=lambda x: -x["score"])
+    return picked[:top_n]
 
 
 def generate_certified(as_of: str | None = None, *, trade_date: str | None = None,
@@ -809,43 +865,46 @@ def _chipk_source_label(result: dict[str, Any]) -> str:
     return "ChipK desktop retired; mobile screenshots are manual veto only"
 
 
+def _format_entry_row(i: int, r: dict[str, Any], nm: dict[str, str]) -> dict[str, Any]:
+    """單列輸出格式(rows 與 shadow_legacy_main 共用,確保帳本追蹤器讀到同樣欄位)。"""
+    if r.get("lane") == "watch":
+        reason = (f"【watchlist·已過期】{r.get('stale')}" if r.get("stale")
+                  else "【watchlist】回踩進區間才觸發,照 5 步紀律執行")
+    elif r.get("lane") == "rere":
+        ptype = r.get("ptype")
+        reason = (f"【rere lane·{RERE_PTYPE_LABEL.get(ptype, '蹲點型')}】洗盤{r['wash']*100:.0f}%後貼MA20{r['v20']*100:+.0f}% "
+                  f"{'放量' if ptype == 'ignition' else '量縮'}{r['vol_ratio']:.1f}x "
+                  f"{'不要求外資拐點(v2 並行驗證)' if ptype in RERE_V2_PTYPES else '外資轉買'};60日波段,模型pred不採計,務必小倉")
+    else:
+        reason = (f"貼MA20{r['v20']*100:+.0f}% 量{r['vol_ratio']:.1f}x RSI{r['rsi']:.0f} "
+                  f"外資20d{r['foreign20']:+.0f}張" + (f" 籌碼{r['bucket']}" if r.get("bucket") else ""))
+    return {
+        "priority": str(i),
+        "stock": f"{r['ticker']} {nm.get(r['ticker'], r['sector'][:4])}",
+        "sector": r.get("sector", ""),
+        "lane": r.get("lane", "main"),
+        "ptype": r.get("ptype"),
+        "status": r["status"],
+        "data_status": r.get("data_status", "UNKNOWN"),
+        "data_warnings": r.get("data_warnings", []),
+        "model_source_date": r.get("model_source_date"),
+        "intraday_verified": False,
+        "kind": r["kind"], "zone": f"{r['zone_low']}-{r['zone_high']}", "stop": str(r["stop"]),
+        "no_chase": f">{r['zone_high']}", "ret20d": f"{r['pred20']*100:+.2f}%" if r["pred20"] == r["pred20"] else "n/a",
+        "stale": r.get("stale", ""),
+        "reason": reason,
+        "source_date": r.get("source_date"),
+    }
+
+
 def to_entry_json(result: dict[str, Any], trade_date: str) -> dict[str, Any]:
     model_path = Path(result["as_of_close"]) if result.get("as_of_close") else None
     model_source = model_path.name if model_path else None
     model_match = re.search(r"(\d{4}-\d{2}-\d{2})", model_source or "")
     nm = _name_map()
     chipk_source = _chipk_source_label(result)
-    out_rows = []
-    for i, r in enumerate(result["rows"], 1):
-        out_rows.append({
-            "priority": str(i),
-            "stock": f"{r['ticker']} {nm.get(r['ticker'], r['sector'][:4])}",
-            "sector": r.get("sector", ""),
-            "lane": r.get("lane", "main"),
-            "ptype": r.get("ptype"),
-            "status": r["status"],
-            "data_status": r.get("data_status", "UNKNOWN"),
-            "data_warnings": r.get("data_warnings", []),
-            "model_source_date": r.get("model_source_date"),
-            "intraday_verified": False,
-            "kind": r["kind"], "zone": f"{r['zone_low']}-{r['zone_high']}", "stop": str(r["stop"]),
-            "no_chase": f">{r['zone_high']}", "ret20d": f"{r['pred20']*100:+.2f}%" if r["pred20"] == r["pred20"] else "n/a",
-            "stale": r.get("stale", ""),
-            "reason": (
-                (f"【watchlist·已過期】{r.get('stale')}"
-                 if r.get("stale") else
-                 "【watchlist】回踩進區間才觸發,照 5 步紀律執行")
-                if r.get("lane") == "watch" else
-                f"【rere lane·{ {'ignition': '發動型', 'shallow': '淺洗盤型'}.get(r.get('ptype'), '蹲點型') }】洗盤{r['wash']*100:.0f}%後貼MA20{r['v20']*100:+.0f}% "
-                f"{'放量' if r.get('ptype') == 'ignition' else '量縮'}{r['vol_ratio']:.1f}x "
-                f"外資轉買;60日波段,模型pred不採計,務必小倉"
-                if r.get("lane") == "rere" else
-                f"貼MA20{r['v20']*100:+.0f}% 量{r['vol_ratio']:.1f}x RSI{r['rsi']:.0f} "
-                f"外資20d{r['foreign20']:+.0f}張"
-                + (f" 籌碼{r['bucket']}" if r.get("bucket") else "")
-            ),
-            "source_date": r.get("source_date"),
-        })
+    out_rows = [_format_entry_row(i, r, nm) for i, r in enumerate(result["rows"], 1)]
+    shadow_rows = [_format_entry_row(i, r, nm) for i, r in enumerate(result.get("shadow_legacy_main") or [], 1)]
     payload = {
         "trade_date": trade_date,
         "as_of_date": result.get("as_of_date"),
@@ -858,11 +917,14 @@ def to_entry_json(result: dict[str, Any], trade_date: str) -> dict[str, Any]:
         "subtitle": "canonical 產生器(型態 gate → 模型確認,Claude/Codex 共用)",
         "intro": (
             f"由 scripts/generate_entry_candidates.py 產生;來源 {os.path.basename(result['as_of_close'] or '')}。"
-            f"型態硬 gate 先、模型確認;籌碼否決僅接受人工截圖(桌面自動源已退役)。"
+            f"型態硬 gate 先、依型態乾淨度排序(模型分數只顯示,2026-10-07 起不過濾不排序);籌碼否決僅接受人工截圖(桌面自動源已退役)。"
             f"本日 rere lane 新訊號:{sum(1 for r in result['rows'] if r.get('lane')=='rere')} 檔"
-            f"(rere 為日條件:深洗盤+外資當日由賣轉買,無訊號日為 0 屬正常)。"
+            f"(含 v2 {sum(1 for r in result['rows'] if r.get('ptype') in RERE_V2_PTYPES)} 檔;"
+            f"rere 為日條件,無訊號日為 0 屬正常;v2=不要求外資拐點,並行驗證中)。"
         ),
         "rows": out_rows,
+        # 舊主 lane 規則的影子名單(不上儀表板名單、不進 rows 計數;entry_filter_tracker --legacy 記入獨立帳本)
+        "shadow_legacy_main": shadow_rows,
         "discipline": (
             ([f"【夜盤】{result['night_gap']['hint']}"] if result.get("night_gap") else [])
             + [
