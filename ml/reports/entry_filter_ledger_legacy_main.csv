@@ -1,0 +1,13 @@
+﻿trade_date,ticker,name,lane,state,zone_low,zone_high,stop,horizon,status,entry_date,entry_price,exit_date,exit_price,exit_reason,days_held,ret_pct,last_date,last_close,exit_adjusted_price,last_adjusted_close,cum_dividend_per_share,return_adjustment_status
+2026-10-08,2010,春源,main_legacy,small,22.41,22.99,21.33,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,2023,燁輝,main_legacy,small,13.78,14.11,13.22,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,4532,瑞智,main_legacy,small,24.23,24.97,23.42,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,3481,群創,main_legacy,go,51.94,53.29,48.06,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,8473,山林水,main_legacy,small,39.51,40.7,37.52,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,6179,亞通,main_legacy,go,36.52,38.32,35.13,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,3312,弘憶股,main_legacy,small,50.73,52.27,48.43,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,3645,達邁,main_legacy,small,73.19,75.41,68.86,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,4951,精拓科,main_legacy,small,87.37,90.03,83.83,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,2338,光罩,main_legacy,small,47.08,48.52,45.17,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,5443,均豪,main_legacy,go,112.73,115.2,104.81,20,pending,,,,,,,,2026-10-07,,,,,
+2026-10-08,6166,凌華,main_legacy,go,129.45,132.96,117.12,20,pending,,,,,,,,2026-10-07,,,,,
