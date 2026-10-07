@@ -398,6 +398,25 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
    與既有結論一致(7/1「5MA 洗盤 +2.82% < 追高 +3.64%」;Champion 為動能系統)。**審查議程**:主 lane 型態 gate 的
    「貼MA20 −2%~+8%」屬負超額條件族,其價值是進場價與風控而非報酬期望,需在下次策略審查對照模型排序後的實際名單重估。
    腳本:scripts/backtest_technical_combos.py。
+10. **BT-rere-no-foreign-turn(2026-10-07,重構選項 (a) 正式回測;PM「先回測兩項」指示)**。口徑同帳本(次日收盤進、
+    MA60×0.97、完整 60 棒、除息加回、各組 20 日 cooldown、均量≥500張),2020-04~2026-07,六項判準事前寫死(n≥1.5×、
+    毛均≥CUR−0.5pp、勝率≥CUR−1pp、左尾≤CUR+1pp、逐年不輸≥5/7、逆風窗 2026-04~07 不輸)。
+    **判決:PASS(蹲點 6/6、淺洗盤 6/6)**——蹲點 NEW n=9,028 +4.29%/35.2%/左尾 9.5% vs CUR n=4,718 +3.32%/33.6%/9.4%,
+    逐年 7/7 不輸;淺洗盤 NEW n=10,594 +3.83%/35.5%/5.7% vs CUR n=4,419 +3.28%/35.1%/5.5%,逐年 6/7。
+    拿掉拐點後新增的那批訊號(ADDED)本身 +4.13% / +4.02%,與現行相當或更好。逆風窗兩者皆 −4.5%/−3.7%(regime 主導)。
+    建議:以新 subtype 標籤(shakeout_v2 / shallow_v2)並行入帳本,不取代現行 forward cohort;發動型(含投信條件)不動。
+    **待 PM 核可後落地**。腳本:scripts/backtest_rere_no_foreign_turn.py;明細:ml/reports/bt_rere_no_foreign_turn.csv。
+11. **BT-main-lane-ranking(2026-10-07,重構新增項:主 lane 排序不依賴模型)**。同一型態池(generator 同式 gate +
+    均量 + OM guard,每日平均 213 檔)上比較:LIVE(7/2 起=entry_filter_ledger 實際主 lane 列重算同口徑;之前=Champion
+    過濾+分數即當時規則)、R1(不用模型,clean 排序取 12)、POOL(池等權)、R0c/R3c/R2c(Champion 變體)。口徑:次日收盤進、
+    MA20×0.96 收盤停損、20 棒、除息加回;窗口 2026-05-18~09-02(72 日)。四項判準事前寫死(R1≥LIVE+0.3pp、勝率≥LIVE−1pp、
+    逐月≥3/4、逐日籃子>50%)。**判決:PASS 4/4**——LIVE n=706 −1.34%/32.0% vs R1 n=864 +0.72%/41.7% vs POOL −0.13%/37.7%;
+    去重後 LIVE −0.79% vs R1 +0.73%;逐日 R1 勝 67%。**誠實讀法**:差距主要來自 5-6 月的 Champion 過濾期(−3.5%),
+    dataA 期(7/2~9/2)LIVE −0.29%/37.4% vs R1 +0.46%/41.0% vs POOL −0.45%,差 +0.75pp、勝率 +3.6pp,方向一致但幅度小;
+    Champion「買進」過濾在此窗口挑中的是池內最差的一群(R0c −2.61%、過濾後等權 −2.90% vs 池 −0.13%)。限制:單一 regime、
+    72 日、重疊樣本、7-8 月 LIVE 用舊 MACD 絕對口徑(10% 列不在現行池)、無盤中區間觸價、dataA 7-8 月全池分數不可重建。
+    建議:主 lane 改以型態乾淨度排序、模型分數降為顯示欄位(不過濾、不排序),以獨立標籤並行觀察 ≥60 日再定。
+    **待 PM 核可後落地**。腳本:scripts/backtest_main_lane_ranking.py;明細:ml/reports/bt_main_lane_ranking*.csv。
    明細 ml/reports/bt_rere_pre_trust_accumulation.csv。
 
 ## 三個月績效快照(2026-07-01 ~ 10-02,2026-10-05 由帳本/追蹤檔直接計算,PM 提問「選股準確度」)
