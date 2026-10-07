@@ -239,7 +239,9 @@ def _technical(ticker: str, as_of: date | None = None) -> dict[str, Any] | None:
     fb = fb_raw.fillna(0) / 1000
     tb = pd.to_numeric(f.get("Trust_BuySell"), errors="coerce").fillna(0) / 1000
     cl = pd.to_numeric(f["Close"], errors="coerce")
-    hi10 = float(cl.rolling(10).max().iloc[-1])
+    # 10 日高要在公司行動連續基準上取:面額變更/分割/減資前的原始收盤若不換算,會算出假洗盤
+    # (6949 於 2026-09-07 面額變更 1490→74.5,原始口徑 wash=2639%)。現金除息的 price_factor=1,不受影響。
+    hi10 = float(_action_adjusted_close(f["Date"], cl, ticker).rolling(10).max().iloc[-1])
     vol_ma20 = vol.rolling(20).mean()
     vr_today = float(vol.iloc[-1] / vol_ma20.iloc[-1]) if vol_ma20.iloc[-1] else np.nan
     prev_close = float(cl.iloc[-2]) if len(cl) >= 2 else close
@@ -270,6 +272,24 @@ def _technical(ticker: str, as_of: date | None = None) -> dict[str, Any] | None:
     }
 
 
+_PRICE_CALENDAR: pd.DataFrame | None = None
+
+
+def _action_adjusted_close(dates: pd.Series, close: pd.Series, ticker: str,
+                           calendar: pd.DataFrame | None = None) -> pd.Series:
+    """原始收盤換到最後一列的價格基準(只處理 price_factor≠1 的公司行動);失敗時回原始值。"""
+    global _PRICE_CALENDAR
+    try:
+        from ml.corporate_actions import backward_adjustment_multiplier, load_price_continuity_calendar
+        if calendar is None:
+            if _PRICE_CALENDAR is None:
+                _PRICE_CALENDAR = load_price_continuity_calendar()
+            calendar = _PRICE_CALENDAR
+        return close * backward_adjustment_multiplier(dates, str(ticker), calendar)
+    except Exception:
+        return close
+
+
 def _pattern_ok(t: dict[str, Any]) -> bool:
     """型態硬 gate:貼支撐、不追高、不爆量、RSI 正常、MACD 沒崩、趨勢在 MA60 上。"""
     return (
@@ -288,7 +308,7 @@ RERE_MA20_LOW, RERE_MA20_HIGH = -0.05, 0.05   # 貼MA20 ±5%
 RERE_VOL_MAX = 1.2          # 蹲點型:今日量/20日均量 < 1.2(量縮)
 RERE_IGNITE_VOL = 1.5       # 發動型:今日量/20日均量 >= 1.5(放量,BT-ignition-day)
 RERE_MAX = 6                # 現行三型呈現上限(2026-07-06 起)
-RERE_V2_MAX = 6             # v2 兩型另計上限(2026-10-07 起,並行驗證)
+RERE_V2_MAX = 6             # v2 兩型另計上限(2026-10-07 起,並行驗證);兩型平分,見 _pick_rere_v2
 MAIN_MAX = 12               # 主 lane 呈現上限
 RERE_PTYPE_LABEL = {"ignition": "發動型", "shallow": "淺洗盤型", "shakeout": "蹲點型",
                     "shakeout_v2": "蹲點型v2", "shallow_v2": "淺洗盤型v2"}
@@ -660,7 +680,7 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
     # 沉在名單後段,實戰有效的 lane 不該被淹沒)。純呈現順序,非訊號變更。
     # v2 子型態另計上限,不佔現行三型的 6 個名額(現行 forward cohort 零變動)。
     chosen_rere = ([r for r in rere_rows if r["ptype"] not in RERE_V2_PTYPES][:RERE_MAX]
-                   + [r for r in rere_rows if r["ptype"] in RERE_V2_PTYPES][:RERE_V2_MAX])
+                   + _pick_rere_v2(rere_rows))
     rere_tickers = {r["ticker"] for r in chosen_rere}
     rows = chosen_rere + [r for r in rows if r["ticker"] not in rere_tickers]
 
@@ -809,6 +829,21 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
         "shadow_legacy_main": shadow_legacy_main,
         "night_gap": _night_session_gap() if include_live else None,
     }
+
+
+def _pick_rere_v2(rere_rows: list[dict[str, Any]], cap: int | None = None) -> list[dict[str, Any]]:
+    """v2 名額在兩個子型態間平分(各 cap//2),有空位才由另一型補。
+    排序分數含洗盤深度,若共用名額,淺洗盤 v2(8-10%)永遠排在蹲點 v2(≥10%)之後而上不了名單、帳本也累積不到
+    (2026-09-15~17 回放:v2 候選 22-43 檔,前 6 全是蹲點 v2)。回測兩型報酬相當(+4.13% / +4.02%)且淺洗盤左尾較低,
+    沒有「洗越深越好」的證據支持讓一型獨佔。輸入須已按 score 由高到低排序。"""
+    cap = RERE_V2_MAX if cap is None else cap
+    v2 = [r for r in rere_rows if r.get("ptype") in RERE_V2_PTYPES]
+    half = cap // 2
+    picked = ([r for r in v2 if r["ptype"] == "shakeout_v2"][:half]
+              + [r for r in v2 if r["ptype"] == "shallow_v2"][:half])
+    chosen = {id(r) for r in picked}
+    picked += [r for r in v2 if id(r) not in chosen][:cap - len(picked)]
+    return sorted(picked, key=lambda x: -x["score"])
 
 
 def _legacy_main_rank(candidates: list[dict[str, Any]], top_n: int | None = None) -> list[dict[str, Any]]:

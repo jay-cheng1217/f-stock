@@ -351,3 +351,27 @@ def test_technical_asof_clamps_before_rolling(monkeypatch, tmp_path):
     out = gen._technical("2330", dates[-2].date())
     assert out["close"] == 100. and out["wash_from_hi10"] == 0
     assert out["signal_date"] == dates[-2].date().isoformat()
+
+
+def test_pick_rere_v2_splits_cap_between_subtypes():
+    rows = ([dict(ticker=f"A{i}", ptype="shakeout_v2", score=3.0 - i * 0.01) for i in range(8)]
+            + [dict(ticker=f"B{i}", ptype="shallow_v2", score=2.09 - i * 0.01) for i in range(5)]
+            + [dict(ticker="C0", ptype="shakeout", score=9.0)])
+    out = gen._pick_rere_v2(rows)
+    assert [r["ticker"] for r in out] == ["A0", "A1", "A2", "B0", "B1", "B2"]
+    only_deep = gen._pick_rere_v2([r for r in rows if r["ptype"] == "shakeout_v2"])
+    assert len(only_deep) == 6                      # 另一型缺席時補滿
+    one_shallow = gen._pick_rere_v2(rows[:8] + rows[8:9])
+    assert [r["ptype"] for r in one_shallow].count("shallow_v2") == 1 and len(one_shallow) == 6
+
+
+def test_action_adjusted_close_removes_par_value_discontinuity():
+    import pandas as pd
+    dates = pd.Series(pd.to_datetime(["2026-08-25", "2026-08-26", "2026-09-07", "2026-09-08"]))
+    close = pd.Series([1355.0, 1490.0, 67.1, 60.4])
+    cal = pd.DataFrame({"stock_id": ["6949"], "date": [pd.Timestamp("2026-09-07")], "factor": [0.05]})
+    adj = gen._action_adjusted_close(dates, close, "6949", cal)
+    assert adj.round(2).tolist() == [67.75, 74.5, 67.1, 60.4]
+    assert round(float(adj.max() / close.iloc[-1] - 1), 3) == 0.233   # 真實回落 23%,不是 2367%
+    same = gen._action_adjusted_close(dates, close, "1111", cal)
+    assert same.tolist() == close.tolist()
