@@ -32,6 +32,10 @@ LEDGER = BASE_DIR / "ml" / "reports" / "rere_lane_ledger.csv"
 REPORT = BASE_DIR / "ml" / "reports" / "rere_lane_tracking_latest.md"
 DAILY = BASE_DIR / "日K資料"
 HOLD_DAYS = 60
+# 並列模擬(2026-10-07 PM 核可;不改正式帳本與現行停損規則):
+#   _nostop  = 同一批訊號不停損、抱到第 60 棒(或最新)的結果(BT-rere-stop-width 的前瞻對照)
+#   campaign = 她「已公開」持有的標的 ∩ 系統訊號(公開日 <= 訊號日才算,避免事後得知的偷看)
+CAMPAIGNS = BASE_DIR / "ml" / "data" / "rere_public_campaigns.csv"
 # 基準 2026-07-15 重定(PM核可):scripts/backtest_rere_lane_baseline.py adj 模式
 # = 與本帳本同慣例(MA60×0.97停損+除息還原)。舊 +9.40%/50.6% 為無停損純持有之
 # legacy 數字,不可重現且慣例不符,已作廢。純持有參考值:+6.77%/45.1%。
@@ -169,6 +173,83 @@ def comparable_cohort(led: pd.DataFrame) -> pd.DataFrame:
     return led[(followup >= HOLD_DAYS) & led["status"].isin(["stopped_out", "matured"])].copy()
 
 
+def _shadow_paths() -> tuple[Path, Path]:
+    """影子檔跟著帳本/報告路徑走,隔離驗證(--ledger/--report)時不會寫到正式目錄。"""
+    return LEDGER.with_name(LEDGER.stem + "_nostop.csv"), REPORT.with_name("rere_public_campaign_book.csv")
+
+
+def no_stop_shadow(led: pd.DataFrame, frames: dict[str, pd.DataFrame], as_of: str | None = None) -> pd.DataFrame:
+    """同一批已進場訊號的不停損結果:進場價與除息還原口徑和正式帳本相同,只是不套停損。"""
+    rows = []
+    for _, row in led.iterrows():
+        if str(row["status"]) in ("duplicate_signal", "pending_entry"):
+            continue
+        tk = str(row["ticker"])
+        if tk not in frames:
+            path = DAILY / f"{tk}.csv"
+            if not path.exists():
+                continue
+            frame = pd.read_csv(path)
+            frame["Date"] = pd.to_datetime(frame["Date"], errors="raise").dt.strftime("%Y-%m-%d")
+            frame = frame.sort_values("Date").reset_index(drop=True)
+            if as_of is not None:
+                frame = frame.loc[frame["Date"] <= as_of].reset_index(drop=True)
+            frames[tk] = frame
+        d = frames[tk]
+        after = d.index[d["Date"] >= str(row["signal_date"])]
+        if len(after) == 0:
+            continue
+        e_idx = after[0]
+        c = pd.to_numeric(d["Close"], errors="coerce")
+        entry = float(c.iloc[e_idx])
+        if not np.isfinite(entry) or entry <= 0:
+            continue
+        cum_div = pd.Series(0.0, index=d.index)
+        for _, ev in _DIV_CAL[_DIV_CAL["stock_id"] == tk].iterrows():
+            if ev["date"] > d["Date"].iloc[e_idx]:
+                cum_div += (d["Date"] >= ev["date"]).astype(float) * ev["dv"]
+        last_idx = min(len(d) - 1, e_idx + HOLD_DAYS)
+        last_close = float((c + cum_div).iloc[last_idx])
+        if not np.isfinite(last_close):
+            continue
+        days = int(last_idx - e_idx)
+        rows.append({
+            "signal_date": row["signal_date"], "source_date": row.get("source_date", ""), "ticker": tk,
+            "name": row.get("name", ""), "subtype": (str(row.get("subtype") or "") or "unknown"),
+            "entry_date": d["Date"].iloc[e_idx], "entry_close": round(entry, 2),
+            "rule_status": row["status"], "rule_ret_pct": row["ret_pct"],
+            "nostop_last_date": d["Date"].iloc[last_idx], "nostop_days": days,
+            "nostop_ret_pct": round((last_close / entry - 1) * 100, 2),
+            "nostop_status": "matured" if days >= HOLD_DAYS else "holding",
+        })
+    return pd.DataFrame(rows)
+
+
+def campaign_book(shadow: pd.DataFrame, campaigns_path: Path | None = None) -> tuple[pd.DataFrame, list[str]]:
+    """她已公開的標的 ∩ 系統訊號。只收「公開日 <= 訊號日」且未公開出場者;另回傳公開後系統一直沒有訊號的標的。"""
+    path = Path(campaigns_path or CAMPAIGNS)
+    if shadow.empty or not path.exists():
+        return pd.DataFrame(), []
+    camp = pd.read_csv(path, dtype=str).fillna("")
+    camp["ticker"] = camp["ticker"].str.zfill(4)
+    merged = shadow.merge(camp, on="ticker", how="inner", suffixes=("", "_camp"))
+    ok = (merged["first_public_date"] <= merged["signal_date"]) & (
+        merged["exit_public_date"].eq("") | (merged["signal_date"] <= merged["exit_public_date"]))
+    book = merged[ok].copy()
+    hit = set(book["ticker"])
+    missed = [f"{r['ticker']} {r['name']}(公開 {r['first_public_date']})" for _, r in camp.iterrows()
+              if r["kind"] == "campaign" and r["ticker"] not in hit]
+    return book, missed
+
+
+def _stat_line(label: str, values: pd.Series) -> str:
+    values = pd.to_numeric(values, errors="coerce").dropna()
+    if not len(values):
+        return f"- {label}: 0 筆"
+    return (f"- {label}: {len(values)} 筆，平均 {values.mean():+.2f}%，中位 {values.median():+.2f}%，"
+            f"勝率 {(values > 0).mean()*100:.1f}%，≥+20% {int((values >= 20).sum())} 筆，≤−20% {int((values <= -20).sum())} 筆")
+
+
 def check(as_of: str | None = None) -> None:
     led = _load_ledger()
     if led.empty:
@@ -268,6 +349,29 @@ def check(as_of: str | None = None) -> None:
             returns = pd.to_numeric(group["ret_pct"], errors="coerce")
             lines.append(f"- {subtype}: {len(group)} 筆，平均 {returns.mean():+.2f}%，勝率 {(returns > 0).mean()*100:.1f}%")
     lines += ["", "結論：" + ("累積中，完整 cohort 未滿 30 筆，不下策略判決。" if len(cohort) < 30 else "可開始按型態、同期間市場及交易成本檢視；待可比基準與相依樣本分析後再決定權重。"), ""]
+    # --- 並列模擬:不停損 + 她已公開標的(不改正式帳本、不作自動判決)---
+    shadow = no_stop_shadow(led, frames, as_of)
+    nostop_path, campaign_path = _shadow_paths()
+    if len(shadow):
+        shadow.to_csv(nostop_path, index=False, encoding="utf-8-sig")
+        done = shadow[shadow["nostop_status"] == "matured"]
+        lines += ["## 並列模擬：同一批訊號不停損（抱到第 60 棒或最新）", "",
+                  "現行規則（收盤破 MA60×0.97 停損）不變；此處只並列對照。未扣成本；樣本重疊；不含已下市股票。", "",
+                  _stat_line("全部已進場｜照規則", shadow["rule_ret_pct"]), _stat_line("全部已進場｜不停損", shadow["nostop_ret_pct"]),
+                  _stat_line("完整 60 棒｜照規則", done["rule_ret_pct"]), _stat_line("完整 60 棒｜不停損", done["nostop_ret_pct"]), ""]
+        book, missed = campaign_book(shadow)
+        if len(book):
+            book.to_csv(campaign_path, index=False, encoding="utf-8-sig")
+            lines += ["## 並列模擬：她已公開的標的 ∩ 系統訊號（公開日 ≤ 訊號日）", "",
+                      "樣本極小、她只公開部分標的且偏向獲利者；僅供觀察，不是選股依據。", "",
+                      _stat_line("照規則", book["rule_ret_pct"]), _stat_line("不停損", book["nostop_ret_pct"]), "",
+                      "| 訊號日 | 股票 | 類型 | 進場收盤 | 照規則 | 不停損 | 公開日 |", "|---|---|---|---|---|---|---|"]
+            for _, r in book.sort_values(["signal_date", "ticker"]).iterrows():
+                lines.append(f"| {r['signal_date']} | {r['ticker']} {r['name']} | {r['kind']} | {r['entry_close']} | "
+                             f"{r['rule_ret_pct']}%（{r['rule_status']}） | {r['nostop_ret_pct']}% | {r['first_public_date']} |")
+            lines.append("")
+        if missed:
+            lines += ["公開後系統一直沒有訊號的標的：" + "、".join(missed), ""]
     lines += ["| 訊號日 | 股票 | 進場收盤 | 最新 | 天數 | 報酬 | 狀態 |", "|---|---|---|---|---|---|---|"]
     for _, r in led.sort_values(["signal_date", "ticker"]).iterrows():
         lines.append(f"| {r['signal_date']} | {r['ticker']} {r['name']} | {r['entry_close']} | "

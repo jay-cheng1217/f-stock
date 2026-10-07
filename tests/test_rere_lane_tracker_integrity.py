@@ -311,3 +311,35 @@ def test_subtype_recognises_v2_labels():
     assert t._subtype({"status": "rere·蹲點型v2·小倉(60日,配停損)"}) == "shakeout_v2"
     assert t._subtype({"status": "rere·蹲點型·小倉(60日,配停損)"}) == "shakeout"
     assert t._subtype({"status": "rere·淺洗盤型·小倉(60日,配停損)"}) == "shallow"
+
+
+def test_no_stop_shadow_and_campaign_book(tmp_path, monkeypatch):
+    _configure(tmp_path, monkeypatch)
+    dates = pd.bdate_range("2026-01-02", periods=70).strftime("%Y-%m-%d")
+    prices = [100.0] * 5 + [80.0] * 5 + [130.0] * 60          # 先破停損、之後大漲
+    pd.DataFrame({"Date": dates, "Close": prices}).to_csv(tracker.DAILY / "2399.csv", index=False)
+    plan = tmp_path / "entry.json"
+    _write_plan(plan, trade_date=dates[0], source_date="2026-01-01")
+    payload = json.loads(plan.read_text(encoding="utf-8"))
+    payload["rows"][0]["stop"] = "90"
+    plan.write_text(json.dumps(payload), encoding="utf-8")
+    tracker.record(str(plan))
+    tracker.check()
+
+    ledger = pd.read_csv(tracker.LEDGER, dtype={"ticker": str})
+    assert ledger.iloc[0]["status"] == "stopped_out" and ledger.iloc[0]["ret_pct"] == -20.0   # 正式帳本照規則
+    nostop_path, campaign_path = tracker._shadow_paths()
+    assert nostop_path.parent == tracker.LEDGER.parent
+    shadow = pd.read_csv(nostop_path, dtype={"ticker": str, "signal_date": str})
+    assert shadow.iloc[0]["nostop_ret_pct"] == 30.0 and shadow.iloc[0]["nostop_status"] == "matured"
+    assert shadow.iloc[0]["rule_ret_pct"] == -20.0
+
+    camp = tmp_path / "camp.csv"
+    header = "ticker,name,first_public_date,exit_public_date,kind,source" + "\n"
+    camp.write_text(header + "2399,A,2025-12-31,,campaign,x" + "\n" + "2400,B,2025-12-31,,campaign,x" + "\n", encoding="utf-8")
+    book, missed = tracker.campaign_book(shadow, camp)
+    assert book["ticker"].tolist() == ["2399"] and missed == ["2400 B(公開 2025-12-31)"]
+    camp.write_text(header + "2399,A,2026-03-01,,campaign,x" + "\n", encoding="utf-8")
+    book, missed = tracker.campaign_book(shadow, camp)          # 公開日晚於訊號日 → 不算(避免事後得知)
+    assert book.empty and missed == ["2399 A(公開 2026-03-01)"]
+    assert "並列模擬：同一批訊號不停損" in tracker.REPORT.read_text(encoding="utf-8")

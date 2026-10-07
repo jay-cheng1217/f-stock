@@ -375,3 +375,25 @@ def test_action_adjusted_close_removes_par_value_discontinuity():
     assert round(float(adj.max() / close.iloc[-1] - 1), 3) == 0.233   # 真實回落 23%,不是 2367%
     same = gen._action_adjusted_close(dates, close, "1111", cal)
     assert same.tolist() == close.tolist()
+
+
+def test_archived_zone_alerts_flags_price_back_in_zone(tmp_path):
+    import json
+    from datetime import date
+    arch = tmp_path / "archive.json"
+    arch.write_text(json.dumps([
+        {"ticker": "8150", "zone_low": "86.5", "zone_high": "89.5", "stop": "82.5", "pruned_at": "2026-09-04", "prune_reason": "整批歸檔"},
+        {"ticker": "5285", "zone_low": "90", "zone_high": "95", "stop": "88", "pruned_at": "2026-08-28", "prune_reason": gen.WATCHLIST_STOP_BREACH_PREFIX + ":現價84"},
+        {"ticker": "2049", "zone_low": "200", "zone_high": "210", "stop": "190", "pruned_at": "2026-09-04", "prune_reason": "整批歸檔"},
+        {"ticker": "3227", "zone_low": "188", "zone_high": "193", "stop": "184", "pruned_at": "2026-06-01", "prune_reason": "逾期"},
+        {"ticker": "6532", "zone_low": "96.5", "zone_high": "100", "stop": "91.5", "pruned_at": "2026-09-04", "prune_reason": "整批歸檔"},
+    ]), encoding="utf-8")
+    closes = {"8150": 84.4, "5285": 92.0, "2049": 230.0, "3227": 190.0, "6532": 98.0}
+    tech = lambda tk, as_of: {"close": closes[tk]}
+    out = gen._archived_zone_alerts(date(2026, 9, 15), {"6532"}, archive_path=arch, technical=tech)
+    assert [a["ticker"] for a in out] == ["8150"]      # 低於下緣但未破失效價仍提示
+    assert out[0]["zone_high"] == 89.5 and out[0]["pruned_at"] == "2026-09-04"
+    closes["8150"] = 82.0                               # 破失效價 → 不提示
+    assert gen._archived_zone_alerts(date(2026, 9, 15), set(), archive_path=arch, technical=tech) == [
+        a for a in gen._archived_zone_alerts(date(2026, 9, 15), set(), archive_path=arch, technical=tech) if a["ticker"] == "6532"]
+    assert gen._archived_zone_alerts(date(2026, 9, 15), set(), archive_path=tmp_path / "missing.json", technical=tech) == []

@@ -795,6 +795,9 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
         except Exception:
             pass
 
+    # --- 已歸檔觀察卡回到區間提示(2026-10-07 PM 核可):純提示,不上卡、不入帳本、不改排序 ---
+    archived_alerts = _archived_zone_alerts(required, {r["ticker"] for r in rows})
+
     # --- 出關雷達標籤(BT-disposition-release 2026-07-08 判決落地;2026-08-29 接線):---
     # 雷達≠扳機:純觀察標註,不改 kind/score/排序,由裁量層自行判斷。
     # radar json 由每晚排程 disposition_release_radar.py 產出;>4 天視為過期不標。
@@ -827,8 +830,53 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "rows": rows,
         "shadow_legacy_main": shadow_legacy_main,
+        "archived_zone_alerts": archived_alerts,
         "night_gap": _night_session_gap() if include_live else None,
     }
+
+
+ARCHIVE_ALERT_MAX_AGE_DAYS = 60
+
+
+def _archived_zone_alerts(as_of: date | None, active: set[str], *, archive_path: Path | None = None,
+                          technical=None) -> list[dict[str, Any]]:
+    """歸檔 ≠ setup 失效。觀察卡因「逾期未重估/整批歸檔」被移除後,若股價仍在原區間(或低於下緣但未破失效價),
+    提示人工重估是否加回。教訓:南茂 8150 的卡(86.5-89.5/失效 82.5)2026-09-04 整批歸檔,9/11~9/17 股價 84.3~90.1
+    正落在區間,無人盯,之後漲到 128。破停損歸檔者 setup 已失敗,不提示;歸檔逾 60 天不提示;已在名單/觀察卡上的不重複。"""
+    path = archive_path or (BASE_DIR / "logs" / "entry_watchlist_archive.json")
+    try:
+        archive = json.loads(Path(path).read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    latest: dict[str, dict[str, Any]] = {}
+    for w in archive if isinstance(archive, list) else []:
+        tk = str(w.get("ticker", "")).zfill(4)
+        if tk.isdigit():
+            latest[tk] = w            # 同檔取最後一次歸檔
+    alerts: list[dict[str, Any]] = []
+    for tk, w in latest.items():
+        if tk in active or as_of is None:
+            continue
+        reason = str(w.get("prune_reason", ""))
+        if reason.startswith(WATCHLIST_STOP_BREACH_PREFIX):
+            continue
+        try:
+            pruned = datetime.strptime(str(w.get("pruned_at")), "%Y-%m-%d").date()
+            zlo, zhi, stop = float(w["zone_low"]), float(w["zone_high"]), float(w.get("stop") or 0)
+        except Exception:
+            continue
+        age = (as_of - pruned).days
+        if age < 0 or age > ARCHIVE_ALERT_MAX_AGE_DAYS:
+            continue
+        t = (technical or _technical)(tk, as_of)
+        close = (t or {}).get("close")
+        if close is None or not np.isfinite(close):
+            continue
+        floor = stop if stop > 0 else zlo * 0.95
+        if floor <= close <= zhi:
+            alerts.append({"ticker": tk, "close": float(close), "zone_low": zlo, "zone_high": zhi, "stop": stop,
+                           "pruned_at": pruned.isoformat(), "prune_reason": reason[:60]})
+    return sorted(alerts, key=lambda a: a["ticker"])
 
 
 def _pick_rere_v2(rere_rows: list[dict[str, Any]], cap: int | None = None) -> list[dict[str, Any]]:
@@ -960,6 +1008,10 @@ def to_entry_json(result: dict[str, Any], trade_date: str) -> dict[str, Any]:
         "rows": out_rows,
         # 舊主 lane 規則的影子名單(不上儀表板名單、不進 rows 計數;entry_filter_tracker --legacy 記入獨立帳本)
         "shadow_legacy_main": shadow_rows,
+        # 已歸檔觀察卡回到原區間的提示(不上卡、不入帳本;需人工重估後才加回 entry_watchlist.json)
+        "archived_zone_alerts": [
+            {**a, "stock": f"{a['ticker']} {nm.get(a['ticker'], '')}".strip()} for a in (result.get("archived_zone_alerts") or [])
+        ],
         "discipline": (
             ([f"【夜盤】{result['night_gap']['hint']}"] if result.get("night_gap") else [])
             + [

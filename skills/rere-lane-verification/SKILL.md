@@ -20,6 +20,8 @@ python -X utf8 scripts/rere_lane_tracker.py record --plan logs/entry_list_<YYYYM
 python -X utf8 scripts/rere_lane_tracker.py check
 ```
 
+**並列模擬(2026-10-07,唯讀對照、不作自動判決)**:`check` 另寫 `rere_lane_ledger_nostop.csv`(同批訊號不停損抱 60 棒)與 `rere_public_campaign_book.csv`(`ml/data/rere_public_campaigns.csv` 所列她已公開標的 ∩ 系統訊號,公開日 ≤ 訊號日),報告內並列。評估停損規則時兩組都要報;campaign 樣本極小且偏向獲利者,不得當選股依據。
+
 正式帳本 `ml/reports/rere_lane_ledger.csv` 不得手編。只記 go/small 的 rere lane，
 veto/watch 不入新倉；依 source_date+ticker 去重，保留 subtype，舊未知欄位不得猜測回填。
 測試與歷史重播必須用獨立 `--ledger`、`--report`；`--as-of` 不得覆寫正式帳本。

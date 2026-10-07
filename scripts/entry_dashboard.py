@@ -949,6 +949,7 @@ def build(path: Path) -> str:
                         "data_status": d.get("data_status", "UNKNOWN"),
                         "data_warnings": d.get("data_warnings") or [],
                         "discipline": d.get("discipline") or [],
+                        "archived_alerts": d.get("archived_zone_alerts") or [],
                         "sources": source_status,
                         "generated": datetime.now().strftime("%Y-%m-%d %H:%M")},
                "rows": [{k: r.get(k) for k in
@@ -1204,6 +1205,7 @@ document.getElementById('hdr').innerHTML =
   ${MK.asof?`<span class="tag">model tags asof ${MK.asof}</span>`:''}</div>
   ${sourceHtml?`<div class="freshline ${staleSources.length?'has-stale':''}">資料基準 · ${sourceHtml}</div>`:''}
   ${(D.meta.data_warnings||[]).length?`<div class="guard">資料待確認 · ${D.meta.data_warnings.map(esc).join('；')}</div>`:''}
+  ${(D.meta.archived_alerts||[]).length?`<div class="guard">已歸檔的觀察卡回到原區間，需人工重估是否加回 · ${D.meta.archived_alerts.map(a=>`${esc(a.stock||a.ticker)} 收 ${esc(a.close)}（原區間 ${esc(a.zone_low)}–${esc(a.zone_high)}，失效 ${esc(a.stop)}，${esc(a.pruned_at)} 歸檔）`).join('；')}</div>`:''}
   <div class="meta">先看狀態，再看區間與失效價。名單根據盤後資料產生；盤中價格、分點與主力成本仍需確認。</div>
   ${D.meta.intro?`<details class="meta"><summary>名單來源與篩選說明</summary>${esc(D.meta.intro)}</details>`:''}
   ${MK.guard?`<div class="guard"><b>⚠️ ${esc((MK.guard_context||{}).headline||'模型風險檢查警示')}</b><br>
