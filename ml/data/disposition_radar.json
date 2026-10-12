@@ -1,104 +1,74 @@
 {
-  "date": "2026-10-09",
+  "date": "2026-10-12",
   "hits": [
-    {
-      "ticker": "2468",
-      "name": "華經",
-      "sector": "資訊服務業",
-      "released": "2026-10-02",
-      "days_since": 7,
-      "known_yoy": -28.59,
-      "rev_window": true,
-      "dual_fuse": false
-    },
-    {
-      "ticker": "6168",
-      "name": "宏齊",
-      "sector": "光電業",
-      "released": "2026-10-02",
-      "days_since": 7,
-      "known_yoy": 18.52,
-      "rev_window": true,
-      "dual_fuse": false
-    },
-    {
-      "ticker": "7772",
-      "name": "耀穎",
-      "sector": "半導體業",
-      "released": "2026-10-02",
-      "days_since": 7,
-      "known_yoy": 54.2,
-      "rev_window": true,
-      "dual_fuse": true
-    },
     {
       "ticker": "2455",
       "name": "全新",
       "sector": "通信網路業",
       "released": "2026-10-05",
-      "days_since": 4,
-      "known_yoy": 71.16,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 7,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "3374",
       "name": "精材",
       "sector": "半導體業",
       "released": "2026-10-05",
-      "days_since": 4,
-      "known_yoy": 36.74,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 7,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "3443",
       "name": "創意",
       "sector": "半導體業",
       "released": "2026-10-05",
-      "days_since": 4,
-      "known_yoy": 111.02,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 7,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "4542",
       "name": "科嶠",
       "sector": "電子零組件業",
       "released": "2026-10-05",
-      "days_since": 4,
-      "known_yoy": 194.65,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 7,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "4979",
       "name": "華星光",
       "sector": "通信網路業",
       "released": "2026-10-05",
-      "days_since": 4,
-      "known_yoy": 37.45,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 7,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "6218",
       "name": "豪勉",
       "sector": "通信網路業",
       "released": "2026-10-05",
-      "days_since": 4,
-      "known_yoy": 52.85,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 7,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "6526",
       "name": "達發",
       "sector": "半導體業",
       "released": "2026-10-06",
-      "days_since": 3,
-      "known_yoy": 26.11,
-      "rev_window": true,
+      "days_since": 6,
+      "known_yoy": null,
+      "rev_window": false,
       "dual_fuse": false
     },
     {
@@ -106,19 +76,19 @@
       "name": "安葆",
       "sector": "其他電子業",
       "released": "2026-10-06",
-      "days_since": 3,
-      "known_yoy": 67.72,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 6,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "3219",
       "name": "倚強科",
       "sector": "其他電子業",
       "released": "2026-10-07",
-      "days_since": 2,
-      "known_yoy": 19.73,
-      "rev_window": true,
+      "days_since": 5,
+      "known_yoy": null,
+      "rev_window": false,
       "dual_fuse": false
     },
     {
@@ -126,20 +96,20 @@
       "name": "彰源",
       "sector": "鋼鐵工業",
       "released": "2026-10-08",
-      "days_since": 1,
-      "known_yoy": 57.69,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 4,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "8227",
       "name": "巨有科技",
       "sector": "半導體業",
       "released": "2026-10-08",
-      "days_since": 1,
-      "known_yoy": 42.25,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 4,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     }
   ]
 }
