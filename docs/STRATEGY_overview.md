@@ -557,6 +557,13 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
     `ml/reports/rere_public_follow_latest.md` / `rere_public_follow_book.csv`,為名單流程的選用步驟(失敗只記警告)。
     首日(資料至 10/12):10 檔 +4.9%、市場 +1.3%、超額 +3.6pp、5/10;長抱 7 檔超額 +10.2pp(4/7),事件與試單 3 檔 −11.8pp。
     這不是她的損益;樣本小且分類有後見之明風險,靠往後累積判斷。新增公開標的時更新名單檔。
+22. **rere 候選影子排序研究帳本(2026-10-12 PM 核可「做影子排序」)**:回測票 #20 的樣本外驗證。產生器的名單檔新增 `shadow_rere_pool`
+    (當日全部 rere 候選,套名額前;純輸出,名單列與排序不變——10/12 名單以新程式重產逐列相同)。`scripts/rere_shadow_rank_tracker.py`
+    每日記四組:散戶持股比 4 週減最多前 3(主假設)、千張大戶增最多前 3、實際上名單者、全部候選;集保以名單資料日為準(資料日 +3 天才算已知)。
+    交易日收盤進、抱 60 根、不停損,逐日與候選池平均比較。輸出 `ml/reports/rere_shadow_rank_latest.md`、`rere_shadow_rank_picks.csv`(選股當下的集保數值)、
+    `rere_shadow_rank_book.csv`;為名單流程的選用步驟。**樣本外採用判準(事前寫死)**:累積 ≥60 個已滿 60 根的排名日後,
+    散戶組逐日超額平均 ≥ +1.5pp、前後半皆為正、且平均報酬不低於實際上名單者,才向 PM 提請改用集保排序;否則結案封存。
+    在此之前報告只顯示「觀察中」,這裡的股票不是進場建議,儀表板與名單不呈現。
    明細 ml/reports/bt_rere_pre_trust_accumulation.csv。
 
 ## 三個月績效快照(2026-07-01 ~ 10-02,2026-10-05 由帳本/追蹤檔直接計算,PM 提問「選股準確度」)

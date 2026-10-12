@@ -683,6 +683,10 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
                               if (t.get("inst_gap_days") and ptype not in RERE_V2_PTYPES) else []),
         })
     rere_rows.sort(key=lambda x: x["score"], reverse=True)
+    # 當日全部 rere 候選(套名額前)。只供研究用影子排序(scripts/rere_shadow_rank_tracker.py,2026-10-12 PM 核可);
+    # 不上名單、不進帳本、不影響下面的名額與排序。
+    shadow_rere_pool = [{"ticker": r["ticker"], "ptype": r["ptype"], "close": r["close"], "wash": r["wash"],
+                         "sec_tier": r["sec_tier"], "source_date": r["source_date"]} for r in rere_rows]
     # rere lane 卡片排主 lane 前面(2026-08-31 用戶指示:南亞 1303 案例 priority 16
     # 沉在名單後段,實戰有效的 lane 不該被淹沒)。純呈現順序,非訊號變更。
     # v2 子型態另計上限,不佔現行三型的 6 個名額(現行 forward cohort 零變動)。
@@ -837,6 +841,7 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "rows": rows,
         "shadow_legacy_main": shadow_legacy_main,
+        "shadow_rere_pool": shadow_rere_pool,
         "archived_zone_alerts": archived_alerts,
         "night_gap": _night_session_gap() if include_live else None,
     }
@@ -1018,6 +1023,9 @@ def to_entry_json(result: dict[str, Any], trade_date: str) -> dict[str, Any]:
         "rows": out_rows,
         # 舊主 lane 規則的影子名單(不上儀表板名單、不進 rows 計數;entry_filter_tracker --legacy 記入獨立帳本)
         "shadow_legacy_main": shadow_rows,
+        # 當日全部 rere 候選(套名額前),供影子排序研究帳本使用;不是名單
+        "shadow_rere_pool": [{**c, "stock": f"{c['ticker']} {nm.get(c['ticker'], '')}".strip()}
+                             for c in (result.get("shadow_rere_pool") or [])],
         # 已歸檔觀察卡回到原區間的提示(不上卡、不入帳本;需人工重估後才加回 entry_watchlist.json)
         "archived_zone_alerts": [
             {**a, "stock": f"{a['ticker']} {nm.get(a['ticker'], '')}".strip()} for a in (result.get("archived_zone_alerts") or [])

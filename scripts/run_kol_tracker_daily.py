@@ -37,10 +37,15 @@ ENTRY_STEPS: tuple[tuple[str, tuple[str, ...], int], ...] = (
         (sys.executable, "-X", "utf8", "scripts/rere_public_follow_tracker.py"),
         300,
     ),
+    (   # 2026-10-12 起:rere 候選「散戶 4 週變化」影子排序研究帳本(失敗只記警告)
+        "Update rere shadow-rank book",
+        (sys.executable, "-X", "utf8", "scripts/rere_shadow_rank_tracker.py"),
+        300,
+    ),
     ("Build entry dashboard", (sys.executable, "-X", "utf8", "scripts/entry_dashboard.py"), 600),
 )
 # 研究用步驟:逾時或失敗只寫警告,不可讓名單儀表板(及其後的每日報告信)跟著失敗
-OPTIONAL_STEPS = frozenset({"Update public-post follow book"})
+OPTIONAL_STEPS = frozenset({"Update public-post follow book", "Update rere shadow-rank book"})
 
 
 def _append_log(message: str, *, log_path: Path = LOG_PATH) -> None:
