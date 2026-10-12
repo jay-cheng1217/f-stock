@@ -95,8 +95,10 @@
   (`config/retired_tickers.csv` 是全域排除,會造成倖存者偏差,新案不要再加進去)。(2) 既有官方K棒覆蓋稽核
   `scripts/latest_bar_coverage_runtime.build_stale_bar_coverage` 原本只掛網頁健康 API,現於 Phase-1 ingest 後與 Phase-2 預測後
   各跑一次,只告警不擋流程(`logs/latest_bar_coverage_latest.json`、degraded warning)。告警「官方行情無此股且名冊未登錄」
-  = 要補登事件(減資停牌、終止上市櫃),不是要改程式。(3) `suspended`(含減資停牌)是否排出即時推論 = 待 PM 依固定快照 A/B 裁決,
-  未核可前照舊評分。(4) **3718 中光電投控不得自行串接 5371 價格歷史**(9/6 名冊紀錄);是否例外由 PM 決定。
+  = 要補登事件(減資停牌、終止上市櫃),不是要改程式。(3) **停牌列不進即時推論(2026-10-12 PM 核可)**:
+  `ml/dataset._drop_stale_latest_rows` 剔除最後一筆不等於整批資料日的股票(停牌、減資換股、下櫃),恢復交易隔天自動回來;
+  剔除超過 5% 直接報錯(疑似半匯入)。固定快照 A/B 見 `ml/reports/ab_live_universe_exclusion_20261012.md`。
+  (4) **3718 中光電投控不串接 5371 價格歷史**(9/6 名冊紀錄,2026-10-12 PM 再確認不例外)。
 - **Yahoo 非交易日假棒(2026-09-21)**:yfinance 對冷門上櫃股(5276/5878)回傳日期落在週日 9/20 的即時報價棒,
   有量且非平價,逃過 `_drop_fake_flat_bars` 的零量平價檢查;`verify_otc_bars._recent_local_dates` 把 9/20 納入
   查詢窗口→TWSE MI_INDEX 回「沒有符合條件的資料」→verifier fail closed→SKIP ingest/DataA/entry 整條 Phase-1。

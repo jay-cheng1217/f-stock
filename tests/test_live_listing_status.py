@@ -118,3 +118,39 @@ def test_scheduled_coverage_audit_warns_and_never_raises(tmp_path, monkeypatch):
     monkeypatch.setattr(runtime, "build_stale_bar_coverage", _boom)
     assert sua._run_latest_bar_coverage("Phase-1") is None
     assert "latest_bar_coverage_failed" in sua.RUN_CONTEXT["latest_bar_coverage_warning"]
+
+
+def _rows(dates):
+    import pandas as pd
+    return pd.DataFrame({"ticker": [f"{1000 + i}" for i in range(len(dates))], "Date": pd.to_datetime(dates),
+                         "atr_pct": 0.02})
+
+
+def test_stale_latest_rows_are_dropped_from_live_snapshot():
+    snap = _rows(["2026-10-08"] * 40 + ["2026-10-06"])
+    kept = dataset._drop_stale_latest_rows(snap, verbose=False)
+    assert len(kept) == 40 and "1040" not in set(kept["ticker"])
+    fresh = _rows(["2026-10-08"] * 5)
+    assert len(dataset._drop_stale_latest_rows(fresh, verbose=False)) == 5
+
+
+def test_half_ingested_snapshot_fails_closed():
+    snap = _rows(["2026-10-08"] * 30 + ["2026-10-07"] * 10)      # 25% 落後 = 疑似只匯入一半
+    with pytest.raises(ValueError, match="拒絕建立快照"):
+        dataset._drop_stale_latest_rows(snap, verbose=False)
+
+
+def test_build_latest_snapshot_applies_the_stale_row_filter(monkeypatch):
+    import pandas as pd
+    frames = {f"{2000 + i}": "2026-10-08" for i in range(30)}
+    frames["6173"] = "2026-10-06"
+    monkeypatch.setattr(dataset, "_latest_snapshot_tickers", lambda as_of=None: sorted(frames))
+    monkeypatch.setattr(dataset, "_load_twii", lambda: None)
+    monkeypatch.setattr(dataset, "load_single_stock", lambda tk, **kw: pd.DataFrame(
+        {"ticker": [tk, tk], "Date": pd.to_datetime(["2026-09-01", frames[tk]]), "atr_pct": [0.02, 0.02]}))
+    for name in ("_apply_percentile_ranking", "compute_sector_features", "compute_industry_features",
+                 "add_market_regime_features", "_winsorize_features"):
+        monkeypatch.setattr(dataset, name, lambda df: df)
+    monkeypatch.setattr(dataset, "get_available_features", lambda: set())
+    snap = dataset.build_latest_snapshot(verbose=False)
+    assert "6173" not in set(snap["ticker"]) and len(snap) == 30

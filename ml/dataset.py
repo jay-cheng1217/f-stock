@@ -864,6 +864,33 @@ def _latest_snapshot_tickers(as_of: date | None = None) -> list[str]:
     return [t for t in _list_daily_tickers() if t not in terminated]
 
 
+STALE_LATEST_ROW_MAX_SHARE = 0.05   # 正常約 0.7%(停牌/下櫃);超過代表資料只匯入一半,寧可報錯也不用半個市場預測
+
+
+def _drop_stale_latest_rows(snapshot: pd.DataFrame, verbose: bool = True) -> pd.DataFrame:
+    """即時推論只留「最後一筆 = 整批資料日」的股票(2026-10-12 PM 核可第 3 項)。
+
+    停牌、減資換股、下櫃的股票沒有新K棒,原本以凍結的最後一列照常評分(6173 停在 10/06 仍排上漲機率第一)。
+    資料日 = 多數列共有的日期(ml.prediction_dates);恢復交易、有新K棒的隔天自動回到股票池。
+    固定快照 A/B:ml/reports/ab_live_universe_exclusion_20261012.md(變體 C)。
+    """
+    from ml.prediction_dates import canonical_prediction_date, stale_prediction_rows
+
+    as_of = canonical_prediction_date(snapshot, column="Date")
+    if as_of is None:
+        raise ValueError("latest snapshot has no valid dates")
+    stale = stale_prediction_rows(snapshot, as_of, column="Date", ticker_column="ticker")
+    if not stale:
+        return snapshot
+    if len(stale) > len(snapshot) * STALE_LATEST_ROW_MAX_SHARE:
+        raise ValueError(f"{len(stale)}/{len(snapshot)} 檔最後一筆不是 {as_of},超過 {STALE_LATEST_ROW_MAX_SHARE:.0%};"
+                         f"疑似資料只匯入一半,拒絕建立快照:{', '.join(stale[:20])}")
+    if verbose:
+        print(f"  排除資料日早於 {as_of} 的 {len(stale)} 檔(停牌/下櫃,買不到):{', '.join(stale)}")
+    days = pd.to_datetime(snapshot["Date"], errors="coerce").dt.strftime("%Y-%m-%d")
+    return snapshot[days.eq(as_of)].reset_index(drop=True)
+
+
 def build_latest_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
     """建立最新推論快照：每檔股票只保留最新一列，並套用截面特徵。"""
     tickers = _latest_snapshot_tickers()
@@ -883,6 +910,7 @@ def build_latest_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.DataF
         raise ValueError("無可用推論資料")
 
     snapshot = pd.concat(rows, ignore_index=True)
+    snapshot = _drop_stale_latest_rows(snapshot, verbose=verbose)
     snapshot = snapshot.sort_values(["Date", "ticker"]).reset_index(drop=True)
 
     if verbose:
