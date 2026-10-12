@@ -1,7 +1,7 @@
 {
   "trade_date": "2026-10-12",
   "as_of_date": "2026-10-08",
-  "generated_at": "2026-10-12T08:01:44",
+  "generated_at": "2026-10-12T15:17:09",
   "data_status": "OK",
   "data_warnings": [],
   "special_status": {
@@ -901,7 +901,7 @@
     }
   ],
   "discipline": [
-    "【夜盤】無最新夜盤/即時大盤資料(盤前),開盤先看 gap 再執行",
+    "【夜盤】大盤 49302 vs 昨收 49313(-0.0%)→ 溫和,照計畫執行",
     "盤中進區間守15-30分才算;跌破停損=型態失敗就砍,別凹。",
     "出場:賣壓力減碼、砍型態失敗(非當日紅)、龍頭留基本倉、波段來回。",
     "rere 系統掃描為方法代理；主力成本與盤中守穩仍需人工確認，不能視為 KOL 本人薦股。"
@@ -909,10 +909,10 @@
   "artifact_lineage": {
     "schema": 1,
     "scope": "successful_live_entry_generation",
-    "run_id": "3988082bef1e420ebf6ef68e34fc83a9",
+    "run_id": "e6ab318d2cdc4659b2f8fd21664994bb",
     "as_of_date": "2026-10-08",
     "trade_date": "2026-10-12",
-    "result_sha256": "e4e77ee9cc87620a81641954455f42a563743914c8a6911e0ddf04910dfd1f40",
-    "payload_sha256": "ad86fa71823b7f4a825d2d3f1d262e29af295e05c4f5665fabdb6710af0dc2e3"
+    "result_sha256": "c50f9817b3f9b4c8c6c2c69ea1a114983142721529b11d2345922eff2d8fa6f1",
+    "payload_sha256": "114fdd676b10dda71b986d8d11c404d2f57e9bea8da0274aba2bc039bd1eec7b"
   }
 }
