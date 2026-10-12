@@ -101,6 +101,14 @@ def test_scheduled_coverage_audit_warns_and_never_raises(tmp_path, monkeypatch):
         def close(self):
             pass
 
+    # 一定要換掉 LOGGER:它寫的是正式排程 log。2026-10-12 這個測試三次把假的 STALE TICKERS 告警與錯誤堆疊
+    # 寫進 logs/smart_update_auto_20261012.log(18:05、18:46),會誤導隔天讀 log 的人。
+    import logging
+    quiet = logging.getLogger("test_live_listing_status")
+    quiet.handlers.clear()
+    quiet.addHandler(logging.NullHandler())
+    quiet.propagate = False
+    monkeypatch.setattr(sua, "LOGGER", quiet)
     monkeypatch.setattr(duckdb, "connect", lambda *a, **k: _Conn())
     monkeypatch.setattr(sua, "LATEST_BAR_COVERAGE_REPORT", str(tmp_path / "coverage.json"))
     monkeypatch.setitem(sua.RUN_CONTEXT, "latest_bar_coverage_warning", None)
