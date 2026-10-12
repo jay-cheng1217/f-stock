@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "verified_on": "2026-09-06",
-  "purpose": "Completeness diagnostics only; never a date-agnostic training exclusion list",
+  "purpose": "Completeness diagnostics, plus date-aware exclusion of effective terminations from live inference only (2026-10-12 PM approval); never a date-agnostic training exclusion list",
   "events": [
     {
       "id": "1563_suspended_2026-08-27",
@@ -170,6 +170,21 @@
       "source_snapshot": "output/latest_bar_coverage_20260906/staging/tpex_notice_11502007761.json",
       "reason": "繼續經營重大不確定性三年未消除",
       "scheduled_resumption": null
+    },
+    {
+      "id": "8183_terminated_2026-10-01",
+      "ticker": "8183",
+      "status": "terminated",
+      "effective_from": "2026-10-01",
+      "effective_until": null,
+      "available_on": "2026-10-12",
+      "verified_on": "2026-10-12",
+      "source_url": "https://www.tpex.org.tw/www/zh-tw/company/deListed?date=2026&reason=-1&response=json&start=0&length=100",
+      "source_sha256": "86b5cf847348056b6220d293b6a569e897939b57b6c3fc9ea5b5d1b6293036a2",
+      "source_snapshot": "output/latest_bar_coverage_20261012/staging/tpex_delisted.json",
+      "reason": "官方終止上櫃表 115-10-01;股份轉換為精成科(6191)100%子公司;清單未含原公告日,以首次驗證日作保守available_on;本機最後K棒2026-09-22",
+      "scheduled_resumption": null
     }
-  ]
+  ],
+  "last_updated": "2026-10-12"
 }
