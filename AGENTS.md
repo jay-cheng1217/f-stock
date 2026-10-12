@@ -81,6 +81,14 @@
   先下載原始檔到 `logs/quarantine_tdcc_<date>/` 當保險(格式與 `集保分散/tdcc_<date>.csv` 相同,可直接轉入);
   (2) **盤中不可跑正式 fetcher**——它會重建 `集保分散/tdcc_summary.csv`,該檔在快照/名單憑證簽章內
   (`ml/dataset._raw_cache_source_patterns`),一動名單 API 即 503;正式入檔留給 Phase-1 或收盤後。
+- **預測批次資料日不可取第一列(2026-10-10/12 事故)**:`ml/predict.run_prediction` 原以排序後第一列的 `date` 命名輸出檔;
+  6173 最後一根K棒停在 10/06 又排第一,10/08 資料的預測被存成 `predictions_2026-10-06.csv`——10/10 週六重訓與 10/12 早上兩次
+  蓋掉歷史檔、舊版紙上組合 `paper_portfolio.db` 鎖成 2026-10-06 並以 10/07 開盤進場(前視錯誤)、10/12 儀表板因找不到
+  有效的 10/08 預測憑證而失敗(名單 API 正常)。修法:單一來源 `ml/prediction_dates.canonical_prediction_date`
+  (多數列共有的日期,同票取較晚;不用第一列、不用最大日期),11 處同型寫法全改用它,資料日落後的個股只告警不影響檔名。
+  **鐵律**:任何「整批預測/名單的日期」都要用這個函式或產物憑證的 as-of,不可用 `df["date"].iloc[0]`。
+  預測憑證只對「當下來源狀態」有效(`load_prediction_csv` 比對 `lineage.source_state()`),隔天來源更新後舊檔憑證必然過期,
+  修復一律重跑產生,不可改名或搬動檔案讓憑證通過。被蓋掉的歷史檔以 `ml/reports/archive/nightly/<date>/` 的封存為原件。
 - **Yahoo 非交易日假棒(2026-09-21)**:yfinance 對冷門上櫃股(5276/5878)回傳日期落在週日 9/20 的即時報價棒,
   有量且非平價,逃過 `_drop_fake_flat_bars` 的零量平價檢查;`verify_otc_bars._recent_local_dates` 把 9/20 納入
   查詢窗口→TWSE MI_INDEX 回「沒有符合條件的資料」→verifier fail closed→SKIP ingest/DataA/entry 整條 Phase-1。

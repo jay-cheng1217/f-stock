@@ -24,6 +24,7 @@ except Exception:  # pragma: no cover - optional dependency at runtime
 from backend.config import DUCKDB_PATH
 from ml.config import DAILY_K_DIR, MODEL_DIR, REPORT_DIR
 from ml.predict import apply_sector_cap
+from ml.prediction_dates import canonical_prediction_date
 
 PRODUCTION_PREDICTION_RE = re.compile(r"^predictions_\d{4}-\d{2}-\d{2}\.csv$")
 DEFAULT_REPORT_PATH = os.path.join(REPORT_DIR, "daily_replay_monitor_latest.json")
@@ -385,7 +386,7 @@ def _summarize_day(
     positions: pd.DataFrame,
     top_n: int,
 ) -> dict[str, Any]:
-    prediction_date = str(pred_df["date"].iloc[0])
+    prediction_date = str(canonical_prediction_date(pred_df))
     observed = positions.dropna(subset=["partial_return"]).copy() if not positions.empty else positions.copy()
     avg_pred = _series_mean(pd.to_numeric(positions.get("pred_return_20d"), errors="coerce")) if not positions.empty else None
     avg_partial = _series_mean(observed["partial_return"]) if not observed.empty else None

@@ -24,6 +24,7 @@ from ml.config import (
     TWO_STAGE_TOP_N,
 )
 from ml.dataset import build_latest_snapshot, apply_snapshot_zscore
+from ml.prediction_dates import canonical_prediction_date, stale_prediction_rows
 from ml.features.entry import ENTRY_INFO_COLS
 from ml.features.group import OTHER_GROUP_CODE, annotate_group_columns, is_capped_group
 from ml.features.sector import load_sector_mapping
@@ -322,7 +323,7 @@ def _attach_beta_artifacts(pred_df: pd.DataFrame) -> pd.DataFrame:
         out["beta_60"] = np.nan
         return out
 
-    prediction_date = pd.to_datetime(out["date"].iloc[0], errors="coerce")
+    prediction_date = pd.to_datetime(canonical_prediction_date(out), errors="coerce")
     if pd.isna(prediction_date):
         out["beta_60"] = np.nan
         return out
@@ -1965,7 +1966,13 @@ def run_prediction(
 
     # 儲存
     if output_path is None:
-        out_path = os.path.join(MODEL_DIR, f"{output_prefix}_{pred_df['date'].iloc[0]}.csv")
+        as_of = canonical_prediction_date(pred_df)
+        if as_of is None:
+            raise ValueError("prediction frame has no valid dates; refusing to name the output file")
+        stale = stale_prediction_rows(pred_df, as_of)
+        if stale:
+            print(f"WARN {len(stale)} 檔資料日早於整批資料日 {as_of}(停牌或缺資料),不影響檔名:{', '.join(stale[:10])}")
+        out_path = os.path.join(MODEL_DIR, f"{output_prefix}_{as_of}.csv")
     else:
         out_path = output_path
     from ml.prediction_provenance import publish_prediction_csv

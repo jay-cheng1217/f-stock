@@ -33,6 +33,7 @@ sys.path.insert(0, BASE_DIR)
 
 from ml.config import MODEL_DIR
 from ml.predict import apply_sector_cap
+from ml.prediction_dates import canonical_prediction_date
 from scripts.update_paper_portfolio import (
     _coerce_db_value,
     _sha256,
@@ -192,7 +193,7 @@ def _lock_v4_run(
     Bypasses update_paper_portfolio._build_leaderboard so the order matches
     exactly the v4 csv (T+1 ranking inside the V3 sector-capped pool).
     """
-    prediction_date = _date_from_path(prediction_path) if leaderboard.empty else str(leaderboard["date"].iloc[0])
+    prediction_date = (canonical_prediction_date(leaderboard) if not leaderboard.empty else None) or _date_from_path(prediction_path)
     existing = conn.execute(
         "SELECT id FROM portfolio_runs WHERE prediction_date = ?",
         (prediction_date,),

@@ -23,6 +23,7 @@ BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(o
 sys.path.insert(0, BASE_DIR)
 
 from ml.config import DAILY_K_DIR, MODEL_DIR
+from ml.prediction_dates import canonical_prediction_date
 
 PORTFOLIO_DB = os.path.join(BASE_DIR, "paper_portfolio_t1.db")
 REPORT_DIR = os.path.join(BASE_DIR, "ml", "reports")
@@ -64,7 +65,9 @@ def compute_daily_ic(pred_csv: str) -> dict | None:
     if pred_df is None or pred_df.empty:
         return None
 
-    pred_date = str(pred_df["date"].iloc[0])
+    pred_date = canonical_prediction_date(pred_df)
+    if pred_date is None:
+        return None
     pred_ts = pd.Timestamp(pred_date)
     tickers = pred_df["ticker"].tolist()
 

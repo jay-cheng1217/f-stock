@@ -24,6 +24,7 @@ BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(o
 sys.path.insert(0, BASE_DIR)
 
 from ml.config import MODEL_DIR
+from ml.prediction_dates import canonical_prediction_date
 from ml.cross_confirm import get_dual_confirmed_tickers
 from ml.features.sector import SECTOR_MAPPING_PATH
 from ml.predict import apply_sector_cap, _sort_prediction_df
@@ -1062,7 +1063,7 @@ def _load_t1_leaderboard(top_n: int = 20) -> tuple[str, pd.DataFrame]:
     df = pd.read_csv(path)
     if df.empty:
         return "", pd.DataFrame()
-    prediction_date = str(df["date"].iloc[0]) if "date" in df.columns else ""
+    prediction_date = canonical_prediction_date(df) or ""
     selected = df[df.get("selected_for_trade", pd.Series(dtype=bool)) == True].copy()
     if selected.empty:
         selected = df.head(top_n).copy()
@@ -1081,7 +1082,7 @@ def _load_leaderboard(prediction_path: str, top_n: int) -> tuple[str, pd.DataFra
         leaderboard = pred_df.head(top_n).copy().reset_index(drop=True)
 
     leaderboard["selection_rank"] = range(1, len(leaderboard) + 1)
-    prediction_date = str(pred_df["date"].iloc[0]) if "date" in pred_df.columns else ""
+    prediction_date = canonical_prediction_date(pred_df) or ""
     return prediction_date, pred_df, leaderboard
 
 

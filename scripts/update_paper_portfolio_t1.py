@@ -20,6 +20,7 @@ BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(o
 sys.path.insert(0, BASE_DIR)
 
 from ml.config import DAILY_K_DIR, MODEL_DIR
+from ml.prediction_dates import canonical_prediction_date
 
 DEFAULT_DB_PATH = os.path.join(BASE_DIR, "paper_portfolio_t1.db")
 DEFAULT_RULE_VERSION = "t1-v1"
@@ -160,7 +161,9 @@ def lock_prediction_run(
     stats: SyncStats,
 ) -> tuple[int, str, bool]:
     df = pd.read_csv(prediction_path, encoding="utf-8-sig", dtype={"ticker": str})
-    prediction_date = str(df["date"].iloc[0])
+    prediction_date = canonical_prediction_date(df)
+    if prediction_date is None:
+        raise ValueError(f"prediction file has no valid dates: {prediction_path}")
 
     existing = conn.execute(
         "SELECT id FROM t1_runs WHERE prediction_date = ?",

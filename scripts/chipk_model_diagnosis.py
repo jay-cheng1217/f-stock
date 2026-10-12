@@ -23,6 +23,7 @@ sys.path.insert(0, str(BASE_DIR))
 
 from ml.chipk import load_latest_chipk_main_force, redact_chipk_source_path  # noqa: E402
 from ml.config import MODEL_DIR, REPORT_DIR  # noqa: E402
+from ml.prediction_dates import canonical_prediction_date  # noqa: E402
 
 PRED_RE = re.compile(r"^predictions_(\d{4}-\d{2}-\d{2})\.csv$")
 BUY_WORD = chr(0x8CB7) + chr(0x9032)
@@ -213,7 +214,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     payload = {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "prediction_path": str(pred_path),
-        "prediction_date": str(pred["date"].iloc[0]) if "date" in pred.columns and not pred.empty else None,
+        "prediction_date": canonical_prediction_date(pred),
         "chipk_asof_date": meta.asof_date,
         "chipk_source_path": redact_chipk_source_path(meta.source_path),
         "chipk_rows": meta.row_count,

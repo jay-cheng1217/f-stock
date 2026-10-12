@@ -21,6 +21,7 @@ BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(o
 sys.path.insert(0, BASE_DIR)
 
 from ml.config import MODEL_DIR
+from ml.prediction_dates import canonical_prediction_date
 from ml.predict_t1 import T1_LEDGER_RESTART_DATE, _check_portfolio_mdd_halt
 
 PORTFOLIO_DB = os.path.join(BASE_DIR, "paper_portfolio_t1.db")
@@ -56,7 +57,7 @@ def _latest_prediction_stats() -> tuple[int, float | None, str]:
         return 0, None, ""
     latest = files[-1]
     df = pd.read_csv(latest, dtype={"ticker": str})
-    pred_date = str(df["date"].iloc[0]) if not df.empty else ""
+    pred_date = canonical_prediction_date(df) or ""
     if "selected_for_trade" in df.columns:
         sel = df[df["selected_for_trade"].fillna(False).astype(str).str.lower().isin({"1", "true", "yes"})]
     else:

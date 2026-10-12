@@ -21,6 +21,7 @@ sys.path.insert(0, BASE_DIR)
 from ml.config import DAILY_K_DIR, MODEL_DIR
 from ml.predict import apply_sector_cap, _sort_prediction_df
 from ml.universe import filter_out_etfs_df
+from ml.prediction_dates import canonical_prediction_date
 from scripts.order_simulation import (
     EXIT_REASON_TIME_20D,
     FILL_STATUS_FILLED,
@@ -358,7 +359,9 @@ def lock_prediction_run(
     stats: SyncStats,
 ) -> tuple[int, str, bool]:
     pred_df = _load_prediction_file(prediction_path)
-    prediction_date = str(pred_df["date"].iloc[0])
+    prediction_date = canonical_prediction_date(pred_df)
+    if prediction_date is None:
+        raise ValueError(f"prediction file has no valid dates: {prediction_path}")
     existing = conn.execute(
         "SELECT id FROM portfolio_runs WHERE prediction_date = ?",
         (prediction_date,),

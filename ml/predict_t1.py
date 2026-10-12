@@ -16,6 +16,7 @@ import pandas as pd
 
 from ml.config import MODEL_DIR
 from ml.dataset_t1 import build_latest_t1_snapshot
+from ml.prediction_dates import canonical_prediction_date
 from ml.features.key_levels import compute_key_levels
 from ml.features.sector import load_sector_mapping
 from ml.t1_production_gate import evaluate_t1_production_gate
@@ -414,7 +415,7 @@ def build_live_t1_prediction_df(
     pred_df = _attach_liquidity_artifacts(pred_df, snapshot)
 
     # --- [防護3] 載入 20D 預測 ---
-    d20_pred_file = _find_latest_20d_prediction(pred_df["date"].iloc[0] if not pred_df.empty else "")
+    d20_pred_file = _find_latest_20d_prediction(canonical_prediction_date(pred_df) or "")
     d20_map = None
     if d20_pred_file is not None:
         d20_df = pd.read_csv(d20_pred_file, dtype={"ticker": str}, usecols=["ticker", "signal", "pred_return_20d"])
@@ -542,7 +543,7 @@ def predict_t1_all(save_csv: bool = True, verbose: bool = True) -> tuple[pd.Data
     os.replace(tmp_snapshot_path, T1_SNAPSHOT_CACHE_PATH)
 
     pred_df = build_live_t1_prediction_df(snapshot=snapshot, model=model, meta=meta)
-    pred_date = str(pred_df["date"].iloc[0]) if not pred_df.empty else datetime.now().strftime("%Y-%m-%d")
+    pred_date = canonical_prediction_date(pred_df) or datetime.now().strftime("%Y-%m-%d")
 
     # --- 關鍵價位：計算支撐/壓力/建議掛單價（selected + top 30）---
     selected_tickers = pred_df.loc[

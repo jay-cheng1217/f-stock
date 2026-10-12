@@ -8,6 +8,7 @@ import html
 
 BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
+from ml.prediction_dates import canonical_prediction_date
 
 from scripts.signal_explainability import explain_signal_row
 
@@ -355,7 +356,7 @@ def _latest_t1_status_line(pred_date: str) -> str:
     if t1.empty:
         return "T+1 今日無可用預測資料，模型觀點不納入短線選股。"
 
-    t1_date = str(t1["date"].iloc[0]) if "date" in t1.columns else "unknown"
+    t1_date = canonical_prediction_date(t1) or "unknown"
     if pred_date != "unknown" and t1_date != str(pred_date):
         return f"T+1 最新檔日期 {t1_date} 與 20D 預測日期 {pred_date} 不一致，今日摘要不納入舊 T+1 選股。"
 
@@ -396,7 +397,7 @@ def _build_model_viewpoint_html(
             leaderboard = pd.DataFrame()
         else:
             if prediction_date is None:
-                pred_date = str(df["date"].iloc[0]) if "date" in df.columns else "unknown"
+                pred_date = canonical_prediction_date(df) or "unknown"
             leaderboard = _email_aligned_leaderboard(df, top_n=5, cap_top_n=30)
 
     if leaderboard.empty:
@@ -484,7 +485,7 @@ def _collect_context(
                 sections.append("20D 模型推薦: 今日無可用預測資料")
             else:
                 if prediction_date is None:
-                    pred_date = df["date"].iloc[0] if "date" in df.columns else "unknown"
+                    pred_date = canonical_prediction_date(df) or "unknown"
                 buy_mask = df["recommendation"].isin(["強力買進", "建議買進"])
                 total_buys = int(buy_mask.sum())
                 watch = int((df["recommendation"] == "觀望").sum())
@@ -512,7 +513,7 @@ def _collect_context(
                 if t1.empty:
                     sections.append("T+1 模型推薦: 今日無可用預測資料")
                 else:
-                    t1_date = t1["date"].iloc[0] if "date" in t1.columns else "unknown"
+                    t1_date = canonical_prediction_date(t1) or "unknown"
                     if pred_date != "unknown" and str(t1_date) != str(pred_date):
                         sections.append(
                             f"T+1 模型推薦: 最新檔日期 {t1_date} 與 20D 預測日期 {pred_date} 不一致，"
