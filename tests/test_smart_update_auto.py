@@ -21,6 +21,9 @@ def isolate_smart_update_logger(monkeypatch):
     # Phase-1 tests that do not stub the canonical snapshot would otherwise leak the
     # evening-entry warning into later degraded-step assertions.
     monkeypatch.setitem(smart_update_auto.RUN_CONTEXT, "entry_evening_warning", None)
+    # 官方K棒覆蓋稽核同樣在 run_step 外呼叫(會開 DuckDB、讀官方行情快取),測試不可碰真資料或洩漏告警。
+    monkeypatch.setattr(smart_update_auto, "_run_latest_bar_coverage", lambda *a, **k: None)
+    monkeypatch.setitem(smart_update_auto.RUN_CONTEXT, "latest_bar_coverage_warning", None)
     logger = logging.getLogger("test_smart_update_auto")
     logger.handlers.clear()
     logger.addHandler(logging.NullHandler())

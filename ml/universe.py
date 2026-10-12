@@ -12,6 +12,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parents[1]
 ETF_UNIVERSE_PATH = BASE_DIR / "ml" / "data" / "etf_universe.csv"
 RETIRED_TICKERS_PATH = BASE_DIR / "config" / "retired_tickers.csv"
+# 官方停止買賣/終止上市櫃事件名冊(2026-09-06 建立,含公告來源與雜湊;scripts/latest_bar_coverage.py 驗證規格)
+TRADING_STATUS_EVENTS_PATH = BASE_DIR / "config" / "trading_status_events.json"
 
 STOCK = "stock"
 ETF_PASSIVE = "etf_passive"
@@ -160,6 +162,50 @@ def classify_ticker(ticker: object) -> str:
 
 def is_etf_ticker(ticker: object) -> bool:
     return classify_ticker(ticker) in ETF_TYPES
+
+
+def load_trading_status_events(path: Path | None = None) -> list[dict]:
+    """讀官方事件名冊;格式不符直接報錯(名冊入版控,壞掉要在測試或排程第一時間發現)。"""
+    import json
+
+    path = Path(path) if path is not None else TRADING_STATUS_EVENTS_PATH
+    if not path.exists():
+        return []
+    registry = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(registry, dict) or registry.get("schema_version") != 1 or not isinstance(registry.get("events"), list):
+        raise ValueError(f"Unsupported trading status registry: {path}")
+    events = []
+    for event in registry["events"]:
+        if not {"ticker", "status", "effective_from", "available_on"} <= set(event):
+            raise ValueError(f"Incomplete trading status event: {event}")
+        if event["status"] not in {"suspended", "terminated"}:
+            raise ValueError(f"Unknown trading status: {event['status']}")
+        for key in ("effective_from", "available_on", "effective_until"):
+            if event.get(key):
+                date.fromisoformat(str(event[key]))
+        events.append(event)
+    return events
+
+
+def active_trading_status(as_of: date, status: str, path: Path | None = None) -> dict[str, dict]:
+    """as_of 當天已生效、且當時已可得知(available_on)的事件:ticker → 事件。
+
+    只供「即時推論」判斷這檔現在能不能交易;訓練/回測用的歷史資料不得據此刪除(會造成倖存者偏差)。
+    """
+    day = as_of.isoformat()
+    active = {}
+    for event in load_trading_status_events(path):
+        if event["status"] != status or str(event["available_on"]) > day or str(event["effective_from"]) > day:
+            continue
+        if event.get("effective_until") and day >= str(event["effective_until"]):
+            continue
+        active[normalize_ticker(event["ticker"])] = event
+    return active
+
+
+def terminated_tickers_as_of(as_of: date, path: Path | None = None) -> dict[str, dict]:
+    """已終止上市櫃(官方名冊)的代號。"""
+    return active_trading_status(as_of, "terminated", path)
 
 
 def filter_stock_universe(tickers: Iterable[object]) -> list[str]:

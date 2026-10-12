@@ -35,6 +35,7 @@ os.makedirs(LOG_DIR, exist_ok=True)
 LOCK_PATH = os.path.join(LOG_DIR, "smart_update_auto.lock")
 MODEL_DIR = os.path.join(BASE_DIR, "ml", "models")
 REPORT_DIR = os.path.join(BASE_DIR, "ml", "reports")
+LATEST_BAR_COVERAGE_REPORT = os.path.join(BASE_DIR, "logs", "latest_bar_coverage_latest.json")
 NIGHTLY_ARCHIVE_ROOT = os.path.join(REPORT_DIR, "archive", "nightly")
 SPECIAL_STATUS_REPORT_PATH = os.path.join(
     BASE_DIR, "ml", "reports", "special_stock_status_latest.json"
@@ -1638,8 +1639,53 @@ def _capture_remote_url(holder: dict[str, str | None]) -> None:
             LOGGER.warning("web link email failed: %s", exc)
 
 
+def _run_latest_bar_coverage(phase: str) -> dict | None:
+    """官方K棒覆蓋稽核(2026-10-12 事故後接進排程;只告警,不擋流程)。
+
+    既有診斷 scripts/latest_bar_coverage_runtime 原本只掛在網頁健康 API,沒人看:6173 等減資停牌股
+    停在 10/06 仍被模型評分、5371 下櫃後停更七週都沒有告警。官方當日行情沒有、名冊也沒登錄的股票
+    (unknown_official_absence)與層間日期不符(error)都列入降級告警,補登 config/trading_status_events.json 後消失。
+    """
+    target = _expected_twse_data_date()
+    try:
+        import duckdb
+        from backend.config import DUCKDB_PATH
+        from scripts.latest_bar_coverage_runtime import build_stale_bar_coverage
+
+        con = duckdb.connect(DUCKDB_PATH, read_only=True)
+        try:
+            result = build_stale_bar_coverage(con, base_dir=BASE_DIR, model_dir=MODEL_DIR,
+                                              target_date=target.isoformat(),
+                                              knowledge_date=date.today().isoformat())
+        finally:
+            con.close()
+    except Exception as exc:  # noqa: BLE001 - 稽核失敗不可擋 pipeline,但要告警
+        LOGGER.exception("latest-bar coverage audit failed")
+        RUN_CONTEXT["latest_bar_coverage_warning"] = f"latest_bar_coverage_failed:{phase}:{exc}"
+        return None
+    result["phase"] = phase
+    try:
+        with open(LATEST_BAR_COVERAGE_REPORT, "w", encoding="utf-8") as handle:
+            json.dump(result, handle, ensure_ascii=False, indent=2, default=str)
+    except OSError:
+        LOGGER.exception("latest-bar coverage report write failed")
+    unknown = list(result.get("unknown_tickers") or [])
+    errors = list(result.get("error_tickers") or [])
+    LOGGER.info("Latest-bar coverage %s target=%s status=%s counts=%s", phase, target,
+                result.get("status"), result.get("counts"))
+    if result.get("status") != "ok":
+        message = (f"latest_bar_coverage_{result.get('status')}:{phase}: 官方行情無此股且名冊未登錄 {len(unknown)} 檔"
+                   f"[{','.join(unknown[:12])}]"
+                   + (f"; 層間日期錯誤 {len(errors)} 檔[{','.join(errors[:12])}]" if errors else ""))
+        RUN_CONTEXT["latest_bar_coverage_warning"] = message
+        LOGGER.warning("STALE TICKERS: %s", message)
+    return result
+
+
 def _runtime_degraded_steps() -> list[str]:
     degraded: list[str] = []
+    if RUN_CONTEXT.get("latest_bar_coverage_warning"):
+        degraded.append(str(RUN_CONTEXT.get("latest_bar_coverage_warning")))
     if RUN_CONTEXT.get("remote_tunnel_attempted") == "1" and not RUN_CONTEXT.get("remote_url"):
         degraded.append(RUN_CONTEXT.get("remote_tunnel_error") or "remote_tunnel_url_missing")
     if _chipk_desktop_enabled() and RUN_CONTEXT.get("chipk_warning"):
@@ -1783,6 +1829,9 @@ def _run_phase1_tw_data() -> list[tuple[str, bool]]:
         step_results.append(("Entry candidates + rere lane tracker", False))
         step_results.append(("Update agent arena", False))
 
+    if ingest_ok:
+        _run_latest_bar_coverage("Phase-1")
+
     remote_state: dict[str, str | None] = {"remote_url": None}
     web_ok = run_step("Start web server & tunnel", lambda: _capture_remote_url(remote_state))
     step_results.append(("Start web server & tunnel", web_ok))
@@ -1897,6 +1946,7 @@ def _run_phase2_predict() -> list[tuple[str, bool]]:
     step_results.append(("Generate latest predictions", predict_ok))
 
     if predict_ok:
+        _run_latest_bar_coverage("Phase-2")
         portfolio_ok = run_step("Sync paper portfolio", exec_paper_portfolio)
         arena_ok = run_step("Update agent arena", exec_agent_arena)
         verify_ok = run_step("Verify historical predictions", smart_update.exec_verify)
@@ -2177,6 +2227,7 @@ def main(argv: list[str] | None = None) -> int:
     RUN_CONTEXT["chipk_warning"] = None
     RUN_CONTEXT["agent_arena_warning"] = None
     RUN_CONTEXT["web_stop_warning"] = None
+    RUN_CONTEXT["latest_bar_coverage_warning"] = None
     LOGGER.info("===== %s started at %s =====", phase_label, now.strftime("%Y-%m-%d %H:%M:%S"))
 
     try:

@@ -1,6 +1,7 @@
 """資料集組裝：合併特徵 + 目標、分割訓練/驗證/測試集"""
 import glob
 import os
+from datetime import date
 import pandas as pd
 import numpy as np
 from dateutil.relativedelta import relativedelta
@@ -78,6 +79,15 @@ def diagnose_stock_eligibility(ticker: str) -> dict:
     if is_retired_ticker(ticker):
         info["reason_code"] = "retired_or_delisted"
         info["message"] = f"{ticker} is retired from the active stock universe."
+        return info
+
+    from ml.universe import terminated_tickers_as_of
+
+    terminated = terminated_tickers_as_of(date.today()).get(ticker)
+    if terminated:
+        info["reason_code"] = "official_terminated"
+        info["message"] = (f"{ticker} 已於 {terminated['effective_from']} 終止上市櫃,不再產生預測。"
+                           + (f" {terminated.get('note')}" if terminated.get("note") else ""))
         return info
 
     kline_path = os.path.join(DAILY_K_DIR, f"{ticker}.csv")
@@ -842,9 +852,21 @@ def build_dataset(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
     return dataset
 
 
+def _latest_snapshot_tickers(as_of: date | None = None) -> list[str]:
+    """即時推論的股票池:本地日K股票池扣掉官方名冊上已終止上市櫃者。
+
+    2026-10-12:5371(9/3 終止上櫃)、8183 等下櫃股仍以凍結的最後一列被評分。訓練與回測不經過這裡,
+    歷史資料保留,不會因為事後下市而被刪掉。
+    """
+    from ml.universe import terminated_tickers_as_of
+
+    terminated = terminated_tickers_as_of(as_of or date.today())
+    return [t for t in _list_daily_tickers() if t not in terminated]
+
+
 def build_latest_snapshot(max_stocks: int = 0, verbose: bool = True) -> pd.DataFrame:
     """建立最新推論快照：每檔股票只保留最新一列，並套用截面特徵。"""
-    tickers = _list_daily_tickers()
+    tickers = _latest_snapshot_tickers()
     if max_stocks > 0:
         tickers = tickers[:max_stocks]
 

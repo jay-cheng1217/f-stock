@@ -31,7 +31,7 @@ def canonical_source_patterns() -> list[str]:
     paths.extend(str(path) for path in [
         corporate_actions.DEFAULT_CALENDAR_PATH,
         corporate_actions.DEFAULT_CORPORATE_ACTION_PATH,
-        universe.ETF_UNIVERSE_PATH, universe.RETIRED_TICKERS_PATH,
+        universe.ETF_UNIVERSE_PATH, universe.RETIRED_TICKERS_PATH, universe.TRADING_STATUS_EVENTS_PATH,
         sector.SECTOR_MAPPING_PATH, industry.SECTOR_MAPPING_PATH,
         base/'清理後資料/*.csv',
         code/'ml/features/*.py', code/'backend/features/*.py',

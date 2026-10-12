@@ -1,0 +1,95 @@
+"""2026-10-12:官方終止上市櫃的股票不得再進即時推論;排程每天跑官方K棒覆蓋稽核並告警。"""
+import json
+from datetime import date
+
+import pytest
+
+import ml.dataset as dataset
+import ml.universe as universe
+
+
+def _registry(tmp_path, events):
+    path = tmp_path / "trading_status_events.json"
+    path.write_text(json.dumps({"schema_version": 1, "events": events}, ensure_ascii=False), encoding="utf-8")
+    return path
+
+
+def _event(ticker, status, start, available, until=None):
+    event = {"id": f"{ticker}-{status}", "ticker": ticker, "status": status, "effective_from": start,
+             "available_on": available, "source_url": "https://example.invalid", "source_sha256": "0" * 64}
+    if until:
+        event["effective_until"] = until
+    return event
+
+
+def test_terminated_needs_effective_and_known_dates(tmp_path):
+    path = _registry(tmp_path, [_event("5371", "suspended", "2026-08-24", "2026-08-04", "2026-09-03"),
+                                _event("5371", "terminated", "2026-09-03", "2026-09-06"),
+                                _event("1589", "suspended", "2026-04-07", "2026-04-01")])
+    assert universe.terminated_tickers_as_of(date(2026, 9, 2), path) == {}
+    assert universe.terminated_tickers_as_of(date(2026, 9, 5), path) == {}        # 生效但當時還不知道
+    assert set(universe.terminated_tickers_as_of(date(2026, 9, 6), path)) == {"5371"}
+    assert set(universe.active_trading_status(date(2026, 8, 25), "suspended", path)) == {"5371", "1589"}
+    assert set(universe.active_trading_status(date(2026, 9, 3), "suspended", path)) == {"1589"}   # 結束日不含
+
+
+def test_malformed_registry_fails_loudly(tmp_path):
+    bad = tmp_path / "bad.json"
+    bad.write_text(json.dumps({"schema_version": 2, "events": []}), encoding="utf-8")
+    with pytest.raises(ValueError):
+        universe.load_trading_status_events(bad)
+    path = _registry(tmp_path, [_event("5371", "delisted", "2026-09-03", "2026-09-06")])
+    with pytest.raises(ValueError):
+        universe.load_trading_status_events(path)
+    assert universe.load_trading_status_events(tmp_path / "missing.json") == []
+
+
+def test_real_registry_terminated_set():
+    active = universe.terminated_tickers_as_of(date(2026, 10, 12))
+    assert {"5371", "4130", "2867"} <= set(active)
+    assert not {"1589", "4804"} & set(active)          # 長期停牌但尚未終止,不在第 1 項範圍
+    assert "5371" not in universe.terminated_tickers_as_of(date(2026, 9, 2))
+
+
+def test_live_snapshot_universe_drops_only_terminated(tmp_path, monkeypatch):
+    path = _registry(tmp_path, [_event("5371", "terminated", "2026-09-03", "2026-09-06"),
+                                _event("1589", "suspended", "2026-04-07", "2026-04-01")])
+    monkeypatch.setattr(universe, "TRADING_STATUS_EVENTS_PATH", path)
+    monkeypatch.setattr(dataset, "_list_daily_tickers", lambda: ["1589", "2330", "5371"])
+    assert dataset._latest_snapshot_tickers(date(2026, 10, 12)) == ["1589", "2330"]
+    assert dataset._latest_snapshot_tickers(date(2026, 9, 1)) == ["1589", "2330", "5371"]
+
+
+def test_eligibility_reports_official_termination(tmp_path, monkeypatch):
+    path = _registry(tmp_path, [_event("5371", "terminated", "2026-09-03", "2026-09-06")])
+    monkeypatch.setattr(universe, "TRADING_STATUS_EVENTS_PATH", path)
+    info = dataset.diagnose_stock_eligibility("5371")
+    assert info["reason_code"] == "official_terminated" and "2026-09-03" in info["message"]
+
+
+def test_scheduled_coverage_audit_warns_and_never_raises(tmp_path, monkeypatch):
+    import duckdb
+    import scripts.latest_bar_coverage_runtime as runtime
+    import scripts.smart_update_auto as sua
+
+    class _Conn:
+        def close(self):
+            pass
+
+    monkeypatch.setattr(duckdb, "connect", lambda *a, **k: _Conn())
+    monkeypatch.setattr(sua, "LATEST_BAR_COVERAGE_REPORT", str(tmp_path / "coverage.json"))
+    monkeypatch.setitem(sua.RUN_CONTEXT, "latest_bar_coverage_warning", None)
+    monkeypatch.setattr(runtime, "build_stale_bar_coverage", lambda *a, **k: {
+        "status": "warn", "counts": {"unknown_official_absence": 2}, "unknown_tickers": ["6173", "8183"],
+        "error_tickers": [], "rows": []})
+    result = sua._run_latest_bar_coverage("Phase-2")
+    assert result["status"] == "warn" and (tmp_path / "coverage.json").exists()
+    assert "6173" in sua.RUN_CONTEXT["latest_bar_coverage_warning"]
+    assert any("6173" in w for w in sua._runtime_degraded_steps())
+
+    def _boom(*a, **k):
+        raise FileNotFoundError("official tape cache missing")
+
+    monkeypatch.setattr(runtime, "build_stale_bar_coverage", _boom)
+    assert sua._run_latest_bar_coverage("Phase-1") is None
+    assert "latest_bar_coverage_failed" in sua.RUN_CONTEXT["latest_bar_coverage_warning"]
