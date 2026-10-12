@@ -67,6 +67,31 @@ def test_eligibility_reports_official_termination(tmp_path, monkeypatch):
     assert info["reason_code"] == "official_terminated" and "2026-09-03" in info["message"]
 
 
+def test_capital_reduction_halts_are_explained_by_official_resumption_rows():
+    import pandas as pd
+    from scripts.latest_bar_coverage_runtime import explain_capital_reduction_halts
+
+    result = {"status": "warn", "error_tickers": [], "unknown_tickers": ["6173", "8183", "9999"],
+              "counts": {"unknown_official_absence": 3},
+              "rows": [{"ticker": "6173", "classification": "unknown_official_absence", "csv_date": "2026-10-06"},
+                       {"ticker": "8183", "classification": "unknown_official_absence", "csv_date": "2026-09-22"},
+                       {"ticker": "9999", "classification": "unknown_official_absence", "csv_date": "2026-10-06"}]}
+    actions = pd.DataFrame([
+        {"stock_id": "6173", "date": "2026-10-19", "event_type": "capital_reduction", "before_price": 284.0,
+         "official_source": "https://www.tpex.org.tw/www/zh-tw/bulletin/revivt"},
+        {"stock_id": "9999", "date": "2026-10-19", "event_type": "capital_reduction", "before_price": 50.0,
+         "official_source": "x"},                                               # 停牌前收盤對不上 → 不認定
+        {"stock_id": "8183", "date": "2026-07-09", "event_type": "ex_right_dividend", "before_price": 33.8,
+         "official_source": "x"}])
+    out = explain_capital_reduction_halts(result, actions, {"6173": 284.0, "8183": 28.2, "9999": 40.0})
+    assert out["unknown_tickers"] == ["8183", "9999"] and out["explained_by_capital_reduction"] == ["6173"]
+    row = out["rows"][0]
+    assert row["classification"] == "official_capital_reduction_halt"
+    assert row["event"]["scheduled_resumption"] == "2026-10-19"
+    assert out["counts"] == {"official_capital_reduction_halt": 1, "unknown_official_absence": 2}
+    assert out["status"] == "warn"
+
+
 def test_scheduled_coverage_audit_warns_and_never_raises(tmp_path, monkeypatch):
     import duckdb
     import scripts.latest_bar_coverage_runtime as runtime
