@@ -32,8 +32,15 @@ ENTRY_STEPS: tuple[tuple[str, tuple[str, ...], int], ...] = (
         (sys.executable, "-X", "utf8", "scripts/entry_filter_tracker.py", "backfill", "--legacy"),
         900,
     ),
+    (   # 2026-10-12 起:rere 公開標的跟單帳本(研究帳本;失敗只記警告,見 OPTIONAL_STEPS)
+        "Update public-post follow book",
+        (sys.executable, "-X", "utf8", "scripts/rere_public_follow_tracker.py"),
+        300,
+    ),
     ("Build entry dashboard", (sys.executable, "-X", "utf8", "scripts/entry_dashboard.py"), 600),
 )
+# 研究用步驟:逾時或失敗只寫警告,不可讓名單儀表板(及其後的每日報告信)跟著失敗
+OPTIONAL_STEPS = frozenset({"Update public-post follow book"})
 
 
 def _append_log(message: str, *, log_path: Path = LOG_PATH) -> None:
@@ -170,6 +177,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         for name, command, timeout in steps:
             _append_log(f"[step] {name}")
+            if name in OPTIONAL_STEPS:
+                try:
+                    _run_step(name, command, timeout)
+                except Exception as exc:  # noqa: BLE001 - optional research step never blocks publication
+                    _append_log(f"[warn] optional step failed, continuing: {name}: {exc}")
+                continue
             _run_step(name, command, timeout)
         _validate_artifacts(artifacts, not_before_ns=started_ns)
         _publish(artifacts)

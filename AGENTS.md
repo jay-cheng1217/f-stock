@@ -136,6 +136,10 @@
 - To rebuild or hand this system to another machine/model, follow `docs/AGENT_BOOTSTRAP.md` (setup, backfill order, schedulers, data contracts, privacy-strip checklist before publishing).
 
 ## Strategy Background
+- **市場基準的股票池要用「期初」條件(2026-10-12 更正教訓)**:計算「同期全市場等權」時,流動性門檻必須看**進場/訊號當日**,
+  不可用期末(最新)是否流動來挑股票——期末流動的股票偏向已經漲上來的,基準會被墊高(實測五週 +2.8pp、三個月 +5.8pp),
+  使策略與 KOL 標的的超額被低估。逐日以訊號當日取池的回測(#9/#17/#18/#19)不受影響。共用實作見
+  `scripts/rere_public_follow_tracker.build_follow_book` 與 `scripts/replay_rere_new_rules.py`。
 - 2026-09-06 策略完整性續審：`docs/REVIEW_strategy_integrity_20260906.md`。rere 門檻與 Champion pins 不變；rere 必須用完整60日觀察機會 cohort，舊4.58%/35.8%及 closed>=30 降權法已退役。V2 未來訓練分離validation/test，但本輪未重訓。
 - For strategy structure (Champion auto-layer vs discretionary short-swing layer), current backtest/performance status, and known data gaps, read `docs/STRATEGY_overview.md`. Keep it consistent with `skills/stock-entry-decision-workflow/SKILL.md`; update the overview when strategy or performance understanding changes.
 

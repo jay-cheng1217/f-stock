@@ -95,5 +95,26 @@ def test_entry_only_mode_builds_and_publishes_entry_dashboard(monkeypatch) -> No
     )
 
     assert run_kol_tracker_daily.main(["--entry-only"]) == 0
-    assert calls == ["Backfill entry tracker", "Build entry dashboard"]
+    assert calls == ["Backfill entry tracker", "Backfill legacy-main shadow tracker",
+                     "Update public-post follow book", "Build entry dashboard"]
+    assert published == ["entry_dashboard_latest.html"]
+
+
+def test_optional_research_step_failure_does_not_block_entry_publication(monkeypatch) -> None:
+    calls = []
+    published = []
+
+    def fake_step(name, command, timeout):
+        calls.append(name)
+        if name in run_kol_tracker_daily.OPTIONAL_STEPS:
+            raise RuntimeError("follow book timed out")
+
+    monkeypatch.setattr(run_kol_tracker_daily, "_run_step", fake_step)
+    monkeypatch.setattr(run_kol_tracker_daily, "_validate_artifacts", lambda artifacts, *, not_before_ns: None)
+    monkeypatch.setattr(run_kol_tracker_daily, "_publish",
+                        lambda artifacts: published.extend(artifact.name for artifact in artifacts))
+    monkeypatch.setattr(run_kol_tracker_daily, "_append_log", lambda message, **kw: None)
+
+    assert run_kol_tracker_daily.main(["--entry-only"]) == 0
+    assert calls[-1] == "Build entry dashboard" and "Update public-post follow book" in calls
     assert published == ["entry_dashboard_latest.html"]

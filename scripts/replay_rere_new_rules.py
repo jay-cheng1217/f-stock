@@ -66,7 +66,7 @@ def main() -> None:
     camp = pd.read_csv(REPO / "ml" / "data" / "rere_public_campaigns.csv", dtype=str).fillna("")
     public = dict(zip(camp.ticker.str.zfill(4), camp.first_public_date))
 
-    cands, closes = [], {}
+    cands, closes, liquid = [], {}, {}
     for p in sorted(DAILY.glob("*.csv")):
         tk = p.stem
         if not (tk.isdigit() and len(tk) == 4 and tk[0] != "0"):
@@ -104,8 +104,10 @@ def main() -> None:
             ptype[(m & liq).fillna(False)] = name
         mult = backward_adjustment_multiplier(f["Date"], tk, actions).to_numpy(float) if tk in action_tickers else np.ones(len(f))
         av = cl.to_numpy(float) * mult
-        if bool(liq.iloc[-1]):
-            closes[tk] = pd.Series(av, index=f["Date"])                   # 同日基準的母體:最後一日仍達流動性門檻的普通股
+        # 同日基準的母體 = 「進場當日」達流動性門檻的普通股。2026-10-12 更正:原本用「最後一日」是否流動來挑母體,
+        # 會偏向已經漲上來的股票,把市場基準墊高(五週窗口約 +2.8pp、三個月約 +5.8pp)。
+        closes[tk] = pd.Series(av, index=f["Date"])
+        liquid[tk] = pd.Series(liq.fillna(False).to_numpy(bool), index=f["Date"])
         tier = (strength.get(sect.get(tk, "")) or {}).get("tier", "neutral")
         n = len(f)
         for i in f.index[(f["Date"] >= a.start) & (f["Date"] <= a.end) & ptype.ne("")]:
@@ -140,8 +142,11 @@ def main() -> None:
     P = pd.concat(picked, ignore_index=True)
 
     M = pd.DataFrame(closes).sort_index()
-    M = M.loc[:, M.iloc[-1].notna()]
-    fwd = (M.iloc[-1] / M - 1) * 100                                      # 各進場日 → 最後一日的全市場報酬
+    LQ = pd.DataFrame(liquid).reindex(index=M.index, columns=M.columns).fillna(False).astype(bool)
+    M = M[M.index >= a.start]
+    LQ = LQ.loc[M.index]
+    raw_fwd = (M.iloc[-1] / M - 1) * 100                                  # 各進場日 → 最後一日(個股)
+    fwd = raw_fwd.where(LQ)                                               # 市場基準只計進場當日流動者
     bm_mean, bm_med = fwd.mean(axis=1), fwd.median(axis=1)
     P["bm"] = P.trade_date.map(bm_mean)
 
@@ -178,7 +183,8 @@ def main() -> None:
     print("期間內從未觸發:", sorted(set(public) - set(allH.tk)))
 
     ref = M.index[M.index >= a.start][1] if (M.index >= a.start).sum() > 1 else M.index[0]
-    moves = {tk: float(fwd.loc[ref, tk]) for tk in public if tk in fwd.columns and np.isfinite(fwd.loc[ref, tk])}
+    moves = {tk: float(raw_fwd.loc[ref, tk]) for tk in public
+             if tk in raw_fwd.columns and np.isfinite(raw_fwd.loc[ref, tk])}
     print(f"\n--- 她已公開標的自 {ref} 收盤至今的股價漲跌(不是她的損益)---")
     print("  " + " | ".join(f"{tk} {names.get(tk, '')} {v:+.1f}%" for tk, v in sorted(moves.items(), key=lambda kv: -kv[1])))
     if moves:
