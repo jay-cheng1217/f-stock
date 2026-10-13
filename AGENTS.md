@@ -99,6 +99,10 @@
   `ml/dataset._drop_stale_latest_rows` 剔除最後一筆不等於整批資料日的股票(停牌、減資換股、下櫃),恢復交易隔天自動回來;
   剔除超過 5% 直接報錯(疑似半匯入)。固定快照 A/B 見 `ml/reports/ab_live_universe_exclusion_20261012.md`。
   (4) **3718 中光電投控不串接 5371 價格歷史**(9/6 名冊紀錄,2026-10-12 PM 再確認不例外)。
+- **官方終盤校驗只有一條路(2026-10-13 PM 核可)**:獨立排程 TpexBarVerify(20:15 跑 `scripts/verify_otc_bars.py`)已停用——
+  與 Phase-1 `exec_verify_daily_bars` 同一支程式、無互斥鎖,交易日會在 Step1 抓取進行中執行並搶先修補,使排程 log 與告警看到 0 檔。
+  不要重新啟用或另建獨立校驗排程;細節與還原方式見 `docs/STRATEGY_overview.md`「TpexBarVerify retired」。
+  診斷修補量時兩個檔都要看:`logs/tpex_bar_verify.log`(每次執行一行)與當日 `logs/smart_update_auto_*.log`。
 - **Yahoo 非交易日假棒(2026-09-21)**:yfinance 對冷門上櫃股(5276/5878)回傳日期落在週日 9/20 的即時報價棒,
   有量且非平價,逃過 `_drop_fake_flat_bars` 的零量平價檢查;`verify_otc_bars._recent_local_dates` 把 9/20 納入
   查詢窗口→TWSE MI_INDEX 回「沒有符合條件的資料」→verifier fail closed→SKIP ingest/DataA/entry 整條 Phase-1。

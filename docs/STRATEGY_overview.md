@@ -195,9 +195,19 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
   rere 太欣區間失真但「不追」判定湊巧安全)。已修復(官方 openapi 覆寫)+
   防護(縱深):(1) Phase-1 Step1 後、ingest 前內建官方終盤校驗步驟
   (`exec_verify_daily_bars`,雙市場,>50 檔修復發 ntfy 告警);(2) 20:15 獨立排程
-  TpexBarVerify 第二道保險;(3) 事後稽核工具 `scripts/audit_close_history.py`
+  TpexBarVerify 第二道保險(**2026-10-13 停用,見下方「TpexBarVerify retired」**);(3) 事後稽核工具 `scripts/audit_close_history.py`
   (抽樣對照官方逐日)。註:上市 07-02 同樣中招(749 檔,含雙鍵),合計修復 1,191 檔;
   根因=Yahoo 終盤化延遲 × 本地增量抓取永不回補(twstock Step1 `last_dt>=TODAY` skip)。
+- **TpexBarVerify retired**(2026-10-13,PM 核可):Windows 排程 TpexBarVerify(每日 20:15 獨立跑 `scripts/verify_otc_bars.py`)
+  已停用(工作保留、狀態 Disabled;定義備份 `logs/quarantine_tpexbarverify_20261013/TpexBarVerify.xml`,
+  還原=`Enable-ScheduledTask -TaskName TpexBarVerify`)。它與 Phase-1 的 `exec_verify_daily_bars` 是同一支程式、沒有互斥鎖。
+  實測(`logs/tpex_bar_verify.log` 對照 `logs/smart_update_auto_*.log`):10/13 Phase-1 Step1 到 20:22:06 才結束,獨立排程
+  20:15:01 起跑、20:22:14 才結束——**整段與抓取同時進行**,先修了 1,954 檔(其中 5 列為實質價格變動),Phase-1 內建步驟
+  20:22:49 因此回報 `files_patched=0 price_rows_material=0`,修補量不在排程 log、也進不了告警判定(當晚 5 列遠低於 50 列門檻,
+  沒有漏發告警)。10/08、10/12 兩個交易日則相反:修補由 Phase-1 內建步驟完成(765 / 615 檔),獨立排程在 log 裡沒有留下紀錄
+  (原因未查證)。也就是交易日它不是搶先就是沒有可見作用,且兩個行程可能同時讀改寫同一個日K檔。
+  停用後官方終盤校驗只由 Phase-1 內建步驟負責:每晚回看最近 5 個交易日,某晚沒跑到,隔晚會補上。
+  不要重新啟用,也不要另建獨立的校驗排程;若要第二道防線,應排在 Phase-1 結束之後並把結果併入同一個告警。
 - **V2 Exit Overlay Watch retired**(2026-07-06):排程 TW_Stock_V2_Exit_Overlay_Watch 已停用。原因:(1) overlay 研究線 CL3 四連敗永久封存;(2) Champion 實盤帳 2026-07-03 起清空停用,判準所需 champion marks 不再產生,告警淪為每日空響(CHAMPION_INSUFFICIENT, necessary/sufficient 0/0)。腳本保留,若未來重啟 Champion 帳本可重新啟用排程。
 - **ChipK desktop retired**(2026-07-03):桌面版自動 snapshot / auto-relaunch 已退役；stale ChipK 不再造成 pipeline degraded，也不要求重開桌面版。手機籌碼K截圖仍可作人工 veto。
 

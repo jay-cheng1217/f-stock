@@ -46,12 +46,11 @@ python scripts/daily_pipeline.py           # CSV → stock.duckdb 入庫 + 首�
 python scripts/tdcc_whale_weekly_scan.py   # 建大戶週增快照(次週起出榜)
 ```
 
-## 4. 排程註冊(核心 4 個;時間=台北)
+## 4. 排程註冊(核心 3 個;時間=台北)
 
 | 排程名 | 時間 | 指令 | 作用 |
 |---|---|---|---|
 | TW_Stock_Nightly | 交易日 19:30 | `scripts\run_daily.bat` | 主 pipeline:抓數→校驗→入庫→預測→名單→帳本→寄信 |
-| TpexBarVerify | 交易日 20:15 | `python scripts/verify_otc_bars.py` | 終盤價第二道校驗(0702 Yahoo 事故防線) |
 | TW_Stock_My_Holdings_Risk_Cut_0630 | 每日 06:30 | `python scripts/...risk_cut...` | 持股風險分級信(選用,需 my_holdings.db) |
 | TW_Stock_Weekly_Retrain | 週六 | `scripts\run_weekly_retrain*.bat` | 週度重訓(兩階段 gate,新模型不自動上線) |
 
@@ -59,7 +58,10 @@ python scripts/tdcc_whale_weekly_scan.py   # 建大戶週增快照(次週起出�
 schtasks /create /f /tn "TW_Stock_Nightly" /tr "<REPO_ROOT>\scripts\run_daily.bat" /sc weekly /d MON,TUE,WED,THU,FRI /st 19:30
 ```
 
-已退役、不要註冊:TW_Stock_ChipK_Relaunch(籌碼K桌面自動化,保持 `CHIPK_DESKTOP_ENABLED=0`)。
+已退役、不要註冊:TW_Stock_ChipK_Relaunch(籌碼K桌面自動化,保持 `CHIPK_DESKTOP_ENABLED=0`);
+TpexBarVerify(每日 20:15 獨立跑 `scripts/verify_otc_bars.py`,2026-10-13 PM 核可停用——與主 pipeline 內建的
+官方終盤校驗步驟是同一支程式,20:15 會落在 Step1 抓取進行中;官方校驗只由 TW_Stock_Nightly 內的步驟執行,
+原因見 `docs/STRATEGY_overview.md`「TpexBarVerify retired」)。
 
 ## 5. 每日資料流地圖
 
