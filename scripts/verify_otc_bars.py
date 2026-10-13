@@ -79,6 +79,7 @@ def run(lookback_trading_days: int = 5, today: date | None = None,
 
     rows: list[dict] = []
     files_patched = 0
+    price_rows_material = 0
     rows_dropped = 0
     for ticker, group in official.groupby("Ticker", sort=False):
         path = DAILY / f"{ticker}.csv"
@@ -104,6 +105,7 @@ def run(lookback_trading_days: int = 5, today: date | None = None,
         for index in local.index[local["Date"].isin(by_date.index)]:
             date_value = local.at[index, "Date"]
             changed_columns = []
+            price_material = False
             record = {"ticker": ticker, "date": date_value.strftime("%Y-%m-%d")}
             for column in ("Open", "High", "Low", "Close", "Volume"):
                 old = pd.to_numeric(pd.Series([local.at[index, column]]), errors="coerce").iloc[0]
@@ -113,8 +115,12 @@ def run(lookback_trading_days: int = 5, today: date | None = None,
                     record[f"new_{column.lower()}"] = new
                     local.at[index, column] = new
                     changed_columns.append(column)
+                    if column != "Volume" and _is_material_price_change(old, new):
+                        price_material = True
             if changed_columns:
                 record["changed_columns"] = ",".join(changed_columns)
+                record["price_material"] = price_material
+                price_rows_material += int(price_material)
                 rows.append(record)
                 changed = True
         if changed:
@@ -133,7 +139,21 @@ def run(lookback_trading_days: int = 5, today: date | None = None,
             LOG / f"official_bar_repair_{stamp}.csv", index=False, encoding="utf-8-sig"
         )
     return {"dates": len(dates), "files_patched": files_patched,
-            "rows_patched": len(rows), "rows_dropped": rows_dropped}
+            "rows_patched": len(rows), "rows_dropped": rows_dropped,
+            "price_rows_material": price_rows_material}
+
+
+PRICE_MATERIAL_TOLERANCE = 0.0005   # 0.05%:低於此的是 Yahoo float32 尾數(89.0999984741211 對 89.1),照修但不算價格不符
+
+
+def _is_material_price_change(old, new: float) -> bool:
+    """開高低收與官方的差異是否為實質差異(缺值視為實質)。成交量不在此判定。"""
+    if pd.isna(old):
+        return True
+    old = float(old)
+    if old == 0:
+        return new != 0
+    return abs(new / old - 1) > PRICE_MATERIAL_TOLERANCE
 
 
 def main() -> None:
@@ -145,7 +165,8 @@ def main() -> None:
     message = (
         f"{datetime.now():%F %T} verify_official_bars: "
         f"dates={summary['dates']} files_patched={summary['files_patched']} "
-        f"rows_patched={summary['rows_patched']} rows_dropped={summary['rows_dropped']}"
+        f"rows_patched={summary['rows_patched']} rows_dropped={summary['rows_dropped']} "
+        f"price_rows_material={summary['price_rows_material']}"
     )
     print(message)
     with (LOG / "tpex_bar_verify.log").open("a", encoding="utf-8") as handle:

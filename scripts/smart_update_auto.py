@@ -1199,7 +1199,9 @@ def exec_verify_daily_bars() -> bool:
 
     2026-07-02 事故:Yahoo 終盤化延遲,全市場 1191 檔收盤/量錯且增量抓取永不回補。
     校驗失敗回 False；run_step 必須將其記為 FAIL，阻擋 ingest 與候選發布。
-    修復量 >50 檔時發 ntfy 告警(代表 Yahoo 又未定版,當晚訊號需留意)。
+    價格實質不符(開高低收差 >0.05%)超過 50 檔時發 ntfy 告警(代表 Yahoo 又未定版,當晚訊號需留意)。
+    2026-10-13 起告警看「價格實質不符列數」而非修復檔數:每晚數百檔修復幾乎都是 float32 尾數與成交量差異
+    (抽查 8 晚,價格差 >0.05% 的為 0 筆),照舊門檻會每晚誤報。校驗程式輸出沒有該欄位時退回舊的檔數判斷。
     """
     import re as _re
     try:
@@ -1213,11 +1215,15 @@ def exec_verify_daily_bars() -> bool:
             LOGGER.error("verify_daily_bars rc=%s stderr tail: %s", proc.returncode, err[-1500:])
         m = _re.search(r"files_patched=(\d+)", out)
         patched = int(m.group(1)) if m else 0
-        if patched > 50:
+        material_match = _re.search(r"price_rows_material=(\d+)", out)
+        material = int(material_match.group(1)) if material_match else None
+        if (material if material is not None else patched) > 50:
             try:
                 from scripts.notify_ntfy import send_ntfy
+                detail = (f"價格實質不符 {material} 列(共修復 {patched} 檔)" if material is not None
+                          else f"官方對照修復 {patched} 檔")
                 send_ntfy(title="日K終盤校驗告警",
-                          message=f"官方對照修復 {patched} 檔(Yahoo 終盤化延遲重演),當晚訊號已用校驗後資料",
+                          message=f"{detail}(Yahoo 終盤化延遲重演),當晚訊號已用校驗後資料",
                           priority="high")
             except Exception:
                 LOGGER.exception("verify ntfy failed")
