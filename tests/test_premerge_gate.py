@@ -43,3 +43,26 @@ def test_real_certificate_sources_include_the_files_that_bit_us():
         assert gate.cert_impact([must], patterns) == [must], must
     assert gate.cert_impact(["docs/rere_strategy.md", "scripts/rere_public_follow_tracker.py",
                              "ml/data/rere_public_campaigns.csv"], patterns) == []
+
+
+def test_pipeline_owned_files_cover_the_logs_tests_used_to_pollute():
+    from datetime import datetime
+
+    names = [p.name for p in gate.pipeline_owned_files(datetime(2026, 10, 13))]
+    assert names == ["smart_update_auto_20261013.log", "smart_update_auto_stdio_20261013.log",
+                     "latest_bar_coverage_latest.json", "kol_tracker.log"]
+    assert all(p.parent == gate.REPO / "logs" for p in gate.pipeline_owned_files())
+
+
+def test_file_state_change_detection(tmp_path):
+    grown, created, untouched, missing = (tmp_path / n for n in ("grown.log", "created.json", "same.log", "never.log"))
+    grown.write_text("a", encoding="utf-8")
+    untouched.write_text("x", encoding="utf-8")
+    paths = [grown, created, untouched, missing]
+    before = gate.file_states(paths)
+    assert before["created.json"] is None and before["never.log"] is None
+    with grown.open("a", encoding="utf-8") as handle:
+        handle.write(" fake ERROR line")
+    created.write_text("{}", encoding="utf-8")
+    assert gate.changed_files(before, gate.file_states(paths)) == ["created.json", "grown.log"]
+    assert gate.changed_files(before, before) == []

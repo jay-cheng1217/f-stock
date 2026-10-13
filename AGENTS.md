@@ -184,6 +184,13 @@
   2026-09-30~10-13 因此漏掉三個早已失敗或有副作用的測試。允許失敗的只有登記在 `tests/gate_known_failures.txt`(待裁決的真失敗)
   與 `tests/gate_worktree_env_failures.txt`(分支工作目錄缺資料/模型檔)裡的測試;新增一列要寫日期與原因。
   新測試凡會經過 `smart_update_auto.LOGGER` 的,必須先換成空日誌,否則會把假訊息寫進正式排程 log(2026-10-12 事故)。
+  **測試不可碰正式環境(2026-10-13 補強,由 `tests/conftest.py` 統一擋)**:主工作目錄跑完整測試時,既有測試曾把假 ERROR 寫進
+  當日 `smart_update_auto_*.log`、把 `logs/latest_bar_coverage_latest.json` 蓋成測試結果,並且真的對 127.0.0.1:8001 送出
+  `POST /api/db/release`(線上伺服器因此釋放 DuckDB 連線)。現在 conftest 會:讓排程/網頁的四個 logger 不開正式 log 檔、
+  把覆蓋報告與 KOL log 導到暫存目錄、擋下所有真實 HTTP(`urllib`、`requests`)並讓發出連線的測試失敗;
+  確實需要連線的測試標 `@pytest.mark.allow_network`。關卡另外比對測試前後的排程專用檔案,有變動即判 FAIL。
+  讀當日排程 log 時注意:2026-10-12 18:05/18:46 與 2026-10-13 18:07~18:08、21:39 的 `REFUSED blocked`、`failure-fixture`、
+  `verify_daily_bars failed`(traceback 指向 `tests/`)是測試寫入的假訊息,不是排程失敗。
 - For any task that modifies files, finish the task with a Git commit.
 - Do not leave completed edits uncommitted unless the user explicitly says no commit.
 - Follow commit message format:

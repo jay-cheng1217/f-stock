@@ -345,6 +345,9 @@ def test_exec_agent_arena_reraises_non_lock_errors(monkeypatch):
         raise RuntimeError("agent scoring schema mismatch")
 
     monkeypatch.setattr(agent_arena, "run_daily_competition", fake_run_daily_competition)
+    # 一定要假造:exec_agent_arena 會先 POST /api/db/release。2026-10-13 以前這支測試每跑一次,
+    # 線上網頁伺服器就真的釋放一次 DuckDB 連線(tests/conftest.py 現在會擋,並讓測試失敗)。
+    monkeypatch.setattr(smart_update_auto.smart_update, "_api_post", lambda path, **kw: False)
 
     with pytest.raises(RuntimeError, match="agent scoring schema mismatch"):
         smart_update_auto.exec_agent_arena()

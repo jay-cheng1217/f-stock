@@ -16,6 +16,9 @@
   名單外的任何失敗 → 結束碼 1(不可合併 / 不可推送)。
   名單上的測試如果通過了,會印出提醒(名單過期,應該刪掉該列),不擋。
   測試前後 `git status --porcelain` 的追蹤檔異動若不同 → 結束碼 1(有測試在改正式檔案)。
+  測試前後排程專用的 log / 報告(見 pipeline_owned_files)若有變動 → 結束碼 1。logs/ 不在版控內,上一條檢查看不到;
+  2026-10-13 兩次合併後的完整測試都把假的 ERROR 寫進當日排程 log、把K棒覆蓋報告蓋成測試結果,就是這樣漏掉的。
+  (網頁伺服器自己的 log 不列入:伺服器在線時會正常寫入,無法區分;那一類由 tests/conftest.py 直接擋。)
 結果另寫 logs/premerge_gate_latest.json。
 
 cert-impact:列出分支相對 base 改到的檔案中,屬於快照/預測/名單憑證來源者(直接向三個憑證模組要來源清單,不另外維護名單)。
@@ -85,6 +88,29 @@ def cert_impact(changed: list[str], patterns: list[str]) -> list[str]:
     return sorted(f for f in changed if any(fnmatch.fnmatch(f.replace("\\", "/").lower(), p) for p in lowered))
 
 
+def pipeline_owned_files(today: datetime | None = None) -> list[Path]:
+    """只有排程會寫的檔案。合併流程在排程執行中會被 preflight 擋下,所以測試期間這些檔案不該有任何變動。"""
+    stamp = (today or datetime.now()).strftime("%Y%m%d")
+    logs = REPO / "logs"
+    return [logs / f"smart_update_auto_{stamp}.log", logs / f"smart_update_auto_stdio_{stamp}.log",
+            logs / "latest_bar_coverage_latest.json", logs / "kol_tracker.log"]
+
+
+def file_states(paths: list[Path]) -> dict[str, tuple[int, int] | None]:
+    out: dict[str, tuple[int, int] | None] = {}
+    for path in paths:
+        try:
+            stat = path.stat()
+            out[path.name] = (stat.st_size, stat.st_mtime_ns)
+        except OSError:
+            out[path.name] = None
+    return out
+
+
+def changed_files(before: dict, after: dict) -> list[str]:
+    return sorted(name for name in set(before) | set(after) if before.get(name) != after.get(name))
+
+
 def tracked_changes() -> list[str]:
     out = subprocess.run(["git", "status", "--porcelain"], cwd=REPO, capture_output=True, text=True,
                          encoding="utf-8", errors="replace").stdout
@@ -116,19 +142,23 @@ def main() -> int:
         return 0
 
     before = tracked_changes()
+    owned = pipeline_owned_files()
+    owned_before = file_states(owned)
     # 一定要指定 tests/:主工作目錄的 output/(舊程式副本)與 scripts/*_test.py(研究腳本)會被 pytest 當成測試蒐集而報錯,
     # 真正的測試反而沒跑(2026-10-13 第一次合併後關卡因此擋下)。分支工作目錄沒有 output/,所以合併前看不出來。
     proc = subprocess.run([sys.executable, "-X", "utf8", "-m", "pytest", "tests", "-q", "-p", "no:cacheprovider", "--tb=no", "-rfE"],
                           cwd=REPO, capture_output=True, text=True, encoding="utf-8", errors="replace")
     after = tracked_changes()
+    production_touched = changed_files(owned_before, file_states(owned))
     output = proc.stdout + "\n" + proc.stderr
     tail = next((line for line in reversed(output.splitlines()) if " passed" in line or " failed" in line or " error" in line), "")
     result = evaluate(parse_failures(output), load_list(KNOWN), load_list(WORKTREE_ENV), args.mode)
     side_effects = sorted(set(after) - set(before))
     collected = bool(re.search(r"\d+ passed", tail))
-    ok = collected and not result["unexpected"] and not side_effects
+    ok = collected and not result["unexpected"] and not side_effects and not production_touched
     report = {"mode": args.mode, "at": datetime.now().isoformat(timespec="seconds"), "ok": ok, "pytest_summary": tail.strip(),
-              "tracked_files_changed_by_tests": side_effects, **result}
+              "tracked_files_changed_by_tests": side_effects,
+              "production_files_changed_by_tests": production_touched, **result}
     try:
         (REPO / "logs").mkdir(exist_ok=True)
         (REPO / "logs" / "premerge_gate_latest.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -141,6 +171,8 @@ def main() -> int:
         print(f"[gate] 名單外的失敗:{name}")
     for name in side_effects:
         print(f"[gate] 測試改動了追蹤檔:{name}")
+    for name in production_touched:
+        print(f"[gate] 測試期間正式排程檔案被改動:logs/{name}(測試沒有隔離,見 tests/conftest.py)")
     for name in result["stale_entries"]:
         print(f"[gate] 提醒:{name} 已經通過,請從允許清單移除")
     print(f"[gate] 允許的失敗 {len(result['allowed_failed'])} 項;判定:{'PASS' if ok else 'FAIL'}")
