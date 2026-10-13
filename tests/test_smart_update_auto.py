@@ -369,6 +369,9 @@ def test_phase2_freshness_gate_blocks_prediction_when_inputs_stale(monkeypatch):
         "_check_phase2_input_freshness",
         lambda now=None: ["index_TWII: stale"],
     )
+    # 一定要假造:缺口存在時正式流程會向證交所求證是否臨時休市,確認就寫入 config/adhoc_market_closures.json。
+    # 這裡的缺口是假的且永遠存在,不假造的話測試會真的連證交所,回「查無資料」時還會把交易日登記成休市(最多三天)。
+    monkeypatch.setattr(smart_update_auto, "_twse_confirms_no_trading", lambda day: False)
     monkeypatch.setattr(
         smart_update_auto,
         "_send_freshness_gate_email",
