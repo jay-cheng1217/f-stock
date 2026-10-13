@@ -10,6 +10,7 @@
   報酬用公司行動連續還原(ml.corporate_actions)。
   市場 = 同一段期間、進場日 20 日均量 >= 500 張的普通股等權平均。超額 = 報酬 − 市場。
 限制:名單只含她公開的標的(她只公開部分、偏向獲利者),公開日由截圖人工登錄;跟單價不是她的成本,她的部位與損益不可得。
+類型:campaign=她宣示波段/長抱;event、trial=事件單與試單;core=她揭露的存股戶持股(不是買進喊單,另列統計)。
 
 用法:python -X utf8 scripts/rere_public_follow_tracker.py     (排程步驟;任何錯誤都只印警告並以 0 結束,不擋名單與儀表板)
 輸出:ml/reports/rere_public_follow_book.csv、ml/reports/rere_public_follow_latest.md
@@ -64,7 +65,8 @@ def load_bars(daily_dir: Path, start: str, actions: pd.DataFrame | None = None) 
 
 def build_follow_book(campaigns: pd.DataFrame, bars: dict[str, pd.DataFrame], hold: int = HOLD) -> pd.DataFrame:
     adj = pd.DataFrame({tk: b["adj"] for tk, b in bars.items()}).sort_index()
-    liquid = pd.DataFrame({tk: b["liquid"] for tk, b in bars.items()}).sort_index().fillna(False).astype(bool)
+    liquid = pd.DataFrame({tk: b["liquid"] for tk, b in bars.items()}).sort_index()
+    liquid = liquid.where(liquid.notna(), False).astype(bool)          # 該日無K棒 = 不在市場池
 
     def market(start_day: str, end_day: str) -> float:
         pool = liquid.columns[liquid.loc[start_day].to_numpy()]
@@ -129,8 +131,11 @@ def render(book: pd.DataFrame, as_of: str) -> str:
              "規則:公開貼文次一交易日收盤買進、等權;她公開出場則次日收盤跟出,否則抱 60 根,未到期以最新收盤計。",
              "市場 = 同期間全市場等權(進場日均量 ≥ 500 張)。**這不是她的損益**:她的成本、部位、進出場都看不到;",
              "名單只含她公開的標的,樣本小且偏向她願意公開的。研究帳本,不是選股依據。", "",
-             _line("全部", book), _line("長抱(campaign)", book[book["kind"] == "campaign"]),
-             _line("事件/試單", book[book["kind"] != "campaign"]), ""]
+             _line("全部(不含存股揭露)", book[book["kind"] != "core"]),
+             _line("長抱(campaign)", book[book["kind"] == "campaign"]),
+             _line("事件/試單", book[book["kind"].isin(["event", "trial"])]),
+             # core = 她揭露的存股戶持股(不是買進喊單),另列、不併入上面三行
+             _line("存股戶揭露(core)", book[book["kind"] == "core"]), ""]
     if "ret20_pct" in book.columns and book["ret20_pct"].notna().any():
         b20 = book.dropna(subset=["ret20_pct"])
         lines += [f"- 進場後 20 根:{len(b20)} 筆,平均 {b20.ret20_pct.mean():+.1f}%,同期市場 {b20.market20_pct.mean():+.1f}%", ""]
@@ -167,7 +172,7 @@ def main() -> int:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
     try:
         book = run()
-        print("[follow-book]", _line("全部", book).lstrip("- "), "→", REPORT.name)
+        print("[follow-book]", _line("全部(不含存股揭露)", book[book["kind"] != "core"]).lstrip("- "), "→", REPORT.name)
     except Exception as exc:  # noqa: BLE001 - 研究帳本失敗不可擋名單/儀表板
         print(f"[follow-book] WARN skipped: {exc}")
     return 0

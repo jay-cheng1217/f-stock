@@ -46,3 +46,13 @@ def test_matured_after_hold_and_pending_before_any_bar():
     assert book.iloc[0].bars_held == 60 and "ret20_pct" in book.columns
     text = render(book, "2026-10-12")
     assert "不是她的損益" in text and "pending_entry" in text
+
+
+def test_core_disclosures_are_reported_separately_from_trade_ideas():
+    bars = {"1111": _bars([100, 100, 110, 121]), "5292": _bars([200, 200, 210, 220]), "2222": _bars([50, 50, 50, 50])}
+    book = build_follow_book(_campaigns([["1111", "甲", "2026-07-01", "", "campaign", "x"],
+                                         ["5292", "華懋", "2026-07-01", "", "core", "x"]]), bars)
+    text = render(book, "2026-07-06")
+    all_line = next(line for line in text.splitlines() if line.startswith("- 全部(不含存股揭露)"))
+    core_line = next(line for line in text.splitlines() if line.startswith("- 存股戶揭露(core)"))
+    assert ":1 筆" in all_line and ":1 筆" in core_line
