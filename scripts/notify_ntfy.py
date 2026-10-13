@@ -123,6 +123,18 @@ def _auth_header(settings: NtfySettings) -> str | None:
     return None
 
 
+def _header_value(value: str) -> str:
+    """HTTP 標頭只能送 latin-1。非 ASCII(例如中文標題)改用 RFC 2047 編碼,ntfy 會解回原文。
+
+    2026-09-29~10-12:`日K終盤校驗告警` 的中文標題讓 urllib 丟 UnicodeEncodeError,告警連續 8 個交易日晚上都沒送出去。
+    """
+    try:
+        value.encode("ascii")
+        return value
+    except UnicodeEncodeError:
+        return "=?UTF-8?B?" + base64.b64encode(value.encode("utf-8")).decode("ascii") + "?="
+
+
 def send_ntfy(
     *,
     title: str,
@@ -137,11 +149,11 @@ def send_ntfy(
         return {"status": "skipped", "reason": "ntfy not configured"}
 
     headers = {
-        "Title": title,
+        "Title": _header_value(title),
         "Priority": priority,
     }
     if tags:
-        headers["Tags"] = tags
+        headers["Tags"] = _header_value(tags)
     if click:
         headers["Click"] = click
     auth = _auth_header(settings)
