@@ -116,7 +116,9 @@ def main() -> int:
         return 0
 
     before = tracked_changes()
-    proc = subprocess.run([sys.executable, "-X", "utf8", "-m", "pytest", "-q", "-p", "no:cacheprovider", "--tb=no", "-rfE"],
+    # 一定要指定 tests/:主工作目錄的 output/(舊程式副本)與 scripts/*_test.py(研究腳本)會被 pytest 當成測試蒐集而報錯,
+    # 真正的測試反而沒跑(2026-10-13 第一次合併後關卡因此擋下)。分支工作目錄沒有 output/,所以合併前看不出來。
+    proc = subprocess.run([sys.executable, "-X", "utf8", "-m", "pytest", "tests", "-q", "-p", "no:cacheprovider", "--tb=no", "-rfE"],
                           cwd=REPO, capture_output=True, text=True, encoding="utf-8", errors="replace")
     after = tracked_changes()
     output = proc.stdout + "\n" + proc.stderr
