@@ -1,0 +1,2 @@
+# bash 腳本必須是 LF,否則 Git Bash 會因為 CRLF 執行失敗(2026-10-13 scripts/merge_branch.sh)
+*.sh text eol=lf
