@@ -115,3 +115,31 @@ def test_price_position_does_not_reclassify_generator_kind_or_card_state():
         result = card_context(row(last_close=value, last_close_date="2026-09-04"), plan())
         assert result["label"] == "觀察 · 待盤中確認"
         assert result["tone"] == "check"
+
+
+def test_tdcc_changes_come_from_the_shadow_rank_picks_of_that_trade_date(tmp_path, monkeypatch):
+    import pandas as pd
+    from scripts import entry_dashboard
+
+    reports = tmp_path / "ml" / "reports"
+    reports.mkdir(parents=True)
+    pd.DataFrame([
+        {"trade_date": "2026-10-13", "group": "pool", "ticker": "6168", "retail4w": -10.18, "whale4w": 11.5},
+        {"trade_date": "2026-10-13", "group": "pool", "ticker": "3035", "retail4w": -5.17, "whale4w": 2.0},
+        {"trade_date": "2026-10-13", "group": "pool", "ticker": "1595", "retail4w": 2.26, "whale4w": None},
+        {"trade_date": "2026-10-13", "group": "pool", "ticker": "9999", "retail4w": None, "whale4w": None},
+        {"trade_date": "2026-10-13", "group": "retail_top3", "ticker": "6168", "retail4w": -10.18, "whale4w": 11.5},
+        {"trade_date": "2026-10-12", "group": "pool", "ticker": "2330", "retail4w": -1.0, "whale4w": 1.0},
+    ]).to_csv(reports / "rere_shadow_rank_picks.csv", index=False, encoding="utf-8-sig")
+    monkeypatch.setattr(entry_dashboard, "BASE_DIR", tmp_path)
+    got = entry_dashboard.load_tdcc_changes("2026-10-13")
+    assert got["6168"] == {"retail4w": -10.18, "whale4w": 11.5, "retail_rank": 1, "pool": 3}
+    assert got["1595"]["retail_rank"] == 3 and got["1595"]["whale4w"] is None
+    assert "9999" not in got and "2330" not in got                    # 沒有集保數值、或不是當天的候選
+    assert entry_dashboard.load_tdcc_changes("2026-10-14") == {} and entry_dashboard.load_tdcc_changes(None) == {}
+
+
+def test_card_template_shows_tdcc_as_research_information_only():
+    from scripts import entry_dashboard
+
+    assert 'class="card-tdcc"' in entry_dashboard.HTML and "不是排序依據" in entry_dashboard.HTML

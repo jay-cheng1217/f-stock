@@ -241,6 +241,30 @@ def load_legacy_ledger_summary(main_ledger_path) -> dict | None:
         return None
 
 
+def load_tdcc_changes(trade_date: str | None) -> dict[str, dict]:
+    """rere 候選當日的集保 4 週變化,取自影子排序研究帳本存下的「當時」數值(不會被之後的資料改寫)。
+
+    只做呈現:回測票 #20 顯示同日候選中散戶減較多者表現較好,目前在樣本外驗證,不是排序依據。缺檔或當日無資料回空 dict。
+    """
+    path = BASE_DIR / "ml" / "reports" / "rere_shadow_rank_picks.csv"
+    if not trade_date or not path.exists():
+        return {}
+    try:
+        picks = pd.read_csv(path, dtype={"ticker": str, "trade_date": str})
+        pool = picks[(picks["trade_date"] == str(trade_date)) & (picks["group"] == "pool")].copy()
+        pool["ticker"] = pool["ticker"].str.zfill(4)
+        pool["retail4w"] = pd.to_numeric(pool["retail4w"], errors="coerce")
+        pool["whale4w"] = pd.to_numeric(pool["whale4w"], errors="coerce")
+        ranked = pool.dropna(subset=["retail4w"])
+        rank = ranked["retail4w"].rank(method="min").astype(int)
+        return {r["ticker"]: {"retail4w": round(float(r["retail4w"]), 2),
+                              "whale4w": round(float(r["whale4w"]), 2) if pd.notna(r["whale4w"]) else None,
+                              "retail_rank": int(rank.loc[i]), "pool": int(len(ranked))}
+                for i, r in ranked.iterrows()}
+    except Exception:  # noqa: BLE001 - 研究欄位失敗不可擋儀表板
+        return {}
+
+
 def load_rere_shadow_summary() -> dict | None:
     """rere 並列模擬摘要(不停損影子、她已公開標的帳本);缺檔回 None。只做呈現,不影響名單。"""
     reports = BASE_DIR / "ml" / "reports"
@@ -971,6 +995,10 @@ def build(path: Path) -> str:
         ledger = lf.to_dict("records")
     ledger_legacy = load_legacy_ledger_summary(lp)
 
+    tdcc_changes = load_tdcc_changes(d.get("trade_date"))
+    for r in rows:
+        r["tdcc"] = tdcc_changes.get(str(r.get("tk"))) if r.get("strategy") == "rere" else None
+
     payload = {"meta": {"trade_date": d.get("trade_date"), "subtitle": d.get("subtitle"),
                         "intro": d.get("intro"),
                         "data_status": d.get("data_status", "UNKNOWN"),
@@ -980,7 +1008,7 @@ def build(path: Path) -> str:
                         "sources": source_status,
                         "generated": datetime.now().strftime("%Y-%m-%d %H:%M")},
                "rows": [{k: r.get(k) for k in
-                         ("tk", "stock", "sector", "strategy", "state", "status", "kind", "ptype", "pattern_line",
+                         ("tk", "stock", "sector", "strategy", "state", "status", "kind", "ptype", "pattern_line", "tdcc",
                           "priority", "zone", "stop", "no_chase", "ret20d", "reason",
                           "zlo", "zhi", "stopv", "vt", "vtx", "stale", "card",
                           "source_date", "model_source_date", "data_status", "data_warnings")}
@@ -1182,6 +1210,7 @@ details.dled summary:hover{background:var(--sm-wash)}
 .card-prices .zlab{display:block;font-size:11px;color:var(--muted);margin:0 0 2px}
 .card-prices b{overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .card-why{font-size:13px;color:var(--ink2);line-height:1.5;margin:6px 0 2px}
+.card-tdcc{font-size:12px;color:var(--muted);margin:2px 0 4px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .guard{background:var(--wt-wash);border:1px solid var(--wt);border-radius:8px;color:var(--wt);
   font-family:Consolas,monospace;font-size:13px;padding:8px 14px;margin:2px 0 6px}
 footer{color:var(--muted);font-size:12.5px;margin-top:36px;font-family:Consolas,monospace}
@@ -1311,6 +1340,7 @@ function card(r){
   const shortLabel = String(info.label||'').replace(/^(觀察|暫緩)\\s*·\\s*/,'');
   // 一行篩選理由:去掉【lane】前綴與「;60日波段…」制式尾句
   const why = String(r.reason||'').replace(/^【[^】]*】/,'').split(/[;；]/)[0].trim();
+  const fpp = v => (v===null||v===undefined) ? '—' : `${v>0?'+':''}${Number(v).toFixed(2)}`;
   return `<article class="card c-${r.state}${info.tone==='skip'?' c-skip':''}">
     <div class="card-top"><span class="card-state ${tone}">${esc(shortLabel||info.label)}</span><span class="card-tag${r.strategy==='rere'?' is-rere':''}">${esc(laneTag)}</span></div>
     <div class="card-title"><button type="button" class="stock-link tk" data-tk="${esc(r.tk)}" aria-label="查看 ${esc(r.stock)} 詳情">${esc(r.stock)}</button>${r.sector?`<span class="mkt">${esc(r.sector)}</span>`:''}</div>
@@ -1319,6 +1349,7 @@ function card(r){
       <div><span class="zlab">不追</span><b>${esc(r.no_chase||'待重估')}</b></div>
       <div><span class="zlab">失效</span><b class="up">${esc(r.stop||'待重估')}</b></div></div>
     ${why?`<div class="card-why">${esc(why)}</div>`:''}
+    ${r.tdcc?`<div class="card-tdcc">集保4週 散戶 ${fpp(r.tdcc.retail4w)}・大戶 ${fpp(r.tdcc.whale4w)}・排名 ${esc(r.tdcc.retail_rank)}/${esc(r.tdcc.pool)}</div>`:''}
     ${isStale?`<div class="verdict v-skip">${esc(r.stale)}</div>`:''}
     ${chips?`<div class="tags">${chips}</div>`:''}
     ${r.kind==='veto'?`<div class="verdict v-skip">否決原因 · ${esc(r.status||r.reason||'需確認原始否決條件')}</div>`:r.vt==='skip'?verd:''}
@@ -1327,6 +1358,7 @@ function card(r){
       <div class="stat">${esc(info.action)} ${esc(info.size)}。</div>
       <ul class="card-evidence">${info.basis.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
       <div class="stat">尚缺：盤中進區間守穩、人工籌碼確認。</div>
+      ${r.tdcc?`<div class="stat">集保4週：散戶與千張大戶持股比的 4 週變化（百分點）；排名＝同日 rere 候選中散戶減幅的名次。研究資訊：六年回測裡散戶減較多者表現較好，目前在樣本外驗證，不是排序依據。</div>`:''}
       ${r.pattern_line?`<div class="stat">型態參考線 ${esc(r.pattern_line)}（季線×0.97，跌破代表型態轉弱）；卡面的失效價是 −40% 災難停損。</div>`:''}
       <div class="stat">型態截至 ${esc(info.source_date||'未提供')} · 模型截至 ${esc(info.model_source_date||'未提供')}${r.strategy==='rere'?'（不作否決）':''}</div>
       <div class="rsn">${esc(r.reason||'未提供篩選理由')}</div>
