@@ -26,8 +26,27 @@
 
 | 介面 | 網址性質 | 用途 |
 |---|---|---|
-| 進場儀表板(Artifact) | **固定**,每平日 07:45 由 Claude Desktop 排程任務 `daily-entry-dashboard-republish` 重發同網址(任務檔在 `C:\Users\cheng\.claude\scheduled-tasks\`;需 Claude Desktop 開著才會跑,關著則下次開啟補跑) | 主要介面:名單+大盤+個股四大面向/模型/ChipK/短波 tag+帳本 |
+| 進場儀表板(Artifact) | **固定**。每日更新有兩條路(見下方「固定網址由誰更新」);實際每天在更新的是雲端例行工作 | 主要介面:名單+大盤+個股四大面向/模型/ChipK/短波 tag+帳本 |
 | 遠端 Web(cloudflared tunnel) | 每晚 pipeline 重啟即換網址 | 備用:Workbench/Forecast 互動深入分析 |
 | 本機 http://127.0.0.1:8001 | 固定(僅本機) | 同遠端 Web |
 
 每日郵件(`send_web_link_email.py`)綠色主按鈕=固定儀表板,藍色=當日 tunnel。
+
+## 固定網址由誰更新(2026-10-13 查證後補記)
+
+1. **雲端例行工作「TW+KOL Dashboard 每日重發」(主要,每天都有跑)**:claude.ai routine,每日 07:50(台北)。
+   它重發的是 GitHub `kol-watch` repo 根目錄的 `entry_dashboard_latest.html` 與 `kol_dashboard_latest.html` 原檔;
+   這個 repo 由本機早上的 `scripts/run_kol_tracker_daily.py::_publish`(複製到 `F:\kol-watch` 後 commit + push)更新。
+   所以本機當天儀表板建置失敗時,雲端仍會重發**前一份**檔案(頁面看起來有更新、內容是舊的)。
+   查執行紀錄:`RemoteTrigger` 的 `list` / `list_runs`。
+2. **Claude Desktop 排程 `daily-entry-dashboard-republish`(第二條路,平日 07:53)**:本機重建後重發同網址;需 Claude Desktop 開著。
+   它在 2026-10-01~10-13 卡住沒跑:排程裡的 Claude 臨時寫了 PowerShell 指令,而本機只有 Bash 指令全部免核准、
+   PowerShell 要字串完全相符才免核准,於是停在沒人按的核准視窗。10/13 已把任務指示改成「只用 Bash、指令原樣執行」
+   (舊指示備份在 `logs/quarantine_dashboard_routine_20261013/SKILL.md.before`)。
+   兩條路同時啟用時,每天早上會各發一版(同一天的資料),雲端那條遇到版本衝突會強制覆寫。
+
+**判斷固定網址有沒有更新,要看頁面本身,不看排程紀錄**:用 Artifact `read` 看線上版的版本 id(是 Unix 時間)
+與頁面資料裡的 `meta.trade_date` / `meta.generated`。2026-10-13 曾只憑「本機排程自 10/01 沒跑」就說成
+「固定網址停更 9 個交易日」,實際上雲端那條每天都在重發。
+收盤後到隔天 07:00 Phase-2 之前,`entry_dashboard.py` 會因名單憑證非當前而拒絕重建(EntryArtifactLineageError),屬正常;
+這段時間只能重發現有檔。
