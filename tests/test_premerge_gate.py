@@ -24,7 +24,9 @@ def test_list_files_ignore_comments_and_exist(tmp_path):
     path = tmp_path / "list.txt"
     path.write_text("# header\n\ntests/a.py::t1  # 2026-10-13 reason\ntests/b.py::t2\n", encoding="utf-8")
     assert gate.load_list(path) == {"tests/a.py::t1", "tests/b.py::t2"}
-    assert gate.load_list(gate.KNOWN) and gate.load_list(gate.WORKTREE_ENV)
+    # 已知失敗清單「清空」是正常且期望的狀態,只要求檔案存在、可解析;環境清單則應有內容。
+    assert gate.KNOWN.exists() and isinstance(gate.load_list(gate.KNOWN), set)
+    assert gate.load_list(gate.WORKTREE_ENV)
 
 
 def test_cert_impact_matches_code_and_data_sources():

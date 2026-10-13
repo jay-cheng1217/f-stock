@@ -137,10 +137,13 @@ def test_invalid_preferred_dataa_never_silently_falls_back_to_other_model(case):
 def test_scoring_and_all_strategy_functions_are_ast_unchanged():
     expected = {
         ("scripts/shadow_dataA_tracker.py", "score_snapshot"): "59a9c6c0ea2c742e34856d6e8719240a370dd46d61cc5caeae4d4e5e71c25c19",
-        ("scripts/generate_entry_candidates.py", "_technical"): "94e8b918dc1b7fcee2b6db516db6f01251705c011b288df1ec281b6b35eda0f9",
+        # 基準更新紀錄(2026-10-13 PM 核可以現況為準):_technical / _rere_lane_ok / generate 三者自 2026-09-30 快照起即與舊基準不符,
+        # 其後 10/7(rere v2、主 lane 排序、停損 −40%、還原基準洗盤)、10/12(候選池輸出)、10/13(型內中性排序)皆經 PM 核可。
+        # 之後這三個函式再有任何改動,必須連同核可依據一起更新這裡的指紋。
+        ("scripts/generate_entry_candidates.py", "_technical"): "23125fd73dc8e46a77af5f0ca1bd6adff52bec03dbaf0c98eff109cefb5bd6aa",
         ("scripts/generate_entry_candidates.py", "_pattern_ok"): "3416b7eeb156182360441d87e6c1fb7e1927c6f70a7001738f3bd68a7941e268",
-        ("scripts/generate_entry_candidates.py", "_rere_lane_ok"): "7bb5dd59315ef6494461adeaf6b5169d9f6b4bf2bf780f33b4b7a2709e0a48b4",
-        ("scripts/generate_entry_candidates.py", "generate"): "2a249d73b240bc2b81c422735e563639b1f06a829db846d9965f48907323fcd1",
+        ("scripts/generate_entry_candidates.py", "_rere_lane_ok"): "1bf2c23b22d01d1136fdb586e89ec6616ce90c4a328cf4ba0b76b35e6171fafe",
+        ("scripts/generate_entry_candidates.py", "generate"): "8408653cf8cb740290b8b0891a9effd85ed5806c3b6a13e1411234d0895aab77",
         ("scripts/generate_entry_candidates.py", "_apply_data_quality"): "893fdea3a97d2bec626576955fc90ee831c6884c4d343fe2479cfce288d49fad",
     }
     root = Path(__file__).resolve().parents[1]

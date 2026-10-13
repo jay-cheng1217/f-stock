@@ -1,3 +1,3 @@
 # 兩種模式都允許的已知失敗。每列:測試 ID  # 登記日期;原因;誰來決定
 # 新增一列等於承認這個測試壞掉,必須寫清楚原因;修好之後刪掉該列(關卡會提醒)。
-tests/test_dataa_prediction_provenance.py::test_scoring_and_all_strategy_functions_are_ast_unchanged  # 2026-10-13 登記;名單產生器 _technical/_rere_lane_ok/generate 的指紋自 2026-09-30 快照起即與基準不符,10/7、10/12 經 PM 核可的改動又再變更;是否更新基準待 PM 裁決
+# (目前沒有。2026-10-13 登記的策略函式指紋測試,已於同日經 PM 核可更新基準後移除。)

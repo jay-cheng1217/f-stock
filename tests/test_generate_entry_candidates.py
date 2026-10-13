@@ -410,3 +410,25 @@ def test_rere_stop_is_40pct_below_signal_close_and_pattern_line_is_reported():
     main_row = {"ticker": "2330", "sector": "半導體業", "status": "可小倉觸發", "kind": "go", "zone_low": 1, "zone_high": 2, "stop": 0.9,
                 "pred20": 0.01, "v20": 0.03, "vol_ratio": 0.8, "rsi": 55, "foreign20": 10, "bucket": ""}
     assert gen._format_entry_row(1, main_row, {})["pattern_line"] is None   # 主 lane 不受影響
+
+
+def test_neutral_order_key_is_deterministic_bounded_and_changes_by_date():
+    from datetime import date
+
+    d1, d2 = date(2026, 10, 13), date(2026, 10, 14)
+    tickers = [f"{2300 + i}" for i in range(40)]
+    k1 = [gen._neutral_order_key(d1, t) for t in tickers]
+    assert k1 == [gen._neutral_order_key(d1, t) for t in tickers]            # 同一天重跑相同
+    assert all(0.0 <= k < 1.0 for k in k1) and len(set(k1)) == len(k1)
+    order1 = sorted(tickers, key=lambda t: gen._neutral_order_key(d1, t))
+    order2 = sorted(tickers, key=lambda t: gen._neutral_order_key(d2, t))
+    assert order1 != order2                                                   # 不會長期偏向固定幾檔
+    assert gen._neutral_order_key(d1, "278") == gen._neutral_order_key(d1, "0278")
+    assert order1 != tickers and order1 != tickers[::-1]                      # 不是代號順序
+
+
+def test_neutral_key_never_outranks_the_sector_tier():
+    from datetime import date
+
+    keys = [gen._neutral_order_key(date(2026, 10, 13), f"{1000 + i}") for i in range(500)]
+    assert max(keys) < 1.0            # 分數 = 分級(0/1/2) + 鍵;鍵 < 1 才不會讓弱勢族群越級
