@@ -178,6 +178,12 @@
   提交在「當前 checked-out 分支」,漂移案例:codex/strategy-integrity-20260906 於 9/6
   開出後無人併回,117 個 commit(含每日產物與 production 修復)長在分支上、main 空轉
   三週半。工作目錄平時必須 checkout main。
+- **合併一律走固定流程(2026-10-13)**:分支工作目錄的成果用 `bash scripts/merge_branch.sh <分支> <工作目錄> [--not-before YYYYMMDDHHMM]`
+  併回 main——它會跑 preflight、**完整測試關卡**(`scripts/premerge_gate.py`,全套約 40 秒,合併前在分支、合併後在主工作目錄各一次)、
+  **憑證影響檢查**(改到快照/預測/名單憑證來源者,交易日 18:00 前拒絕合併)、快轉、推送、清理。不要再只跑「相關」測試:
+  2026-09-30~10-13 因此漏掉三個早已失敗或有副作用的測試。允許失敗的只有登記在 `tests/gate_known_failures.txt`(待裁決的真失敗)
+  與 `tests/gate_worktree_env_failures.txt`(分支工作目錄缺資料/模型檔)裡的測試;新增一列要寫日期與原因。
+  新測試凡會經過 `smart_update_auto.LOGGER` 的,必須先換成空日誌,否則會把假訊息寫進正式排程 log(2026-10-12 事故)。
 - For any task that modifies files, finish the task with a Git commit.
 - Do not leave completed edits uncommitted unless the user explicitly says no commit.
 - Follow commit message format:

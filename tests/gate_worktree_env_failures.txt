@@ -1,0 +1,9 @@
+# 只在分支工作目錄(沒有日K、大盤指數、模型二進位檔)會失敗、主工作目錄會通過的測試。
+# 加進這裡之前,必須先在主工作目錄確認它通過。
+tests/test_market_regime_features.py::test_market_regime_features_are_percentiles      # 需要 大盤指數/ 資料
+tests/test_market_regime_features.py::test_market_regime_features_are_registered       # 同上
+tests/test_market_regime_features.py::test_market_regime_join_uses_prior_market_day    # 同上
+tests/test_smart_update_auto.py::test_two_stage_defaults_enable_asymmetric_exit_policy            # 需要 ml/models 的 Champion pin 模型檔
+tests/test_smart_update_auto.py::test_phase2_freshness_gate_blocks_prediction_when_inputs_stale   # 同上
+tests/test_smart_update_auto.py::test_phase2_output_freshness_gate_skips_normal_email             # 同上
+tests/test_unified_production_gate.py::test_closed_t1_gate_does_not_close_20d_production_gate     # 需要主工作目錄的市場資料
