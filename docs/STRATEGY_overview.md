@@ -601,6 +601,16 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
 24. **rere 卡片顯示集保 4 週變化(2026-10-13,決策輔助,不改排序)**:儀表板 rere 卡片多一行「集保4週 散戶 x・大戶 y・排名 k/n」,
     數值取自影子排序研究帳本當日存下的集保變化(`entry_dashboard.load_tdcc_changes`);排名=同日 rere 候選中散戶減幅名次。
     展開區註明是研究資訊、不是排序依據。影子排序步驟失敗時卡片只是少這一行。
+25. **BT-rere-daytrade-ratio(2026-10-14,PM「都做」;事前登記,判準先於執行提交)**:PM 放棄付費分點來源後,
+    改用免費的個股當沖量(FinMind TaiwanStockDayTrading,2019 年起)當「短沖主力」代理。
+    主判定=否決規則:候選池中 dt5(近 5 日當沖股數/成交股數)>= 當日第 80 百分位者,平均報酬比當天候選平均低。
+    判準:逐日平均 <= −1.5pp、為負年份 >= 6/7、兩段都 <= −1.0pp、低於候選平均天數 >= 55%。
+    PASS 只建議先做卡片標籤並行觀察;正式否決需 PM 核可。腳本 `scripts/backtest_rere_daytrade_ratio.py`(判準全文在 docstring)。
+26. **BT-rere-sector-tier(2026-10-14,PM「都做」;事前登記,判準先於執行提交)**:rere 名單第一排序鍵「族群強度分級」
+    從未回測過(`sector_strength.py` 只算當天)。照正式口徑重建每天分級,檢驗同一天候選中強勢是否比中性好。
+    判準:強−中逐日平均 >= +1.0pp、為正年份 >= 6/7、兩段都 >= +0.5pp、弱−中 <= 0。
+    FAIL 則建議把族群強度移出排序、改為完全中性(需 PM 核可)。腳本 `scripts/backtest_rere_sector_tier.py`。
+    兩張票共用候選母體 `scripts/rere_candidate_panel.py`(與 #20/#23 相同口徑)。
    明細 ml/reports/bt_rere_pre_trust_accumulation.csv。
 
 ## 三個月績效快照(2026-07-01 ~ 10-02,2026-10-05 由帳本/追蹤檔直接計算,PM 提問「選股準確度」)
