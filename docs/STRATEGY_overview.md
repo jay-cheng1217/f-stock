@@ -180,6 +180,8 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
 
 - **日K現行契約是官方未還原 OHLCV**：2026-07-17 RETRAIN-03 已修復來源完整性，技術連續視圖用 price_factor、訓練經濟報酬用 label_factor。舊「混合還原價不是錯誤不可修」結論已退役。rere觀察帳本仍採加回權息值慣例，與比例還原標籤不可混稱；分割／減資的持股數效果仍需獨立驗證。
 - **分點/短沖自動抓取 BLOCKED** → 用使用者籌碼K截圖。完整診斷:`docs/RESEARCH_chipk_broker_top_fetch.md`。
+  **2026-10-14 PM 裁示:放棄付費分點來源**(FinMind Sponsor 999 元/月,唯一可合法自動化的來源),分點與主力成本維持人工截圖;
+  除非 PM 主動重啟,不要再提案購買。改以免費資料找替代訊號(當沖比率、族群強度歷史驗證等,見該文件 2026-10-14 段)。
 - **無個股即時資料源**,只有 `intraday_quote.py`(MIS,延遲數秒);日K 為收盤資料。
 - 活籌碼K截圖 **override** 系統的 model chipk proxy(映泰外資連賣4天只在截圖看得到)。
 - **月營收**(2026-07-01 修復):排程原本無自動月營收步驟,已補 `exec_monthly_revenue`(11-15 視窗自動抓);缺的 5 月已回補全 universe。

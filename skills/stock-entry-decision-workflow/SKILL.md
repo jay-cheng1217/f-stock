@@ -131,7 +131,7 @@ The discretionary short-swing entry layer is NOT the Champion auto-gate. Read:
 ## Known Data Gaps (do NOT re-investigate)
 
 - **ChipK desktop automation is retired** — do not ask for desktop refresh/reopen, and do not use stale desktop archives as an automated gate.
-- **分點 / 短沖 (broker-branch) auto-fetch is BLOCKED** — the CMoney ChipK app API returns header-only, no rows; params never reverse-engineered. Full diagnosis in `docs/RESEARCH_chipk_broker_top_fetch.md`. For 分點/短沖 vetoes (e.g. "Top buyers are all 短沖主力 → caution"), **ask the user for a mobile ChipK screenshot**.
+- **分點 / 短沖 (broker-branch) auto-fetch is BLOCKED** — the CMoney ChipK app API returns header-only, no rows; params never reverse-engineered. Full diagnosis in `docs/RESEARCH_chipk_broker_top_fetch.md`. **PM decision 2026-10-14: no paid broker-branch source (FinMind Sponsor declined); do not re-propose buying one unless the PM reopens it.** For 分點/短沖 vetoes (e.g. "Top buyers are all 短沖主力 → caution"), **ask the user for a mobile ChipK screenshot**.
 - **No live per-stock feed** except `intraday_quote.py`. Daily K (`日K資料/`) is end-of-day only; today's intraday prices/chips are not in the stored data.
 - **Live ChipK screenshots override the model chipk proxy** for the final veto — the proxy can miss fresh distribution (e.g. 映泰 foreign selling 4 days was only visible in the screenshot, not the diagnosis).
 
@@ -155,4 +155,4 @@ rere selects **top-down (theme first), then bottom-up (support setup within the 
 
 ## 主力成本 (blocked — manual only)
 
-rere enters near/above the **main-force cost basis** (from ChipK 籌碼日報). That data (分點/主力成本) is BLOCKED for auto-fetch (see Known Data Gaps). Until unblocked, ask the user for the ChipK 主力/分點 screenshot and read the 主力 cost + concentration manually.
+rere enters near/above the **main-force cost basis** (from ChipK 籌碼日報). That data (分點/主力成本) is BLOCKED for auto-fetch (see Known Data Gaps) and will stay manual (PM declined a paid source on 2026-10-14). Ask the user for the ChipK 主力/分點 screenshot and read the 主力 cost + concentration manually.
