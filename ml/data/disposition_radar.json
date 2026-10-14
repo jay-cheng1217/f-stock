@@ -1,22 +1,12 @@
 {
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "hits": [
-    {
-      "ticker": "3219",
-      "name": "倚強科",
-      "sector": "其他電子業",
-      "released": "2026-10-07",
-      "days_since": 7,
-      "known_yoy": 151.15,
-      "rev_window": false,
-      "dual_fuse": false
-    },
     {
       "ticker": "2030",
       "name": "彰源",
       "sector": "鋼鐵工業",
       "released": "2026-10-08",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": 21.76,
       "rev_window": false,
       "dual_fuse": false
@@ -26,7 +16,7 @@
       "name": "巨有科技",
       "sector": "半導體業",
       "released": "2026-10-08",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": -23.83,
       "rev_window": false,
       "dual_fuse": false
@@ -36,7 +26,7 @@
       "name": "大甲",
       "sector": "其他業",
       "released": "2026-10-12",
-      "days_since": 2,
+      "days_since": 3,
       "known_yoy": 44.46,
       "rev_window": false,
       "dual_fuse": false
@@ -46,7 +36,7 @@
       "name": "嘉晶",
       "sector": "半導體業",
       "released": "2026-10-12",
-      "days_since": 2,
+      "days_since": 3,
       "known_yoy": 52.71,
       "rev_window": false,
       "dual_fuse": false
@@ -56,7 +46,7 @@
       "name": "蔚華科",
       "sector": "電子通路業",
       "released": "2026-10-12",
-      "days_since": 2,
+      "days_since": 3,
       "known_yoy": -57.28,
       "rev_window": false,
       "dual_fuse": false
@@ -66,7 +56,7 @@
       "name": "大量",
       "sector": "電機機械",
       "released": "2026-10-12",
-      "days_since": 2,
+      "days_since": 3,
       "known_yoy": 172.33,
       "rev_window": false,
       "dual_fuse": false
@@ -76,7 +66,7 @@
       "name": "高力",
       "sector": "電機機械",
       "released": "2026-10-12",
-      "days_since": 2,
+      "days_since": 3,
       "known_yoy": 153.78,
       "rev_window": false,
       "dual_fuse": false
@@ -86,7 +76,7 @@
       "name": "佳大",
       "sector": "鋼鐵工業",
       "released": "2026-10-13",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": -7.49,
       "rev_window": false,
       "dual_fuse": false
@@ -96,7 +86,7 @@
       "name": "由田",
       "sector": "光電業",
       "released": "2026-10-13",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": 23.41,
       "rev_window": false,
       "dual_fuse": false
@@ -106,7 +96,7 @@
       "name": "晶心科",
       "sector": "半導體業",
       "released": "2026-10-13",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": -10.11,
       "rev_window": false,
       "dual_fuse": false
@@ -116,8 +106,48 @@
       "name": "無敵",
       "sector": "其他電子業",
       "released": "2026-10-13",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": -9.94,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "3094",
+      "name": "聯傑",
+      "sector": "半導體業",
+      "released": "2026-10-14",
+      "days_since": 1,
+      "known_yoy": 88.78,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "3518",
+      "name": "柏騰",
+      "sector": "其他電子業",
+      "released": "2026-10-14",
+      "days_since": 1,
+      "known_yoy": -21.83,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "4556",
+      "name": "旭然",
+      "sector": "其他業",
+      "released": "2026-10-14",
+      "days_since": 1,
+      "known_yoy": 39.41,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "5013",
+      "name": "強新",
+      "sector": "鋼鐵工業",
+      "released": "2026-10-14",
+      "days_since": 1,
+      "known_yoy": 16.96,
       "rev_window": false,
       "dual_fuse": false
     }
