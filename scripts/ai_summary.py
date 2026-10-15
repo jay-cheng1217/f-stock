@@ -1,4 +1,9 @@
-"""AI 每日投資總結 — 用 Claude API 生成精簡的盤勢摘要。"""
+"""AI 每日投資總結 — 規則模板為事實基準,外加本地模型(Ollama)的改寫總評。
+
+2026-10-15 PM 指示:ANTHROPIC_API_KEY 額度用罄,改用本地模型且自動跑。
+規則段(盤勢/正式訊號/風險)維持決定性、仍是信件的權威內容;本地模型只拿這些段落的
+純文字當唯一輸入,改寫成 3-5 句總評附在最後,並明示不得新增數字/個股/建議。
+模型不可用或輸出可疑時整段省略,每日信照常——絕不因 AI 段擋信或改事實。"""
 from __future__ import annotations
 
 import os
@@ -24,15 +29,54 @@ MARKET_INDEX_FILES = [
 ]
 
 
-def _load_api_key() -> str | None:
-    for path in [os.path.join(BASE_DIR, ".env.email"), os.path.join(BASE_DIR, ".env")]:
-        if not os.path.exists(path):
-            continue
-        for line in open(path, encoding="utf-8"):
-            line = line.strip()
-            if line.startswith("ANTHROPIC_API_KEY="):
-                return line.split("=", 1)[1]
-    return os.environ.get("ANTHROPIC_API_KEY")
+OLLAMA_URL = os.environ.get("AI_SUMMARY_OLLAMA_URL", "http://127.0.0.1:11434")
+OLLAMA_MODEL = os.environ.get("AI_SUMMARY_OLLAMA_MODEL", "gemma4:26b-a4b")
+
+
+def _ollama(prompt: str, timeout: int = 300) -> str | None:
+    """本地 Ollama;失敗回 None(呼叫端省略 AI 段,不得擋信)。與 kol_classify 同一台伺服器/模型。"""
+    import json as _json
+    import urllib.request
+
+    payload = _json.dumps({"model": OLLAMA_MODEL, "stream": False, "keep_alive": "30m",
+                           "options": {"temperature": 0},
+                           "messages": [{"role": "user", "content": prompt}]}).encode("utf-8")
+    req = urllib.request.Request(f"{OLLAMA_URL}/api/chat", data=payload,
+                                 headers={"Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return (_json.loads(resp.read()).get("message") or {}).get("content")
+    except Exception:  # noqa: BLE001 - 任何失敗都只是少一段 AI 總評
+        return None
+
+
+AI_NARRATIVE_PROMPT = """你是台股日報的編輯。以下是今天日報已定稿的事實段落(唯一資料來源)。
+請用繁體中文寫 3-5 句的總評,幫讀者快速掌握今天的重點。鐵律:
+1. 只能改寫下面段落裡已有的資訊;不得新增任何數字、股票、名單或建議。
+2. 不得把利空寫成利多;語氣與原文方向一致,不確定就照抄原句方向。
+3. 不提 T+1 或任何短線模型;不給進出場指令。
+4. 只輸出總評本文,不要標題、前言、條列或任何格式符號。
+
+今日段落:
+"""
+
+
+def _build_ai_narrative_html(deterministic_markup: str) -> str:
+    """本地模型總評段;模型不可用/輸出異常時回空字串。"""
+    facts = _summary_html_to_text(deterministic_markup)
+    if not facts.strip():
+        return ""
+    out = _ollama(AI_NARRATIVE_PROMPT + facts)
+    if not out:
+        return ""
+    text = _drop_blocked_daily_summary_terms(re.sub(r"\s+", " ", out).strip())
+    # 防呆:太短=沒內容;太長/含表格符號=格式失控,寧可不放。
+    if not (40 <= len(text) <= 600) or "|" in text or "#" in text:
+        return ""
+    note = "本段由本地模型就上方段落改寫,僅供快速瀏覽;數據與名單一律以上方段落為準。"
+    return (f"<h3>【AI 總評｜本地模型 {html.escape(OLLAMA_MODEL)}·實驗性】</h3>"
+            f"<p>{html.escape(text)}</p>"
+            f'<p style="color:#888;font-size:12px">{note}</p>')
 
 
 def _latest_matching_file(directory: str, pattern: str, name_re: re.Pattern[str]) -> str | None:
@@ -624,17 +668,22 @@ def generate_daily_summary(
 ) -> str:
     """Build the daily investment summary from production artifacts only.
 
-    This section used to call an LLM. For daily production email correctness we
-    now keep it deterministic: market wording is threshold-based, stock lists
-    come only from unified_signals, and risk numbers always include units.
+    Deterministic sections stay authoritative (threshold wording, unified_signals
+    lists, risk numbers with units). A local-model narrative is appended last and
+    is omitted on any failure (2026-10-15 PM: local model, automatic).
     """
-    return "\n\n".join(
+    deterministic = "\n\n".join(
         [
             _build_market_summary_html(prediction_date),
             _build_production_signal_html(prediction_date),
             _build_risk_summary_html(),
         ]
     )
+    try:
+        narrative = _build_ai_narrative_html(deterministic)
+    except Exception:  # noqa: BLE001 - AI 段任何失敗都不得影響每日信
+        narrative = ""
+    return f"{deterministic}\n\n{narrative}".strip() if narrative else deterministic
 
 
 if __name__ == "__main__":
