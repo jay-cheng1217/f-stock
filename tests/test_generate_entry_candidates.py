@@ -427,8 +427,10 @@ def test_neutral_order_key_is_deterministic_bounded_and_changes_by_date():
     assert order1 != tickers and order1 != tickers[::-1]                      # 不是代號順序
 
 
-def test_neutral_key_never_outranks_the_sector_tier():
+def test_neutral_key_stays_bounded():
     from datetime import date
 
     keys = [gen._neutral_order_key(date(2026, 10, 13), f"{1000 + i}") for i in range(500)]
-    assert max(keys) < 1.0            # 分數 = 分級(0/1/2) + 鍵;鍵 < 1 才不會讓弱勢族群越級
+    # 2026-10-16 起分數=純中性鍵(#26 後族群分級移出排序,只作顯示);保留值域檢查,
+    # 若未來再疊加其他整數級距,鍵 < 1 仍保證不越級。
+    assert max(keys) < 1.0 and min(keys) >= 0.0

@@ -673,10 +673,10 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
             "zone_low": elow, "zone_high": ehigh,
             "stop": round(t["close"] * (1 - RERE_STOP_LOSS_PCT), 2),
             "pattern_line": round(ma60 * RERE_PATTERN_LINE_MULT, 2),
-            # 排序:族群強勢優先(輪動當紅)→ 同級內中性順序;弱勢族群自動沉底但不封殺。
-            # 2026-10-14 訊號起(PM 2026-10-13 核可):同級內不再依洗盤深度。BT-rere-list-ordering 在實際 3+3 名額下,
-            # 「取最深」比中性挑法少 0.80pp、七年六年為負;取最淺也沒有比較好,所以改用不偏向任何特徵的確定性順序。
-            "score": (2 if tier == "strong" else (0 if tier == "weak" else 1)) + _neutral_order_key(required, tk),
+            # 排序:完全中性(2026-10-16 訊號起,PM 2026-10-15 核可;BT-rere-sector-tier #26 FAIL——
+            # 強−中僅 +0.74pp、4/7 年為正、2026 年 −5.03pp,族群強度不是穩定的挑選依據,自分數移除)。
+            # 歷程:洗盤深度排序 →(10/14,#23)族群強度+中性鍵 →(10/16,#26)純中性鍵;sec_tier 只留顯示。
+            "score": _neutral_order_key(required, tk),
             "lane": "rere", "ptype": ptype, "sec_tier": tier,
             "wash": t["wash_from_hi10"],
             # 法人缺值≠零(2026-09-23 審查):轉買判定視窗有缺日 → data_warnings
@@ -894,7 +894,7 @@ def _archived_zone_alerts(as_of: date | None, active: set[str], *, archive_path:
 
 
 def _neutral_order_key(as_of: date | None, ticker: str) -> float:
-    """同一族群強度分級內的中性排序鍵,值域 [0, 1)。
+    """rere 型內的中性排序鍵,值域 [0, 1)(2026-10-16 起為唯一排序成分,#26 後族群分級只作顯示)。
 
     由「資料日 + 代號」的 SHA-256 決定:同一天重跑結果相同(可重現、Claude/Codex 一致),不同日期順序不同
     (不會長期偏向固定幾檔),且與洗盤深度、價格、籌碼等任何特徵無關。不可用內建 hash():它每個行程加鹽、結果不固定。
@@ -910,7 +910,7 @@ def _pick_rere_v2(rere_rows: list[dict[str, Any]], cap: int | None = None) -> li
     """v2 名額在兩個子型態間平分(各 cap//2),有空位才由另一型補。
     名額平分的由來:當初排序分數含洗盤深度,若共用名額,淺洗盤 v2(8-10%)永遠排在蹲點 v2(≥10%)之後而上不了名單
     (2026-09-15~17 回放:v2 候選 22-43 檔,前 6 全是蹲點 v2)。回測兩型報酬相當(+4.13% / +4.02%)且淺洗盤左尾較低。
-    2026-10-14 起分數改為「族群強度 + 中性鍵」(見 _neutral_order_key),平分名額仍保留以維持兩型樣本累積。
+    2026-10-14 起分數改為「族群強度 + 中性鍵」、2026-10-16 起為純中性鍵(見 _neutral_order_key),平分名額仍保留以維持兩型樣本累積。
     輸入須已按 score 由高到低排序。"""
     cap = RERE_V2_MAX if cap is None else cap
     v2 = [r for r in rere_rows if r.get("ptype") in RERE_V2_PTYPES]
