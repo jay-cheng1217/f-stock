@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """T2 KOL 貼文標的擷取 + 多空分類(docs/PLAN_kol_opinion_tracker.md)。
 
-用本機 `claude` CLI headless(免 API key)批次分類 kol_tracker.db 中未分類貼文:
+用本機 Ollama(預設 gemma4:26b-a4b;2026-10-15 PM 指示,ANTHROPIC_API_KEY 額度用罄後改走本地模型,
+不再呼叫 Claude CLI / API)批次分類 kol_tracker.db 中未分類貼文:
 每則擷取 {symbol, market, stance, confidence, reason},寫入 mentions。
 無標的貼文也標記 classified_at,避免重複送。
 
@@ -20,10 +21,8 @@ import argparse
 import json
 import os
 import re
-import shutil
 import sqlite3
-import subprocess
-import sys
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -31,7 +30,9 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 DB_PATH = BASE_DIR / "kol_tracker.db"
 LOG_PATH = BASE_DIR / "logs" / "kol_tracker.log"
 BATCH = 15
-MODEL = "haiku"
+# 本地模型(Ollama)。換模型:設環境變數或直接改預設;伺服器沒開或逾時 → 該批記 FAIL 跳過,貼文留待下次。
+OLLAMA_URL = os.environ.get("KOL_CLASSIFY_OLLAMA_URL", "http://127.0.0.1:11434")
+MODEL = os.environ.get("KOL_CLASSIFY_OLLAMA_MODEL", "gemma4:26b-a4b")
 
 PROMPT_HEAD = """You are a financial post classifier for an opinion tracker.
 For EACH post below, extract every stock the author expresses something about
@@ -54,47 +55,27 @@ def _log(msg: str) -> None:
         f.write(f"{datetime.now():%Y-%m-%d %H:%M:%S} [classify] {msg}\n")
 
 
-_ANTHROPIC_KEY_CACHE: str | None = None
+def _llm(prompt: str) -> str | None:
+    """呼叫本地 Ollama,回原始文字(JSON 由 _parse 擷取,容忍圍欄與前後雜訊)。
 
-
-def _anthropic_key() -> str | None:
-    """讀 ANTHROPIC_API_KEY:先環境,再 .env。
-
-    kol_classify 的 `claude -p` 子程序若沒帶 key,會退回互動登入態;一旦 CLI
-    登出就回「Not logged in」而非 JSON,導致 batch parse FAIL(2026-07 起停擺 3 週)。
-    .env 已有 key(app.py 等在用),把它顯式帶進子程序即可免互動登入。
+    歷史:原為 `claude -p --model haiku`(帶 ANTHROPIC_API_KEY);2026-10-15 key 額度用罄,PM 指示改本地模型。
+    不設 Claude 後援——CLI 無 key 會退回互動登入態,登出即整批 FAIL(2026-07 停擺 3 週的教訓)。
+    temperature=0 求可重現;keep_alive 30m 讓同一輪多批不必重載模型;首批含冷載入,逾時放寬到 600s。
     """
-    global _ANTHROPIC_KEY_CACHE
-    if _ANTHROPIC_KEY_CACHE is not None:
-        return _ANTHROPIC_KEY_CACHE or None
-    key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
-    if not key:
-        env_path = BASE_DIR / ".env"
-        if env_path.exists():
-            for line in env_path.read_text(encoding="utf-8", errors="ignore").splitlines():
-                s = line.strip()
-                if s.startswith("ANTHROPIC_API_KEY") and "=" in s:
-                    key = s.split("=", 1)[1].strip().strip('"').strip("'")
-                    break
-    _ANTHROPIC_KEY_CACHE = key
-    return key or None
-
-
-def _claude(prompt: str) -> str | None:
-    exe = shutil.which("claude")
-    if not exe:
-        print("claude CLI 不存在"); sys.exit(1)
-    env = os.environ.copy()
-    key = _anthropic_key()
-    if key:
-        env["ANTHROPIC_API_KEY"] = key
+    payload = json.dumps({"model": MODEL, "stream": False, "keep_alive": "30m",
+                          "options": {"temperature": 0},
+                          "messages": [{"role": "user", "content": prompt}]}).encode("utf-8")
+    req = urllib.request.Request(f"{OLLAMA_URL}/api/chat", data=payload,
+                                 headers={"Content-Type": "application/json"})
     try:
-        r = subprocess.run([exe, "-p", "--model", MODEL], input=prompt.encode("utf-8"),
-                           capture_output=True, timeout=300, env=env)
-        return r.stdout.decode("utf-8", errors="replace")
+        with urllib.request.urlopen(req, timeout=600) as resp:
+            return (json.loads(resp.read()).get("message") or {}).get("content")
     except Exception as e:  # noqa: BLE001
-        _log(f"claude call FAIL: {e}")
+        _log(f"ollama call FAIL ({MODEL}): {e}")
         return None
+
+
+_claude = _llm  # 舊名字保留給既有呼叫點/測試
 
 
 def _parse(out: str) -> list[dict] | None:
