@@ -1,0 +1,2 @@
+﻿signals,breakout_signals,share_pct,add_mean,add_win,add_tail20,control_mean,excess,h1,h2,years_positive,base_breakout,combined,base_nobreakout,checks,verdict
+57039,30577,53.6072,6.3727,48.0361,11.2045,-0.9283,7.301,7.4698,7.1863,7,17.7057,12.0392,-6.8871,✓✓✓✓,PASS
