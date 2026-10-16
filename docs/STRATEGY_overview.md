@@ -665,6 +665,11 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
     教訓記錄:對照組定義必須只用事件日當下可得的資訊;本票不重開(重開=看過結果再設判準)。
    明細 ml/reports/bt_rere_pre_trust_accumulation.csv。
 
+31. **BT-rere-story-presence(2026-10-16,PM「請嚴格調查」;事前登記,判準先於任何結果提交)**:系統抓到 rere 候選時,
+    前 14 天鉅亨「台股新聞」(編輯標註代號,2020-12 起回補)與重大訊息有無故事;有正向故事(既有 taxonomy positive 標籤,
+    排除價格回聲標題)的訊號結果是否較好。母體=rere 候選事件起點(前 20 根未入池),2021-01-15 起;超額=fwd60−同日候選平均。
+    判準:POS−N0 ≥+2pp、兩段 ≥+1pp、逐年 ≥4/6 正、量能三分位皆 >0(排除大型股混淆)、POS ≥300 筆。
+    不過=「故事與 rere 結果沒有可靠關係」。腳本 scripts/backtest_rere_story_presence.py;資料 scripts/fetch_cnyes_news_history.py。
 ## 三個月績效快照(2026-07-01 ~ 10-02,2026-10-05 由帳本/追蹤檔直接計算,PM 提問「選股準確度」)
 
 基準:TWII +3.10%;全市場等權(均量≥500張,820 檔)平均 +2.67% / 中位 −2.43% / 上漲比例 43.5%——大型股帶指數、多數個股下跌的窄市場。
