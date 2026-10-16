@@ -420,16 +420,6 @@ def exec_paper_portfolio() -> None:
         )
 
 
-def exec_monitor() -> None:
-    from scripts.monitor_t1 import generate_report
-    generate_report(lookback_days=20)
-
-
-def exec_t1_observation() -> None:
-    from scripts.track_t1_observation import track_daily
-    track_daily()
-
-
 def exec_email(remote_url: str | None = None) -> None:
     from scripts.send_daily_email import send_latest_email
 

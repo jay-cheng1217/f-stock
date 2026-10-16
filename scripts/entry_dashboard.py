@@ -740,17 +740,6 @@ def _conviction(row: dict, a: dict, m: dict, wd: float | None, rd: float | None)
     return total, f"{total:.1f}/4味"
 
 
-def _position_tier(conv: float, bull: bool) -> str:
-    """規劃B: conviction 4味 → 建議倉位分級(rere 試單vs重倉紀律)。純標籤,不自動下單。
-       空頭regime一律降一級(右尾型須保守)。"""
-    tiers = [(4, "標準倉"), (3, "7成倉"), (2, "試單(半倉)"), (0, "觀望")]
-    idx = next(i for i, (th, _) in enumerate(tiers) if conv >= th)
-    if not bull and idx < len(tiers) - 1:
-        idx += 1  # 空頭降一級
-    label = tiers[idx][1]
-    return f" · 建議{label}({int(conv)}/4味{'·空頭降級' if not bull else ''})"
-
-
 def _verdict(row: dict, a: dict, wd_map: dict) -> tuple[str, str]:
     """第一層籌碼判定(與人工規則一致):回 (等級, 說明)。"""
     tk = row["tk"]

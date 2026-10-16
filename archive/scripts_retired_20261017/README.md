@@ -1,0 +1,69 @@
+# scripts_retired_20261017
+
+2026-10-16 PM 核可清理 A 級:`scripts/` 下超過 120 天沒動、且全專案(程式/排程/測試)零引用的一次性研究腳本,
+以 `git mv` 移入此處保留歷史;要重跑請先搬回 `scripts/`(多數依賴當時的 output/ 產物,已另存 `F:\stock_archive\output_20260906\`)。
+
+| 腳本 | 最後修改 |
+|---|---|
+| backtest_entry.py | 2026-03-24 |
+| download_fund_data.py | 2026-03-24 |
+| download_margin_data.py | 2026-03-24 |
+| download_mops_revenue_all.py | 2026-03-24 |
+| download_tpex_fund.py | 2026-03-24 |
+| factor_combo_backtest.py | 2026-03-24 |
+| factor_research.py | 2026-03-24 |
+| four_dimension_backtest.py | 2026-03-24 |
+| update_taiwan_stock_daily.py | 2026-03-24 |
+| backtest_compare.py | 2026-04-06 |
+| drawdown_attribution.py | 2026-04-06 |
+| sector_analysis_202508.py | 2026-04-06 |
+| sweep_t1_params.py | 2026-04-08 |
+| backtest_v4_overlay.py | 2026-04-18 |
+| notify_codex_done.py | 2026-04-22 |
+| v2_alpha_classifier_attribution.py | 2026-04-22 |
+| v2_alpha_regime_attribution.py | 2026-04-22 |
+| v2_alpha_classifier_snapshot_ab_test.py | 2026-04-24 |
+| apply_t1_production_gate.py | 2026-04-28 |
+| backfill_announcements.py | 2026-04-28 |
+| v1_autopsy.py | 2026-04-28 |
+| dump_champion_closures.py | 2026-05-01 |
+| fetch_etf_universe.py | 2026-05-03 |
+| gate_funnel_sector_audit.py | 2026-05-03 |
+| my_holdings_phase0_smoke.py | 2026-05-03 |
+| sector_cap_validation.py | 2026-05-03 |
+| exit_policy_sensitivity_full.py | 2026-05-08 |
+| regime_fold_overlap_audit.py | 2026-05-08 |
+| regime_overlap_detail_audit.py | 2026-05-08 |
+| sector_overheat_signal_replay.py | 2026-05-08 |
+| sector_overheat_threshold_history_audit.py | 2026-05-08 |
+| stoponly_cl3_backtest.py | 2026-05-08 |
+| v2_rank_ic_diagnostics.py | 2026-05-08 |
+| audit002_step6_ab_validation.py | 2026-05-09 |
+| backtest_ma5_entry_guard_cl3.py | 2026-05-09 |
+| backtest_ma5_three_way_cl3.py | 2026-05-09 |
+| backtest_regime_exit_overlay_cl3.py | 2026-05-09 |
+| backtest_two_stage_cl3.py | 2026-05-09 |
+| diag001_entry_ma5_subgroup.py | 2026-05-09 |
+| diag002_entry_gate_audit.py | 2026-05-09 |
+| diag003_backfill_two_stage_rank.py | 2026-05-09 |
+| replay_new_champion_entry_filter.py | 2026-05-09 |
+| req020_oof_accuracy_report.py | 2026-05-09 |
+| train_two_stage_ranker.py | 2026-05-09 |
+| backtest_group_cap_cl3.py | 2026-05-10 |
+| diag004_twii_rally_leadership_audit.py | 2026-05-10 |
+| diag005_institutional_flow_backtest.py | 2026-05-10 |
+| req026_large_cap_flow_relaxation_backtest.py | 2026-05-10 |
+| backtest_cooldown_cl3.py | 2026-05-12 |
+| diag030_live_signal_edge_drift.py | 2026-05-12 |
+| req032_retrain_cl3.py | 2026-05-12 |
+| export_champion_positions_for_review.py | 2026-05-14 |
+| export_signals_for_review.py | 2026-05-14 |
+| export_marks_and_post_exit.py | 2026-05-15 |
+| backtest_ma5_reentry_v12.py | 2026-05-16 |
+| inc_stage1_002_v3_report.py | 2026-05-16 |
+| rd005_reconciliation_backfill.py | 2026-05-17 |
+| rd006_sync_residual_diagnostic.py | 2026-05-17 |
+| backtest_candidate_agents.py | 2026-06-06 |
+| rescreen_agent_source_library.py | 2026-06-06 |
+| backtest_finnhub_news_overlay.py | 2026-06-07 |
+| validate_strategy_profit_search.py | 2026-06-10 |

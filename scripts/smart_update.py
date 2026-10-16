@@ -81,19 +81,6 @@ def get_latest_tdcc_date():
         return None
 
 
-def get_latest_financial_quarter():
-    """檢查季報最新季度"""
-    files = sorted(glob.glob(os.path.join(FINANCIAL_DIR, "financial_*Q*.csv")))
-    if not files:
-        return None, None
-    try:
-        fname = os.path.basename(files[-1]).replace("financial_", "").replace(".csv", "")
-        year, q = fname.split("Q")
-        return int(year), int(q)
-    except Exception:
-        return None, None
-
-
 def get_latest_eps_quarter():
     """檢查 EPS 最新季度"""
     files = sorted(glob.glob(os.path.join(FINANCIAL_DIR, "eps_*Q*.csv")))
@@ -374,27 +361,6 @@ def exec_retrain():
     run_job("retrain_v2",
             [sys.executable, os.path.join(BASE_DIR, "scripts", "train_v2_backtest.py")],
             timeout="train", cwd=BASE_DIR, raise_on_fail=True)
-
-
-def exec_retrain_t1():
-    """Daily T+1 refresh for today's open-entry signal list."""
-    device = os.environ.get("T1_RETRAIN_DEVICE", "gpu").strip().lower() or "gpu"
-    if device not in {"gpu", "cpu"}:
-        device = "gpu"
-
-    args = [
-        sys.executable,
-        os.path.join(BASE_DIR, "scripts", "train_t1_backtest.py"),
-        "--device",
-        device,
-        "--skip-reports",
-    ]
-
-    max_stocks = os.environ.get("T1_RETRAIN_MAX_STOCKS", "").strip()
-    if max_stocks.isdigit() and int(max_stocks) > 0:
-        args.extend(["--max-stocks", max_stocks])
-
-    run_job("retrain_t1", args, timeout="train_t1", cwd=BASE_DIR, raise_on_fail=True)
 
 
 def _api_post(path: str, timeout: int = 10) -> bool:
