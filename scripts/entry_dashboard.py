@@ -1320,7 +1320,7 @@ function card(r){
   // 每張卡相同的制式句(動作提示/依據/尚缺)不再出現(2026-10-16 PM:「詳細」也要精簡);共同紀律在頁首 #disc 講一次。
   // 展開區只留三樣:籌碼提示全文(若卡面未顯示)、資料日、K 線按鈕。pred20/族群/型態參考線/原始狀態/順位一律不放——
   // pred20 明文不採計、族群已不排序、參考線是舊停損遺物、順位是中性雜湊,對判斷沒有價值。
-  const PT = {shakeout:'蹲點型', ignition:'發動型', shallow:'淺洗盤型', shakeout_v2:'蹲點型v2', shallow_v2:'淺洗盤型v2'};
+  const PT = {shakeout:'蹲點型', ignition:'發動型', shallow:'淺洗盤型', shakeout_v2:'蹲點型v2', shallow_v2:'淺洗盤型v2', shallow5_v2:'淺洗盤5-8型v2'};
   const laneTag = r.strategy==='rere' ? `rere · ${PT[r.ptype]||'蹲點型'} · ${info.horizon} 日`
                 : (r.state==='watch' ? `觀察卡 · ${info.horizon} 日` : `主策略 · ${info.horizon} 日`);
   const lc = info.last_close||{};

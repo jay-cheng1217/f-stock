@@ -67,8 +67,10 @@ def _load_ledger() -> pd.DataFrame:
 
 def _subtype(row: dict) -> str:
     explicit = str(row.get("subtype") or row.get("ptype") or "")
-    if explicit in ("shakeout", "ignition", "shallow", "shakeout_v2", "shallow_v2"):
+    if explicit in ("shakeout", "ignition", "shallow", "shakeout_v2", "shallow_v2", "shallow5_v2"):
         return explicit
+    if "淺洗盤5-8型v2" in str(row.get("status") or ""):
+        return "shallow5_v2"
     description = f"{row.get('status', '')} {row.get('reason', '')}"
     if "發動" in description:
         return "ignition"

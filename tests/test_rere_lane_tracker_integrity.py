@@ -307,6 +307,8 @@ def test_subtype_recognises_v2_labels():
     from scripts import rere_lane_tracker as t
     assert t._subtype({"ptype": "shakeout_v2"}) == "shakeout_v2"
     assert t._subtype({"ptype": "shallow_v2"}) == "shallow_v2"
+    assert t._subtype({"ptype": "shallow5_v2"}) == "shallow5_v2"
+    assert t._subtype({"status": "rere·淺洗盤5-8型v2·小倉(60日,配停損)"}) == "shallow5_v2"
     assert t._subtype({"status": "rere·淺洗盤型v2·小倉(60日,配停損)"}) == "shallow_v2"
     assert t._subtype({"status": "rere·蹲點型v2·小倉(60日,配停損)"}) == "shakeout_v2"
     assert t._subtype({"status": "rere·蹲點型·小倉(60日,配停損)"}) == "shakeout"

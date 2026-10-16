@@ -304,6 +304,8 @@ def _pattern_ok(t: dict[str, Any]) -> bool:
 # --- rere lane 門檻(基準 2026-07-15 重定:60日 +4.58%/勝率35.8%(2026-07-15 重定:停損+除息還原,backtest_rere_lane_baseline.py;舊+9.40%/50.6%為無停損legacy);改前需重測)---
 RERE_WASH_MIN = 0.10        # 近10日高點殺下來 >= 10%(深洗盤)
 RERE_WASH_SHALLOW = 0.08    # 淺洗盤型下限(2026-09-24 PM 核准,BT-rere-shallow-wash 背書)
+RERE_WASH_SHALLOW5 = 0.05   # 淺洗盤 5~8% 帶下限(2026-10-16 PM 核可,BT-rere-wash-band-5-8 #29 PASS 4/4:三帶平均相當、左尾更低)
+RERE_SHALLOW5_MAX = 3       # 5~8% 帶另計名額(獨立子型態 shallow5_v2,帳本 subtype 分開;不佔現行三型與 v2 名額)
 RERE_MA20_LOW, RERE_MA20_HIGH = -0.05, 0.05   # 貼MA20 ±5%
 RERE_VOL_MAX = 1.2          # 蹲點型:今日量/20日均量 < 1.2(量縮)
 RERE_IGNITE_VOL = 1.5       # 發動型:今日量/20日均量 >= 1.5(放量,BT-ignition-day)
@@ -317,7 +319,7 @@ RERE_MAX = 6                # 現行三型呈現上限(2026-07-06 起)
 RERE_V2_MAX = 6             # v2 兩型另計上限(2026-10-07 起,並行驗證);兩型平分,見 _pick_rere_v2
 MAIN_MAX = 12               # 主 lane 呈現上限
 RERE_PTYPE_LABEL = {"ignition": "發動型", "shallow": "淺洗盤型", "shakeout": "蹲點型",
-                    "shakeout_v2": "蹲點型v2", "shallow_v2": "淺洗盤型v2"}
+                    "shakeout_v2": "蹲點型v2", "shallow_v2": "淺洗盤型v2", "shallow5_v2": "淺洗盤5-8型v2"}
 
 
 def _twii_above_ma60(as_of: date | None = None) -> bool | None:
@@ -403,7 +405,20 @@ def _rere_shallow_v2_ok(t: dict[str, Any]) -> bool:
     )
 
 
+def _rere_shallow5_v2_ok(t: dict[str, Any]) -> bool:
+    """淺洗盤 5~8% 帶 v2(2026-10-16 PM 核可,#29 PASS 4/4):5%<=洗盤<8%,其餘同淺洗盤型 v2(不要求外資拐點)。
+    由來:鈦昇 8027 她 7/1 進場時洗盤僅 4.4%,8% 下限永遠擋掉;回測三帶(5~8/8~10/>=10)平均 +6.47/+6.27/+6.32%,
+    5~8% 帶勝率最高、左尾最低。名額另計 RERE_SHALLOW5_MAX,帳本 subtype=shallow5_v2 分開累積。"""
+    return (
+        (RERE_WASH_SHALLOW5 <= t["wash_from_hi10"] < RERE_WASH_SHALLOW)
+        and (RERE_MA20_LOW <= t["v20"] <= RERE_MA20_HIGH)
+        and (not np.isnan(t["vr_today"]) and t["vr_today"] < RERE_VOL_MAX)
+        and (t["v60"] > 0)
+    )
+
+
 RERE_V2_PTYPES = ("shakeout_v2", "shallow_v2")
+RERE_NO_FOREIGN_PTYPES = RERE_V2_PTYPES + ("shallow5_v2",)   # 不要求外資拐點的子型態(資料警示/文案共用)
 
 
 def _rere_lane_ok(t: dict[str, Any]) -> str | None:
@@ -419,6 +434,8 @@ def _rere_lane_ok(t: dict[str, Any]) -> str | None:
         return "shakeout_v2"
     if _rere_shallow_v2_ok(t):
         return "shallow_v2"
+    if _rere_shallow5_v2_ok(t):
+        return "shallow5_v2"
     return None
 
 
@@ -682,7 +699,7 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
             # 法人缺值≠零(2026-09-23 審查):轉買判定視窗有缺日 → data_warnings
             # 走既有認證流程降為「資料待確認」,門檻本身不動。v2 不用外資條件,不掛此警示。
             "data_warnings": ([f"法人買賣超近6日缺{t['inst_gap_days']}日,外資轉買判定待確認"]
-                              if (t.get("inst_gap_days") and ptype not in RERE_V2_PTYPES) else []),
+                              if (t.get("inst_gap_days") and ptype not in RERE_NO_FOREIGN_PTYPES) else []),
         })
     rere_rows.sort(key=lambda x: x["score"], reverse=True)
     # 當日全部 rere 候選(套名額前)。只供研究用影子排序(scripts/rere_shadow_rank_tracker.py,2026-10-12 PM 核可);
@@ -692,8 +709,10 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
     # rere lane 卡片排主 lane 前面(2026-08-31 用戶指示:南亞 1303 案例 priority 16
     # 沉在名單後段,實戰有效的 lane 不該被淹沒)。純呈現順序,非訊號變更。
     # v2 子型態另計上限,不佔現行三型的 6 個名額(現行 forward cohort 零變動)。
-    chosen_rere = ([r for r in rere_rows if r["ptype"] not in RERE_V2_PTYPES][:RERE_MAX]
-                   + _pick_rere_v2(rere_rows))
+    # 名額三段各自獨立:現行三型 RERE_MAX、v2 兩型 RERE_V2_MAX(平分)、5~8% 帶 RERE_SHALLOW5_MAX(2026-10-16 起)
+    chosen_rere = ([r for r in rere_rows if r["ptype"] not in RERE_NO_FOREIGN_PTYPES][:RERE_MAX]
+                   + _pick_rere_v2(rere_rows)
+                   + [r for r in rere_rows if r["ptype"] == "shallow5_v2"][:RERE_SHALLOW5_MAX])
     rere_tickers = {r["ticker"] for r in chosen_rere}
     rows = chosen_rere + [r for r in rows if r["ticker"] not in rere_tickers]
 
@@ -985,7 +1004,7 @@ def _format_entry_row(i: int, r: dict[str, Any], nm: dict[str, str]) -> dict[str
         ptype = r.get("ptype")
         reason = (f"【rere lane·{RERE_PTYPE_LABEL.get(ptype, '蹲點型')}】洗盤{r['wash']*100:.0f}%後貼MA20{r['v20']*100:+.0f}% "
                   f"{'放量' if ptype == 'ignition' else '量縮'}{r['vol_ratio']:.1f}x "
-                  f"{'不要求外資拐點(v2 並行驗證)' if ptype in RERE_V2_PTYPES else '外資轉買'};60日波段,模型pred不採計,務必小倉"
+                  f"{'不要求外資拐點(v2 並行驗證)' if ptype in RERE_NO_FOREIGN_PTYPES else '外資轉買'};60日波段,模型pred不採計,務必小倉"
                   + (f";停損=訊號收盤−{RERE_STOP_LOSS_PCT:.0%}(災難停損),型態參考線 {r['pattern_line']}(MA60×{RERE_PATTERN_LINE_MULT},跌破=型態轉弱,不觸發帳本出場)"
                      if r.get("pattern_line") else ""))
     else:
@@ -1033,7 +1052,8 @@ def to_entry_json(result: dict[str, Any], trade_date: str) -> dict[str, Any]:
             f"由 scripts/generate_entry_candidates.py 產生;來源 {os.path.basename(result['as_of_close'] or '')}。"
             f"型態硬 gate 先、依型態乾淨度排序(模型分數只顯示,2026-10-07 起不過濾不排序);籌碼否決僅接受人工截圖(桌面自動源已退役)。"
             f"本日 rere lane 新訊號:{sum(1 for r in result['rows'] if r.get('lane')=='rere')} 檔"
-            f"(含 v2 {sum(1 for r in result['rows'] if r.get('ptype') in RERE_V2_PTYPES)} 檔;"
+            f"(含 v2 {sum(1 for r in result['rows'] if r.get('ptype') in RERE_V2_PTYPES)} 檔、"
+            f"淺洗盤5-8 {sum(1 for r in result['rows'] if r.get('ptype') == 'shallow5_v2')} 檔;"
             f"rere 為日條件,無訊號日為 0 屬正常;v2=不要求外資拐點,並行驗證中)。"
         ),
         "rows": out_rows,

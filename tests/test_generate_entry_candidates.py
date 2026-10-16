@@ -59,9 +59,9 @@ def test_rere_lane_accepts_washout_turnbuy():
 
 
 def test_rere_lane_rejects_wash_below_shallow_floor():
-    # 8% 以下連淺洗盤型都不收(2026-09-24 三型擴充後的下限)
-    assert gen._rere_lane_ok(_rt(wash=0.05)) is None
-    assert gen._rere_lane_ok(_rt(wash=0.079)) is None
+    # 5% 以下不收(2026-10-16 #29 起下限 5%;8% 以下為 shallow5_v2 帶)
+    assert gen._rere_lane_ok(_rt(wash=0.04)) is None   # 2026-10-16 起下限為 5%(#29)
+    assert gen._rere_lane_ok(_rt(wash=0.079)) == "shallow5_v2"   # 5~8% 帶(2026-10-16 起)
 
 
 def test_rere_lane_shallow_band_returns_shallow():
@@ -81,12 +81,14 @@ def test_rere_lane_without_foreign_turn_falls_to_v2():
     assert gen._rere_lane_ok(_rt(prev5=500)) == "shakeout_v2"
     assert gen._rere_lane_ok(_rt(today=-100)) == "shakeout_v2"
     assert gen._rere_lane_ok(_rt(wash=0.09, prev5=500)) == "shallow_v2"
+    assert gen._rere_lane_ok(_rt(wash=0.06, prev5=500)) == "shallow5_v2"      # 2026-10-16 起 5~8% 帶(#29)
+    assert gen._rere_lane_ok(_rt(wash=0.04, prev5=500)) is None               # <5% 仍不是型態
     assert gen._rere_lane_ok(_rt()) == "shakeout"  # 現行標籤優先,forward cohort 不變
     assert gen._rere_lane_ok(_rt(wash=0.09)) == "shallow"
 
 
 def test_rere_lane_v2_keeps_other_gates():
-    assert gen._rere_lane_ok(_rt(wash=0.05, prev5=500)) is None
+    assert gen._rere_lane_ok(_rt(wash=0.04, prev5=500)) is None
     assert gen._rere_lane_ok(_rt(prev5=500, vr=1.3)) is None
     assert gen._rere_lane_ok(_rt(prev5=500, v60=-0.03)) is None
     assert gen._rere_lane_ok(_rt(prev5=500, v20=0.07)) is None
