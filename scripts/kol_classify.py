@@ -61,8 +61,10 @@ def _llm(prompt: str) -> str | None:
     歷史:原為 `claude -p --model haiku`(帶 ANTHROPIC_API_KEY);2026-10-15 key 額度用罄,PM 指示改本地模型。
     不設 Claude 後援——CLI 無 key 會退回互動登入態,登出即整批 FAIL(2026-07 停擺 3 週的教訓)。
     temperature=0 求可重現;keep_alive 30m 讓同一輪多批不必重載模型;首批含冷載入,逾時放寬到 600s。
+    think=False 必帶:gemma4 是思考型模型,長批次會把生成預算花在 thinking 欄、content 空字串
+    (2026-10-16 首晨兩批全 FAIL 的根因;關閉後 15 貼文批 14s 全解析)。
     """
-    payload = json.dumps({"model": MODEL, "stream": False, "keep_alive": "30m",
+    payload = json.dumps({"model": MODEL, "stream": False, "keep_alive": "30m", "think": False,
                           "options": {"temperature": 0},
                           "messages": [{"role": "user", "content": prompt}]}).encode("utf-8")
     req = urllib.request.Request(f"{OLLAMA_URL}/api/chat", data=payload,

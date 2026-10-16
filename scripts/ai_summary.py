@@ -38,7 +38,7 @@ def _ollama(prompt: str, timeout: int = 300) -> str | None:
     import json as _json
     import urllib.request
 
-    payload = _json.dumps({"model": OLLAMA_MODEL, "stream": False, "keep_alive": "30m",
+    payload = _json.dumps({"model": OLLAMA_MODEL, "stream": False, "keep_alive": "30m", "think": False,
                            "options": {"temperature": 0},
                            "messages": [{"role": "user", "content": prompt}]}).encode("utf-8")
     req = urllib.request.Request(f"{OLLAMA_URL}/api/chat", data=payload,
