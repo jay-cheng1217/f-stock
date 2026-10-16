@@ -623,6 +623,13 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
     `generate` 分數=純 `_neutral_order_key`,卡片族群標示留作資訊;指紋基準同步更新)。
     「弱勢沉底」非本票主假設,若要保留弱勢降級需另開事前登記票驗證。
     兩張票共用候選母體 `scripts/rere_candidate_panel.py`(與 #20/#23 相同口徑)。
+27. **BT-rere-ignition-confirm(2026-10-16,PM「過於保守…多加學習」;事前登記,判準先於執行提交)**:
+    發動型的「投信同日買」確認只驗過單一子集(BT-ignition-day:44%→50%/+8.79%),替代確認從未驗過,
+    發動型歷史僅 13 筆=「不追發動」從未被完整驗證(瑞耘 6532 於 9/29 發動、外資+753張、散戶退,因投信=0 不觸發,案例觸發本票)。
+    母體=洗盤≥10% 後放量(量比≥1.5)站回月線、收>季線、均量≥500 張的發動日;V0 無確認/V1 投信(現行)/
+    V2 外資淨買≥10%量/V3 散戶4週減≥1pp/V4 任一。判準:替代變體須「平均≥V1−1pp、對V0≥+2pp、兩段皆≥+1pp、樣本≥3×V1」四項全過。
+    成立只構成向 PM 提 gate 修改案的依據;不成立則「發動不追」定為已驗證設計,不再以個案翻案。
+    腳本 scripts/backtest_rere_ignition_confirm.py(判準全文在 docstring)。
    明細 ml/reports/bt_rere_pre_trust_accumulation.csv。
 
 ## 三個月績效快照(2026-07-01 ~ 10-02,2026-10-05 由帳本/追蹤檔直接計算,PM 提問「選股準確度」)
