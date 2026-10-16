@@ -22,6 +22,17 @@
   才向 PM 提請改用集保排序;否則結案封存。
 限制:候選池取自產生器套名額前的清單;上榜後被官方公告剔除的會排除,但名額外的候選不會被檢查;集保缺週以前第 4 筆近似。
 
+#28 散戶退場過濾(2026-10-16 PM「全開」;事前登記,從登記後的交易日起累積,已記錄的日子不回補):
+  散戶退場已四度互證(#20 排序 IC、#22 本帳主假設、#27 發動確認七年全正、C 類剖面 +3.9pp),本票驗「當過濾用」的樣本外表現。
+  新增四組(同一天同口徑):
+    retail_out = 候選中散戶 4 週變化 <= −1.0pp 者(過濾後保留)   retail_in = 散戶 4 週變化 > 0 者(過濾會剔除的那批)
+    ignite_all = 當日全市場「發動日」事件(前日洗盤 >= 10%、放量 >= 1.5、站回月線、收 > 季線、均量 >= 500 張;不要求投信/外資)
+    ignite_retail = ignite_all 中散戶 4 週變化 <= −1.0pp 者(#27 的 V3)
+  判準(累積 >= 60 個已滿 60 根的日子後):
+    過濾:retail_out 對候選池逐日超額平均 >= +1.5pp 且前後半皆 > 0;retail_in 對候選池超額 <= 0。
+    發動:ignite_retail 對 ignite_all 逐日超額平均 >= +2.0pp 且前後半皆 > 0。
+  全過才向 PM 提請把散戶退場納入 gate / 發動型確認;否則結案。
+
 用法:python -X utf8 scripts/rere_shadow_rank_tracker.py   (排程選用步驟;任何錯誤只印警告並以 0 結束)
 輸出:ml/reports/rere_shadow_rank_picks.csv、rere_shadow_rank_book.csv、rere_shadow_rank_latest.md
 """
@@ -47,6 +58,8 @@ HOLD, MIN_POOL, TOP_N, MIN_RANK_DAYS = 60, 8, 3, 60
 PICK_COLS = ["trade_date", "as_of_date", "group", "rank", "ticker", "name", "ptype", "signal_close",
              "retail4w", "whale4w", "pool_size", "ranked_pool_size"]
 GROUP_LABEL = {"retail_top3": "散戶減最多前3(主假設)", "whale_top3": "大戶增最多前3", "listed": "實際上名單(現行排序)",
+               "retail_out": "#28 散戶退場>=1pp(過濾保留)", "retail_in": "#28 散戶增加(過濾剔除)",
+               "ignite_all": "#28 發動日全部", "ignite_retail": "#28 發動日∩散戶退場",
                "pool": "全部候選"}
 
 
@@ -94,6 +107,8 @@ def picks_from_plan(plan: dict, tdcc: dict[str, pd.DataFrame]) -> pd.DataFrame:
     if len(ranked) >= MIN_POOL:
         groups.append(("retail_top3", ranked.sort_values(["retail4w", "ticker"]).head(TOP_N)))
         groups.append(("whale_top3", ranked.sort_values(["whale4w", "ticker"], ascending=[False, True]).head(TOP_N)))
+        groups.append(("retail_out", ranked[ranked["retail4w"] <= -1.0]))     # #28 過濾保留
+        groups.append(("retail_in", ranked[ranked["retail4w"] > 0]))           # #28 過濾剔除
     out = []
     for name, frame in groups:
         for rank, r in enumerate(frame.itertuples(), 1):
@@ -104,7 +119,56 @@ def picks_from_plan(plan: dict, tdcc: dict[str, pd.DataFrame]) -> pd.DataFrame:
     return pd.DataFrame(out, columns=PICK_COLS)
 
 
-def record(plan_paths: list[Path], tdcc: dict[str, pd.DataFrame], picks_path: Path = PICKS) -> pd.DataFrame:
+def ignition_picks(as_of: str, trade_date: str, tdcc: dict[str, pd.DataFrame], daily_dir: Path) -> pd.DataFrame:
+    """#28:資料日當天的全市場發動日事件(不要求投信/外資),分 ignite_all / ignite_retail 兩組。"""
+    sys.path.insert(0, str(REPO))
+    from ml.corporate_actions import backward_adjustment_multiplier, load_action_calendar
+
+    actions = load_action_calendar(str(BASE / "ml" / "data" / "ex_dividend_calendar.csv"),
+                                   str(BASE / "ml" / "data" / "corporate_action_price_factors.csv"))
+    action_tickers = set(actions["stock_id"].astype(str))
+    out = []
+    for path in sorted(Path(daily_dir).glob("*.csv")):
+        tk = path.stem
+        if not (tk.isdigit() and len(tk) == 4 and tk[0] != "0"):
+            continue
+        try:
+            k = pd.read_csv(path, usecols=lambda c: c in ("Date", "Close", "Volume", "VOL_MA_20", "MA_20", "MA_60"))
+        except Exception:  # noqa: BLE001
+            continue
+        k["Date"] = k["Date"].astype(str).str[:10]
+        k = k[k["Date"] <= as_of].tail(40)
+        if len(k) < 25 or k["Date"].iloc[-1] != as_of:
+            continue
+        close = pd.to_numeric(k["Close"], errors="coerce")
+        vol = pd.to_numeric(k["Volume"], errors="coerce"); vma = pd.to_numeric(k["VOL_MA_20"], errors="coerce")
+        ma20 = pd.to_numeric(k["MA_20"], errors="coerce"); ma60 = pd.to_numeric(k["MA_60"], errors="coerce")
+        mult = (backward_adjustment_multiplier(k["Date"], tk, actions).to_numpy(float) if tk in action_tickers
+                else np.ones(len(k)))
+        av = pd.Series(close.to_numpy(float) * mult)
+        washed_prev = float(av.rolling(10).max().iloc[-2] / av.iloc[-2] - 1) >= 0.10 if len(av) >= 11 else False
+        r = -1
+        ok = (washed_prev and close.iloc[r] > ma20.iloc[r] and close.iloc[r] > ma60.iloc[r]
+              and vma.iloc[r] >= 500_000 and vol.iloc[r] / vma.iloc[r] >= 1.5)
+        if not ok:
+            continue
+        retail4w, whale4w = tdcc_change(tdcc.get(tk), as_of)
+        out.append({"ticker": tk, "close": float(close.iloc[r]), "retail4w": retail4w, "whale4w": whale4w})
+    if not out:
+        return pd.DataFrame(columns=PICK_COLS)
+    cand = pd.DataFrame(out)
+    groups = [("ignite_all", cand), ("ignite_retail", cand[cand["retail4w"] <= -1.0])]
+    rows = []
+    for name, frame in groups:
+        for rank, r in enumerate(frame.itertuples(), 1):
+            rows.append({"trade_date": trade_date, "as_of_date": as_of, "group": name, "rank": rank, "ticker": r.ticker,
+                         "name": r.ticker, "ptype": "ignition_base", "signal_close": r.close, "retail4w": r.retail4w,
+                         "whale4w": r.whale4w, "pool_size": len(cand), "ranked_pool_size": int(cand["retail4w"].notna().sum())})
+    return pd.DataFrame(rows, columns=PICK_COLS)
+
+
+def record(plan_paths: list[Path], tdcc: dict[str, pd.DataFrame], picks_path: Path = PICKS,
+           ignition: bool = False) -> pd.DataFrame:
     """把尚未記錄的交易日寫入選股檔(已記錄的交易日不重寫,保留當時的集保數值)。"""
     existing = (pd.read_csv(picks_path, dtype={"ticker": str, "trade_date": str, "as_of_date": str})
                 if Path(picks_path).exists() else pd.DataFrame(columns=PICK_COLS))
@@ -118,6 +182,12 @@ def record(plan_paths: list[Path], tdcc: dict[str, pd.DataFrame], picks_path: Pa
         if not isinstance(plan, dict) or plan.get("trade_date") in done:
             continue
         frame = picks_from_plan(plan, tdcc)
+        if len(frame) and ignition and plan.get("as_of_date"):
+            try:
+                frame = pd.concat([frame, ignition_picks(plan["as_of_date"], plan["trade_date"], tdcc, BASE / "日K資料")],
+                                  ignore_index=True)
+            except Exception as exc:  # noqa: BLE001 - #28 發動掃描失敗不影響主帳
+                print(f"[shadow-rank] ignition scan skipped for {plan['trade_date']}: {exc}")
         if len(frame):
             new.append(frame)
             done.add(plan["trade_date"])
@@ -178,17 +248,38 @@ def verdict(daily: pd.DataFrame) -> str:
             else f"FAIL:樣本外判準未全過({''.join('✓' if c else '✗' for c in checks)}),結案封存")
 
 
+def verdict_28(daily: pd.DataFrame) -> str:
+    """#28 散戶退場過濾/發動確認的樣本外判定(判準見模組 docstring)。"""
+    if daily.empty or "retail_out" not in set(daily["group"]):
+        return "#28 觀察中:尚無樣本(自 2026-10-19 名單起累積)"
+    ro = daily[(daily["group"] == "retail_out") & daily["matured"]].sort_values("trade_date")
+    ia = daily[daily["group"] == "ignite_all"].set_index("trade_date")["ret"]
+    ir = daily[(daily["group"] == "ignite_retail") & daily["matured"]].sort_values("trade_date").copy()
+    ir["ex_ign"] = ir["ret"] - ir["trade_date"].map(ia)
+    n = min(len(ro), len(ir))
+    if n < MIN_RANK_DAYS:
+        return f"#28 觀察中:已滿 60 根的日子 過濾 {len(ro)} / 發動 {len(ir)},門檻 {MIN_RANK_DAYS}"
+    ri = daily[(daily["group"] == "retail_in") & daily["matured"]]
+    h1, h2 = len(ro) // 2, len(ir) // 2
+    checks = [ro["excess"].mean() >= 1.5, ro["excess"].iloc[:h1].mean() > 0 and ro["excess"].iloc[h1:].mean() > 0,
+              (ri["excess"].mean() <= 0) if len(ri) else False,
+              ir["ex_ign"].mean() >= 2.0, ir["ex_ign"].iloc[:h2].mean() > 0 and ir["ex_ign"].iloc[h2:].mean() > 0]
+    tag = "".join("✓" if c else "✗" for c in checks)
+    return ("#28 PASS:可向 PM 提請把散戶退場納入 gate/發動確認" if all(checks) else f"#28 FAIL({tag}),結案")
+
+
 def render(daily: pd.DataFrame, summary: pd.DataFrame, picks: pd.DataFrame, as_of: str) -> str:
     lines = [f"# rere 候選影子排序研究帳本(資料至 {as_of})", "",
              "假設:同一天的 rere 候選裡,散戶持股比 4 週減最多的前 3 檔,60 根表現優於候選池(回測票 #20:六年 +3.00pp,4/5 判準)。",
              "這本帳只做樣本外驗證;**現行名單與排序不受影響**,這裡的股票不是進場建議。", "",
-             f"**狀態:{verdict(daily)}**", ""]
+             f"**狀態:{verdict(daily)}**", f"**{verdict_28(daily)}**", ""]
     if summary.empty:
         lines += ["尚無已進場的樣本(第一批候選在下一個交易日收盤後才有進場價)。", ""]
     else:
         lines += ["| 組別 | 排名日數 | 平均報酬 | 對候選池超額 | 贏過候選池的日數 | 已滿 60 根日數 | 已滿者超額 |", "|---|---|---|---|---|---|---|"]
-        order = {"retail_top3": 0, "whale_top3": 1, "listed": 2, "pool": 3}
-        for r in summary.sort_values("group", key=lambda s: s.map(order)).itertuples():
+        order = {"retail_top3": 0, "whale_top3": 1, "listed": 2, "pool": 3, "retail_out": 4, "retail_in": 5,
+                 "ignite_all": 6, "ignite_retail": 7}
+        for r in summary.sort_values("group", key=lambda s: s.map(order).fillna(9)).itertuples():
             lines.append(f"| {GROUP_LABEL.get(r.group, r.group)} | {r.days} | {r.mean_ret:+.2f}% | {r.mean_excess:+.2f}pp | "
                          f"{r.beat_pool_days:.0f}% | {r.matured_days} | "
                          + (f"{r.matured_excess:+.2f}pp |" if pd.notna(r.matured_excess) else "— |"))
@@ -209,7 +300,7 @@ def run() -> str:
     from scripts.rere_public_follow_tracker import load_bars
 
     plans = sorted(p for p in PLAN_DIR.glob("entry_list_2*.json") if not p.name.endswith(".manifest.json"))
-    picks = record(plans, load_tdcc())
+    picks = record(plans, load_tdcc(), ignition=True)
     if picks.empty:
         REPORT.write_text(render(pd.DataFrame(), pd.DataFrame(), picks, "—"), encoding="utf-8")
         return "no picks yet"

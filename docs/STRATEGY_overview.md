@@ -638,6 +638,17 @@ canonical 產生器(`scripts/generate_entry_candidates.py`)現有兩條 lane:
     個案對照:6532 於 9/29 發動日當下可得的 retail4w=−5.44pp,V3 會觸發(次日收盤 118.5 進,比實際 10/13 的 114.5 早兩週)。
     V3 與 #20(retail4w IC +0.070、七年同向)、#22 影子排序主假設三角互證:**散戶退場是目前唯一跨三種用法都穩定的訊號**。
     建議(待 PM 裁決):比照 #20→#22,為「發動+散戶4週減≥1pp」開前瞻影子帳本(純研究、不上名單),避免資料窺探;或維持現狀等 #22 判定。
+28. **#28 散戶退場過濾·前瞻影子(2026-10-16 PM「全開」;事前登記)**:散戶退場四度互證(#20/#22/#27/C 類剖面 +3.9pp)後,
+    於 `rere_shadow_rank_tracker` 新增四組樣本外追蹤:retail_out(候選中散戶 4 週 ≤−1pp)、retail_in(>0,過濾會剔除者)、
+    ignite_all(全市場發動日,不要求投信/外資)、ignite_retail(發動∩散戶退)。判準:≥60 個已滿 60 根日後,
+    retail_out 對池 ≥+1.5pp 且前後半 >0、retail_in ≤0、ignite_retail 對 ignite_all ≥+2pp 且前後半 >0;全過才提 gate 修改案。
+    自 2026-10-19 名單起累積,不回補。
+29. **BT-rere-wash-band-5-8(2026-10-16 PM「全開」;事前登記,判準先於執行提交)**:鈦昇 7/1 進場時洗盤僅 4.4%。
+    同 v2 口徑分三帶(5~8 / 8~10 / ≥10),判準:BAND 平均 ≥REF−0.5pp、勝率 ≥REF−2pp、左尾 ≤REF+2pp、逐年落後 >3pp ≤2/7。
+    腳本 scripts/backtest_rere_wash_band_5_8.py。
+30. **BT-rere-breakout-add(2026-10-16 PM「全開」;事前登記,判準先於執行提交)**:已持有 rere 部位於突破日
+    (30 根內創 20 日新高且量比 ≥1.5)加碼是否有優勢;對照=無突破訊號同偏移的殘餘報酬。判準:超額 ≥+2pp、兩段 ≥+1pp、
+    ≥5/7 年為正、突破占比 15~70%。腳本 scripts/backtest_rere_breakout_add.py。
    明細 ml/reports/bt_rere_pre_trust_accumulation.csv。
 
 ## 三個月績效快照(2026-07-01 ~ 10-02,2026-10-05 由帳本/追蹤檔直接計算,PM 提問「選股準確度」)
