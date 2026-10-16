@@ -51,7 +51,12 @@ def test_record_is_idempotent_per_trade_date(tmp_path):
     out = tmp_path / "picks.csv"
     first = t.record([plan_path], _tdcc(), out)
     second = t.record([plan_path], _tdcc(), out)
-    assert len(first) == len(second) == 8 + 2 + 3 + 3
+    expected = t.picks_from_plan(_plan(), _tdcc())          # 2026-10-16 起含 #28 的 retail_out / retail_in 兩組
+    assert len(first) == len(second) == len(expected) > 8 + 2 + 3 + 3
+    by = expected.groupby("group")["ticker"].apply(list).to_dict()
+    assert len(by["pool"]) == 8 and len(by["listed"]) == 2 and len(by["retail_top3"]) == len(by["whale_top3"]) == 3
+    ro = expected[expected["group"] == "retail_out"]; ri = expected[expected["group"] == "retail_in"]
+    assert (ro["retail4w"] <= -1.0).all() and (ri["retail4w"] > 0).all()
     assert len(pd.read_csv(out)) == len(first)
 
 
