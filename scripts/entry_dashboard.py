@@ -1358,7 +1358,7 @@ function card(r){
       <div><span class="zlab">失效</span><b class="up">${esc(r.stop||'待重估')}</b></div></div>
     ${why?`<div class="card-why">${esc(why)}</div>`:''}
     ${r.tdcc?`<div class="card-tdcc">集保4週 散戶 ${fpp(r.tdcc.retail4w)}・大戶 ${fpp(r.tdcc.whale4w)}・排名 ${esc(r.tdcc.retail_rank)}/${esc(r.tdcc.pool)}</div>`:''}
-    ${r.news?`<div class="card-news">新聞14天 正向 ${esc(r.news.pos)}・報導 ${esc(r.news.any)}${r.news.pos?`・名次 ${esc(r.news.rank)}/${esc(r.news.n)}`:''}</div>`:''}
+    ${r.news?`<div class="card-news">新聞14天 報導 ${esc(r.news.any)} 則</div>`:''}
     ${isStale?`<div class="verdict v-skip">${esc(r.stale)}</div>`:''}
     ${chips?`<div class="tags">${chips}</div>`:''}
     ${r.kind==='veto'?`<div class="verdict v-skip">否決原因 · ${esc(r.status||r.reason||'需確認原始否決條件')}</div>`:r.vt==='skip'?verd:''}

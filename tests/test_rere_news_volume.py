@@ -50,3 +50,5 @@ def test_run_records_once_per_trade_date(tmp_path, monkeypatch):
 def test_card_shows_news_volume_as_information_only():
     assert 'class="card-news"' in entry_dashboard.HTML and "新聞14天" in entry_dashboard.HTML
     assert "集保與新聞聲量為研究資訊，不是排序依據" in entry_dashboard.HTML
+    # 2026-10-17 #33 工具驗收 FAIL 後,卡片不得顯示「正向」判定(關鍵字 42.5%、本地模型 81.7%,皆低於 85% 門檻)
+    assert "正向" not in entry_dashboard.HTML.split('card-news')[1][:120]
