@@ -265,6 +265,20 @@ def load_tdcc_changes(trade_date: str | None) -> dict[str, dict]:
         return {}
 
 
+def load_news_volume(trade_date: str | None) -> dict[str, dict]:
+    """名單個股近 14 天新聞正面聲量(scripts/rere_news_volume.py 當日記下的數值)。只做呈現:#31 未證實與結果相關。"""
+    path = BASE_DIR / "ml" / "reports" / "rere_news_volume.csv"
+    if not trade_date or not path.exists():
+        return {}
+    try:
+        nv = pd.read_csv(path, dtype={"ticker": str, "trade_date": str})
+        nv = nv[nv["trade_date"] == str(trade_date)]
+        return {str(r["ticker"]).zfill(4): {"pos": int(r["pos14"]), "any": int(r["any14"]),
+                                            "rank": int(r["pos_rank"]), "n": int(r["pool_n"])} for _, r in nv.iterrows()}
+    except Exception:  # noqa: BLE001 - 研究欄位失敗不可擋儀表板
+        return {}
+
+
 def load_rere_shadow_summary() -> dict | None:
     """rere 並列模擬摘要(不停損影子、她已公開標的帳本);缺檔回 None。只做呈現,不影響名單。"""
     reports = BASE_DIR / "ml" / "reports"
@@ -985,8 +999,10 @@ def build(path: Path) -> str:
     ledger_legacy = load_legacy_ledger_summary(lp)
 
     tdcc_changes = load_tdcc_changes(d.get("trade_date"))
+    news_volume = load_news_volume(d.get("trade_date"))
     for r in rows:
         r["tdcc"] = tdcc_changes.get(str(r.get("tk"))) if r.get("strategy") == "rere" else None
+        r["news"] = news_volume.get(str(r.get("tk")))
 
     payload = {"meta": {"trade_date": d.get("trade_date"), "subtitle": d.get("subtitle"),
                         "intro": d.get("intro"),
@@ -1199,6 +1215,7 @@ details.dled summary:hover{background:var(--sm-wash)}
 .card-prices .zlab{display:block;font-size:11px;color:var(--muted);margin:0 0 2px}
 .card-prices b{overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .card-why{font-size:13px;color:var(--ink2);line-height:1.5;margin:6px 0 2px}
+.card-news{font-size:12px;color:var(--muted);margin:0 0 4px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card-tdcc{font-size:12px;color:var(--muted);margin:2px 0 4px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .guard{background:var(--wt-wash);border:1px solid var(--wt);border-radius:8px;color:var(--wt);
   font-family:Consolas,monospace;font-size:13px;padding:8px 14px;margin:2px 0 6px}
@@ -1341,13 +1358,14 @@ function card(r){
       <div><span class="zlab">失效</span><b class="up">${esc(r.stop||'待重估')}</b></div></div>
     ${why?`<div class="card-why">${esc(why)}</div>`:''}
     ${r.tdcc?`<div class="card-tdcc">集保4週 散戶 ${fpp(r.tdcc.retail4w)}・大戶 ${fpp(r.tdcc.whale4w)}・排名 ${esc(r.tdcc.retail_rank)}/${esc(r.tdcc.pool)}</div>`:''}
+    ${r.news?`<div class="card-news">新聞14天 正向 ${esc(r.news.pos)}・報導 ${esc(r.news.any)}${r.news.pos?`・名次 ${esc(r.news.rank)}/${esc(r.news.n)}`:''}</div>`:''}
     ${isStale?`<div class="verdict v-skip">${esc(r.stale)}</div>`:''}
     ${chips?`<div class="tags">${chips}</div>`:''}
     ${r.kind==='veto'?`<div class="verdict v-skip">否決原因 · ${esc(r.status||r.reason||'需確認原始否決條件')}</div>`:r.vt==='skip'?verd:''}
     ${info.warnings.length?`<div class="card-unknown">${info.warnings.map(esc).join('；')}</div>`:''}
     <details class="card-details"><summary>詳細</summary>
       ${r.kind==='veto'||r.vt==='skip'?'':verd}
-      <div class="stat">資料日 ${esc(info.source_date||'未提供')}${r.strategy==='rere'?'':` · 模型 ${esc(info.model_source_date||'未提供')}`}${r.tdcc?' · 集保為研究資訊，不是排序依據':''}</div>
+      <div class="stat">資料日 ${esc(info.source_date||'未提供')}${r.strategy==='rere'?'':` · 模型 ${esc(info.model_source_date||'未提供')}`}${r.tdcc||r.news?' · 集保與新聞聲量為研究資訊，不是排序依據':''}</div>
       <button type="button" class="back" data-tk="${esc(r.tk)}">查看 K 線與四面向</button>
     </details>
   </article>`;

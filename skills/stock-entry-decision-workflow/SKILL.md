@@ -132,6 +132,7 @@ The discretionary short-swing entry layer is NOT the Champion auto-gate. Read:
 
 - **ChipK desktop automation is retired** — do not ask for desktop refresh/reopen, and do not use stale desktop archives as an automated gate.
 - **分點 / 短沖 (broker-branch) auto-fetch is BLOCKED** — the CMoney ChipK app API returns header-only, no rows; params never reverse-engineered. Full diagnosis in `docs/RESEARCH_chipk_broker_top_fetch.md`. **PM decision 2026-10-14: no paid broker-branch source (FinMind Sponsor declined); do not re-propose buying one unless the PM reopens it.** For 分點/短沖 vetoes (e.g. "Top buyers are all 短沖主力 → caution"), **ask the user for a mobile ChipK screenshot**.
+- **News volume line on cards (2026-10-16)** is display-only: #31 found no reliable relation between positive news and rere outcomes; never rank, filter or veto by it.
 - **No live per-stock feed** except `intraday_quote.py`. Daily K (`日K資料/`) is end-of-day only; today's intraday prices/chips are not in the stored data.
 - **Live ChipK screenshots override the model chipk proxy** for the final veto — the proxy can miss fresh distribution (e.g. 映泰 foreign selling 4 days was only visible in the screenshot, not the diagnosis).
 

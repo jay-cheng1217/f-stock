@@ -96,7 +96,7 @@ def test_entry_only_mode_builds_and_publishes_entry_dashboard(monkeypatch) -> No
 
     assert run_kol_tracker_daily.main(["--entry-only"]) == 0
     assert calls == ["Backfill entry tracker", "Backfill legacy-main shadow tracker",
-                     "Update public-post follow book", "Update rere shadow-rank book", "Build entry dashboard"]
+                     "Update public-post follow book", "Update rere shadow-rank book", "Update news volume", "Build entry dashboard"]
     assert published == ["entry_dashboard_latest.html"]
 
 
