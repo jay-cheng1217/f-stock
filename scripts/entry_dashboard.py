@@ -1317,7 +1317,9 @@ function card(r){
   const isStale = r.state==='watch' && r.stale;
   const tone = info.tone==='skip'?'v-skip':info.tone==='check'?'v-check':'v-warn';
   // 收斂(2026-10-07 PM):卡面只放「這檔才有的資訊」——狀態、代號、收盤相對區間、三個價位、一行篩選理由、硬風險 chip。
-  // 每張卡相同的制式句(動作提示/依據/尚缺/資料日期)移入展開區;共同紀律在頁首 #disc 講一次。
+  // 每張卡相同的制式句(動作提示/依據/尚缺)不再出現(2026-10-16 PM:「詳細」也要精簡);共同紀律在頁首 #disc 講一次。
+  // 展開區只留三樣:籌碼提示全文(若卡面未顯示)、資料日、K 線按鈕。pred20/族群/型態參考線/原始狀態/順位一律不放——
+  // pred20 明文不採計、族群已不排序、參考線是舊停損遺物、順位是中性雜湊,對判斷沒有價值。
   const PT = {shakeout:'蹲點型', ignition:'發動型', shallow:'淺洗盤型', shakeout_v2:'蹲點型v2', shallow_v2:'淺洗盤型v2'};
   const laneTag = r.strategy==='rere' ? `rere · ${PT[r.ptype]||'蹲點型'} · ${info.horizon} 日`
                 : (r.state==='watch' ? `觀察卡 · ${info.horizon} 日` : `主策略 · ${info.horizon} 日`);
@@ -1343,17 +1345,9 @@ function card(r){
     ${chips?`<div class="tags">${chips}</div>`:''}
     ${r.kind==='veto'?`<div class="verdict v-skip">否決原因 · ${esc(r.status||r.reason||'需確認原始否決條件')}</div>`:r.vt==='skip'?verd:''}
     ${info.warnings.length?`<div class="card-unknown">${info.warnings.map(esc).join('；')}</div>`:''}
-    <details class="card-details"><summary>詳細 · 動作提示、資料日期、模型值、完整理由</summary>
-      <div class="stat">${esc(info.action)} ${esc(info.size)}。</div>
-      <ul class="card-evidence">${info.basis.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
-      <div class="stat">尚缺：盤中進區間守穩、人工籌碼確認。</div>
-      ${r.tdcc?`<div class="stat">集保4週：散戶與千張大戶持股比的 4 週變化（百分點）；排名＝同日 rere 候選中散戶減幅的名次。研究資訊：六年回測裡散戶減較多者表現較好，目前在樣本外驗證，不是排序依據。</div>`:''}
-      ${r.pattern_line?`<div class="stat">型態參考線 ${esc(r.pattern_line)}（季線×0.97，跌破代表型態轉弱）；卡面的失效價是 −40% 災難停損。</div>`:''}
-      <div class="stat">型態截至 ${esc(info.source_date||'未提供')} · 模型截至 ${esc(info.model_source_date||'未提供')}${r.strategy==='rere'?'（不作否決）':''}</div>
-      <div class="rsn">${esc(r.reason||'未提供篩選理由')}</div>
-      <div class="stat">原始狀態：${esc(r.status||'未提供')} · 名單順位 #${esc(r.priority||'—')}</div>
-      <div class="stat">20 日模型值：${esc(r.ret20d||'未提供')}（模型參考值，不是報酬保證；2026-10-07 起不過濾、不排序${r.strategy==='rere'?'，不決定 rere 入列':''}）</div>
+    <details class="card-details"><summary>詳細</summary>
       ${r.kind==='veto'||r.vt==='skip'?'':verd}
+      <div class="stat">資料日 ${esc(info.source_date||'未提供')}${r.strategy==='rere'?'':` · 模型 ${esc(info.model_source_date||'未提供')}`}${r.tdcc?' · 集保為研究資訊，不是排序依據':''}</div>
       <button type="button" class="back" data-tk="${esc(r.tk)}">查看 K 線與四面向</button>
     </details>
   </article>`;
