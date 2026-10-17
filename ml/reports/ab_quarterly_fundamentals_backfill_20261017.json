@@ -1,0 +1,5660 @@
+{
+ "ticket": "#41",
+ "method_lock_commit": "d272a03a",
+ "official_cache_fetched": "2026-10-17 17:03-17:22",
+ "stage_summary": {
+  "eps": {
+   "added": 262,
+   "corrected": 21,
+   "name_only": 203,
+   "retained_local_only": 193,
+   "unchanged": 47863,
+   "files_changed": 25,
+   "tiny_diff_cells": 0
+  },
+  "financial": {
+   "added": 262,
+   "corrected": 20,
+   "name_only": 203,
+   "retained_local_only": 193,
+   "unchanged": 46921,
+   "files_changed": 25,
+   "tiny_diff_cells": 0
+  },
+  "bs": {
+   "added": 38,
+   "corrected": 6,
+   "name_only": 0,
+   "retained_local_only": 193,
+   "unchanged": 48305,
+   "files_changed": 15,
+   "tiny_diff_cells": 0
+  }
+ },
+ "identity_check_pass": true,
+ "changes": [
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20202,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20204,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20212,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20214,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20222,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20224,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20232,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.34
+   },
+   "official": {
+    "EPS_Basic": -0.42
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20233,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.56
+   },
+   "official": {
+    "EPS_Basic": -0.65
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7821",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7822",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7827",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20234,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.82
+   },
+   "official": {
+    "EPS_Basic": -0.92
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20241,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20242,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.63
+   },
+   "official": {
+    "EPS_Basic": -0.7
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20243,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -1.09
+   },
+   "official": {
+    "EPS_Basic": -1.15
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7689",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7821",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7822",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7827",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7835",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7855",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "6021",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": 1.43
+   },
+   "official": {
+    "EPS_Basic": 1.44
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7772",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7828",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7839",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7842",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20244,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.89
+   },
+   "official": {
+    "EPS_Basic": -0.95
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20251,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20251,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7689",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7821",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7822",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7827",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7855",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6021",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.57
+   },
+   "official": {
+    "EPS_Basic": -0.58
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "3664",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.67
+   },
+   "official": {
+    "EPS_Basic": -3.0
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": 0.02
+   },
+   "official": {
+    "EPS_Basic": -0.26
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6462",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -6.47
+   },
+   "official": {
+    "EPS_Basic": -7.96
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7772",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7828",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7839",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7842",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20252,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "3041",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -2.1
+   },
+   "official": {
+    "EPS_Basic": -2.47
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7821",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7822",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7827",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "6021",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": 2.46
+   },
+   "official": {
+    "EPS_Basic": 2.45
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "3664",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.62
+   },
+   "official": {
+    "EPS_Basic": -4.14
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -1.19
+   },
+   "official": {
+    "EPS_Basic": -1.44
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "6462",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -11.33
+   },
+   "official": {
+    "EPS_Basic": -12.5
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7772",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7828",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7839",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "7842",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20253,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.65
+   },
+   "official": {
+    "EPS_Basic": -0.67
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "3041",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -3.43
+   },
+   "official": {
+    "EPS_Basic": -3.15
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "7689",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "7835",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "7855",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20254,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "6534",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": 4.15
+   },
+   "official": {
+    "EPS_Basic": 4.09
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "7689",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "7835",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "7855",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "1591",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.08
+   },
+   "official": {
+    "EPS_Basic": -1.18
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "4804",
+   "type": "corrected",
+   "cols": [
+    "EPS_Basic"
+   ],
+   "local": {
+    "EPS_Basic": -0.47
+   },
+   "official": {
+    "EPS_Basic": -0.51
+   }
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "eps",
+   "yq": 20261,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20202,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20204,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20212,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20214,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20222,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20224,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20232,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": 0.32,
+    "Pretax_Margin_Pct": -0.04,
+    "Net_Margin_Pct": -0.92
+   },
+   "official": {
+    "Operating_Margin_Pct": -0.08,
+    "Pretax_Margin_Pct": -0.43,
+    "Net_Margin_Pct": -1.31
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20233,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": 1.1,
+    "Pretax_Margin_Pct": 0.65,
+    "Net_Margin_Pct": -0.87
+   },
+   "official": {
+    "Operating_Margin_Pct": 0.83,
+    "Pretax_Margin_Pct": 0.38,
+    "Net_Margin_Pct": -1.14
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7821",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7822",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7827",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20234,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": 1.11,
+    "Pretax_Margin_Pct": 0.25,
+    "Net_Margin_Pct": -1.25
+   },
+   "official": {
+    "Operating_Margin_Pct": 0.87,
+    "Pretax_Margin_Pct": 0.01,
+    "Net_Margin_Pct": -1.49
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20241,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20242,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": -3.23,
+    "Pretax_Margin_Pct": -3.43,
+    "Net_Margin_Pct": -3.24
+   },
+   "official": {
+    "Operating_Margin_Pct": -3.59,
+    "Pretax_Margin_Pct": -3.79,
+    "Net_Margin_Pct": -3.6
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20243,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": -2.75,
+    "Pretax_Margin_Pct": -3.58,
+    "Net_Margin_Pct": -3.62
+   },
+   "official": {
+    "Operating_Margin_Pct": -2.98,
+    "Pretax_Margin_Pct": -3.82,
+    "Net_Margin_Pct": -3.86
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7689",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7821",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7822",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7827",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7835",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7855",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7772",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7828",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7839",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7842",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20244,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": -1.63,
+    "Pretax_Margin_Pct": -1.41,
+    "Net_Margin_Pct": -1.91
+   },
+   "official": {
+    "Operating_Margin_Pct": -1.8,
+    "Pretax_Margin_Pct": -1.58,
+    "Net_Margin_Pct": -2.09
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20251,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20251,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7689",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7821",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7822",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7827",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7855",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "3664",
+   "type": "corrected",
+   "cols": [
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Revenue_M": 373.25,
+    "Gross_Margin_Pct": 75.92,
+    "Operating_Margin_Pct": -11.31,
+    "Pretax_Margin_Pct": -10.52,
+    "Net_Margin_Pct": -10.46
+   },
+   "official": {
+    "Revenue_M": 235.64,
+    "Gross_Margin_Pct": 61.88,
+    "Operating_Margin_Pct": -76.19,
+    "Pretax_Margin_Pct": -74.93,
+    "Net_Margin_Pct": -74.84
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Revenue_M": 2464.17,
+    "Gross_Margin_Pct": 37.17,
+    "Operating_Margin_Pct": -6.01,
+    "Pretax_Margin_Pct": 1.8,
+    "Net_Margin_Pct": 0.78
+   },
+   "official": {
+    "Revenue_M": 2326.57,
+    "Gross_Margin_Pct": 33.46,
+    "Operating_Margin_Pct": -9.58,
+    "Pretax_Margin_Pct": -1.3,
+    "Net_Margin_Pct": -2.41
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6462",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": -32.7,
+    "Pretax_Margin_Pct": -43.51,
+    "Net_Margin_Pct": -41.29
+   },
+   "official": {
+    "Operating_Margin_Pct": -39.42,
+    "Pretax_Margin_Pct": -50.22,
+    "Net_Margin_Pct": -47.26
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7772",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7828",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7839",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7842",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20252,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": -4.34,
+    "Pretax_Margin_Pct": -5.97,
+    "Net_Margin_Pct": -8.07
+   },
+   "official": {
+    "Operating_Margin_Pct": -4.36,
+    "Pretax_Margin_Pct": -5.99,
+    "Net_Margin_Pct": -8.09
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "2072",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "3041",
+   "type": "corrected",
+   "cols": [
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Revenue_M": 967.06,
+    "Gross_Margin_Pct": 32.77,
+    "Operating_Margin_Pct": -23.79,
+    "Pretax_Margin_Pct": -22.98,
+    "Net_Margin_Pct": -23.25
+   },
+   "official": {
+    "Revenue_M": 889.83,
+    "Gross_Margin_Pct": 26.28,
+    "Operating_Margin_Pct": -41.45,
+    "Pretax_Margin_Pct": -40.57,
+    "Net_Margin_Pct": -40.87
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "4169",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "4178",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "4195",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "4582",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "6908",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7760",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7768",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7803",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7818",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7821",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7822",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7827",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "1780",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "3485",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "3664",
+   "type": "corrected",
+   "cols": [
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Revenue_M": 587.2,
+    "Gross_Margin_Pct": 74.47,
+    "Operating_Margin_Pct": -5.21,
+    "Pretax_Margin_Pct": -6.16,
+    "Net_Margin_Pct": -6.24
+   },
+   "official": {
+    "Revenue_M": 372.37,
+    "Gross_Margin_Pct": 59.74,
+    "Operating_Margin_Pct": -63.99,
+    "Pretax_Margin_Pct": -65.5,
+    "Net_Margin_Pct": -65.62
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "6028",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Revenue_M": 4862.48,
+    "Gross_Margin_Pct": 29.13,
+    "Operating_Margin_Pct": -7.17,
+    "Pretax_Margin_Pct": -4.43,
+    "Net_Margin_Pct": -5.47
+   },
+   "official": {
+    "Revenue_M": 4635.45,
+    "Gross_Margin_Pct": 25.94,
+    "Operating_Margin_Pct": -12.24,
+    "Pretax_Margin_Pct": -9.8,
+    "Net_Margin_Pct": -10.81
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "6462",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": -30.12,
+    "Pretax_Margin_Pct": -36.07,
+    "Net_Margin_Pct": -40.82
+   },
+   "official": {
+    "Operating_Margin_Pct": -33.59,
+    "Pretax_Margin_Pct": -39.54,
+    "Net_Margin_Pct": -43.59
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "6945",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "6983",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "6986",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7772",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7794",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7811",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7814",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7819",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7820",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7828",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7839",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "7842",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20253,
+   "Ticker": "8071",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": -3.63,
+    "Pretax_Margin_Pct": -3.12,
+    "Net_Margin_Pct": -2.87
+   },
+   "official": {
+    "Operating_Margin_Pct": -3.71,
+    "Pretax_Margin_Pct": -3.21,
+    "Net_Margin_Pct": -2.95
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "3041",
+   "type": "corrected",
+   "cols": [
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Revenue_M": 1140.95,
+    "Gross_Margin_Pct": 28.63,
+    "Operating_Margin_Pct": -50.46,
+    "Pretax_Margin_Pct": -53.41,
+    "Net_Margin_Pct": -52.93
+   },
+   "official": {
+    "Revenue_M": 1278.55,
+    "Gross_Margin_Pct": 36.31,
+    "Operating_Margin_Pct": -39.18,
+    "Pretax_Margin_Pct": -41.82,
+    "Net_Margin_Pct": -41.39
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "7689",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "7835",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "7855",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Revenue_M": 7457.39,
+    "Gross_Margin_Pct": 23.97,
+    "Operating_Margin_Pct": -13.23,
+    "Pretax_Margin_Pct": -17.77,
+    "Net_Margin_Pct": -18.6
+   },
+   "official": {
+    "Revenue_M": 7445.2,
+    "Gross_Margin_Pct": 24.09,
+    "Operating_Margin_Pct": -13.33,
+    "Pretax_Margin_Pct": -17.8,
+    "Net_Margin_Pct": -18.24
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20254,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "2237",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "6534",
+   "type": "corrected",
+   "cols": [
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Pretax_Margin_Pct": 61.21,
+    "Net_Margin_Pct": 49.07
+   },
+   "official": {
+    "Pretax_Margin_Pct": 60.54,
+    "Net_Margin_Pct": 48.4
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "6947",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "7689",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "7835",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "7855",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "1591",
+   "type": "corrected",
+   "cols": [
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Operating_Margin_Pct": -2.9,
+    "Pretax_Margin_Pct": -2.96,
+    "Net_Margin_Pct": -2.41
+   },
+   "official": {
+    "Operating_Margin_Pct": -34.34,
+    "Pretax_Margin_Pct": -34.4,
+    "Net_Margin_Pct": -33.86
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "4804",
+   "type": "corrected",
+   "cols": [
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct"
+   ],
+   "local": {
+    "Revenue_M": 30.5,
+    "Gross_Margin_Pct": -38.67,
+    "Operating_Margin_Pct": -88.02,
+    "Pretax_Margin_Pct": -109.13,
+    "Net_Margin_Pct": -109.13
+   },
+   "official": {
+    "Revenue_M": 0.0,
+    "Gross_Margin_Pct": 0.0,
+    "Operating_Margin_Pct": 0.0,
+    "Pretax_Margin_Pct": 0.0,
+    "Net_Margin_Pct": 0.0
+   }
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "financial",
+   "yq": 20261,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20202,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20204,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20212,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20214,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20222,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20224,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20232,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20234,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20234,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20234,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20241,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20242,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20242,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20242,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20244,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20244,
+   "Ticker": "7835",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20244,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20244,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20244,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20244,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20244,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20252,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20252,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20252,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "Current_Assets",
+    "Total_Assets",
+    "Current_Liabilities",
+    "Total_Liabilities",
+    "Parent_Equity",
+    "Total_Equity",
+    "Book_Value_Per_Share",
+    "Debt_Ratio",
+    "Current_Ratio"
+   ],
+   "local": {
+    "Current_Assets": 4012949.0,
+    "Total_Assets": 8273573.0,
+    "Current_Liabilities": 3022848.0,
+    "Total_Liabilities": 4366231.0,
+    "Parent_Equity": 1971676.0,
+    "Total_Equity": 3907342.0,
+    "Book_Value_Per_Share": 20.33,
+    "Debt_Ratio": 52.77,
+    "Current_Ratio": 132.75
+   },
+   "official": {
+    "Current_Assets": 3941610.0,
+    "Total_Assets": 8202809.0,
+    "Current_Liabilities": 3021339.0,
+    "Total_Liabilities": 4364722.0,
+    "Parent_Equity": 1944597.0,
+    "Total_Equity": 3838087.0,
+    "Book_Value_Per_Share": 20.05,
+    "Debt_Ratio": 53.21,
+    "Current_Ratio": 130.46
+   }
+  },
+  {
+   "kind": "bs",
+   "yq": 20252,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20252,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20252,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20252,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20253,
+   "Ticker": "3041",
+   "type": "corrected",
+   "cols": [
+    "Current_Assets",
+    "Total_Assets",
+    "Current_Liabilities",
+    "Total_Liabilities",
+    "Parent_Equity",
+    "Total_Equity",
+    "Book_Value_Per_Share",
+    "Debt_Ratio",
+    "Current_Ratio"
+   ],
+   "local": {
+    "Current_Assets": 2094155.0,
+    "Total_Assets": 4298676.0,
+    "Current_Liabilities": 1276071.0,
+    "Total_Liabilities": 2478563.0,
+    "Parent_Equity": 1610084.0,
+    "Total_Equity": 1820113.0,
+    "Book_Value_Per_Share": 11.48,
+    "Debt_Ratio": 57.66,
+    "Current_Ratio": 164.11
+   },
+   "official": {
+    "Current_Assets": 1865745.0,
+    "Total_Assets": 4086419.0,
+    "Current_Liabilities": 1272062.0,
+    "Total_Liabilities": 2474554.0,
+    "Parent_Equity": 1537811.0,
+    "Total_Equity": 1611865.0,
+    "Book_Value_Per_Share": 10.97,
+    "Debt_Ratio": 60.56,
+    "Current_Ratio": 146.67
+   }
+  },
+  {
+   "kind": "bs",
+   "yq": 20253,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "Current_Assets",
+    "Total_Assets",
+    "Current_Liabilities",
+    "Total_Liabilities",
+    "Parent_Equity",
+    "Total_Equity",
+    "Book_Value_Per_Share",
+    "Debt_Ratio",
+    "Current_Ratio"
+   ],
+   "local": {
+    "Current_Assets": 10209470.0,
+    "Total_Assets": 30562500.0,
+    "Current_Liabilities": 12517424.0,
+    "Total_Liabilities": 21349911.0,
+    "Parent_Equity": 2137394.0,
+    "Total_Equity": 9212589.0,
+    "Book_Value_Per_Share": 22.07,
+    "Debt_Ratio": 69.86,
+    "Current_Ratio": 81.56
+   },
+   "official": {
+    "Current_Assets": 9981061.0,
+    "Total_Assets": 29902313.0,
+    "Current_Liabilities": 12513415.0,
+    "Total_Liabilities": 21223486.0,
+    "Parent_Equity": 2075785.0,
+    "Total_Equity": 8678827.0,
+    "Book_Value_Per_Share": 21.43,
+    "Debt_Ratio": 70.98,
+    "Current_Ratio": 79.76
+   }
+  },
+  {
+   "kind": "bs",
+   "yq": 20254,
+   "Ticker": "7812",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20254,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20254,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "Total_Assets",
+    "Parent_Equity",
+    "Total_Equity",
+    "Book_Value_Per_Share",
+    "Debt_Ratio"
+   ],
+   "local": {
+    "Total_Assets": 29005011.0,
+    "Parent_Equity": 1744492.0,
+    "Total_Equity": 7961055.0,
+    "Book_Value_Per_Share": 18.33,
+    "Debt_Ratio": 72.55
+   },
+   "official": {
+    "Total_Assets": 29035304.0,
+    "Parent_Equity": 1749029.0,
+    "Total_Equity": 7991348.0,
+    "Book_Value_Per_Share": 18.38,
+    "Debt_Ratio": 72.48
+   }
+  },
+  {
+   "kind": "bs",
+   "yq": 20254,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20254,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20254,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20254,
+   "Ticker": "7856",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20261,
+   "Ticker": "6534",
+   "type": "corrected",
+   "cols": [
+    "Current_Liabilities",
+    "Total_Liabilities",
+    "Parent_Equity",
+    "Total_Equity",
+    "Book_Value_Per_Share",
+    "Debt_Ratio",
+    "Current_Ratio"
+   ],
+   "local": {
+    "Current_Liabilities": 1256074.0,
+    "Total_Liabilities": 1391161.0,
+    "Parent_Equity": 2676634.0,
+    "Total_Equity": 2676634.0,
+    "Book_Value_Per_Share": 26.04,
+    "Debt_Ratio": 34.2,
+    "Current_Ratio": 107.54
+   },
+   "official": {
+    "Current_Liabilities": 1261918.0,
+    "Total_Liabilities": 1397005.0,
+    "Parent_Equity": 2670790.0,
+    "Total_Equity": 2670790.0,
+    "Book_Value_Per_Share": 25.98,
+    "Debt_Ratio": 34.34,
+    "Current_Ratio": 107.04
+   }
+  },
+  {
+   "kind": "bs",
+   "yq": 20261,
+   "Ticker": "2938",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20261,
+   "Ticker": "6111",
+   "type": "corrected",
+   "cols": [
+    "Parent_Equity",
+    "Book_Value_Per_Share"
+   ],
+   "local": {
+    "Parent_Equity": 1834979.0,
+    "Book_Value_Per_Share": 19.47
+   },
+   "official": {
+    "Parent_Equity": 1839516.0,
+    "Book_Value_Per_Share": 19.52
+   }
+  },
+  {
+   "kind": "bs",
+   "yq": 20261,
+   "Ticker": "6604",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20261,
+   "Ticker": "7806",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20261,
+   "Ticker": "7825",
+   "type": "added"
+  },
+  {
+   "kind": "bs",
+   "yq": 20261,
+   "Ticker": "7856",
+   "type": "added"
+  }
+ ],
+ "spot_check": {
+  "n": 20,
+  "agree": 20,
+  "pass": true,
+  "rows": [
+   {
+    "kind": "eps",
+    "yq": "2025Q3",
+    "Ticker": "7772",
+    "ok": true,
+    "checks": [
+     [
+      "EPS_Basic",
+      0.9,
+      0.9
+     ]
+    ]
+   },
+   {
+    "kind": "bs",
+    "yq": "2025Q4",
+    "Ticker": "6111",
+    "ok": true,
+    "checks": [
+     [
+      "Total_Assets",
+      29035304.0,
+      29035304.0
+     ],
+     [
+      "Total_Equity",
+      7991348.0,
+      7991348.0
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2024Q2",
+    "Ticker": "6028",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      2108.45,
+      2108.451
+     ],
+     [
+      "Operating_Margin_Pct",
+      7.3,
+      7.3
+     ]
+    ]
+   },
+   {
+    "kind": "eps",
+    "yq": "2024Q4",
+    "Ticker": "3485",
+    "ok": true,
+    "checks": [
+     [
+      "EPS_Basic",
+      7.14,
+      7.14
+     ]
+    ]
+   },
+   {
+    "kind": "eps",
+    "yq": "2023Q3",
+    "Ticker": "8071",
+    "ok": true,
+    "checks": [
+     [
+      "EPS_Basic",
+      -0.65,
+      -0.65
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2024Q4",
+    "Ticker": "7822",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      721.1,
+      721.1
+     ],
+     [
+      "Operating_Margin_Pct",
+      20.06,
+      20.06
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2025Q2",
+    "Ticker": "7814",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      30.96,
+      30.964
+     ],
+     [
+      "Operating_Margin_Pct",
+      -46.29,
+      -46.29
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2025Q2",
+    "Ticker": "7827",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      0.0,
+      0.0
+     ],
+     [
+      "Operating_Margin_Pct",
+      0.0,
+      0.0
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2025Q2",
+    "Ticker": "7811",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      1515.79,
+      1515.79
+     ],
+     [
+      "Operating_Margin_Pct",
+      12.53,
+      12.53
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2025Q3",
+    "Ticker": "7772",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      305.73,
+      305.725
+     ],
+     [
+      "Operating_Margin_Pct",
+      11.89,
+      11.89
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2025Q3",
+    "Ticker": "7760",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      978.87,
+      978.866
+     ],
+     [
+      "Operating_Margin_Pct",
+      4.41,
+      4.41
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2020Q4",
+    "Ticker": "2072",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      1786.35,
+      1786.347
+     ],
+     [
+      "Operating_Margin_Pct",
+      27.32,
+      27.32
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2026Q1",
+    "Ticker": "6604",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      535.46,
+      535.455
+     ],
+     [
+      "Operating_Margin_Pct",
+      10.84,
+      10.84
+     ]
+    ]
+   },
+   {
+    "kind": "eps",
+    "yq": "2024Q2",
+    "Ticker": "7820",
+    "ok": true,
+    "checks": [
+     [
+      "EPS_Basic",
+      0.34,
+      0.34
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2024Q4",
+    "Ticker": "7811",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      2604.8,
+      2604.802
+     ],
+     [
+      "Operating_Margin_Pct",
+      10.67,
+      10.67
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2025Q2",
+    "Ticker": "6983",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      99.21,
+      99.209
+     ],
+     [
+      "Operating_Margin_Pct",
+      26.01,
+      26.01
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2023Q2",
+    "Ticker": "8071",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      1016.4,
+      1016.402
+     ],
+     [
+      "Operating_Margin_Pct",
+      -0.08,
+      -0.08
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2025Q3",
+    "Ticker": "6945",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      0.0,
+      0.0
+     ],
+     [
+      "Operating_Margin_Pct",
+      0.0,
+      0.0
+     ]
+    ]
+   },
+   {
+    "kind": "financial",
+    "yq": "2025Q3",
+    "Ticker": "7821",
+    "ok": true,
+    "checks": [
+     [
+      "Revenue_M",
+      5944.43,
+      5944.434
+     ],
+     [
+      "Operating_Margin_Pct",
+      3.28,
+      3.28
+     ]
+    ]
+   },
+   {
+    "kind": "eps",
+    "yq": "2022Q2",
+    "Ticker": "4582",
+    "ok": true,
+    "checks": [
+     [
+      "EPS_Basic",
+      0.22,
+      0.22
+     ]
+    ]
+   }
+  ]
+ },
+ "ingest_test": {
+  "current": {
+   "rows": 47337,
+   "tickers": 1952,
+   "decimal_tickers": 0,
+   "max_period": 20262,
+   "ticker_type": "BIGINT",
+   "columns": [
+    "Ticker",
+    "Name",
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct",
+    "Market",
+    "Year",
+    "Season"
+   ],
+   "per_file_ticker_types": [
+    "BIGINT"
+   ]
+  },
+  "staged": {
+   "rows": 47599,
+   "tickers": 1952,
+   "decimal_tickers": 0,
+   "max_period": 20262,
+   "ticker_type": "BIGINT",
+   "columns": [
+    "Ticker",
+    "Name",
+    "Revenue_M",
+    "Gross_Margin_Pct",
+    "Operating_Margin_Pct",
+    "Pretax_Margin_Pct",
+    "Net_Margin_Pct",
+    "Market",
+    "Year",
+    "Season"
+   ],
+   "per_file_ticker_types": [
+    "BIGINT"
+   ]
+  },
+  "checks": {
+   "rows_not_shrinking": true,
+   "tickers_not_shrinking": true,
+   "no_decimal_tickers": true,
+   "freshness_not_regressing": true,
+   "same_columns": true
+  },
+  "pass": true
+ },
+ "live_ab": {
+  "rows_a": 1023,
+  "rows_b": 1023,
+  "joined": 1023,
+  "latest_feature_cells_changed": 22,
+  "latest_feature_changed_tickers": [
+   "1591",
+   "2072",
+   "3041",
+   "6021",
+   "6462",
+   "8071"
+  ],
+  "feature_changed_outside_expected_48": [],
+  "expected_48_without_feature_change": [
+   "1780",
+   "2237",
+   "2938",
+   "3485",
+   "3664",
+   "4169",
+   "4178",
+   "4195",
+   "4582",
+   "4804",
+   "6028",
+   "6111",
+   "6534",
+   "6604",
+   "6908",
+   "6945",
+   "6947",
+   "6983",
+   "6986",
+   "7689",
+   "7760",
+   "7768",
+   "7772",
+   "7794",
+   "7803",
+   "7806",
+   "7811",
+   "7812",
+   "7814",
+   "7818",
+   "7819",
+   "7820",
+   "7821",
+   "7822",
+   "7825",
+   "7827",
+   "7828",
+   "7835",
+   "7839",
+   "7842",
+   "7855",
+   "7856"
+  ],
+  "latest_feature_changes": [
+   [
+    "1591",
+    "eps_basic",
+    -0.9100000262260437,
+    0.1899999976158142
+   ],
+   [
+    "1591",
+    "eps_yoy",
+    -0.10975614190101624,
+    1.2317073345184326
+   ],
+   [
+    "1591",
+    "eps_qoq",
+    -10.375000953674316,
+    1.1610169410705566
+   ],
+   [
+    "1591",
+    "eps_momentum",
+    -0.25,
+    0.8500000238418579
+   ],
+   [
+    "1591",
+    "margin_trend",
+    -0.18400000035762787,
+    0.13040000200271606
+   ],
+   [
+    "1591",
+    "roe_trend",
+    -7.684204578399658,
+    1.6514720916748047
+   ],
+   [
+    "2072",
+    "eps_ttm",
+    null,
+    16.030000686645508
+   ],
+   [
+    "2072",
+    "eps_yoy",
+    null,
+    0.48529407382011414
+   ],
+   [
+    "2072",
+    "eps_momentum",
+    null,
+    -0.3400001525878906
+   ],
+   [
+    "2072",
+    "revenue_yoy_q",
+    null,
+    0.6332385540008545
+   ],
+   [
+    "2072",
+    "margin_yoy_change",
+    null,
+    0.032499998807907104
+   ],
+   [
+    "3041",
+    "eps_ttm",
+    -3.0,
+    -2.7200000286102295
+   ],
+   [
+    "3041",
+    "eps_momentum",
+    1.1200000047683716,
+    0.4700000286102295
+   ],
+   [
+    "6021",
+    "eps_ttm",
+    11.380000114440918,
+    11.389999389648438
+   ],
+   [
+    "6021",
+    "eps_yoy",
+    8.569231033325195,
+    8.71875
+   ],
+   [
+    "6021",
+    "eps_momentum",
+    4.920000076293945,
+    4.909999847412109
+   ],
+   [
+    "6462",
+    "eps_ttm",
+    -14.09000015258789,
+    -12.600000381469727
+   ],
+   [
+    "6462",
+    "eps_yoy",
+    0.9102564454078674,
+    0.935064971446991
+   ],
+   [
+    "6462",
+    "eps_momentum",
+    5.829999923706055,
+    4.660000324249268
+   ],
+   [
+    "6462",
+    "margin_yoy_change",
+    0.11000001430511475,
+    0.17719995975494385
+   ],
+   [
+    "8071",
+    "eps_momentum",
+    0.1199999749660492,
+    0.09999999403953552
+   ],
+   [
+    "8071",
+    "margin_yoy_change",
+    0.029200002551078796,
+    0.02940000221133232
+   ]
+  ],
+  "up_prob": {
+   "max_abs_delta": 0.009854580594457513,
+   "mean_abs_delta": 8.16106900120565e-05,
+   "rows_changed": 53,
+   "affected_rows_changed": 3,
+   "affected_max_abs_delta": 0.009854580594457513,
+   "others_rows_changed": 50,
+   "others_max_abs_delta": 0.006361489690905997,
+   "top_changes": [
+    [
+     "2072",
+     0.24639183831956055,
+     0.23653725772510303
+    ],
+    [
+     "1591",
+     0.2900155289062571,
+     0.29890161208067856
+    ],
+    [
+     "9910",
+     0.2804778126480313,
+     0.2868393023389373
+    ],
+    [
+     "4722",
+     0.3112914084417745,
+     0.3058897455127508
+    ],
+    [
+     "3041",
+     0.3164997024033149,
+     0.3208979712149965
+    ],
+    [
+     "1809",
+     0.312942113532591,
+     0.30911347578945175
+    ],
+    [
+     "8374",
+     0.2995950849061122,
+     0.29597803624878055
+    ],
+    [
+     "2419",
+     0.28116711939031624,
+     0.2776843476160835
+    ],
+    [
+     "4908",
+     0.3513084114131115,
+     0.34802437819071147
+    ],
+    [
+     "3346",
+     0.24279080883604365,
+     0.23952122193924044
+    ],
+    [
+     "6231",
+     0.31917685623785513,
+     0.3166117061821557
+    ],
+    [
+     "3026",
+     0.35061182058798807,
+     0.3528738988244092
+    ],
+    [
+     "8044",
+     0.3127508675410889,
+     0.31067919968202107
+    ],
+    [
+     "3587",
+     0.24745157811185145,
+     0.2490918705813635
+    ],
+    [
+     "6190",
+     0.2868741778680478,
+     0.2853276026240664
+    ],
+    [
+     "1528",
+     0.27776498126683935,
+     0.2763392080915696
+    ],
+    [
+     "6909",
+     0.31294061678719637,
+     0.3138996110450429
+    ],
+    [
+     "6138",
+     0.24438222439618099,
+     0.24526274449154026
+    ],
+    [
+     "8039",
+     0.3406536311990038,
+     0.3397745469568204
+    ],
+    [
+     "5388",
+     0.23693154911302053,
+     0.2377936722769086
+    ],
+    [
+     "2723",
+     0.29279351637332895,
+     0.2936261495497407
+    ],
+    [
+     "2515",
+     0.27047561716377827,
+     0.26966983589965365
+    ],
+    [
+     "1503",
+     0.2773079102167739,
+     0.2765257662802408
+    ],
+    [
+     "3236",
+     0.3120692543341206,
+     0.3113344379334831
+    ],
+    [
+     "2493",
+     0.2914286850868394,
+     0.29069444017779955
+    ],
+    [
+     "4770",
+     0.26206340283277746,
+     0.2613763367072704
+    ],
+    [
+     "5469",
+     0.26887301962694915,
+     0.26821640828200577
+    ],
+    [
+     "6243",
+     0.296004094693459,
+     0.29661839888401453
+    ],
+    [
+     "2414",
+     0.2324477926076336,
+     0.23183384630809287
+    ],
+    [
+     "1590",
+     0.3190651222054291,
+     0.3184512430092447
+    ],
+    [
+     "5457",
+     0.26748700798188213,
+     0.2668881857898694
+    ],
+    [
+     "6139",
+     0.2716000647727242,
+     0.2710148753964499
+    ],
+    [
+     "5291",
+     0.29961347112547126,
+     0.300176208412165
+    ],
+    [
+     "2630",
+     0.27357895710458346,
+     0.2730254794209858
+    ],
+    [
+     "3372",
+     0.2735522800112099,
+     0.2729993781173212
+    ],
+    [
+     "2527",
+     0.26513055560923593,
+     0.26458254931547404
+    ],
+    [
+     "2038",
+     0.27831459329925257,
+     0.2777699957220327
+    ],
+    [
+     "3045",
+     0.32197758125514414,
+     0.3214346279211209
+    ],
+    [
+     "4916",
+     0.2971193782906251,
+     0.2965811018767195
+    ],
+    [
+     "2387",
+     0.243574271571794,
+     0.24308069379328937
+    ]
+   ]
+  },
+  "pred_return_20d": {
+   "max_abs_delta": 0.0003584130802401775,
+   "mean_abs_delta": 3.5035491714582356e-07,
+   "rows_changed": 1,
+   "affected_rows_changed": 1,
+   "affected_max_abs_delta": 0.0003584130802401775,
+   "others_rows_changed": 0,
+   "others_max_abs_delta": 0.0,
+   "top_changes": [
+    [
+     "2072",
+     -0.01632943590751978,
+     -0.01668784898775996
+    ]
+   ]
+  },
+  "prob_edge": {
+   "max_abs_delta": 0.016112830231535924,
+   "mean_abs_delta": 0.00013833179488234997,
+   "rows_changed": 53,
+   "affected_rows_changed": 3,
+   "affected_max_abs_delta": 0.016112830231535924,
+   "others_rows_changed": 50,
+   "others_max_abs_delta": 0.009366834030118065,
+   "top_changes": [
+    [
+     "1591",
+     -0.08105358560410014,
+     -0.06494075537256422
+    ],
+    [
+     "2072",
+     -0.192400211789902,
+     -0.20443349875618438
+    ],
+    [
+     "9910",
+     -0.05944444420746986,
+     -0.050077610177351795
+    ],
+    [
+     "4722",
+     -0.13650790407919877,
+     -0.14542173598031866
+    ],
+    [
+     "4908",
+     -0.10065468601577227,
+     -0.10906177162369668
+    ],
+    [
+     "1809",
+     -0.0953737663983017,
+     -0.10147774894108269
+    ],
+    [
+     "8044",
+     -0.1326056692847037,
+     -0.13835130628391823
+    ],
+    [
+     "8374",
+     -0.039686692958271486,
+     -0.04505586909591491
+    ],
+    [
+     "2419",
+     -0.0830783843144261,
+     -0.08832593896575558
+    ],
+    [
+     "3346",
+     -0.15587249284061971,
+     -0.16086348555580013
+    ],
+    [
+     "3041",
+     -0.04998931450547017,
+     -0.045800727280197906
+    ],
+    [
+     "6231",
+     -0.06220632885315358,
+     -0.06620842344788996
+    ],
+    [
+     "3026",
+     -0.08091366517149517,
+     -0.07714841142196033
+    ],
+    [
+     "2515",
+     -0.0885423849739857,
+     -0.09125773313339836
+    ],
+    [
+     "1503",
+     -0.07925912643018196,
+     -0.0818560660227739
+    ],
+    [
+     "1528",
+     -0.22442343099961248,
+     -0.22684058059470286
+    ],
+    [
+     "6190",
+     -0.08486421652300508,
+     -0.08721699086980927
+    ],
+    [
+     "4770",
+     -0.1911584145917008,
+     -0.19327899933656922
+    ],
+    [
+     "2493",
+     -0.17922886506287944,
+     -0.18129677072266331
+    ],
+    [
+     "5469",
+     -0.1872939664663656,
+     -0.18927866542374883
+    ],
+    [
+     "2630",
+     -0.10416519329601115,
+     -0.10597755700610118
+    ],
+    [
+     "3372",
+     -0.10383497677334641,
+     -0.10564629904987255
+    ],
+    [
+     "2548",
+     -0.31181800859186615,
+     -0.31362776014659344
+    ],
+    [
+     "2038",
+     -0.08702032558424877,
+     -0.0888068165937344
+    ],
+    [
+     "2387",
+     -0.13478636128372756,
+     -0.13653962620359675
+    ],
+    [
+     "2527",
+     -0.17710395434224085,
+     -0.17880482284868665
+    ],
+    [
+     "6909",
+     -0.18960408840174675,
+     -0.18794364460640361
+    ],
+    [
+     "8039",
+     -0.18501812425403874,
+     -0.18659806889167718
+    ],
+    [
+     "6138",
+     -0.11595807748617762,
+     -0.11465765345629045
+    ],
+    [
+     "2723",
+     -0.10433594014044983,
+     -0.10303574456397635
+    ],
+    [
+     "5388",
+     -0.1322547193643727,
+     -0.13097548547670387
+    ],
+    [
+     "3236",
+     -0.16771521101290016,
+     -0.16896251140430157
+    ],
+    [
+     "5457",
+     -0.12913742568037145,
+     -0.13006048445980234
+    ],
+    [
+     "5291",
+     -0.13509622800986676,
+     -0.1341842159348871
+    ],
+    [
+     "1590",
+     -0.007428308119493132,
+     -0.008336529008405202
+    ],
+    [
+     "6139",
+     -0.12800236541181276,
+     -0.1289085914680318
+    ],
+    [
+     "3587",
+     -0.13235507328967225,
+     -0.13323242081630893
+    ],
+    [
+     "2414",
+     -0.0962179809070089,
+     -0.09709481894667052
+    ],
+    [
+     "4916",
+     -0.1386240273535153,
+     -0.13949600253578753
+    ],
+    [
+     "3045",
+     0.019697709792612594,
+     0.018912693866732
+    ]
+   ]
+  },
+  "recommendation_changes": [],
+  "top30_out": [],
+  "top30_in": [],
+  "baseline_sanity": {
+   "production_file": "predictions_2026-10-16.csv",
+   "joined": 1017,
+   "up_prob_max_abs_delta": 0.012360986157262444
+  }
+ },
+ "history": {
+  "tickers": 48,
+  "daily_rows": 16961,
+  "feature_cells_nan_to_value": 13962,
+  "feature_cells_value_changed": 24474,
+  "by_month": {
+   "2023-08": 182,
+   "2023-09": 260,
+   "2023-10": 260,
+   "2023-11": 286,
+   "2023-12": 273,
+   "2024-01": 286,
+   "2024-02": 169,
+   "2024-03": 273,
+   "2024-04": 260,
+   "2024-05": 182,
+   "2024-06": 95,
+   "2024-07": 105,
+   "2024-08": 214,
+   "2024-09": 260,
+   "2024-10": 247,
+   "2024-11": 273,
+   "2024-12": 286,
+   "2025-01": 195,
+   "2025-02": 247,
+   "2025-03": 278,
+   "2025-04": 360,
+   "2025-05": 228,
+   "2025-06": 126,
+   "2025-07": 138,
+   "2025-08": 906,
+   "2025-09": 1487,
+   "2025-10": 1420,
+   "2025-11": 1695,
+   "2025-12": 2112,
+   "2026-01": 2016,
+   "2026-02": 1152,
+   "2026-03": 2300,
+   "2026-04": 2580,
+   "2026-05": 2727,
+   "2026-06": 2028,
+   "2026-07": 2505,
+   "2026-08": 3650,
+   "2026-09": 3914,
+   "2026-10": 2461
+  },
+  "per_ticker": {
+   "1591": {
+    "nan_to_value": 0,
+    "value_changed": 762
+   },
+   "1780": {
+    "nan_to_value": 455,
+    "value_changed": 0
+   },
+   "2072": {
+    "nan_to_value": 932,
+    "value_changed": 0
+   },
+   "2237": {
+    "nan_to_value": 396,
+    "value_changed": 0
+   },
+   "2938": {
+    "nan_to_value": 180,
+    "value_changed": 0
+   },
+   "3041": {
+    "nan_to_value": 0,
+    "value_changed": 3215
+   },
+   "3485": {
+    "nan_to_value": 354,
+    "value_changed": 0
+   },
+   "3664": {
+    "nan_to_value": 0,
+    "value_changed": 3398
+   },
+   "4169": {
+    "nan_to_value": 504,
+    "value_changed": 0
+   },
+   "4178": {
+    "nan_to_value": 378,
+    "value_changed": 0
+   },
+   "4195": {
+    "nan_to_value": 330,
+    "value_changed": 0
+   },
+   "4582": {
+    "nan_to_value": 288,
+    "value_changed": 0
+   },
+   "4804": {
+    "nan_to_value": 0,
+    "value_changed": 0
+   },
+   "6021": {
+    "nan_to_value": 0,
+    "value_changed": 921
+   },
+   "6028": {
+    "nan_to_value": 549,
+    "value_changed": 0
+   },
+   "6111": {
+    "nan_to_value": 0,
+    "value_changed": 4955
+   },
+   "6462": {
+    "nan_to_value": 0,
+    "value_changed": 2564
+   },
+   "6534": {
+    "nan_to_value": 0,
+    "value_changed": 1140
+   },
+   "6604": {
+    "nan_to_value": 72,
+    "value_changed": 0
+   },
+   "6908": {
+    "nan_to_value": 590,
+    "value_changed": 0
+   },
+   "6945": {
+    "nan_to_value": 225,
+    "value_changed": 0
+   },
+   "6947": {
+    "nan_to_value": 552,
+    "value_changed": 0
+   },
+   "6983": {
+    "nan_to_value": 286,
+    "value_changed": 0
+   },
+   "6986": {
+    "nan_to_value": 240,
+    "value_changed": 0
+   },
+   "7689": {
+    "nan_to_value": 513,
+    "value_changed": 0
+   },
+   "7760": {
+    "nan_to_value": 394,
+    "value_changed": 0
+   },
+   "7768": {
+    "nan_to_value": 346,
+    "value_changed": 0
+   },
+   "7772": {
+    "nan_to_value": 338,
+    "value_changed": 0
+   },
+   "7794": {
+    "nan_to_value": 440,
+    "value_changed": 0
+   },
+   "7803": {
+    "nan_to_value": 292,
+    "value_changed": 0
+   },
+   "7806": {
+    "nan_to_value": 18,
+    "value_changed": 0
+   },
+   "7811": {
+    "nan_to_value": 582,
+    "value_changed": 0
+   },
+   "7812": {
+    "nan_to_value": 105,
+    "value_changed": 0
+   },
+   "7814": {
+    "nan_to_value": 214,
+    "value_changed": 0
+   },
+   "7818": {
+    "nan_to_value": 296,
+    "value_changed": 0
+   },
+   "7819": {
+    "nan_to_value": 282,
+    "value_changed": 0
+   },
+   "7820": {
+    "nan_to_value": 390,
+    "value_changed": 0
+   },
+   "7821": {
+    "nan_to_value": 442,
+    "value_changed": 0
+   },
+   "7822": {
+    "nan_to_value": 551,
+    "value_changed": 0
+   },
+   "7825": {
+    "nan_to_value": 207,
+    "value_changed": 0
+   },
+   "7827": {
+    "nan_to_value": 235,
+    "value_changed": 0
+   },
+   "7828": {
+    "nan_to_value": 426,
+    "value_changed": 0
+   },
+   "7835": {
+    "nan_to_value": 453,
+    "value_changed": 0
+   },
+   "7839": {
+    "nan_to_value": 256,
+    "value_changed": 0
+   },
+   "7842": {
+    "nan_to_value": 324,
+    "value_changed": 0
+   },
+   "7855": {
+    "nan_to_value": 383,
+    "value_changed": 0
+   },
+   "7856": {
+    "nan_to_value": 144,
+    "value_changed": 0
+   },
+   "8071": {
+    "nan_to_value": 0,
+    "value_changed": 7519
+   }
+  }
+ }
+}
