@@ -273,8 +273,11 @@ def load_news_volume(trade_date: str | None) -> dict[str, dict]:
     try:
         nv = pd.read_csv(path, dtype={"ticker": str, "trade_date": str})
         nv = nv[nv["trade_date"] == str(trade_date)]
+        bull = nv["bull14"] if "bull14" in nv.columns else pd.Series(pd.NA, index=nv.index)
         return {str(r["ticker"]).zfill(4): {"pos": int(r["pos14"]), "any": int(r["any14"]),
-                                            "rank": int(r["pos_rank"]), "n": int(r["pool_n"])} for _, r in nv.iterrows()}
+                                            "rank": int(r["pos_rank"]), "n": int(r["pool_n"]),
+                                            "bull": None if pd.isna(b) else int(b)}
+                for (_, r), b in zip(nv.iterrows(), bull)}
     except Exception:  # noqa: BLE001 - 研究欄位失敗不可擋儀表板
         return {}
 
@@ -1358,14 +1361,14 @@ function card(r){
       <div><span class="zlab">失效</span><b class="up">${esc(r.stop||'待重估')}</b></div></div>
     ${why?`<div class="card-why">${esc(why)}</div>`:''}
     ${r.tdcc?`<div class="card-tdcc">集保4週 散戶 ${fpp(r.tdcc.retail4w)}・大戶 ${fpp(r.tdcc.whale4w)}・排名 ${esc(r.tdcc.retail_rank)}/${esc(r.tdcc.pool)}</div>`:''}
-    ${r.news?`<div class="card-news">新聞14天 報導 ${esc(r.news.any)} 則</div>`:''}
+    ${r.news?`<div class="card-news">新聞14天 報導 ${esc(r.news.any)} 則${r.news.bull>0?`・📈 利多 ${esc(r.news.bull)} 則`:''}</div>`:''}
     ${isStale?`<div class="verdict v-skip">${esc(r.stale)}</div>`:''}
     ${chips?`<div class="tags">${chips}</div>`:''}
     ${r.kind==='veto'?`<div class="verdict v-skip">否決原因 · ${esc(r.status||r.reason||'需確認原始否決條件')}</div>`:r.vt==='skip'?verd:''}
     ${info.warnings.length?`<div class="card-unknown">${info.warnings.map(esc).join('；')}</div>`:''}
     <details class="card-details"><summary>詳細</summary>
       ${r.kind==='veto'||r.vt==='skip'?'':verd}
-      <div class="stat">資料日 ${esc(info.source_date||'未提供')}${r.strategy==='rere'?'':` · 模型 ${esc(info.model_source_date||'未提供')}`}${r.tdcc||r.news?' · 集保與新聞聲量為研究資訊，不是排序依據':''}</div>
+      <div class="stat">資料日 ${esc(info.source_date||'未提供')}${r.strategy==='rere'?'':` · 模型 ${esc(info.model_source_date||'未提供')}`}${r.tdcc||r.news?' · 集保與新聞聲量為研究資訊，不是排序依據':''}${r.news&&r.news.bull!=null?' · 📈＝本機模型判標題利多(標出的約93%正確,但約1/3利多標不出來;沒有📈不代表沒利多)':''}</div>
       <button type="button" class="back" data-tk="${esc(r.tk)}">查看 K 線與四面向</button>
     </details>
   </article>`;
