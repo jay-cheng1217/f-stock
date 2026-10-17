@@ -221,7 +221,7 @@ def main() -> None:
     report = {"date": today.isoformat(), "reconcile": rec}
     passed = rec["Monthly_Revenue_match_pct"] >= 99.0 and rec["YoY_pct_change_match_pct"] >= 99.0
     if not passed:
-        report["verdict"] = "STOP: 對帳未達 99.9%,不產生暫存與 A/B"
+        report["verdict"] = "STOP: 對帳未達 99.0%,不產生暫存與 A/B"
         print(report["verdict"])
         for k, v in rec.items():
             if k.endswith("examples") and v:
