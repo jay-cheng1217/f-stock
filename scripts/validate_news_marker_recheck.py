@@ -49,7 +49,7 @@ import validate_news_window_classifier as v34  # noqa: E402
 GOLD_DIR = v34.GOLD_DIR
 SEED = 88888888
 BARS = v35.BARS  # b_prec 0.85, b_recall 0.50, agree 0.90
-GOLD8_SHA = "GOLD8_LABELED_SHA256_PLACEHOLDER"  # 盲標凍結後填入,先於任何模型輸出
+GOLD8_SHA = "27c031af179ae44a145df90b2e867b312d13904562a2e4718cfb25481cbb5fd0"  # 盲標凍結 2026-10-17,先於任何模型輸出(B62/N50/R8)
 DESIGNS = {"gemma_title": "gemma4:26b-a4b 標題單判(線上 📈 原樣)", "strata_think": "Strata 標題單判 思考開啟(#38 主設計)"}
 
 
