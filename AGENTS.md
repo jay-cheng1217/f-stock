@@ -81,6 +81,13 @@
   先下載原始檔到 `logs/quarantine_tdcc_<date>/` 當保險(格式與 `集保分散/tdcc_<date>.csv` 相同,可直接轉入);
   (2) **盤中不可跑正式 fetcher**——它會重建 `集保分散/tdcc_summary.csv`,該檔在快照/名單憑證簽章內
   (`ml/dataset._raw_cache_source_patterns`),一動名單 API 即 503;正式入檔留給 Phase-1 或收盤後。
+- **月營收三缺陷與回補(2026-10-17,PM 核可)**:`月營收/` 1,246 檔只有 2025-09 起(3 月擴大股票池時用重試模式建檔,
+  `_resolve_revenue_update_window` 重試起始寫死 2025-09)、3 檔 KY 歷史全是空值列(更新只看月份在不在,空值永不重抓)、
+  60 檔 142 列與官方現值不符(公司事後重編,本機每月只抓前 2 個月)。已用 MOPS 全市場彙總 t21sc03 回補+改正並寫入
+  (備份 `logs/quarantine_revenue_backfill_20261017/`,報告 `ml/reports/ab_revenue_history_backfill_20261017.md`)。
+  `twstock.step6` 現在:空值列會重抓、舊檔讀不到不覆寫、公布期以官方彙總改正最近 12 個月(明細 `logs/revenue_corrections_*.csv`;
+  改正值是重編後數字,對回測有輕微前視)。**營收匯入代號一律取自檔名**(`backend/db/ingest._ingest_revenue`):
+  檔內 Ticker 欄曾讓 66 檔存成 '1441.0',且全部檔案無 Ticker 欄時舊 SQL 會讓匯入失敗。
 - **預測批次資料日不可取第一列(2026-10-10/12 事故)**:`ml/predict.run_prediction` 原以排序後第一列的 `date` 命名輸出檔;
   6173 最後一根K棒停在 10/06 又排第一,10/08 資料的預測被存成 `predictions_2026-10-06.csv`——10/10 週六重訓與 10/12 早上兩次
   蓋掉歷史檔、舊版紙上組合 `paper_portfolio.db` 鎖成 2026-10-06 並以 10/07 開盤進場(前視錯誤)、10/12 儀表板因找不到
