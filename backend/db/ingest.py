@@ -329,15 +329,12 @@ def _ingest_revenue(generation_id: str | None = None):
     if not csv_files:
         raise IngestValidationError("[ingest] 無月營收資料")
 
-    # 部分檔案自帶 Ticker 欄位，部分沒有 → union_by_name 合併
-    # 沒有 Ticker 的從檔名擷取
+    # 代號一律取自檔名(revenue_<代號>.csv)。2026-10-17:過去優先用檔內 Ticker 欄,66 檔該欄是浮點數
+    # 而存成 '1441.0';且全部檔案都沒有 Ticker 欄時,欄位不存在會讓整個匯入失敗。
     safe_paths = [f.replace("\\", "/") for f in csv_files]
     return _replace_table_from_query(conn, "revenue", f"""
         SELECT
-            COALESCE(
-                CAST(Ticker AS VARCHAR),
-                regexp_extract(filename, 'revenue_(\\w+)\\.csv', 1)
-            ) AS Ticker,
+            regexp_extract(filename, 'revenue_(\\w+)\\.csv', 1) AS Ticker,
             Date, Name, Monthly_Revenue, Cumulative_Revenue,
             YoY_pct_change, Cumulative_YoY_pct_change
         FROM read_csv_auto({safe_paths},

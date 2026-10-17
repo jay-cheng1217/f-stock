@@ -159,3 +159,34 @@ def test_duplicate_name_metadata_rejected_before_replacing_stock_list(monkeypatc
     with pytest.raises(ingest.IngestValidationError, match="duplicate ticker"):
         ingest._build_stock_list()
     assert conn.execute("SELECT Ticker FROM stock_list").fetchone()[0] == 'OLD'
+
+
+def _revenue_csv(path, with_ticker_col=None):
+    head = "Date,Name,Monthly_Revenue,Cumulative_Revenue,YoY_pct_change,Cumulative_YoY_pct_change"
+    rows = ["2026-08,X,100.0,100.0,1.0,1.0", "2026-09,X,110.0,210.0,2.0,1.5"]
+    if with_ticker_col:
+        head += ",Ticker"
+        rows = [r + f",{with_ticker_col}" for r in rows]
+    path.write_text("﻿" + head + "\n" + "\n".join(rows) + "\n", encoding="utf-8")
+
+
+def test_revenue_ticker_comes_from_filename_even_when_no_file_has_a_ticker_column(monkeypatch, tmp_path):
+    """2026-10-17:營收回補後所有檔都沒有 Ticker 欄,舊 SQL 會 Binder Error 讓整個匯入失敗。"""
+    conn = duckdb.connect()
+    monkeypatch.setattr(ingest, "get_conn", lambda: conn)
+    monkeypatch.setattr(ingest, "REVENUE_DIR", str(tmp_path))
+    _revenue_csv(tmp_path / "revenue_2330.csv")
+    _revenue_csv(tmp_path / "revenue_6532.csv")
+    assert ingest._ingest_revenue() == 4
+    assert sorted(r[0] for r in conn.execute("SELECT DISTINCT Ticker FROM revenue").fetchall()) == ["2330", "6532"]
+
+
+def test_revenue_float_ticker_column_no_longer_leaks_as_dotted_code(monkeypatch, tmp_path):
+    """舊檔自帶 Ticker 欄且為浮點數(1441.0)時,過去會存成 '1441.0' 而對不到其他表。"""
+    conn = duckdb.connect()
+    monkeypatch.setattr(ingest, "get_conn", lambda: conn)
+    monkeypatch.setattr(ingest, "REVENUE_DIR", str(tmp_path))
+    _revenue_csv(tmp_path / "revenue_1441.csv", with_ticker_col="1441.0")
+    _revenue_csv(tmp_path / "revenue_2330.csv")
+    ingest._ingest_revenue()
+    assert sorted(r[0] for r in conn.execute("SELECT DISTINCT Ticker FROM revenue").fetchall()) == ["1441", "2330"]
