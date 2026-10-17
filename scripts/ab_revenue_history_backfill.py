@@ -111,24 +111,63 @@ def reconcile(T: pd.DataFrame, local: dict[str, pd.DataFrame]) -> dict:
     return res
 
 
-def build_stage(T: pd.DataFrame, local: dict[str, pd.DataFrame]) -> dict:
+def build_stage(T: pd.DataFrame, local: dict[str, pd.DataFrame], correct: bool = False) -> dict:
+    """correct=False:只補本機沒有的月份。correct=True(PM 2026-10-17 選 B):另把本機營收為空、或營收與官方現值差 > 0.5 千元
+    的列,四個數值欄改用官方值(名稱保留本機);只差第二位小數四捨五入的年增率不動。"""
     if STAGE.parent.exists():
         shutil.rmtree(STAGE.parent)
     STAGE.mkdir(parents=True)
-    Tg = {tk: g for tk, g in T[T["Date"] >= FILL_FROM].groupby("ticker")}
-    affected, added_rows = {}, 0
+    Tg = {tk: g.set_index("Date") for tk, g in T[T["Date"] >= FILL_FROM].groupby("ticker")}
+    num = COLS[2:]
+    affected, added_rows, corrected_rows, corrections = {}, 0, 0, []
     for tk, d in local.items():
-        add = Tg.get(tk)
-        if add is not None:
-            add = add[~add["Date"].isin(set(d["Date"]))]
-        if add is not None and len(add):
-            out = pd.concat([d[COLS], add[COLS]], ignore_index=True).sort_values("Date")
-            affected[tk] = {"local_first": str(d["Date"].min()), "added": len(add), "new_first": str(out["Date"].min())}
-            added_rows += len(add)
-        else:
-            out = d[COLS]
-        out.to_csv(STAGE / f"revenue_{tk}.csv", index=False, encoding="utf-8-sig")
-    return {"files": len(local), "affected_files": len(affected), "added_rows": added_rows, "affected": affected}
+        d = d[COLS].copy()
+        t = Tg.get(tk)
+        n_add = n_fix = 0
+        if t is not None:
+            if correct:
+                for i, row in d.iterrows():
+                    if row["Date"] not in t.index:
+                        continue
+                    lv, tv = pd.to_numeric(row["Monthly_Revenue"], errors="coerce"), t.at[row["Date"], "Monthly_Revenue"]
+                    if pd.isna(lv) or abs(lv - tv) > 0.5:
+                        corrections.append([tk, row["Date"], None if pd.isna(lv) else float(lv), float(tv)])
+                        for c in num:
+                            d.at[i, c] = t.at[row["Date"], c]
+                        n_fix += 1
+            add = t[~t.index.isin(set(d["Date"]))].reset_index()
+            if len(add):
+                d = pd.concat([d, add[COLS]], ignore_index=True)
+                n_add = len(add)
+        d = d.sort_values("Date")
+        if n_add or n_fix:
+            affected[tk] = {"local_first": str(local[tk]["Date"].min()), "added": n_add, "corrected": n_fix,
+                            "new_first": str(d["Date"].min())}
+            added_rows += n_add
+            corrected_rows += n_fix
+        d.to_csv(STAGE / f"revenue_{tk}.csv", index=False, encoding="utf-8-sig")
+    return {"files": len(local), "affected_files": len(affected), "added_rows": added_rows,
+            "corrected_rows": corrected_rows, "corrections": corrections, "affected": affected}
+
+
+def spot_check(corrections: list, n: int = 20, seed: int = 20261017) -> dict:
+    """隨機抽 n 筆改正,向 MOPS 單一公司查詢(本機原始來源)比對官方現值。"""
+    import random
+
+    import twstock as tw
+
+    rng = random.Random(seed)
+    sample = rng.sample(corrections, min(n, len(corrections)))
+    s = tw.build_session()
+    rows, agree = [], 0
+    for tk, ym, lv, tv in sample:
+        y, m = int(ym[:4]), int(ym[5:])
+        res = tw._fetch_revenue_month(s, tk, y, m)
+        cur = None if not res else res.get("Monthly_Revenue")
+        ok = cur is not None and abs(cur - tv) <= 0.5
+        agree += ok
+        rows.append([tk, ym, lv, tv, cur, ok])
+    return {"n": len(sample), "official_now_equals_summary": agree, "rows": rows}
 
 
 def live_ab(as_of: date) -> dict:
@@ -169,6 +208,10 @@ def live_ab(as_of: date) -> dict:
             d = (pd.to_numeric(m[f"{col}_b"], errors="coerce") - pd.to_numeric(m[f"{col}_a"], errors="coerce")).abs()
             out[f"{col}_max_abs_delta"], out[f"{col}_mean_abs_delta"] = float(d.max()), float(d.mean())
             out[f"{col}_rows_changed"] = int((d > 1e-9).sum())
+            if col == "pred_return_20d":
+                top = m.assign(_d=d)[d > 1e-9].sort_values("_d", ascending=False)
+                out["pred_changed_tickers"] = top[["ticker", f"{col}_a", f"{col}_b"]].head(60).values.tolist()
+    out["latest_feature_changed_tickers"] = sorted({r[0] for r in feat_diff})
     if "recommendation_a" in m:
         ch = m[m["recommendation_a"] != m["recommendation_b"]]
         out["recommendation_changes"] = ch[["ticker", "recommendation_a", "recommendation_b"]].values.tolist()
@@ -212,14 +255,39 @@ def history_impact(stage_info: dict) -> dict:
 
 
 def main() -> None:
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--mode", choices=["fill", "correct"], default="fill")
+    args = ap.parse_args()
     today = date.today()
     T = parse_t21()
     local = load_local()
     print(f"t21sc03 {T['ticker'].nunique()} 檔 {T['Date'].min()}~{T['Date'].max()} {len(T)} 列;本機 {len(local)} 檔")
     rec = reconcile(T, local)
     print("對帳:", {k: v for k, v in rec.items() if not k.endswith("examples")})
-    report = {"date": today.isoformat(), "reconcile": rec}
+    report = {"date": today.isoformat(), "mode": args.mode, "reconcile": rec}
     passed = rec["Monthly_Revenue_match_pct"] >= 99.0 and rec["YoY_pct_change_match_pct"] >= 99.0
+    if args.mode == "correct":
+        st = build_stage(T, local, correct=True)
+        print(f"暫存(補+改正):受影響 {st['affected_files']} 檔,補入 {st['added_rows']} 列,改正 {st['corrected_rows']} 列")
+        sc = spot_check(st["corrections"])
+        report["spot_check"] = sc
+        print(f"抽查:{sc['official_now_equals_summary']}/{sc['n']} 筆官方現值 = 彙總值")
+        if sc["official_now_equals_summary"] < 19:
+            report["verdict"] = "STOP: 抽查一致 < 19/20,彙總不可當改正來源"
+            print(report["verdict"])
+        else:
+            report["stage"] = {k: v for k, v in st.items() if k not in ("affected", "corrections")}
+            report["corrections"] = st["corrections"]
+            report["live_ab"] = live_ab(today)
+            print("即時 A/B:", {k: v for k, v in report["live_ab"].items() if k not in ("latest_feature_changes",)})
+            report["history"] = history_impact(st)
+            print("歷史影響:", {k: v for k, v in report["history"].items() if k != "value_changed_by_month"})
+        out = OUT_DIR / f"ab_revenue_history_backfill_correct_{today:%Y%m%d}.json"
+        out.write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+        print("report:", out)
+        return
     if not passed:
         report["verdict"] = "STOP: 對帳未達 99.0%,不產生暫存與 A/B"
         print(report["verdict"])
