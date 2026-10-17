@@ -16,7 +16,8 @@ pos_rank = 當日名單+候選池中正向則數的名次(1=最多,同數同名�
 (利多精確率 76%),皆未過事前門檻(85/85/90)——卡片只顯示報導則數,pos14 欄位照記(研究連續性)但不顯示、不得使用。
 
 2026-10-17 #35 PASS 後新增 bull14:本機 Ollama 對每則標題判「對這一檔是否利多」(prompt/模型與驗收時同一份,
-import 自 validate_news_window_classifier,不得在此另改),只計 B。驗收:利多精確率 93.5%、召回率 66.2%——
+import 自 validate_news_window_classifier,不得在此另改),只計 B。驗收:利多精確率 93.5%、召回率 66.2%(#35);
+#38/#39 另兩份全新樣本為 78.6% / 88.5%,三份合計 86.4%。FactSet 速報自 #40 起改用 factset_rule(不問模型)——
 卡片只在 bull14>0 時顯示「📈 利多 k 則」,**沒有 📈 不代表沒有利多**;不進排序、過濾或否決。
 判讀結果快取於 ml/reports/cache/news_bull_labels.csv(同一 (代號,標題) 不重判)。Ollama 連不上時 bull14 留空,不擋流程。
 用法:python -X utf8 scripts/rere_news_volume.py   (排程選用步驟;任何錯誤只印警告並以 0 結束)
@@ -63,13 +64,35 @@ def _ask_bull(prompt: str, model: str, url: str, ticker: str, name: str, title: 
     return m.group(0) if m else "N"
 
 
+FACTSET_TP_MIN_PCT = 3.0
+_FACTSET_CODE = re.compile(r"\((\d{4})-TW\)")
+_FACTSET_MAG = re.compile(r"幅度約\s*([\d.]+)\s*%")
+
+
+def factset_rule(ticker: str, title: str) -> str | None:
+    """#40(2026-10-17 PM 核可上線):鉅亨「Factset 最新調查」速報以規則判定,不交模型。
+    目標價調升 > 3% 或 EPS 預估上修 → B;調降、下修、調幅 <= 3%、或標題主角不是這檔 → N。非 FactSet 標題回 None。"""
+    if "actset 最新調查" not in title:
+        return None
+    m = _FACTSET_CODE.search(title)
+    if not m or m.group(1) != ticker:
+        return "N"
+    if "目標價調升" in title:
+        mag = _FACTSET_MAG.search(title)
+        return "B" if mag and float(mag.group(1)) > FACTSET_TP_MIN_PCT else "N"
+    return "B" if "EPS預估上修" in title else "N"
+
+
 def classify_titles(pairs: list[tuple[str, str]], ask=None) -> dict[tuple[str, str], str] | None:
-    """#35:回傳 {(代號, 標題): B/R/N}。Ollama 不可用回 None(呼叫端讓 bull14 留空,不可當成「沒有利多」)。"""
+    """#35:回傳 {(代號, 標題): B/R/N}。Ollama 不可用回 None(呼叫端讓 bull14 留空,不可當成「沒有利多」)。
+    FactSet 速報先以 factset_rule 判定(優先於快取裡的舊模型判讀),其餘才問模型。"""
     pairs = sorted(set(pairs))
+    ruled = {p: lab for p in pairs if (lab := factset_rule(*p)) is not None}
     cache = {}
     if BULL_CACHE.exists():
         c = pd.read_csv(BULL_CACHE, dtype={"ticker": str, "title": str, "label": str})
         cache = {(t, s): lab for t, s, lab in zip(c["ticker"], c["title"], c["label"])}
+    cache.update(ruled)
     todo = [p for p in pairs if p not in cache]
     if todo:
         prompt, model, url = _bull_prompt()

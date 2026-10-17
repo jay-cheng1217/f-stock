@@ -88,6 +88,28 @@ def test_classifier_caches_and_returns_none_when_ollama_is_down(tmp_path, monkey
     assert nv.classify_titles([("2222", "乙 新標題")], ask=down) is None
 
 
+def test_factset_rule_follows_the_40_verdict():
+    tp = "鉅亨速報 - Factset 最新調查:致茂(2360-TW)目標價調升至750元,幅度約29.31%"
+    assert nv.factset_rule("2360", tp) == "B"
+    assert nv.factset_rule("2360", tp.replace("29.31", "2.5")) == "N"                         # 調幅 <= 3%
+    assert nv.factset_rule("2360", tp.replace("調升", "調降")) == "N"
+    assert nv.factset_rule("2360", "鉅亨速報 - Factset 最新調查:致茂(2360-TW)EPS預估上修至42.31元,預估目標價為2725元") == "B"
+    assert nv.factset_rule("2360", "鉅亨速報 - Factset 最新調查:致茂(2360-TW)EPS預估下修至40元,預估目標價為2725元") == "N"
+    assert nv.factset_rule("1234", tp) == "N"                                                  # 標題主角不是這檔
+    assert nv.factset_rule("2360", "致茂法說 營收創新高") is None                              # 非 FactSet 交給模型
+
+
+def test_factset_titles_never_reach_the_model_and_override_stale_cache(tmp_path, monkeypatch):
+    monkeypatch.setattr(nv, "BULL_CACHE", tmp_path / "bull.csv")
+    monkeypatch.setattr(nv, "_bull_prompt", lambda: ("p", "m", "u"))
+    fs = "鉅亨速報 - Factset 最新調查:緯穎(6669-TW)EPS預估上修至262.08元,預估目標價為5250元"
+    pd.DataFrame([{"ticker": "6669", "title": fs, "label": "N", "model": "old", "classified_at": "x"}]).to_csv(
+        tmp_path / "bull.csv", index=False, encoding="utf-8-sig")                              # 舊模型曾判 N
+    asked = []
+    got = nv.classify_titles([("6669", fs), ("6669", "緯穎 法說")], ask=lambda t, n, s: asked.append(s) or "N")
+    assert got[("6669", fs)] == "B" and asked == ["緯穎 法說"]
+
+
 def test_card_loader_passes_bull_and_tolerates_old_rows_without_it(tmp_path, monkeypatch):
     csv = tmp_path / "ml" / "reports" / "rere_news_volume.csv"
     csv.parent.mkdir(parents=True)

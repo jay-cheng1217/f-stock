@@ -1368,7 +1368,7 @@ function card(r){
     ${info.warnings.length?`<div class="card-unknown">${info.warnings.map(esc).join('；')}</div>`:''}
     <details class="card-details"><summary>詳細</summary>
       ${r.kind==='veto'||r.vt==='skip'?'':verd}
-      <div class="stat">資料日 ${esc(info.source_date||'未提供')}${r.strategy==='rere'?'':` · 模型 ${esc(info.model_source_date||'未提供')}`}${r.tdcc||r.news?' · 集保與新聞聲量為研究資訊，不是排序依據':''}${r.news&&r.news.bull!=null?' · 📈＝本機模型判標題利多(標出的約93%正確,但約1/3利多標不出來;沒有📈不代表沒利多)':''}</div>
+      <div class="stat">資料日 ${esc(info.source_date||'未提供')}${r.strategy==='rere'?'':` · 模型 ${esc(info.model_source_date||'未提供')}`}${r.tdcc||r.news?' · 集保與新聞聲量為研究資訊，不是排序依據':''}${r.news&&r.news.bull!=null?' · 📈＝本機模型判標題利多(三份驗收合計約86%正確,約1/4~1/3利多標不出來;分析師目標價調升>3%或EPS上修直接標📈;沒有📈不代表沒利多)':''}</div>
       <button type="button" class="back" data-tk="${esc(r.tk)}">查看 K 線與四面向</button>
     </details>
   </article>`;
