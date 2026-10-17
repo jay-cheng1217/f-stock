@@ -1561,55 +1561,179 @@ def _fetch_revenue_month(session, ticker, year, month):
     return None
 
 
-def _process_ticker_revenue(ticker, all_months):
-    """處理單支股票的月營收更新 (供並行使用)"""
+REVENUE_NUM_COLS = ["Monthly_Revenue", "Cumulative_Revenue", "YoY_pct_change", "Cumulative_YoY_pct_change"]
+
+
+def _read_revenue_file(final_path):
+    """讀既有營收檔;檔案不存在回空表,存在但讀不到則丟出例外(呼叫端不可當成空檔覆寫)。"""
+    if not os.path.exists(final_path) or os.path.getsize(final_path) == 0:
+        return pd.DataFrame(columns=["Date", "Name"] + REVENUE_NUM_COLS)
+    df = pd.read_csv(final_path, dtype={"Date": str})
+    if "Date" not in df.columns or "Monthly_Revenue" not in df.columns:
+        raise ValueError(f"unexpected revenue columns in {final_path}: {list(df.columns)}")
+    return _normalize_date_col(df)
+
+
+def _update_ticker_revenue(session, ticker, all_months):
+    """補抓單一股票缺少的月份;營收為空值的列視為缺少(2026-10-17:空值列過去永遠不會重抓)。
+    回傳 (新增或補值列數, 失敗清單)。既有檔讀不到時整檔跳過、不覆寫(過去會只用新月份覆蓋整檔)。"""
     final_path = os.path.join(REVENUE_DIR, f"revenue_{ticker}.csv")
+    try:
+        df_old = _read_revenue_file(final_path)
+    except Exception as exc:
+        print(f"  [WARN] revenue_{ticker}.csv 讀取失敗,跳過不覆寫: {type(exc).__name__}: {exc}")
+        return 0, [(ticker, None, None)]
 
-    existing = set()
-    if os.path.exists(final_path):
-        try:
-            df_e = pd.read_csv(final_path, dtype={"Date": str}, usecols=["Date"])
-            df_e = _normalize_date_col(df_e)
-            existing = set(df_e["Date"].dropna().tolist())
-        except Exception:
-            pass
-
-    missing = [(y, m) for y, m in all_months if f"{y}-{m:02d}" not in existing]
+    filled = set(df_old.loc[pd.to_numeric(df_old["Monthly_Revenue"], errors="coerce").notna(), "Date"].dropna())
+    missing = [(y, m) for y, m in all_months if f"{y}-{m:02d}" not in filled]
     if not missing:
         return 0, []
 
-    new_rows = []
-    failed = []
-    session = build_session()
-    try:
-        for year, month in missing:
-            res = _fetch_revenue_month(session, ticker, year, month)
-            if res:
-                new_rows.append(res)
-            else:
-                failed.append((ticker, year, month))
-    finally:
-        session.close()
-
+    new_rows, failed = [], []
+    for year, month in missing:
+        res = _fetch_revenue_month(session, ticker, year, month)
+        if res:
+            new_rows.append(res)
+        else:
+            failed.append((ticker, year, month))
     if not new_rows:
         return 0, failed
 
-    df_new = pd.DataFrame(new_rows)
-    if os.path.exists(final_path) and os.path.getsize(final_path) > 0:
-        try:
-            df_old = pd.read_csv(final_path, dtype={"Date": str})
-            df_out = pd.concat([df_old, df_new], ignore_index=True)
-        except Exception:
-            df_out = df_new
-    else:
-        df_out = df_new
-
+    df_out = pd.concat([df_old, pd.DataFrame(new_rows)], ignore_index=True)
     df_out = _normalize_date_col(df_out)
     df_out = df_out.drop_duplicates(subset=["Date"], keep="last").sort_values("Date")
     tmp = f"{final_path}.tmp"
     df_out.to_csv(tmp, index=False, encoding="utf-8-sig")
     shutil.move(tmp, final_path)
     return len(new_rows), failed
+
+
+def _process_ticker_revenue(ticker, all_months):
+    """處理單支股票的月營收更新 (供並行使用)"""
+    session = build_session()
+    try:
+        return _update_ticker_revenue(session, ticker, all_months)
+    finally:
+        session.close()
+
+
+REVENUE_SUMMARY_MIN_TICKERS = 1000   # 單月彙總解析出的公司數低於此值視為抓取不完整,該月不做改正
+
+
+def _parse_revenue_summary_html(html_text, ym):
+    """解析 MOPS 全市場月營收彙總 t21sc03 一個檔,回傳 Date/ticker/Name + 四個數值欄。"""
+    from io import StringIO
+
+    try:
+        tabs = pd.read_html(StringIO(html_text))
+    except (ValueError, ImportError):   # 無表格時 pandas 會改試 html5lib,未安裝即 ImportError
+        return pd.DataFrame()
+    rows = []
+    for t in tabs:
+        if t.shape[1] < 10:
+            continue
+        t = t.copy()
+        t.columns = [" ".join(map(str, c)) if isinstance(c, tuple) else str(c) for c in t.columns]
+        pick = lambda *keys: next((c for c in t.columns if all(k in c for k in keys)), None)  # noqa: E731
+        cc = {"code": pick("代號"), "name": pick("公司名稱"), "rev": pick("當月營收"), "yoy": pick("去年同月", "增減"),
+              "cum": pick("當月累計營收"), "cumyoy": pick("前期比較", "增減")}
+        if any(v is None for v in cc.values()):
+            continue
+        sub = pd.DataFrame({"ticker": t[cc["code"]].astype(str).str.strip(), "Name": t[cc["name"]].astype(str).str.strip(),
+                            "Monthly_Revenue": pd.to_numeric(t[cc["rev"]], errors="coerce"),
+                            "Cumulative_Revenue": pd.to_numeric(t[cc["cum"]], errors="coerce"),
+                            "YoY_pct_change": pd.to_numeric(t[cc["yoy"]], errors="coerce"),
+                            "Cumulative_YoY_pct_change": pd.to_numeric(t[cc["cumyoy"]], errors="coerce")})
+        rows.append(sub[sub["ticker"].str.fullmatch(r"\d{4}") & sub["Monthly_Revenue"].notna()])
+    if not rows:
+        return pd.DataFrame()
+    out = pd.concat(rows, ignore_index=True).drop_duplicates("ticker", keep="first")
+    out["Date"] = ym
+    return out
+
+
+def _fetch_revenue_summary(session, year, month):
+    """抓一個月份的全市場彙總(上市/上櫃 × 本國/外國);任何一個檔抓不到就回 None(該月不做改正)。"""
+    parts = []
+    for mk in ("sii", "otc"):
+        for k in (0, 1):
+            url = f"https://mopsov.twse.com.tw/nas/t21/{mk}/t21sc03_{year - 1911}_{month}_{k}.html"
+            try:
+                r = session.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
+            except requests.exceptions.RequestException:
+                return None
+            if r.status_code == 404 and k == 1:
+                continue
+            if r.status_code != 200:
+                return None
+            parts.append(_parse_revenue_summary_html(r.content.decode("big5", errors="replace"), f"{year}-{month:02d}"))
+            time.sleep(1.0)
+    parts = [p for p in parts if len(p)]
+    df = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame()
+    return df if len(df) >= REVENUE_SUMMARY_MIN_TICKERS else None
+
+
+def _apply_revenue_corrections(summary, tickers, log_path=None):
+    """以官方彙總現值改正本機既有列:營收為空值,或營收與彙總差 > 0.5 千元時,四個數值欄改用彙總值。
+    只改既有月份、不新增檔案;只差小數第二位四捨五入的年增率不動。回傳改正清單。"""
+    if summary is None or summary.empty:
+        return []
+    summary = summary.drop_duplicates(["ticker", "Date"], keep="first")   # 同月同公司可能同時出現在兩個子檔
+    by_tk = {tk: g.set_index("Date") for tk, g in summary.groupby("ticker")}
+    corrections = []
+    for tk in tickers:
+        if tk not in by_tk:
+            continue
+        final_path = os.path.join(REVENUE_DIR, f"revenue_{tk}.csv")
+        if not os.path.exists(final_path):
+            continue
+        try:
+            df = _read_revenue_file(final_path)
+        except Exception as exc:
+            print(f"  [WARN] revenue_{tk}.csv 讀取失敗,不做改正: {type(exc).__name__}: {exc}")
+            continue
+        s, changed = by_tk[tk], False
+        for i, row in df.iterrows():
+            if row["Date"] not in s.index:
+                continue
+            lv = pd.to_numeric(row["Monthly_Revenue"], errors="coerce")
+            tv = s.at[row["Date"], "Monthly_Revenue"]
+            if pd.isna(lv) or abs(lv - tv) > 0.5:
+                corrections.append({"ticker": tk, "Date": row["Date"], "local": None if pd.isna(lv) else float(lv),
+                                    "official": float(tv)})
+                for c in REVENUE_NUM_COLS:
+                    df.at[i, c] = s.at[row["Date"], c]
+                changed = True
+        if changed:
+            tmp = f"{final_path}.tmp"
+            df.to_csv(tmp, index=False, encoding="utf-8-sig")
+            shutil.move(tmp, final_path)
+    if corrections and log_path:
+        pd.DataFrame(corrections).to_csv(log_path, index=False, encoding="utf-8-sig")
+    return corrections
+
+
+REVENUE_CORRECTION_LOOKBACK_MONTHS = 12
+
+
+def _sync_revenue_corrections(end_date, tickers, months=REVENUE_CORRECTION_LOOKBACK_MONTHS):
+    """公司事後更正營收時本機不會知道(過去每月只抓前 2 個月);每次公布期以官方彙總比對最近 months 個月並改正。"""
+    frames = []
+    with requests.Session() as session:
+        cur = end_date.replace(day=1)
+        for _ in range(months):
+            df = _fetch_revenue_summary(session, cur.year, cur.month)
+            if df is None:
+                print(f"  [WARN] {cur:%Y-%m} 官方彙總不完整,該月不做改正")
+            else:
+                frames.append(df)
+            cur -= relativedelta(months=1)
+    if not frames:
+        return []
+    log_path = os.path.join(BASE_DIR, "logs", f"revenue_corrections_{datetime.now():%Y%m%d}.csv")
+    corrections = _apply_revenue_corrections(pd.concat(frames, ignore_index=True), tickers, log_path=log_path)
+    print(f"  官方彙總改正: {len(corrections)} 列" + (f"(明細 {log_path})" if corrections else ""))
+    return corrections
 
 
 def step6_update_revenue(retry_only=False):
@@ -1675,50 +1799,17 @@ def step6_update_revenue(retry_only=False):
 
     with requests.Session() as session:
         for ticker in tqdm(tickers, desc="月營收更新"):
-            final_path = os.path.join(REVENUE_DIR, f"revenue_{ticker}.csv")
-
-            existing = set()
-            if os.path.exists(final_path):
-                try:
-                    df_e = pd.read_csv(final_path, dtype={"Date": str}, usecols=["Date"])
-                    df_e = _normalize_date_col(df_e)
-                    existing = set(df_e["Date"].dropna().tolist())
-                except Exception:
-                    pass
-
-            missing = [(y, m) for y, m in all_months if f"{y}-{m:02d}" not in existing]
-            if not missing:
-                continue
-
-            new_rows = []
-            for year, month in missing:
-                res = _fetch_revenue_month(session, ticker, year, month)
-                if res:
-                    new_rows.append(res)
-                else:
-                    failed_tasks.append((ticker, year, month))
-
-            if not new_rows:
-                continue
-
-            df_new = pd.DataFrame(new_rows)
-            if os.path.exists(final_path) and os.path.getsize(final_path) > 0:
-                try:
-                    df_old = pd.read_csv(final_path, dtype={"Date": str})
-                    df_out = pd.concat([df_old, df_new], ignore_index=True)
-                except Exception:
-                    df_out = df_new
-            else:
-                df_out = df_new
-
-            df_out = _normalize_date_col(df_out)
-            df_out = df_out.drop_duplicates(subset=["Date"], keep="last").sort_values("Date")
-            tmp = f"{final_path}.tmp"
-            df_out.to_csv(tmp, index=False, encoding="utf-8-sig")
-            shutil.move(tmp, final_path)
-            total_new += len(new_rows)
+            n_new, failed = _update_ticker_revenue(session, ticker, all_months)
+            total_new += n_new
+            failed_tasks.extend(failed)
 
     print(f"  新增: {total_new} 筆, 失敗: {len(failed_tasks)} 筆")
+
+    if reason == "monthly_publish_window":
+        try:
+            _sync_revenue_corrections(end_date, all_tickers)
+        except Exception as exc:  # 改正是補強,失敗不可擋當月營收入檔
+            print(f"  [WARN] 官方彙總改正失敗,本月略過: {type(exc).__name__}: {exc}")
 
 
 # ==============================================================================
