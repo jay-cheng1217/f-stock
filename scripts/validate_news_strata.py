@@ -50,7 +50,7 @@ GOLD_DIR = v34.GOLD_DIR
 STRATA = "http://127.0.0.1:8080/v1"
 BARS = v34.BARS  # acc 0.85, b_prec 0.85, agree 0.90
 SEED = 7777777
-GOLD7_SHA = "GOLD7_LABELED_SHA256_PLACEHOLDER"  # 盲標凍結後填入,先於任何模型輸出
+GOLD7_SHA = "3848ad59448f27342e314484140aa968619925cb0ff774ea7d298da92aff60ec"  # 盲標凍結 2026-10-17,先於任何模型輸出(B55/N60/R5)
 DESIGNS = {  # tag: (說明, 是否主設計)
     "strata_think": ("Strata 標題單判 思考開啟", True),
     "strata_nothink": ("Strata 標題單判 思考關閉", False),
