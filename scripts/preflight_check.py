@@ -111,8 +111,47 @@ def check_residue() -> None:
         add("STOP", "當日模型產物", f"盤中出現 {len(models)} 個當日檔(如 {models[0]}),疑似污染")
 
 
+INGEST_SOURCES = (("日K資料", "*.csv"), ("月營收", "revenue_*.csv"), ("季報財務", "financial_*.csv"),
+                  ("集保分散", "tdcc_summary.csv"), ("大盤指數", "index_*.csv"))
+
+
+def newest_source_mtimes(base: Path = BASE) -> dict[str, float]:
+    out = {}
+    for folder, pattern in INGEST_SOURCES:
+        times = [p.stat().st_mtime for p in (base / folder).glob(pattern) if p.is_file()]
+        if times:
+            out[folder] = max(times)
+    return out
+
+
+def pending_ingest(newest: dict[str, float], db_mtime: float | None, dry_run: dict | None,
+                   slack_s: float = 60) -> list[str]:
+    """資料目錄晚於「上次匯入(stock.duckdb 修改時間)」與「上次 PASS 的匯入預演」者 = 下次排程匯入才會第一次碰到的變動。"""
+    marks = [db_mtime or 0.0]
+    if dry_run and dry_run.get("verdict") == "PASS":
+        marks.append(float(dry_run.get("finished_ts") or 0.0))
+    last_ok = max(marks)
+    return sorted(folder for folder, t in newest.items() if t > last_ok + slack_s)
+
+
+def check_ingest_pending() -> None:
+    from backend.config import DUCKDB_PATH
+
+    report = BASE / "logs" / "ingest_dry_run_latest.json"
+    dry = json.loads(report.read_text(encoding="utf-8")) if report.exists() else None
+    db = Path(DUCKDB_PATH)
+    newer = pending_ingest(newest_source_mtimes(), db.stat().st_mtime if db.exists() else None, dry)
+    if dry and dry.get("verdict") == "FAIL" and newer:
+        add("WARN", "匯入預演", f"上次預演 FAIL({dry.get('finished_at')}),且 {', '.join(newer)} 之後又有變動")
+    elif newer:
+        add("WARN", "匯入預演", f"{', '.join(newer)} 在上次匯入與上次預演之後被改過;下次排程匯入前先跑 "
+            "python -X utf8 scripts/ingest_dry_run.py")
+    else:
+        add("OK", "匯入預演", "資料目錄沒有晚於上次匯入或上次預演的變動")
+
+
 def main() -> int:
-    for fn in (check_clock, check_git, check_processes, check_api, check_residue):
+    for fn in (check_clock, check_git, check_processes, check_api, check_residue, check_ingest_pending):
         try:
             fn()
         except Exception as exc:  # noqa: BLE001

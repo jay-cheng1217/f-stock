@@ -5,6 +5,7 @@
 # 流程:(1) 等到指定時間 (2) preflight 無 STOP (3) 在分支工作目錄跑完整測試關卡
 #       (4) 憑證影響檢查:改到憑證來源且現在是交易日 18:00 前 → 拒絕
 #       (5) 可快轉、與主工作目錄未提交的追蹤檔不重疊 (6) 快轉合併 (7) 主工作目錄再跑完整測試關卡,不過就不推送
+#       (7b) 改到匯入相關程式時,用正式資料跑 scripts/ingest_dry_run.py,不過就不推送
 #       (8) 推送 (9) 移除分支工作目錄與分支
 # 任何一步失敗都停在當下並印出原因,不會自動回復;紀錄寫在 logs/merge_<分支>_<日期>.log。
 set -u
@@ -37,10 +38,15 @@ elif [ "$IMPACT" -ne 0 ]; then echo "ABORT(5): 憑證影響檢查失敗"; exit 5
 git merge-base --is-ancestor main "$BRANCH" || { echo "ABORT(6): 無法快轉(main 已前進,請在分支工作目錄 rebase)"; exit 6; }
 OVERLAP=$(comm -12 <(git diff --name-only main "$BRANCH" | sort) <(git status --porcelain | grep -v '^??' | cut -c4- | sort))
 if [ -n "$OVERLAP" ]; then echo "ABORT(7): 主工作目錄未提交的檔案與分支重疊:"; echo "$OVERLAP"; exit 7; fi
+PRE_MERGE=$(git rev-parse main)
 git merge --ff-only "$BRANCH" || { echo "ABORT(8): 合併失敗"; exit 8; }
 echo "merged: $(git log --oneline -1)"
 
 python -X utf8 scripts/premerge_gate.py --mode live || { echo "STOP(9): 合併後主工作目錄完整測試未過,未推送,請先處理"; exit 9; }
+if git diff --name-only "$PRE_MERGE" HEAD | grep -qE '^(backend/db/ingest\.py|backend/config\.py|twstock\.py|ml/universe\.py)$'; then
+  echo "--- 改到匯入相關程式,用現有正式資料跑匯入預演"
+  python -X utf8 scripts/ingest_dry_run.py || { echo "STOP(9): 匯入預演未過(下一次排程匯入會失敗),未推送,請先處理"; exit 9; }
+fi
 git push -q origin main && echo "pushed" || { echo "STOP(10): 推送失敗"; exit 10; }
 git worktree remove "$WT" && git branch -d "$BRANCH" && echo "分支工作目錄與分支已移除"
 git worktree list
