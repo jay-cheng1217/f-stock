@@ -96,7 +96,8 @@ TpexBarVerify(每日 20:15 獨立跑 `scripts/verify_otc_bars.py`,2026-10-13 PM 
 
 ## 8. Agent 接入(讓任何模型接管營運)
 
-開工必讀順序:`AGENTS.md`(單一守則來源,含 ML 防呆規則 1-14)→ 任務對應
+開工必讀順序:`AGENTS.md`(單一守則來源;ML 防呆規則 1-14 全文在 `docs/SPEC_prediction_guardrails.md`,
+事故經過在 `docs/AGENT_LESSONS.md`,系統參考在 `docs/SYSTEM_reference.md`)→ 任務對應
 `skills/*/SKILL.md` → `docs/STRATEGY_overview.md`(策略現況與判決)。
 鐵律三條:改過濾器前必回測;完成任務即 commit;rere/entry 帳本只經 tracker 寫入。
 Claude Code 另有 `.claude/agents/`(子代理)與 memory;其他模型把 AGENTS.md

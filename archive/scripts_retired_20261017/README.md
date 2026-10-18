@@ -19,7 +19,6 @@
 | sector_analysis_202508.py | 2026-04-06 |
 | sweep_t1_params.py | 2026-04-08 |
 | backtest_v4_overlay.py | 2026-04-18 |
-| notify_codex_done.py | 2026-04-22 |
 | v2_alpha_classifier_attribution.py | 2026-04-22 |
 | v2_alpha_regime_attribution.py | 2026-04-22 |
 | v2_alpha_classifier_snapshot_ab_test.py | 2026-04-24 |
@@ -67,3 +66,7 @@
 | rescreen_agent_source_library.py | 2026-06-06 |
 | backtest_finnhub_news_overlay.py | 2026-06-07 |
 | validate_strategy_profit_search.py | 2026-06-10 |
+
+**移回紀錄**:`notify_codex_done.py` 於 2026-10-18 移回 `scripts/`——AGENTS.md「Codex Completion Notification」仍要求 Codex
+完成任務時執行它;當時的零引用掃描只看程式、排程與測試,沒有掃文件,所以誤判。`tests/test_agents_md_contract.py`
+現在會檢查 AGENTS.md 與現行參考文件指到的檔案都存在,之後清理前也要一併掃 docs 與 AGENTS.md。

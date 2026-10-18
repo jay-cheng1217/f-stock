@@ -28,10 +28,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
-## 共用系統知識(已移至 AGENTS.md,經 import 載入)
+## 共用系統知識(單一來源,Claude 與 Codex 同一套)
 
-常用指令、系統架構、**ML 預測解釋財務常識防呆規則(規則 1-14,三層架構)**
-全部在 AGENTS.md——Claude 經第一行 import 取得,Codex 直接讀取,單一來源。
+- 一定要遵守的短規則與「什麼情況讀哪份文件」:AGENTS.md(經第一行 import 常駐載入)。
+- 需要時再讀(2026-10-18 自 AGENTS.md 逐字搬出,降低常駐內容):
+  事故經過 `docs/AGENT_LESSONS.md`、指令/架構/排程 `docs/SYSTEM_reference.md`、
+  **ML 預測解釋財務常識防呆規則(規則 1-14,三層架構)`docs/SPEC_prediction_guardrails.md`**。
 
 ---
 
