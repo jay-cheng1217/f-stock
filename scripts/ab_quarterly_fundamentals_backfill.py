@@ -406,6 +406,73 @@ def history() -> dict:
     return out
 
 
+def _sha(path: Path) -> str:
+    import hashlib
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write() -> dict:
+    """PM 2026-10-18 核可寫入(補資料+改正)。備份 → 重建暫存並比對報告 → 只替換內容有變的季檔(目標目錄內暫存檔 + os.replace)
+    → 逐檔驗證。還原:把備份目錄的檔案複製回原位。"""
+    import os
+    import shutil
+    import tempfile
+
+    stamp = date.today().strftime("%Y%m%d")
+    qdir = REPO / "logs" / f"quarantine_quarterly_backfill_{stamp}"
+    marker = WORK / "stage.json"
+    newer = [p.name for d in (scan.FIN_DIR, scan.BS_DIR) for p in d.glob("*.csv") if p.stat().st_mtime > marker.stat().st_mtime]
+    if newer:
+        raise SystemExit(f"本機季報在暫存後被改過 {newer},停止")
+    report = json.loads((REPO / "ml" / "reports" / "ab_quarterly_fundamentals_backfill_20261017.json").read_text(encoding="utf-8"))
+    rebuilt = stage()
+    if rebuilt["summary"] != report["stage_summary"]:
+        raise SystemExit("重建暫存與報告不一致,停止")
+    files = []
+    for kind in ("eps", "financial", "bs"):
+        for yq in scan.all_quarters():
+            files.append((kind, f"{scan.KINDS[kind][1]}{scan.yq_label(yq)}.csv"))
+    manifest = {"approved": "PM 2026-10-18(補資料+改正,接受改正值輕微前視)", "method_lock": "d272a03a",
+                "report_commit": "fc06874f", "files": []}
+    for kind, name in files:
+        src = LOCAL[kind] / name
+        dst = qdir / LOCAL[kind].name / name
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dst)
+        if _sha(src) != _sha(dst):
+            raise SystemExit(f"備份雜湊不符 {name},停止")
+    for kind, name in files:
+        target, staged = LOCAL[kind] / name, STAGE[kind] / name
+        before_sha = _sha(target)
+        a = pd.read_csv(target, dtype={"Ticker": str})
+        b = pd.read_csv(staged, dtype={"Ticker": str})
+        entry = {"file": f"{LOCAL[kind].name}/{name}", "rows_before": len(a), "rows_after": len(b), "before_sha256": before_sha}
+        if a.equals(b):
+            entry.update({"action": "skipped_identical", "after_sha256": before_sha})
+        else:
+            payload = staged.read_bytes()
+            fd, tmp = tempfile.mkstemp(prefix=name + ".", suffix=".tmp", dir=target.parent)
+            try:
+                with os.fdopen(fd, "wb") as fh:
+                    fh.write(payload)
+                    fh.flush()
+                    os.fsync(fh.fileno())
+                os.replace(tmp, target)
+            finally:
+                if os.path.exists(tmp):
+                    os.remove(tmp)
+            after = pd.read_csv(target, dtype={"Ticker": str})
+            if _sha(target) != _sha(staged) or not after.equals(b):
+                raise SystemExit(f"寫入後驗證失敗 {name};以 {qdir} 還原")
+            entry.update({"action": "replaced", "after_sha256": _sha(target)})
+        manifest["files"].append(entry)
+        print(f"{entry['action']:18s} {entry['file']} {entry['rows_before']}->{entry['rows_after']}", flush=True)
+    (qdir / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+    n = sum(e["action"] == "replaced" for e in manifest["files"])
+    print(f"replaced {n} files, skipped {len(files) - n}; backup + manifest -> {qdir}")
+    return manifest
+
+
 if __name__ == "__main__":
     {"stage": stage, "spot-check": spot_check, "ingest-test": ingest_test, "live-ab": live_ab,
-     "history": history}[sys.argv[1]]()
+     "history": history, "write": write}[sys.argv[1]]()
