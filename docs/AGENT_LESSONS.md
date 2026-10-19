@@ -152,6 +152,11 @@
   確實需要連線的測試標 `@pytest.mark.allow_network`。關卡另外比對測試前後的排程專用檔案,有變動即判 FAIL。
   讀當日排程 log 時注意:2026-10-12 18:05/18:46 與 2026-10-13 18:07~18:08、21:39 的 `REFUSED blocked`、`failure-fixture`、
   `verify_daily_bars failed`(traceback 指向 `tests/`)是測試寫入的假訊息,不是排程失敗。
+- **從分支工作目錄預覽產生器會出現假的憑證失效(2026-10-19)**:分支的 `generate_entry_candidates.py` 匯入時把自己的根目錄插到
+  `sys.path` 最前面,之後才延遲匯入的 `ml.snapshot_lineage` 就從 worktree 載入、用 worktree 的程式檔算來源簽章 →
+  「Canonical snapshot lineage rejected」。這是預覽工具造成的,不是正式憑證失效:先在主工作目錄直接呼叫 `_verified_snapshot()` 確認;
+  預覽時先從主工作目錄匯入 `ml.snapshot_lineage`,載入分支模組後再把 worktree 移出 `sys.path`。
+  另:舊日預測檔的憑證對現行來源必然失效,過去交易日的處置名單也無法重建(complete=False、0 檔),重算歷史名單只能當近似。
 
 ## 策略背景(原 AGENTS.md「Strategy Background」第一條)
 
