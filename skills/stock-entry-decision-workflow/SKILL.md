@@ -80,7 +80,11 @@ Ask for only the minimum missing screenshots needed to resolve uncertainty. Pref
 
 News NEVER adds candidates — it only vetoes / downgrades / delays names already on the
 canonical list. Check order: (1) MOPS ⚠️ alert (董監轉讓/私募/增資) on a list stock →
-drop for the day; 📅法說 within 3 days → wait until after the call. (2) Per-stock noise
+drop for the day; 📅法說 within 3 days → wait until after the call.
+(Since the 2026-10-20 signal, the canonical generator applies the MOPS alert veto to rere candidates
+before the quota, so a vetoed rere slot is refilled by the next candidate of the same group in the
+neutral order — #42 PASS. The vetoed name still appears as a veto card and never enters the ledger.
+This is the generator's quota rule, not news adding names; do not hand-add replacements.) (2) Per-stock noise
 level: NO news = good (quiet washout is the rere setup); a wall of bullish headlines /
 target-price upgrades = heat warning, right tail may be realised → downsize or skip.
 (3) Industry section: if the stock's theme is pulling back today, tighten the intraday

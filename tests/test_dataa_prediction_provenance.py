@@ -142,10 +142,11 @@ def test_scoring_and_all_strategy_functions_are_ast_unchanged():
         # 之後這三個函式再有任何改動,必須連同核可依據一起更新這裡的指紋。
         # 2026-10-15 generate 更新:#26 FAIL 後 PM 核可 rere 排序移除族群強度、改純中性鍵(10/16 訊號起)。
         # 2026-10-16 _rere_lane_ok/generate 更新:#29 PASS 後 PM 核可新增 shallow5_v2(5~8% 帶,名額另計 3,10/19 名單起)。
+        # 2026-10-19 generate 更新:#42 PASS 後 PM 核可官方警示否決先於 rere 名額、由同組下一順位補位(10/20 訊號起)。
         ("scripts/generate_entry_candidates.py", "_technical"): "23125fd73dc8e46a77af5f0ca1bd6adff52bec03dbaf0c98eff109cefb5bd6aa",
         ("scripts/generate_entry_candidates.py", "_pattern_ok"): "3416b7eeb156182360441d87e6c1fb7e1927c6f70a7001738f3bd68a7941e268",
         ("scripts/generate_entry_candidates.py", "_rere_lane_ok"): "fb66d721fdb6542c2808d7e0a7fbafa47b3f138beeb518efd878af90cadad958",
-        ("scripts/generate_entry_candidates.py", "generate"): "ff01ea717441f26c59fcb799d6dd94b49c4e54c66c111970f1b8fc65ecc7ecb7",
+        ("scripts/generate_entry_candidates.py", "generate"): "93e481b06808f6bb0293c88c8dccbb08a1ab672ced90c8b28bb86597da04e2c5",
         ("scripts/generate_entry_candidates.py", "_apply_data_quality"): "893fdea3a97d2bec626576955fc90ee831c6884c4d343fe2479cfce288d49fad",
     }
     root = Path(__file__).resolve().parents[1]

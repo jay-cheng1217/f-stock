@@ -710,9 +710,8 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
     # 沉在名單後段,實戰有效的 lane 不該被淹沒)。純呈現順序,非訊號變更。
     # v2 子型態另計上限,不佔現行三型的 6 個名額(現行 forward cohort 零變動)。
     # 名額三段各自獨立:現行三型 RERE_MAX、v2 兩型 RERE_V2_MAX(平分)、5~8% 帶 RERE_SHALLOW5_MAX(2026-10-16 起)
-    chosen_rere = ([r for r in rere_rows if r["ptype"] not in RERE_NO_FOREIGN_PTYPES][:RERE_MAX]
-                   + _pick_rere_v2(rere_rows)
-                   + [r for r in rere_rows if r["ptype"] == "shallow5_v2"][:RERE_SHALLOW5_MAX])
+    # 2026-10-20 訊號起:官方警示否決先於名額,被否決者由同組下一順位補上(#42 PASS)
+    chosen_rere = _choose_rere(rere_rows, _mops_alert_tickers(required))
     rere_tickers = {r["ticker"] for r in chosen_rere}
     rows = chosen_rere + [r for r in rows if r["ticker"] not in rere_tickers]
 
@@ -720,25 +719,18 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
     # 警示類(董監轉讓/私募/增減資)=官方事實+警訊不對稱 → 自動剔除免回測
     # (與 chipk risk flag 同級);法說=行事曆標註不動排名;新聞「熱度」未回測不進 gate。
     try:
-        mops_files = sorted((BASE_DIR / "新聞資料").glob("announcements_*.csv"))[-2:]
-        mops = pd.concat([pd.read_csv(f, dtype={"Ticker": str}) for f in mops_files], ignore_index=True)
-        mops["Ticker"] = mops["Ticker"].str.zfill(4)
-        cutoff = (pd.Timestamp(required) - pd.Timedelta(days=3)).strftime("%Y-%m-%d")
-        mops = mops[(mops["Date"].astype(str) >= cutoff) & (mops["Date"].astype(str).str[:10] <= required.isoformat())]
-        kw_alert = ["持股轉讓", "股份轉讓", "私募", "現金增資", "辦理減資"]  # 收窄:裸「董事」會誤殺例行董事會公告
-        kw_cal = ["法人說明會", "法說"]
+        mops = _mops_recent(required)
         for r in rows:
             mine = mops[mops["Ticker"] == r["ticker"]]
             if not len(mine):
                 continue
             titles = " ".join(mine["Title"].astype(str))
-            alert_titles = [x for x in mine["Title"].astype(str)
-                            if any(k in x for k in kw_alert) and "庫藏股" not in x]
+            alert_titles = [x for x in mine["Title"].astype(str) if _is_mops_alert(x)]
             if alert_titles:
                 r["kind"] = "veto"
                 r["status"] = "⚠️官方警示·剔除(3日內董監/私募/增資公告)"
                 r["score"] = -9999
-            elif any(k in titles for k in kw_cal):
+            elif any(k in titles for k in MOPS_CALENDAR_KW):
                 r["status"] = str(r["status"]) + "·📅法說在即"
         # 排序:veto 卡全域沉底 → rere lane 置頂(用戶 2026-08-31 指示)→ 主 lane,組內按分數
         rows.sort(key=lambda x: (
@@ -923,6 +915,46 @@ def _neutral_order_key(as_of: date | None, ticker: str) -> float:
     day = as_of.isoformat() if as_of else ""
     digest = hashlib.sha256(f"{day}|{str(ticker).zfill(4)}".encode("utf-8")).hexdigest()
     return int(digest[:12], 16) / float(16 ** 12)
+
+
+MOPS_ALERT_KW = ("持股轉讓", "股份轉讓", "私募", "現金增資", "辦理減資")   # 收窄:裸「董事」會誤殺例行董事會公告
+MOPS_CALENDAR_KW = ("法人說明會", "法說")
+
+
+def _is_mops_alert(title: str) -> bool:
+    return any(k in title for k in MOPS_ALERT_KW) and "庫藏股" not in title
+
+
+def _mops_recent(required: date) -> pd.DataFrame:
+    """訊號資料日前 3 個日曆天到當天的官方重大訊息(最近兩個月檔)。"""
+    mops_files = sorted((BASE_DIR / "新聞資料").glob("announcements_*.csv"))[-2:]
+    mops = pd.concat([pd.read_csv(f, dtype={"Ticker": str}) for f in mops_files], ignore_index=True)
+    mops["Ticker"] = mops["Ticker"].str.zfill(4)
+    cutoff = (pd.Timestamp(required) - pd.Timedelta(days=3)).strftime("%Y-%m-%d")
+    return mops[(mops["Date"].astype(str) >= cutoff) & (mops["Date"].astype(str).str[:10] <= required.isoformat())]
+
+
+def _mops_alert_tickers(required: date) -> set[str]:
+    """3 日內有官方警示公告的代號;公告檔缺失時回空集合(與 overlay 同樣不擋名單)。"""
+    try:
+        mops = _mops_recent(required)
+    except Exception:
+        return set()
+    return set(mops.loc[mops["Title"].astype(str).map(_is_mops_alert), "Ticker"])
+
+
+def _choose_rere(rere_rows: list[dict[str, Any]], vetoed: set[str]) -> list[dict[str, Any]]:
+    """rere 名額分配。輸入須已依 score 由大到小排序。
+    被官方警示否決者不佔名額,由同組下一順位補上(#42 BT-rere-veto-backfill PASS,2026-10-20 訊號起;
+    之前是先分名額再否決,名額空著)。原本會入選的被否決者附在最後,讓 MOPS overlay 標成否決卡顯示原因,不進帳本。"""
+    def pick(pool: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        return ([r for r in pool if r["ptype"] not in RERE_NO_FOREIGN_PTYPES][:RERE_MAX]
+                + _pick_rere_v2(pool)
+                + [r for r in pool if r["ptype"] == "shallow5_v2"][:RERE_SHALLOW5_MAX])
+
+    chosen = pick([r for r in rere_rows if r["ticker"] not in vetoed])
+    shown_veto = [r for r in pick(rere_rows) if r["ticker"] in vetoed]
+    return chosen + shown_veto
 
 
 def _pick_rere_v2(rere_rows: list[dict[str, Any]], cap: int | None = None) -> list[dict[str, Any]]:

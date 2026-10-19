@@ -436,3 +436,44 @@ def test_neutral_key_stays_bounded():
     # 2026-10-16 起分數=純中性鍵(#26 後族群分級移出排序,只作顯示);保留值域檢查,
     # 若未來再疊加其他整數級距,鍵 < 1 仍保證不越級。
     assert max(keys) < 1.0 and min(keys) >= 0.0
+
+
+def _rere_pool():
+    rows = ([dict(ticker=f"S{i}", ptype="shakeout", score=0.99 - i * 0.01) for i in range(8)]
+            + [dict(ticker=f"A{i}", ptype="shakeout_v2", score=0.89 - i * 0.01) for i in range(5)]
+            + [dict(ticker=f"B{i}", ptype="shallow_v2", score=0.79 - i * 0.01) for i in range(5)]
+            + [dict(ticker=f"F{i}", ptype="shallow5_v2", score=0.69 - i * 0.01) for i in range(5)])
+    return sorted(rows, key=lambda r: -r["score"])
+
+
+def test_choose_rere_without_veto_matches_the_old_quota_rule():
+    rows = _rere_pool()
+    old = ([r for r in rows if r["ptype"] not in gen.RERE_NO_FOREIGN_PTYPES][:gen.RERE_MAX]
+           + gen._pick_rere_v2(rows) + [r for r in rows if r["ptype"] == "shallow5_v2"][:gen.RERE_SHALLOW5_MAX])
+    assert [r["ticker"] for r in gen._choose_rere(rows, set())] == [r["ticker"] for r in old]
+
+
+def test_choose_rere_backfills_vetoed_slots_from_the_same_group():
+    """#42:被否決者不佔名額,同組下一順位補上;原本會入選的被否決者附在最後(顯示成否決卡,不進帳本)。"""
+    out = [r["ticker"] for r in gen._choose_rere(_rere_pool(), {"S2", "A0", "F1", "S7"})]
+    assert out[:6] == ["S0", "S1", "S3", "S4", "S5", "S6"]               # 現行三型仍 6 張,S2 由 S6 補
+    v2 = [t for t in out if t[0] in "AB"]
+    assert v2[:6] == ["A1", "A2", "A3", "B0", "B1", "B2"]                # v2 仍兩型各半,A0 由 A3 補
+    assert [t for t in out if t.startswith("F")][:3] == ["F0", "F2", "F3"]
+    assert out[-3:] == ["S2", "A0", "F1"]                                  # S7 本來就不會入選,不顯示
+
+
+def test_mops_alert_tickers_uses_the_same_window_and_keywords(tmp_path, monkeypatch):
+    import datetime as _dt
+    news = tmp_path / "新聞資料"
+    news.mkdir()
+    (news / "announcements_202610.csv").write_text(
+        "Ticker,Name,Date,Time,Title,Market\n"
+        "1711,永光,2026-10-15,17:00,本公司董事會決議辦理現金增資,上市\n"
+        "2330,台積電,2026-10-16,17:00,本公司董事會決議買回庫藏股並辦理減資,上市\n"
+        "3008,大立光,2026-10-12,17:00,本公司私募普通股定價,上市\n"
+        "2454,聯發科,2026-10-16,15:00,本公司受邀參加法人說明會,上市\n", encoding="utf-8")
+    monkeypatch.setattr(gen, "BASE_DIR", tmp_path)
+    assert gen._mops_alert_tickers(_dt.date(2026, 10, 16)) == {"1711"}    # 庫藏股排除;10/12 超過 3 日
+    monkeypatch.setattr(gen, "BASE_DIR", tmp_path / "missing")
+    assert gen._mops_alert_tickers(_dt.date(2026, 10, 16)) == set()       # 檔案缺失不擋名單
