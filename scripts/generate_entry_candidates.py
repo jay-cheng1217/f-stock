@@ -627,7 +627,9 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
         _apply_data_quality(row, required, special_gate, None)
     shadow_legacy_main = _legacy_main_rank(rows)  # 舊規則影子名單(2026-10-07 前的正式規則)
     rows.sort(key=lambda x: (x["kind"] == "watch", -x["score"]))
-    rows = rows[:MAIN_MAX]  # 主 lane 呈現上限(純呈現,非訊號變更)
+    # 主 lane 呈現上限 MAIN_MAX;2026-10-20 訊號起官方警示否決先於上限,由第 13 名起補位(#43 PASS)
+    mops_vetoed = _mops_alert_tickers(required)
+    rows = _choose_main(rows, mops_vetoed)
 
     # --- rere lane(第二獵場):掃全 universe,模型不得用 pred 否決 ---
     # 基準 2026-07-15 重定:60日 +4.58%/勝率35.8%(停損+除息還原;舊9.4%為無停損legacy)。
@@ -711,7 +713,7 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
     # v2 子型態另計上限,不佔現行三型的 6 個名額(現行 forward cohort 零變動)。
     # 名額三段各自獨立:現行三型 RERE_MAX、v2 兩型 RERE_V2_MAX(平分)、5~8% 帶 RERE_SHALLOW5_MAX(2026-10-16 起)
     # 2026-10-20 訊號起:官方警示否決先於名額,被否決者由同組下一順位補上(#42 PASS)
-    chosen_rere = _choose_rere(rere_rows, _mops_alert_tickers(required))
+    chosen_rere = _choose_rere(rere_rows, mops_vetoed)
     rere_tickers = {r["ticker"] for r in chosen_rere}
     rows = chosen_rere + [r for r in rows if r["ticker"] not in rere_tickers]
 
@@ -941,6 +943,16 @@ def _mops_alert_tickers(required: date) -> set[str]:
     except Exception:
         return set()
     return set(mops.loc[mops["Title"].astype(str).map(_is_mops_alert), "Ticker"])
+
+
+def _choose_main(rows: list[dict[str, Any]], vetoed: set[str]) -> list[dict[str, Any]]:
+    """主 lane 呈現上限 MAIN_MAX。輸入須已依 (資料待確認, −score) 排序。
+    被官方警示否決者不佔名額,由第 13 名起依序補上(#43 BT-main-veto-backfill PASS,2026-10-20 訊號起;
+    之前是先截 12 檔再否決,名額空著)。原本會入選的被否決者附在最後,讓 MOPS overlay 標成否決卡顯示原因
+    (帳本 state=veto,不算交易);補上的股票在 rere 掃描時與其他主 lane 列一樣被跳過(主 lane 優先)。"""
+    chosen = [r for r in rows if r["ticker"] not in vetoed][:MAIN_MAX]
+    shown_veto = [r for r in rows[:MAIN_MAX] if r["ticker"] in vetoed]
+    return chosen + shown_veto
 
 
 def _choose_rere(rere_rows: list[dict[str, Any]], vetoed: set[str]) -> list[dict[str, Any]]:

@@ -463,6 +463,22 @@ def test_choose_rere_backfills_vetoed_slots_from_the_same_group():
     assert out[-3:] == ["S2", "A0", "F1"]                                  # S7 本來就不會入選,不顯示
 
 
+def _main_pool(n=15):
+    return [dict(ticker=f"M{i:02d}", kind="go", score=1.0 - i * 0.01) for i in range(n)]
+
+
+def test_choose_main_without_veto_matches_the_old_cap():
+    rows = _main_pool()
+    assert gen._choose_main(rows, set()) == rows[:gen.MAIN_MAX]
+
+
+def test_choose_main_backfills_vetoed_slots_from_rank_13():
+    """#43:被否決者不佔 12 檔名額,由第 13 名起補上;原本會入選的被否決者附在最後(顯示成否決卡)。"""
+    out = [r["ticker"] for r in gen._choose_main(_main_pool(), {"M02", "M13"})]
+    assert out[:gen.MAIN_MAX] == [f"M{i:02d}" for i in range(13) if i != 2]   # M12 補上 M02 的名額
+    assert out[gen.MAIN_MAX:] == ["M02"]                                       # M13 本來就不會入選,不顯示
+
+
 def test_mops_alert_tickers_uses_the_same_window_and_keywords(tmp_path, monkeypatch):
     import datetime as _dt
     news = tmp_path / "新聞資料"
