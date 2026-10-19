@@ -923,6 +923,14 @@ def load_model_tags(*, not_after: date | None = None,
     return tags, mkt
 
 
+# 寫進網頁的卡片欄位;網頁 card() 讀到的欄位都必須在這裡(tests/test_entry_dashboard_card_fields.py 檢查)。
+# 2026-10-19:news 漏列,新聞14天/📈 那行從 10/16 上線起從未顯示。
+CARD_ROW_FIELDS = ("tk", "stock", "sector", "strategy", "state", "status", "kind", "ptype", "pattern_line", "tdcc", "news",
+                   "priority", "zone", "stop", "no_chase", "ret20d", "reason",
+                   "zlo", "zhi", "stopv", "vt", "vtx", "stale", "card",
+                   "source_date", "model_source_date", "data_status", "data_warnings")
+
+
 def build(path: Path) -> str:
     from scripts.entry_artifact_lineage import load_entry_artifact
     inputs = _RenderReadSet()
@@ -1015,12 +1023,7 @@ def build(path: Path) -> str:
                         "archived_alerts": d.get("archived_zone_alerts") or [],
                         "sources": source_status,
                         "generated": datetime.now().strftime("%Y-%m-%d %H:%M")},
-               "rows": [{k: r.get(k) for k in
-                         ("tk", "stock", "sector", "strategy", "state", "status", "kind", "ptype", "pattern_line", "tdcc",
-                          "priority", "zone", "stop", "no_chase", "ret20d", "reason",
-                          "zlo", "zhi", "stopv", "vt", "vtx", "stale", "card",
-                          "source_date", "model_source_date", "data_status", "data_warnings")}
-                        for r in rows],
+               "rows": [{k: r.get(k) for k in CARD_ROW_FIELDS} for r in rows],
                "radar": radar,
                "idx": idx, "mkt": {**mkt, "guard_context": guard_context(mkt.get("guard"))}, "stocks": stocks, "ledger": ledger,
                "ledger_legacy": ledger_legacy,
