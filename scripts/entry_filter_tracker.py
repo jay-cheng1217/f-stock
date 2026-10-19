@@ -35,9 +35,12 @@ LEDGER = BASE_DIR / "ml" / "reports" / "entry_filter_ledger.csv"
 # 影子列,記入獨立帳本並行比較(≥60 日後 PM 裁決)。同一套觸發/失效價/到期規則。
 LEGACY_LEDGER = BASE_DIR / "ml" / "reports" / "entry_filter_ledger_legacy_main.csv"
 LEGACY_ROWS_KEY = "shadow_legacy_main"
+# 2026-10-20 訊號起:#45 MS 動能影子名單(主 lane 候選中距月線 <= +4% 者依 6-1 動能取 12)的前瞻帳本,同一套規則。
+MS_LEDGER = BASE_DIR / "ml" / "reports" / "entry_filter_ledger_ms_shadow.csv"
+MS_ROWS_KEY = "shadow_ms_main"
 DAILY = BASE_DIR / "日K資料"
 STATIC_LEDGER = BASE_DIR / "frontend" / "static" / "entry_filter_ledger.json"
-HORIZON = {"main": 20, "rere": 60, "main_legacy": 20}
+HORIZON = {"main": 20, "rere": 60, "main_legacy": 20, "main_ms": 20}
 
 COLS = ["trade_date", "ticker", "name", "lane", "state", "zone_low", "zone_high",
         "stop", "horizon", "status", "entry_date", "entry_price",
@@ -72,8 +75,8 @@ def _lane(row: dict) -> str | None:
     kind = str(row.get("kind") or "")
     if kind == "watch" or "watch" in lane:
         return None  # 觀察股需人工觸發,不入帳本
-    if lane == "main_legacy":
-        return "main_legacy"
+    if lane in ("main_legacy", "main_ms"):
+        return lane
     return "rere" if lane == "rere" else "main"
 
 
@@ -244,9 +247,13 @@ if __name__ == "__main__":
     ap.add_argument("--ledger", default=None, help="帳本路徑;省略=正式 entry_filter_ledger.csv")
     ap.add_argument("--legacy", action="store_true",
                     help=f"快捷:--rows-key {LEGACY_ROWS_KEY} --ledger {LEGACY_LEDGER.name}")
+    ap.add_argument("--ms", action="store_true",
+                    help=f"快捷:--rows-key {MS_ROWS_KEY} --ledger {MS_LEDGER.name}(#45 MS 動能影子)")
     a = ap.parse_args()
-    rows_key = LEGACY_ROWS_KEY if a.legacy else a.rows_key
-    ledger = LEGACY_LEDGER if a.legacy else (Path(a.ledger) if a.ledger else None)
+    if a.legacy and a.ms:
+        ap.error("--legacy 與 --ms 只能擇一")
+    rows_key = LEGACY_ROWS_KEY if a.legacy else (MS_ROWS_KEY if a.ms else a.rows_key)
+    ledger = LEGACY_LEDGER if a.legacy else (MS_LEDGER if a.ms else (Path(a.ledger) if a.ledger else None))
     if a.cmd == "record":
         record(Path(a.plan), rows_key=rows_key, ledger=ledger)
         check(ledger=ledger)

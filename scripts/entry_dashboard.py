@@ -213,7 +213,26 @@ def _source_freshness(
 
 def load_legacy_ledger_summary(main_ledger_path) -> dict | None:
     """舊主 lane 規則影子帳本(2026-10-07 起)與同期新排序主 lane 的已平倉摘要;缺檔回 None。"""
-    legacy_path = BASE_DIR / "ml" / "reports" / "entry_filter_ledger_legacy_main.csv"
+    return _shadow_ledger_summary(BASE_DIR / "ml" / "reports" / "entry_filter_ledger_legacy_main.csv", main_ledger_path)
+
+
+MS_SHADOW_LEDGER = BASE_DIR / "ml" / "reports" / "entry_filter_ledger_ms_shadow.csv"
+
+
+def load_ms_shadow(plan: dict, main_ledger_path) -> dict | None:
+    """#45 MS 動能影子名單(2026-10-20 訊號起):當日 12 檔 + 影子帳本與同期主 lane 的已平倉摘要。只呈現,不是名單;
+    兩本帳同一套觸發/失效價/到期規則,不可拿 #45 回測(次日收盤進場)的數字比。缺資料回 None。"""
+    today = [{"stock": r.get("stock"), "mom": r.get("mom_6_1"), "zone": r.get("zone"), "stop": r.get("stop")}
+             for r in (plan.get("shadow_ms_main") or [])]
+    summary = _shadow_ledger_summary(MS_SHADOW_LEDGER, main_ledger_path)
+    if not today and summary is None:
+        return None
+    return {"today": today, **(summary or {})}
+
+
+def _shadow_ledger_summary(shadow_path, main_ledger_path) -> dict | None:
+    """影子帳本與同期(影子帳本第一天起)正式主 lane 的已平倉摘要;缺檔或空檔回 None。"""
+    legacy_path = shadow_path
     if not legacy_path.exists():
         return None
     try:
@@ -1008,6 +1027,7 @@ def build(path: Path) -> str:
         lf["ticker"] = lf["ticker"].str.zfill(4)
         ledger = lf.to_dict("records")
     ledger_legacy = load_legacy_ledger_summary(lp)
+    ms_shadow = load_ms_shadow(d, lp)
 
     tdcc_changes = load_tdcc_changes(d.get("trade_date"))
     news_volume = load_news_volume(d.get("trade_date"))
@@ -1027,6 +1047,7 @@ def build(path: Path) -> str:
                "radar": radar,
                "idx": idx, "mkt": {**mkt, "guard_context": guard_context(mkt.get("guard"))}, "stocks": stocks, "ledger": ledger,
                "ledger_legacy": ledger_legacy,
+               "ms_shadow": ms_shadow,
                "rere_shadow": load_rere_shadow_summary(),
                "news_html": load_news_html(), "arena": load_arena(),
                "holdings": load_holdings(),
@@ -1416,10 +1437,30 @@ function radarSec(){
       <td>${x.rt}%</td><td><span class="rp ${x.rd>=0?'pos':'neg'}">${x.rd>=0?'+':''}${x.rd}</span></td></tr>`).join('') +
     '</tbody></table></div></div>';
 }
+/* #45 MS 動能影子名單(2026-10-20 訊號起):研究用,不是交易名單,不影響主策略排序 */
+function msShadowSec(){
+  const S = D.ms_shadow||null;
+  if(!S) return '';
+  const pct = (v,d) => (v===null||v===undefined||v==='') ? '—' : ((+v>=0?'+':'')+(+v).toFixed(d)+'%');
+  const T = S.today||[];
+  const summ = S.since
+    ? `影子帳本自 ${S.since}：已結束 ${S.closed} 筆 均 ${pct(S.mean,2)} 勝率 ${S.win===null?'—':S.win+'%'} · 持有中 ${S.holding}；同期主策略已結束 ${S.new_closed} 筆 均 ${pct(S.new_mean,2)} 勝率 ${S.new_win===null?'—':S.new_win+'%'}。`
+    : '影子帳本尚無紀錄。';
+  return `<div class="stratbox" style="border-top:4px solid var(--wt)">
+    <div class="strath">🧪 MS 動能影子名單<span class="sub">回測票 #45 前瞻驗證 · 研究用，不是交易名單，不影響主策略排序</span></div>
+    <div class="meta">主策略候選中距月線 ≤ +4% 者，依 6-1 動能（近 6 個月、扣掉最近 1 個月的報酬）取 12 檔。${summ}兩本帳用同一套觸發／失效價／到期規則，累積 ≥60 日再比較；正式判定另由凍結的回測程式於 2027-01 重跑。</div>` +
+    (T.length
+      ? `<div class="tblwrap"><table class="ltbl"><thead><tr><th>股票</th><th>6-1 動能</th><th>區間</th><th>失效價</th></tr></thead><tbody>` +
+        T.map(x=>`<tr><td>${x.stock||''}</td><td><span class="rp ${(+x.mom)>=0?'pos':'neg'}">${pct(x.mom,1)}</span></td><td>${x.zone||''}</td><td>${x.stop||''}</td></tr>`).join('') +
+        '</tbody></table></div>'
+      : '<div class="meta">今日沒有符合條件的候選。</div>') +
+    '</div>';
+}
 /* rere 區置頂(用戶 2026-08-31 指示:南亞 1303 案例,實戰有效的 lane 不可沉底) */
 document.getElementById('view').innerHTML =
   strat('rere 方法 · 洗盤轉強', 'rere', '系統依既有型態篩選，非 rere 本人推薦名單。模型不否決 · 最小試單 · 60 日觀察 · 失效參考為季線下方 3%') +
   strat('主策略 · 溫和動能', 'main', '型態先篩選，再由 dataA 模型確認方向 · 20 日觀察 · 依失效價管理') +
+  msShadowSec() +
   radarSec();
 // ---- 個股詳情 ----
 function ema(arr, n){

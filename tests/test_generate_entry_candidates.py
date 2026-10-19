@@ -493,3 +493,51 @@ def test_mops_alert_tickers_uses_the_same_window_and_keywords(tmp_path, monkeypa
     assert gen._mops_alert_tickers(_dt.date(2026, 10, 16)) == {"1711"}    # 庫藏股排除;10/12 超過 3 日
     monkeypatch.setattr(gen, "BASE_DIR", tmp_path / "missing")
     assert gen._mops_alert_tickers(_dt.date(2026, 10, 16)) == set()       # 檔案缺失不擋名單
+
+
+def _ms_cand(tk, v20, kind="go"):
+    return {"ticker": tk, "v20": v20, "kind": kind, "score": 0.0}
+
+
+def test_ms_shadow_rank_filters_and_orders_by_momentum():
+    """#45 MS 影子:距月線 <= +4%、非否決、非資料待確認、有動能值者,依 6-1 動能由高到低(同值依代號)。"""
+    from datetime import date
+    cands = [_ms_cand("A", 0.03), _ms_cand("B", 0.05), _ms_cand("C", 0.02), _ms_cand("D", 0.01, kind="watch"),
+             _ms_cand("E", 0.01), _ms_cand("F", -0.01), _ms_cand("G", 0.04)]
+    mom = {"A": 0.5, "B": 0.9, "C": 0.9, "D": 0.9, "E": None, "F": 0.6, "G": 0.5}
+    out = gen._ms_shadow_rank(cands, {"C"}, date(2026, 10, 19), momentum=lambda tk, as_of: mom[tk])
+    assert [r["ticker"] for r in out] == ["F", "A", "G"]                 # B 距月線>4%、C 否決、D 待確認、E 無動能
+    assert all(r["lane"] == "main_ms" for r in out) and out[0]["mom_6_1"] == 0.6
+    assert "lane" not in cands[0] and "mom_6_1" not in cands[0]          # 回傳副本,不改主 lane 列
+    many = [_ms_cand(f"T{i:02d}", 0.0) for i in range(20)]
+    assert len(gen._ms_shadow_rank(many, set(), date(2026, 10, 19), momentum=lambda tk, as_of: 0.1)) == gen.MAIN_MAX
+
+
+def test_momentum_6_1_is_t20_over_t120_on_the_adjusted_basis_without_look_ahead(monkeypatch):
+    import numpy as np
+    dates = pd.bdate_range("2026-01-01", periods=140)
+    close = np.where(np.arange(140) < 60, 100.0, 50.0)                  # 第 60 根 1 拆 2(價格減半)
+    close[130:] = 999.0                                                 # as_of 之後的價格不得影響結果
+    frame = pd.DataFrame({"Date": dates, "Close": close})
+    monkeypatch.setattr(gen, "prepare_stock_frame", lambda path: frame.copy())
+    split = pd.DataFrame({"stock_id": ["9999"], "date": [dates[60]], "factor": [0.5]})
+    as_of = dates[129].date()
+    monkeypatch.setattr(gen, "_ECON_CALENDAR", split)
+    assert gen._momentum_6_1("9999", as_of) == pytest.approx(0.0)       # 還原後拆股不算虧損
+    monkeypatch.setattr(gen, "_ECON_CALENDAR", split.iloc[0:0])
+    assert gen._momentum_6_1("9999", as_of) == pytest.approx(-0.5)      # 未還原會誤算成 −50%
+    assert gen._momentum_6_1("9999", dates[100].date()) is None          # 不足 121 根
+
+
+def test_ms_shadow_rows_are_exported_with_momentum_and_their_own_lane(monkeypatch):
+    monkeypatch.setattr(gen, "_name_map", lambda: {"2330": "台積電"})
+    monkeypatch.setattr(gen, "_chipk_source_label", lambda result: "manual")
+    row = {"ticker": "2330", "sector": "半導體業", "status": "可小倉觸發", "kind": "go", "zone_low": 1, "zone_high": 2,
+           "stop": 0.9, "pred20": 0.01, "v20": 0.03, "vol_ratio": 0.8, "rsi": 55, "foreign20": 10, "bucket": "",
+           "lane": "main_ms", "mom_6_1": 0.354}
+    result = {"as_of_close": None, "as_of_date": "2026-10-19", "rows": [], "shadow_legacy_main": [],
+              "shadow_ms_main": [row], "shadow_rere_pool": []}
+    payload = gen.to_entry_json(result, "2026-10-20")
+    ms = payload["shadow_ms_main"]
+    assert ms[0]["lane"] == "main_ms" and ms[0]["mom_6_1"] == 35.4 and "MS 動能影子" in ms[0]["reason"]
+    assert payload["rows"] == [] and "mom_6_1" not in gen._format_entry_row(1, {**row, "lane": "main"}, {})

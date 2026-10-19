@@ -144,10 +144,11 @@ def test_scoring_and_all_strategy_functions_are_ast_unchanged():
         # 2026-10-16 _rere_lane_ok/generate 更新:#29 PASS 後 PM 核可新增 shallow5_v2(5~8% 帶,名額另計 3,10/19 名單起)。
         # 2026-10-19 generate 更新:#42 PASS 後 PM 核可官方警示否決先於 rere 名額、由同組下一順位補位(10/20 訊號起)。
         # 2026-10-19 generate 再更新:#43 PASS 後 PM 核可主 lane 同樣否決先於 12 檔上限、由第 13 名起補位(10/20 訊號起)。
+        # 2026-10-19 generate 三更新:#45 MS PASS 後 PM「做 MS 影子名單」——只新增 shadow_ms_main 影子輸出,主 lane/rere 名單不變。
         ("scripts/generate_entry_candidates.py", "_technical"): "23125fd73dc8e46a77af5f0ca1bd6adff52bec03dbaf0c98eff109cefb5bd6aa",
         ("scripts/generate_entry_candidates.py", "_pattern_ok"): "3416b7eeb156182360441d87e6c1fb7e1927c6f70a7001738f3bd68a7941e268",
         ("scripts/generate_entry_candidates.py", "_rere_lane_ok"): "fb66d721fdb6542c2808d7e0a7fbafa47b3f138beeb518efd878af90cadad958",
-        ("scripts/generate_entry_candidates.py", "generate"): "a23c8afaa00d79362b0b92b623cace9bf8e5477ae5f2480997573d478012c656",
+        ("scripts/generate_entry_candidates.py", "generate"): "9dbc9587c9675b6e894036e4ad0da676a3725f8bea7b517619790188e4b9f638",
         ("scripts/generate_entry_candidates.py", "_apply_data_quality"): "893fdea3a97d2bec626576955fc90ee831c6884c4d343fe2479cfce288d49fad",
     }
     root = Path(__file__).resolve().parents[1]

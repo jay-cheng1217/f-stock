@@ -318,6 +318,7 @@ RERE_PATTERN_LINE_MULT = 0.97
 RERE_MAX = 6                # 現行三型呈現上限(2026-07-06 起)
 RERE_V2_MAX = 6             # v2 兩型另計上限(2026-10-07 起,並行驗證);兩型平分,見 _pick_rere_v2
 MAIN_MAX = 12               # 主 lane 呈現上限
+MS_V20_MAX = 0.04           # #45 MS 動能影子名單:距月線 <= +4%(與乾淨度甜蜜點同一常數)
 RERE_PTYPE_LABEL = {"ignition": "發動型", "shallow": "淺洗盤型", "shakeout": "蹲點型",
                     "shakeout_v2": "蹲點型v2", "shallow_v2": "淺洗盤型v2", "shallow5_v2": "淺洗盤5-8型v2"}
 
@@ -629,6 +630,8 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
     rows.sort(key=lambda x: (x["kind"] == "watch", -x["score"]))
     # 主 lane 呈現上限 MAIN_MAX;2026-10-20 訊號起官方警示否決先於上限,由第 13 名起補位(#43 PASS)
     mops_vetoed = _mops_alert_tickers(required)
+    # #45 MS 動能影子名單(2026-10-20 訊號起;研究用,不上名單、不影響主 lane 排序與名額)
+    shadow_ms_main = _ms_shadow_rank(rows, mops_vetoed, required)
     rows = _choose_main(rows, mops_vetoed)
 
     # --- rere lane(第二獵場):掃全 universe,模型不得用 pred 否決 ---
@@ -856,6 +859,7 @@ def generate(as_of: str | None = None, *, trade_date: str | None = None,
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "rows": rows,
         "shadow_legacy_main": shadow_legacy_main,
+        "shadow_ms_main": shadow_ms_main,
         "shadow_rere_pool": shadow_rere_pool,
         "archived_zone_alerts": archived_alerts,
         "night_gap": _night_session_gap() if include_live else None,
@@ -998,6 +1002,47 @@ def _legacy_main_rank(candidates: list[dict[str, Any]], top_n: int | None = None
     return picked[:top_n]
 
 
+_ECON_CALENDAR: pd.DataFrame | None = None
+
+
+def _momentum_6_1(ticker: str, as_of: date) -> float | None:
+    """6-1 動能 = 股東報酬還原收盤 t−20 ÷ t−120 − 1;t 為資料日 as_of。
+    還原口徑與 #45 回測相同(load_action_calendar:除息+公司行動;as_of 之後的事件不納入)。不足 121 根或讀檔失敗回 None。"""
+    global _ECON_CALENDAR
+    try:
+        from ml.corporate_actions import backward_adjustment_multiplier, load_action_calendar
+        if _ECON_CALENDAR is None:
+            _ECON_CALENDAR = load_action_calendar()
+        f = prepare_stock_frame(DAILY_DIR / f"{ticker}.csv")
+        f = f[f["Date"] <= pd.Timestamp(as_of)]
+        if len(f) < 121:
+            return None
+        av = pd.to_numeric(f["Close"], errors="coerce") * backward_adjustment_multiplier(f["Date"], str(ticker), _ECON_CALENDAR)
+        a20, a120 = float(av.iloc[-21]), float(av.iloc[-121])
+        return a20 / a120 - 1 if (np.isfinite(a20) and np.isfinite(a120) and a120 > 0) else None
+    except Exception:
+        return None
+
+
+def _ms_shadow_rank(candidates: list[dict[str, Any]], vetoed: set[str], as_of: date,
+                    top_n: int | None = None, momentum=None) -> list[dict[str, Any]]:
+    """#45 MS 動能影子名單(2026-10-20 訊號起,前瞻驗證用;不上名單、不影響主 lane):
+    主 lane 候選(已過型態 gate / 營益率 / ChipK / 處置)中距月線 <= MS_V20_MAX 者,依 6-1 動能由高到低取前 N(同值依代號)。
+    官方警示否決者與資料待確認(watch)列不參與;缺動能值者不參與。回傳獨立副本,lane=main_ms,由 entry_filter_tracker --ms 記帳。"""
+    top_n = MAIN_MAX if top_n is None else top_n
+    momentum = momentum or _momentum_6_1
+    picked = []
+    for r in candidates:
+        if r["ticker"] in vetoed or r.get("kind") == "watch" or not (r.get("v20", np.inf) <= MS_V20_MAX):
+            continue
+        mom = momentum(r["ticker"], as_of)
+        if mom is None:
+            continue
+        picked.append({**r, "mom_6_1": mom, "lane": "main_ms"})
+    picked.sort(key=lambda x: (-x["mom_6_1"], x["ticker"]))
+    return picked[:top_n]
+
+
 def generate_certified(as_of: str | None = None, *, trade_date: str | None = None,
                        persist_watchlist: bool = False, include_live: bool = True) -> dict[str, Any]:
     """One actual generation with immutable input and authorized-write evidence."""
@@ -1054,7 +1099,9 @@ def _format_entry_row(i: int, r: dict[str, Any], nm: dict[str, str]) -> dict[str
     else:
         reason = (f"貼MA20{r['v20']*100:+.0f}% 量{r['vol_ratio']:.1f}x RSI{r['rsi']:.0f} "
                   f"外資20d{r['foreign20']:+.0f}張" + (f" 籌碼{r['bucket']}" if r.get("bucket") else ""))
-    return {
+        if r.get("lane") == "main_ms":
+            reason = f"【MS 動能影子·研究用,非名單】6-1動能{r['mom_6_1']*100:+.0f}% " + reason
+    out = {
         "priority": str(i),
         "stock": f"{r['ticker']} {nm.get(r['ticker'], r['sector'][:4])}",
         "sector": r.get("sector", ""),
@@ -1072,6 +1119,9 @@ def _format_entry_row(i: int, r: dict[str, Any], nm: dict[str, str]) -> dict[str
         "pattern_line": (str(r["pattern_line"]) if r.get("pattern_line") else None),
         "source_date": r.get("source_date"),
     }
+    if r.get("lane") == "main_ms":
+        out["mom_6_1"] = round(float(r["mom_6_1"]) * 100, 1)   # 6-1 動能(%),只有 MS 影子列有
+    return out
 
 
 def to_entry_json(result: dict[str, Any], trade_date: str) -> dict[str, Any]:
@@ -1103,6 +1153,8 @@ def to_entry_json(result: dict[str, Any], trade_date: str) -> dict[str, Any]:
         "rows": out_rows,
         # 舊主 lane 規則的影子名單(不上儀表板名單、不進 rows 計數;entry_filter_tracker --legacy 記入獨立帳本)
         "shadow_legacy_main": shadow_rows,
+        # #45 MS 動能影子名單(2026-10-20 訊號起;研究用,不進 rows、不是交易名單;entry_filter_tracker --ms 記入獨立帳本)
+        "shadow_ms_main": [_format_entry_row(i, r, nm) for i, r in enumerate(result.get("shadow_ms_main") or [], 1)],
         # 當日全部 rere 候選(套名額前),供影子排序研究帳本使用;不是名單
         "shadow_rere_pool": [{**c, "stock": f"{c['ticker']} {nm.get(c['ticker'], '')}".strip()}
                              for c in (result.get("shadow_rere_pool") or [])],
