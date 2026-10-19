@@ -1,0 +1,13 @@
+﻿trade_date,ticker,name,lane,state,zone_low,zone_high,stop,horizon,status,entry_date,entry_price,exit_date,exit_price,exit_reason,days_held,ret_pct,last_date,last_close,exit_adjusted_price,last_adjusted_close,cum_dividend_per_share,return_adjustment_status
+2026-10-20,3406,玉晶光,main_ms,small,1029.33,1060.67,964.85,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,6620,漢達,main_ms,go,133.93,140.07,130.13,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,2357,華碩,main_ms,go,955.45,984.55,932.21,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,5314,世紀*,main_ms,small,26.54,27.91,26.57,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,6214,精誠,main_ms,go,195.12,199.45,184.15,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,2377,微星,main_ms,go,158.21,161.89,148.66,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,6179,亞通,main_ms,small,36.99,38.16,35.72,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,2615,萬海,main_ms,go,116.72,120.28,111.67,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,5904,寶雅,main_ms,go,72.2,73.89,67.92,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,6416,瑞祺電通,main_ms,small,120.2,122.81,114.26,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,2637,慧洋-KY,main_ms,go,98.5,101.5,95.88,20,pending,,,,,,,,2026-10-19,,,,,
+2026-10-20,2103,台橡,main_ms,go,28.22,29.08,27.21,20,pending,,,,,,,,2026-10-19,,,,,
