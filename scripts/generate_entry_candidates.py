@@ -441,7 +441,7 @@ def _rere_lane_ok(t: dict[str, Any]) -> str | None:
     return None
 
 
-def _night_session_gap(timeout: float = 8.0) -> dict[str, Any] | None:
+def _night_session_gap(timeout: float = 8.0, *, today: date | None = None) -> dict[str, Any] | None:
     """開盤 gap 情境提示(非交易訊號),失敗回 None 不影響名單。
 
     重要教訓(2026-07-02):TAIFEX OpenAPI 的「盤後」列歸屬**當日交易日**,即
@@ -450,8 +450,13 @@ def _night_session_gap(timeout: float = 8.0) -> dict[str, Any] | None:
     錯誤的「溫和」提示而實際大跳空 -2.4%。
 
     改法:盤中(TWII 有即時價)直接用加權指數 vs 昨收的真實 gap;盤前拿不到
-    新鮮資料就誠實回報「無最新夜盤資料」,絕不用舊夜盤冒充。"""
-    if not is_taiwan_trading_day(date.today()):
+    新鮮資料就誠實回報「無最新夜盤資料」,絕不用舊夜盤冒充。
+
+    2026-10-21 修正:名單在 07:00 盤前產生,證交所即時報價此時仍是前一交易日的資料(z=前一日收盤、
+    y=前二日收盤);舊版沒核對資料日期,把「前一日日盤漲跌」標成夜盤(10/14~10/21 六份名單 6/6,
+    10/21 寫「跳空下殺」實際開高)。現在先核對報價日期 d,不是今天就回報盤前無最新資料。"""
+    today = today or date.today()
+    if not is_taiwan_trading_day(today):
         return None
     try:
         import requests
@@ -463,6 +468,10 @@ def _night_session_gap(timeout: float = 8.0) -> dict[str, Any] | None:
             timeout=timeout,
         )
         m = (r.json().get("msgArray") or [{}])[0]
+        quote_day = str(m.get("d") or "")
+        if quote_day != today.strftime("%Y%m%d"):   # 盤前拿到的是前一交易日報價,不可當開盤 gap
+            return {"source": "stale", "gap_pct": None, "quote_date": quote_day or None,
+                    "hint": f"盤前無最新夜盤/即時大盤資料(即時報價日期 {quote_day or '未知'},非今日),開盤先看 gap 再執行"}
         z = m.get("z"); y = m.get("y")
         cur = float(z) if z not in (None, "-", "") else None
         prev = float(y) if y not in (None, "-", "") else None

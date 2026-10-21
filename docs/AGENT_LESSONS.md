@@ -108,6 +108,11 @@
   判斷順序:先讀 `logs/smart_update_auto_*.log` 找 FAIL 步驟,再到 `smart_update_auto_stdio_*.log`
   看子程序 traceback;Phase-1 中 twstock 失敗會連鎖 SKIP ingest/DataA/entry/arena,修好後用
   `python scripts/smart_update_auto.py --phase 1` 重跑(啟動步驟會重用仍在線的 web server)。
+- **盤前的「即時」報價是前一交易日的(2026-10-21 發現)**:名單 07:00 產生時呼叫證交所 MIS 即時加權(`tse_t00.tw`),
+  此時 `z`=前一日收盤、`y`=前二日收盤,`d`=前一交易日。`_night_session_gap()` 沒核對 `d`,把「前一日日盤漲跌」寫成
+  「【夜盤】…跳空開高/下殺」;10/14~10/21 六份名單 6/6 如此(10/21 寫「−1.1% 跳空下殺日,先觀望」,實際夜盤大漲、開高約 1.5%,
+  由 PM 轉貼的 rere 限動「昨晚夜盤飛起來」與截圖倒推的加權收盤對出)。修正:`d` 不是今天就回報「盤前無最新夜盤資料」。
+  通則:任何用即時報價算「今日」數字的地方都要核對資料日期;夜盤真實價格(台指期夜盤)要另外接,且須用 07:00 實際時段的 live payload 驗證。
 
 ## Git、合併與測試(原 AGENTS.md「Git Commit Policy」段的事故條目)
 
