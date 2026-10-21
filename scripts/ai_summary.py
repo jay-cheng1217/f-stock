@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import html
+from decimal import ROUND_HALF_UP, Decimal
 
 BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
@@ -61,8 +62,33 @@ AI_NARRATIVE_PROMPT = """你是台股日報的編輯。以下是今天日報已�
 """
 
 
+_NUMBER_RE = re.compile(r"\d[\d,]*(?:\.\d+)?")
+
+
+def _ungrounded_numbers(narrative: str, facts: str) -> list[str]:
+    """總評裡在原段落找不到的數字(2026-10-21:提示詞規則「不得新增數字」改由程式核對,不靠模型自律)。
+    比絕對值(漲跌方向由文字表達);小數可依總評的位數四捨五入對上原段落的數字;整數(代號、點數、張數)必須完全相同。
+    限制:不檢查中文數字(如「三檔」)與沒寫代號的股票名稱。"""
+    fact_tokens = {tok.replace(",", "") for tok in _NUMBER_RE.findall(facts)}
+    fact_values = [Decimal(tok) for tok in fact_tokens]
+    missing = []
+    for raw in _NUMBER_RE.findall(narrative):
+        tok = raw.replace(",", "")
+        if tok in fact_tokens:
+            continue
+        value = Decimal(tok)
+        if "." in tok:
+            step = Decimal(1).scaleb(-len(tok.split(".")[1]))
+            grounded = any(f.quantize(step, rounding=ROUND_HALF_UP) == value for f in fact_values)
+        else:
+            grounded = any(f == value for f in fact_values)
+        if not grounded:
+            missing.append(raw)
+    return missing
+
+
 def _build_ai_narrative_html(deterministic_markup: str) -> str:
-    """本地模型總評段;模型不可用/輸出異常時回空字串。"""
+    """本地模型總評段;模型不可用/輸出異常/含原段落沒有的數字時回空字串。"""
     facts = _summary_html_to_text(deterministic_markup)
     if not facts.strip():
         return ""
@@ -72,6 +98,10 @@ def _build_ai_narrative_html(deterministic_markup: str) -> str:
     text = _drop_blocked_daily_summary_terms(re.sub(r"\s+", " ", out).strip())
     # 防呆:太短=沒內容;太長/含表格符號=格式失控,寧可不放。
     if not (40 <= len(text) <= 600) or "|" in text or "#" in text:
+        return ""
+    missing = _ungrounded_numbers(text, facts)
+    if missing:   # 新增的數字/代號不可信,整段不放;印原值方便隔天從 stdio log 追查
+        print(f"[ai_summary] AI 總評含原段落沒有的數字 {missing[:8]},整段不放", file=sys.stderr)
         return ""
     note = "本段由本地模型就上方段落改寫,僅供快速瀏覽;數據與名單一律以上方段落為準。"
     return (f"<h3>【AI 總評｜本地模型 {html.escape(OLLAMA_MODEL)}·實驗性】</h3>"

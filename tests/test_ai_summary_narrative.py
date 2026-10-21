@@ -45,3 +45,26 @@ def test_daily_summary_never_breaks_when_narrative_raises(monkeypatch):
     monkeypatch.setattr(ai_summary, "_build_ai_narrative_html", boom)
     out = ai_summary.generate_daily_summary(prediction_date="2026-10-15")
     assert out == "<p>市</p>\n\n<p>訊</p>\n\n<p>險</p>"
+
+
+def test_narrative_with_a_number_not_in_the_facts_is_dropped(monkeypatch, capsys):
+    raw = "大盤小跌整理,台股收在 48000 點附近,風險提示照舊,維持既有紀律與分散配置,名單與數據仍以上方段落為準。"
+    monkeypatch.setattr(ai_summary, "_ollama", lambda prompt, timeout=300: raw)
+    assert ai_summary._build_ai_narrative_html(FACTS) == ""
+    assert "48000" in capsys.readouterr().err                          # 印出原值,隔天可從 stdio log 追查
+
+
+def test_numbers_from_the_facts_pass_with_rounding_and_sign_in_words(monkeypatch):
+    """2026-10-21 實例:原段落「TWII 46292.93 點 -1.1%」,總評寫「跌幅達1.1%」——方向用文字表達,數字有出處。"""
+    facts = FACTS + "<p>TWII 日漲跌 -1.13%,停損率差異 +4.92 pp,已實現損益 -1,571,839 元。</p>"
+    raw = ("大盤收 48341.31 點,跌幅約 1.1%,停損率差異約 4.9 pp,已實現損益約 1,571,839 元,"
+           "流動性門檻仍為 500 張,名單與數據仍以上方段落為準。")
+    monkeypatch.setattr(ai_summary, "_ollama", lambda prompt, timeout=300: raw)
+    assert ai_summary._build_ai_narrative_html(facts)
+
+
+def test_integers_and_stock_codes_must_match_exactly():
+    facts = "停損率差異 +2.79 pp;代號 2330 台積電。"
+    assert ai_summary._ungrounded_numbers("共 3 檔", facts) == ["3"]            # 整數不可由 2.79 四捨五入而來
+    assert ai_summary._ungrounded_numbers("2454 聯發科", facts) == ["2454"]
+    assert ai_summary._ungrounded_numbers("2330 台積電,差異約 2.8", facts) == []
