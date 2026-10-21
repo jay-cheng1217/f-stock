@@ -18,9 +18,14 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
+import sys
+
 import requests
 
 BASE_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(BASE_DIR))
+from scripts.mops_alert import is_mops_alert  # noqa: E402  與名單否決同一份警示規則(#46)
+
 REPORT_DIR = BASE_DIR / "ml" / "reports"
 STATIC_JSON = BASE_DIR / "frontend" / "static" / "entry_canonical.json"
 WATCHLIST = BASE_DIR / "logs" / "entry_watchlist.json"
@@ -141,8 +146,7 @@ def fetch(query: str, must_contain: str | None = None) -> list[dict]:
 
 
 MOPS_DIR = BASE_DIR / "新聞資料"
-# 官方公告關鍵字(用法分層:警示類=否決層直接用;庫藏股=雷達;法說=行事曆)
-KW_ALERT = ["持股轉讓", "股份轉讓", "私募", "現金增資", "辦理減資"]  # 收窄:裸「董事」誤標庫藏股決議
+# 官方公告分層:警示類=scripts/mops_alert.is_mops_alert(與否決層同一份規則);庫藏股=雷達;法說=行事曆
 KW_RADAR = ["庫藏股", "買回"]
 KW_CAL = ["法人說明會", "法說"]
 
@@ -189,7 +193,7 @@ def section_mops(lines: list) -> None:
         for _, r in mine.iterrows():
             tags = []
             title = str(r["Title"])
-            if any(k in title for k in KW_ALERT) and "庫藏股" not in title:
+            if is_mops_alert(title):
                 tags.append("⚠️警示")
             if any(k in title for k in KW_RADAR):
                 tags.append("💰庫藏股")

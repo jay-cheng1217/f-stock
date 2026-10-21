@@ -81,6 +81,11 @@ Ask for only the minimum missing screenshots needed to resolve uncertainty. Pref
 News NEVER adds candidates — it only vetoes / downgrades / delays names already on the
 canonical list. Check order: (1) MOPS ⚠️ alert (董監轉讓/私募/增資) on a list stock →
 drop for the day; 📅法說 within 3 days → wait until after the call.
+(Since the 2026-10-22 signal the alert counts only the company's own dilution / insider-transfer events
+— `scripts/mops_alert.py`, shared by the generator and the industry news report, #46 PASS. Not alerts:
+subsidiary-level titles, announcements made on behalf of a subsidiary, the company buying / selling /
+subscribing another company's private placement or convertible bonds, joining another company's cash
+capital increase, 買回股份 (same as 庫藏股), and investor conferences.)
 (Since the 2026-10-20 signal, the canonical generator applies the MOPS alert veto before the quotas
 in both lanes: a vetoed rere slot is refilled by the next candidate of the same group in the neutral
 order (#42 PASS), and a vetoed main-lane slot by the next clean-score candidate, i.e. rank 13 onward

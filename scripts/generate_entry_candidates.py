@@ -39,6 +39,7 @@ sys.path.insert(0, str(BASE_DIR))
 from scripts.momentum_continuation_backtest import prepare_stock_frame, annotate_momentum_continuation  # noqa: E402
 from scripts.disposition_contract import load_disposition_gate
 from scripts.taiwan_trading_calendar import previous_taiwan_trading_day, next_taiwan_trading_day, is_taiwan_trading_day
+from scripts.mops_alert import MOPS_ALERT_KW, is_mops_alert  # noqa: F401  (MOPS_ALERT_KW 供既有引用)
 
 DAILY_DIR = BASE_DIR / "日K資料"
 MODEL_DIR = BASE_DIR / "ml" / "models"
@@ -923,12 +924,9 @@ def _neutral_order_key(as_of: date | None, ticker: str) -> float:
     return int(digest[:12], 16) / float(16 ** 12)
 
 
-MOPS_ALERT_KW = ("持股轉讓", "股份轉讓", "私募", "現金增資", "辦理減資")   # 收窄:裸「董事」會誤殺例行董事會公告
 MOPS_CALENDAR_KW = ("法人說明會", "法說")
-
-
-def _is_mops_alert(title: str) -> bool:
-    return any(k in title for k in MOPS_ALERT_KW) and "庫藏股" not in title
+# 官方警示判定與產業新聞日報共用 scripts/mops_alert.py(2026-10-22 訊號起只擋本公司事件,#46 PASS)
+_is_mops_alert = is_mops_alert
 
 
 def _mops_recent(required: date) -> pd.DataFrame:
