@@ -1,5 +1,5 @@
 ﻿signal_date,source_date,ticker,name,subtype,entry_date,entry_close,rule_status,rule_ret_pct,nostop_last_date,nostop_days,nostop_ret_pct,nostop_status,name_camp,first_public_date,exit_public_date,kind,source
-2026-08-04,2026-08-03,8039,台虹,unknown,2026-08-04,200.0,holding,46.5,2026-10-21,53,46.5,holding,台虹,2026-07-16,,campaign,docs/rere_strategy.md 2026-07-16(對帳首次確認持有)
-2026-09-04,2026-09-03,8039,台虹,unknown,2026-09-04,297.5,holding,-1.51,2026-10-21,30,-1.51,holding,台虹,2026-07-16,,campaign,docs/rere_strategy.md 2026-07-16(對帳首次確認持有)
-2026-10-13,2026-10-12,6532,瑞耘,shakeout,2026-10-13,114.5,holding,6.11,2026-10-21,6,6.11,holding,瑞耘,2026-09-29,,campaign,"docs/rere_strategy.md 2026-09-29(發動);10/13 限動存股戶續買,成本 107.81(雲朵圖示=耘,推論)"
-2026-10-19,2026-10-16,8027,鈦昇,shakeout,2026-10-19,181.5,holding,4.13,2026-10-21,2,4.13,holding,鈦昇,2026-07-01,,campaign,docs/rere_strategy.md 六大要素與鈦昇範例(2026-07-01 限動)
+2026-08-04,2026-08-03,8039,台虹,unknown,2026-08-04,200.0,holding,33.0,2026-10-22,54,33.0,holding,台虹,2026-07-16,,campaign,docs/rere_strategy.md 2026-07-16(對帳首次確認持有)
+2026-09-04,2026-09-03,8039,台虹,unknown,2026-09-04,297.5,holding,-10.59,2026-10-22,31,-10.59,holding,台虹,2026-07-16,,campaign,docs/rere_strategy.md 2026-07-16(對帳首次確認持有)
+2026-10-13,2026-10-12,6532,瑞耘,shakeout,2026-10-13,114.5,holding,0.0,2026-10-22,7,0.0,holding,瑞耘,2026-09-29,,campaign,"docs/rere_strategy.md 2026-09-29(發動);10/13 限動存股戶續買,成本 107.81(雲朵圖示=耘,推論)"
+2026-10-19,2026-10-16,8027,鈦昇,shakeout,2026-10-19,181.5,holding,-3.03,2026-10-22,3,-3.03,holding,鈦昇,2026-07-01,,campaign,docs/rere_strategy.md 六大要素與鈦昇範例(2026-07-01 限動)
