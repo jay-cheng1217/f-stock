@@ -1932,7 +1932,7 @@ function hideD(){
     h += `<div class="meta">主 lane 排序自 ${LG.since} 起改為型態乾淨度（模型分數只顯示，不過濾、不排序）。舊規則（模型不反對→模型分數排序）以影子帳本並行：已結束 ${LG.closed} 筆 均 ${fmtPct(LG.mean)} 勝率 ${LG.win===null?'—':LG.win+'%'} · 持有中 ${LG.holding}；同期新排序主 lane 已結束 ${LG.new_closed} 筆 均 ${fmtPct(LG.new_mean)} 勝率 ${LG.new_win===null?'—':LG.new_win+'%'}。累積 ≥60 日後再比較，不據此提前下判決。</div>`;
   }
   const stMap = {holding:['持有中','st-h'], stopped:['🔴 停損','st-s'], expired:['⏱ 到期','st-e'],
-                 untriggered:['— 未觸發','st-u'], pending:['… 待判定','st-p']};
+                 untriggered:['— 未觸發','st-u'], pending:['… 待判定','st-p'], void:['— 休市不計','st-u']};
   dates.forEach((dt,di)=>{
     const rows = byDate[dt];
     const closed = rows.filter(r=>['stopped','expired'].includes(r.status));

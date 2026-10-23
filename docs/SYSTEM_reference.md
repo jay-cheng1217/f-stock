@@ -95,6 +95,12 @@ Layer 3: API/ML    app.py (FastAPI) + ml/ (LightGBM 預測)
 - Phase-2 freshness gate 被擋時會先向 TWSE MI_INDEX 求證該日是否真無交易（stat=OK 但 data 全空 = 臨時休市），確認後自動寫入覆蓋檔並放行；求證失敗一律維持阻擋，不可把真資料缺口誤判成休市。
 - `twstock.py::_drop_fake_flat_bars` 在日K寫入前擋掉 yfinance 休市日占位假棒（零量且四價全平）。
 - TDCC 週頻遇週五休市：官方資料日期改落當週最後營業日（如 7/09 週四），系統按資料自帶日期存檔，無需特殊處理。
+- **只有 Phase-2 會自動偵測休市**：颱風假若當天才公告（2026-10-23），早上 Phase-2 仍照舊曆產生當天名單，晚上 Phase-1 會把當天當交易日去抓，
+  日K／估值／法人全部失敗並寄出資料缺口警報（誤報）。處理：先向 MI_INDEX 求證（當天 stat=OK 且所有表 data 皆空），再用
+  `taiwan_trading_calendar.add_adhoc_closure(日期, 原因)` 登記；不需重跑 Phase-1（休市日沒有資料可抓），下一個交易日照常。
+- **帳本遇休市日名單**：`entry_filter_tracker` 的主 lane、舊規則影子、MS 影子帳本只看名單當天 K 棒觸發，休市日的列由 `check` 自動標
+  `void`（休市不計，原狀態寫進 exit_reason）；下一個交易日的名單用同一份資料另記一列，不漏算也不重複。
+  rere 帳本依 source_date+ticker 去重、進場取訊號日之後第一根 K 棒收盤，休市日不需特別處理。
 
 **財報完整性稽核**（2026Q1 殘檔凍結事故後建立，2026-07-16）：
 - 事故：三種季報檔（eps_/financial_/bs_）在 5/15 申報截止**前**抓到少數早申報公司即被「檔案存在=完成」邏輯凍結，5/15~7/15 約 94% 股票的 EPS/PE/利潤率/PB 特徵失真；季度 EPS 與資產負債表原本**無任何排程更新**。

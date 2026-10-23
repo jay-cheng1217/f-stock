@@ -29,6 +29,7 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE_DIR))
 
 from scripts.exdiv_utils import cum_dividend
+from scripts.taiwan_trading_calendar import is_taiwan_trading_day
 
 LEDGER = BASE_DIR / "ml" / "reports" / "entry_filter_ledger.csv"
 # 2026-10-07 起主 lane 排序不再用模型;舊規則(模型不反對 → clean+pred20)改為 plan 的 `shadow_legacy_main`
@@ -117,6 +118,22 @@ def record(plan_path: Path, *, rows_key: str = "rows", ledger: Path | None = Non
     return added
 
 
+def _void_closure_days(led: pd.DataFrame) -> int:
+    """名單日不是交易日(颱風等臨時休市,見 config/adhoc_market_closures.json)→ 當天不可能成交,整列標 void(休市不計)。
+    觸發只看名單當天的 K 棒,休市日永遠沒有 K 棒,不處理會永遠「待判定」;休市日若曾寫入占位假棒而被結算
+    (2026-07-10 巴威颱風),那筆進場也不存在。下一個交易日的名單用同一份資料另記一列,所以作廢不會漏算。
+    原狀態寫進 exit_reason 供稽核。回傳本次作廢筆數。"""
+    voided = 0
+    for i, r in led.iterrows():
+        td = str(r.get("trade_date") or "")[:10]
+        if r["status"] == "void" or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", td):
+            continue
+        if not is_taiwan_trading_day(pd.Timestamp(td).date()):
+            led.loc[i, ["status", "exit_reason"]] = ["void", f"休市日名單(當天無交易),不計;原狀態 {r['status']}"]
+            voided += 1
+    return voided
+
+
 def check(*, ledger: Path | None = None) -> None:
     ledger = ledger or LEDGER
     led = _load(ledger)
@@ -124,6 +141,7 @@ def check(*, ledger: Path | None = None) -> None:
         print("帳本為空")
         return
     led = led.astype(object)  # 混合型欄位,避免 pandas dtype 警告
+    _void_closure_days(led)
     cache: dict[str, pd.DataFrame] = {}
 
     def kbars(tk: str) -> pd.DataFrame | None:
@@ -138,7 +156,7 @@ def check(*, ledger: Path | None = None) -> None:
         return cache[tk]
 
     for i, r in led.iterrows():
-        if r["status"] in ("stopped", "expired", "untriggered"):
+        if r["status"] in ("stopped", "expired", "untriggered", "void"):
             continue
         k = kbars(r["ticker"])
         if k is None:
@@ -223,7 +241,8 @@ def check(*, ledger: Path | None = None) -> None:
     closed = led[led["status"].isin(["stopped", "expired"])]
     print(f"帳本 {ledger.name} {len(led)} 筆:觸發 {len(trig)}、持有中 {(led['status']=='holding').sum()}、"
           f"停損 {(led['status']=='stopped').sum()}、到期 {(led['status']=='expired').sum()}、"
-          f"未觸發 {(led['status']=='untriggered').sum()}、待判定 {(led['status']=='pending').sum()}")
+          f"未觸發 {(led['status']=='untriggered').sum()}、待判定 {(led['status']=='pending').sum()}、"
+          f"休市不計 {(led['status']=='void').sum()}")
     if len(closed):
         print(f"已平倉:平均 {closed['ret_pct'].mean():+.2f}%、勝率 {(closed['ret_pct']>0).mean()*100:.0f}%")
 
