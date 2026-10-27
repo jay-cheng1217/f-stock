@@ -1,52 +1,12 @@
 {
-  "date": "2026-10-27",
+  "date": "2026-10-28",
   "hits": [
-    {
-      "ticker": "2466",
-      "name": "冠西電",
-      "sector": "光電業",
-      "released": "2026-10-20",
-      "days_since": 7,
-      "known_yoy": 308.16,
-      "rev_window": false,
-      "dual_fuse": false
-    },
-    {
-      "ticker": "3265",
-      "name": "台星科",
-      "sector": "半導體業",
-      "released": "2026-10-20",
-      "days_since": 7,
-      "known_yoy": 11.47,
-      "rev_window": false,
-      "dual_fuse": false
-    },
-    {
-      "ticker": "7772",
-      "name": "耀穎",
-      "sector": "半導體業",
-      "released": "2026-10-20",
-      "days_since": 7,
-      "known_yoy": 20.27,
-      "rev_window": false,
-      "dual_fuse": false
-    },
-    {
-      "ticker": "9103",
-      "name": "",
-      "sector": "",
-      "released": "2026-10-20",
-      "days_since": 7,
-      "known_yoy": null,
-      "rev_window": false,
-      "dual_fuse": false
-    },
     {
       "ticker": "8111",
       "name": "立碁",
       "sector": "光電業",
       "released": "2026-10-22",
-      "days_since": 5,
+      "days_since": 6,
       "known_yoy": 0.55,
       "rev_window": false,
       "dual_fuse": false
@@ -56,7 +16,7 @@
       "name": "大甲",
       "sector": "其他業",
       "released": "2026-10-23",
-      "days_since": 4,
+      "days_since": 5,
       "known_yoy": 44.46,
       "rev_window": false,
       "dual_fuse": false
@@ -66,7 +26,7 @@
       "name": "蔚華科",
       "sector": "電子通路業",
       "released": "2026-10-23",
-      "days_since": 4,
+      "days_since": 5,
       "known_yoy": -57.28,
       "rev_window": false,
       "dual_fuse": false
@@ -76,7 +36,7 @@
       "name": "錦明",
       "sector": "光電業",
       "released": "2026-10-23",
-      "days_since": 4,
+      "days_since": 5,
       "known_yoy": 19.82,
       "rev_window": false,
       "dual_fuse": false
@@ -86,7 +46,7 @@
       "name": "映興",
       "sector": "電子零組件業",
       "released": "2026-10-23",
-      "days_since": 4,
+      "days_since": 5,
       "known_yoy": 50.1,
       "rev_window": false,
       "dual_fuse": false
@@ -96,8 +56,28 @@
       "name": "華星光",
       "sector": "通信網路業",
       "released": "2026-10-23",
-      "days_since": 4,
+      "days_since": 5,
       "known_yoy": 97.78,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "3167",
+      "name": "大量",
+      "sector": "電機機械",
+      "released": "2026-10-27",
+      "days_since": 1,
+      "known_yoy": 172.33,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "6716",
+      "name": "應廣",
+      "sector": "半導體業",
+      "released": "2026-10-27",
+      "days_since": 1,
+      "known_yoy": -26.76,
       "rev_window": false,
       "dual_fuse": false
     }
