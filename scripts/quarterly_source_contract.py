@@ -48,16 +48,34 @@ def _number(value):
         return math.nan
 
 
+class AnchorSupersededError(ValueError):
+    """官方「最新季」彙總已換錨到比請求季更新的季度(下一季申報窗開啟的過渡期)。
+
+    2026-11-02 事故:11/2 Q3 申報窗開啟後,t187ap06/07 彙總整批換成 ROC 115Q3,
+    本地仍在刷新 2026Q2 → anchor 不符。此情況=官方翻頁而非資料異常:請求季的
+    既有檔案(當時帶有效 anchor 寫入)保留、本輪跳過刷新,不得在無佐證下寫入
+    (EPS/BS HTML 標題不帶年份,anchor 是年份唯一證明,弱化=回到錯季寫入風險)。"""
+
+
 def validate_latest_anchor(payload, frame, kind, year, season, market):
     """A same-run explicit-year official source corroborates yearless EPS/BS HTML."""
     if not isinstance(payload, list) or not payload or not all(isinstance(r, dict) for r in payload):
         raise ValueError("official period anchor is empty or has wrong schema")
+    requested = (float(year - 1911), float(season))
+    periods = {(_number(r.get("年度", r.get("Year"))), _number(r.get("季別", r.get("Season"))))
+               for r in payload}
+    if periods != {requested}:
+        if len(periods) == 1:
+            (ry, rq), = periods
+            if math.isfinite(ry) and math.isfinite(rq) and (ry, rq) > requested:
+                raise AnchorSupersededError(
+                    f"official latest-summary anchor moved to ROC {ry:.0f}Q{rq:.0f} "
+                    f"(requested ROC {year - 1911}Q{season}); filing window has advanced")
+        raise ValueError(
+            f"official anchor year/quarter mismatch: observed={sorted(periods)} "
+            f"requested=ROC {year - 1911}Q{season}")
     anchors = {}
     for row in payload:
-        ry = row.get("年度", row.get("Year"))
-        rq = row.get("季別", row.get("Season"))
-        if _number(ry) != year - 1911 or _number(rq) != season:
-            raise ValueError("official anchor year/quarter mismatch")
         ticker = str(row.get("公司代號", row.get("SecuritiesCompanyCode", ""))).strip()
         if not re.fullmatch(r"\d{4,6}", ticker) or ticker in anchors:
             raise ValueError("official anchor ticker schema/uniqueness failure")

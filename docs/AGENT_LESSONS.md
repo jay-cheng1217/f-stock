@@ -179,3 +179,18 @@
   不可用期末(最新)是否流動來挑股票——期末流動的股票偏向已經漲上來的,基準會被墊高(實測五週 +2.8pp、三個月 +5.8pp),
   使策略與 KOL 標的的超額被低估。逐日以訊號當日取池的回測(#9/#17/#18/#19)不受影響。共用實作見
   `scripts/rere_public_follow_tracker.build_follow_book` 與 `scripts/replay_rere_new_rules.py`。
+
+### 季報 anchor 換錨(2026-11-02,Q3 申報窗首日)
+
+- 事故:11/2 晚間 Phase-1「Update EPS data」exit 1 → audit 記「source refresh failed」→
+  Candidate publication blocked(連帶 DataA record/名單/arena 整塊被擋,名單 API 503)。
+- 根因:EPS/BS 的 HTML 標題不帶年份,契約用 TWSE/TPEx「最新季」openapi 彙總
+  (t187ap06/07)當同 run anchor 證明年份。Q3 申報窗 11/1 開啟後,官方彙總整批換成
+  ROC 115Q3(當晚僅 47 家已申報),本地仍在刷新 2026Q2 → anchor 年/季不符 → fail-closed。
+  防護方向正確(零資料損壞),但把「官方翻頁」當成「資料異常」。
+- 修復(L1,PM 核可):`quarterly_source_contract.AnchorSupersededError` — anchor 期別
+  **一致且新於**請求季 → 翻頁訊號,呼叫端(backfill_eps/backfill_balance_sheet)跳過該季、
+  保留既有檔案、exit 0;期別更舊或混雜仍是一般失敗。**不可**改成無 anchor 放行
+  (會回到錯季寫入風險);申報窗內官方彙總筆數會從少量逐日增加,superseded 判定不依筆數。
+- 驗證:live anchor 實測 115Q3(47 列全一致)、兩腳本實跑 exit 0、audit 轉綠、
+  fixture 測試(翻頁/更舊/混雜/相符)4 情境。

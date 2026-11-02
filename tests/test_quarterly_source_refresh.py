@@ -167,6 +167,47 @@ def test_eps_cli_failed_source_returns_nonzero_and_keeps_existing(monkeypatch, t
     assert path.read_bytes() == before
 
 
+def test_latest_anchor_newer_quarter_raises_superseded():
+    # 2026-11-02 事故:Q3 申報窗開啟後官方彙總整批換錨 ROC 115Q3,
+    # 請求 Q2 → 翻頁訊號(AnchorSupersededError),非一般 mismatch
+    frame = eps.parse_mops_eps_tables(eps_html("TWSE"))
+    newer = anchor_payload(frame)
+    for row in newer:
+        row["季別"] = "3"
+    with pytest.raises(contract.AnchorSupersededError, match="filing window has advanced"):
+        contract.validate_latest_anchor(newer, frame, "eps", 2026, 2, "TWSE")
+    next_year = anchor_payload(frame, year=116)
+    with pytest.raises(contract.AnchorSupersededError):
+        contract.validate_latest_anchor(next_year, frame, "eps", 2026, 2, "TWSE")
+    # 更舊或混雜期別仍是一般失敗,不得當翻頁放行
+    mixed = anchor_payload(frame)
+    mixed[0]["季別"] = "3"
+    with pytest.raises(ValueError, match="mismatch"):
+        contract.validate_latest_anchor(mixed, frame, "eps", 2026, 2, "TWSE")
+    with pytest.raises(ValueError, match="mismatch"):
+        contract.validate_latest_anchor(anchor_payload(frame, year=114), frame, "eps", 2026, 2, "TWSE")
+
+
+def test_eps_cli_superseded_anchor_skips_quarter_exit_zero(monkeypatch, tmp_path):
+    # 換錨=翻頁:既有檔案逐位元保留、exit 0(audit 不再記 source refresh failed)
+    _configure_eps_main(monkeypatch, tmp_path)
+    path = tmp_path / "eps_2026Q2.csv"
+    quarter_frame().to_csv(path, index=False)
+    before = path.read_bytes()
+    monkeypatch.setattr(eps, "fetch_mops_eps", lambda y, q, t: eps_html("TWSE" if t == "sii" else "OTC"))
+
+    def get(url, timeout):
+        market = "TWSE" if "openapi.twse" in url else "OTC"
+        payload = anchor_payload(eps.parse_mops_eps_tables(eps_html(market)))
+        for row in payload:
+            row["季別"] = "3"
+        return SimpleNamespace(raise_for_status=lambda: None, json=lambda: payload, text=json.dumps(payload))
+
+    monkeypatch.setattr(eps.SESSION, "get", get)
+    assert eps.main() == 0
+    assert path.read_bytes() == before
+
+
 def test_eps_cli_real_parse_verify_merge_write_flow(monkeypatch, tmp_path):
     _configure_eps_main(monkeypatch, tmp_path)
     monkeypatch.setattr(eps, "fetch_mops_eps", lambda y, q, t: eps_html("TWSE" if t == "sii" else "OTC"))

@@ -34,9 +34,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # 設定
 # ==============================================================================
 try:
-    from scripts.quarterly_source_contract import verify_market_source, write_verified_quarter
+    from scripts.quarterly_source_contract import AnchorSupersededError, verify_market_source, write_verified_quarter
 except ModuleNotFoundError:
-    from quarterly_source_contract import verify_market_source, write_verified_quarter
+    from quarterly_source_contract import AnchorSupersededError, verify_market_source, write_verified_quarter
 
 BASE_DIR = os.environ.get("STOCK_BASE_DIR") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EPS_DIR = os.path.join(BASE_DIR, "季報財務")
@@ -292,12 +292,14 @@ def main():
     fail_count = 0
     failed_quarters = []
 
+    skipped_superseded = []
     for y, q in tqdm(pending_quarters, desc="EPS 季報"):
         filepath = os.path.join(EPS_DIR, f"eps_{y}Q{q}.csv")
 
         roc_year = y - 1911
         market_frames = {}
         evidence = {}
+        superseded = None
 
         for typek in ["sii", "otc"]:
             market = "TWSE" if typek == "sii" else "OTC"
@@ -311,9 +313,19 @@ def main():
                     df["Market"] = market
                     market_frames[market] = df
                     tqdm.write(f"    {y}Q{q} ({market}): {len(df)} 筆")
+            except AnchorSupersededError as exc:
+                # 官方彙總已換錨到下一季(申報窗過渡期)=翻頁非異常:
+                # 既有檔案保留、本輪跳過,不算失敗(2026-11-02 事故)
+                superseded = exc
+                tqdm.write(f"    {y}Q{q} ({market}) anchor superseded: {exc}")
             except Exception as exc:
                 tqdm.write(f"    {y}Q{q} ({market}) source verification failed: {exc}")
             time.sleep(RATE_LIMIT + random.uniform(0, 3))
+
+        if superseded is not None and not market_frames:
+            skipped_superseded.append(f"{y}Q{q}")
+            tqdm.write(f"  {y}Q{q}: 官方彙總已換錨,跳過刷新保留既有檔案({superseded})")
+            continue
 
         quarter_index = quarters.index((y, q))
         reference_rows = _previous_reference_rows(quarters, quarter_index)
@@ -340,6 +352,8 @@ def main():
     print("回補完成")
     print(f"  成功: {success_count} 季")
     print(f"  失敗: {fail_count} 季")
+    if skipped_superseded:
+        print(f"  換錨跳過(保留既有檔案): {', '.join(skipped_superseded)}")
     if failed_quarters:
         print(f"  失敗季度: {', '.join(failed_quarters[:20])}")
     print("=" * 60)

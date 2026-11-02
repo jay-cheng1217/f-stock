@@ -54,6 +54,8 @@
 - 對官方來源新增 fail-closed 契約前:用排程實際時段的 live payload 驗證、測「週一同日」與「長假後首日」、第一個交易日先 warn、失敗訊息印原始值。
 - 官方來源日期:公司名冊出表日期下限=前一交易日;處置股 title 只取括號內區間、日期去星號;夜間融資券日期用 21:00 前=前一交易日;
   財報稽核 heal 遇交易所暫時性 5xx 要重試(`HEAL_RETRY_ATTEMPTS`),不可單次失敗就發 DATA GAPS。
+- 季EPS/資產負債的「最新季」官方彙總 anchor 在下一季申報窗開啟後整批換錨;換錨到更新季=翻頁訊號
+  (`AnchorSupersededError`)→該季跳過刷新保留既有檔案、不算失敗;**不得**在無 anchor 佐證下寫入(HTML 無年份)。
 - 停牌/終止上市櫃單一來源 `config/trading_status_events.json`;不要再往 `config/retired_tickers.csv` 加新案;3718 不串接 5371 價格歷史。
 - 官方終盤校驗只在 Phase-1 內執行;不要重新啟用 TpexBarVerify 或另建校驗排程。
 - 月營收:匯入代號一律取自檔名;`twstock.step6` 會重抓空值列、以官方彙總改正最近 12 個月(改正值是重編數字,回測有輕微前視)。
