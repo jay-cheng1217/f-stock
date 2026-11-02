@@ -1,20 +1,10 @@
 {
   "status": "OK",
-  "as_of_date": "20261022",
-  "previous_date": "20261016",
-  "generated_at": "2026-11-02T07:03:42.522343+08:00",
+  "as_of_date": "20261030",
+  "previous_date": "20261022",
+  "generated_at": "2026-11-03T07:04:26.425321+08:00",
   "sources": {
     "previous": {
-      "path": "F:\\stock\\集保分散\\tdcc_20261016.csv",
-      "sha256": "9a6772ebe826dbb20db94a98029cfd99ade0ff122c11e7d737fffc141af7f734",
-      "date": "20261016",
-      "raw_rows": 69751,
-      "raw_tickers": 4103,
-      "four_digit_rows": 50609,
-      "four_digit_tickers": 2977,
-      "required_levels_per_ticker": 15
-    },
-    "current": {
       "path": "F:\\stock\\集保分散\\tdcc_20261022.csv",
       "sha256": "df4ad0dcfa255ffb200c7662c8abfeed3f54c60d6fdacac9649554d3864b17fd",
       "date": "20261022",
@@ -24,20 +14,26 @@
       "four_digit_tickers": 2978,
       "required_levels_per_ticker": 15
     },
-    "paired_tickers": 2973,
-    "pair_coverage": 0.9983210208193418,
+    "current": {
+      "path": "F:\\stock\\集保分散\\tdcc_20261030.csv",
+      "sha256": "18b34f6eeb80229941f51200558fcc3fec9d405e9b7eb47aceca377e9f18f184",
+      "date": "20261030",
+      "raw_rows": 69887,
+      "raw_tickers": 4111,
+      "four_digit_rows": 50643,
+      "four_digit_tickers": 2979,
+      "required_levels_per_ticker": 15
+    },
+    "paired_tickers": 2976,
+    "pair_coverage": 0.998992950654582,
     "current_only_tickers": [
-      "5235",
-      "7960",
-      "7962",
-      "7963",
-      "7965"
-    ],
-    "previous_only_tickers": [
       "1516",
       "6142",
-      "6731",
       "8047"
+    ],
+    "previous_only_tickers": [
+      "3344",
+      "8225"
     ]
   },
   "definition": {
@@ -58,10 +54,10 @@
     "min_whale_delta_pp": 3.0,
     "retail_delta_less_than": 0
   },
-  "named_radar_rows": 8,
+  "named_radar_rows": 9,
   "outputs": {
-    "ml/data/tdcc_whale_snapshot.csv": "73f38ea234857de2065f7da000b70d4b00ffa180c87f2b94168c4132f355a0a7",
-    "ml/data/tdcc_whale_deltas.csv": "cead73cf7856ec5545cf852c6cfe00618668af5b5940588112dfb228129513af",
-    "logs/tdcc_whale_delta_20261022.csv": "535cd1efdbbc875d0d57f3c0ead06b4f7d3497c1db212bab59190a6474020b7b"
+    "ml/data/tdcc_whale_snapshot.csv": "286592077d2080410b92fe4c205384cbb87fec25a630f433258f7ac71a0c87b1",
+    "ml/data/tdcc_whale_deltas.csv": "09ced47e9975c8a08d5e3882c63bdf884f1f065210cb3d83f0df5d5cf1fcb73b",
+    "logs/tdcc_whale_delta_20261030.csv": "09c0e92c09172934951fdbea9d59f2fd44c7e5818afd52612d189b843881267a"
   }
 }

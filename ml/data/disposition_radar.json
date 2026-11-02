@@ -1,12 +1,12 @@
 {
-  "date": "2026-11-02",
+  "date": "2026-11-03",
   "hits": [
     {
       "ticker": "3167",
       "name": "大量",
       "sector": "電機機械",
       "released": "2026-10-27",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": 172.33,
       "rev_window": true,
       "dual_fuse": true
@@ -16,7 +16,7 @@
       "name": "應廣",
       "sector": "半導體業",
       "released": "2026-10-27",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": -26.76,
       "rev_window": true,
       "dual_fuse": false
@@ -26,7 +26,7 @@
       "name": "隴華",
       "sector": "通信網路業",
       "released": "2026-10-28",
-      "days_since": 5,
+      "days_since": 6,
       "known_yoy": -56.7,
       "rev_window": true,
       "dual_fuse": false
@@ -36,7 +36,7 @@
       "name": "廣寰科",
       "sector": "電腦及週邊設備業",
       "released": "2026-10-29",
-      "days_since": 4,
+      "days_since": 5,
       "known_yoy": 34.46,
       "rev_window": true,
       "dual_fuse": true
@@ -46,7 +46,7 @@
       "name": "中茂",
       "sector": "綠能環保",
       "released": "2026-10-30",
-      "days_since": 3,
+      "days_since": 4,
       "known_yoy": -93.23,
       "rev_window": true,
       "dual_fuse": false
@@ -56,7 +56,7 @@
       "name": "金居",
       "sector": "電子零組件業",
       "released": "2026-10-30",
-      "days_since": 3,
+      "days_since": 4,
       "known_yoy": 64.63,
       "rev_window": true,
       "dual_fuse": true
@@ -66,7 +66,7 @@
       "name": "大地-KY",
       "sector": "其他業",
       "released": "2026-10-30",
-      "days_since": 3,
+      "days_since": 4,
       "known_yoy": 47.48,
       "rev_window": true,
       "dual_fuse": true
