@@ -1,0 +1,118 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20261104"
+  },
+  "rows": 1351347,
+  "setup_count": 6491,
+  "filled_count": 5638,
+  "missed_gap_up_count": 541,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5638,
+      "mean_return": -0.008683718722848241,
+      "median_return": -0.01218354680156419,
+      "win_rate": 0.3469315360056758,
+      "p25": -0.033085623678646925,
+      "p75": 0.00997788258253374
+    },
+    {
+      "hold_days": 2,
+      "n": 5630,
+      "mean_return": -0.008000777001050906,
+      "median_return": -0.015134421309564435,
+      "win_rate": 0.37779751332149203,
+      "p25": -0.045701897782788437,
+      "p75": 0.02021823149239971
+    },
+    {
+      "hold_days": 3,
+      "n": 5621,
+      "mean_return": -0.007250400164892685,
+      "median_return": -0.01801050788091074,
+      "win_rate": 0.3823163138231631,
+      "p25": -0.05536612021857923,
+      "p75": 0.028258064516129004
+    },
+    {
+      "hold_days": 5,
+      "n": 5607,
+      "mean_return": -0.005045192245357594,
+      "median_return": -0.020863406408094472,
+      "win_rate": 0.3961120028535759,
+      "p25": -0.07030798453424358,
+      "p75": 0.039478260869565185
+    },
+    {
+      "hold_days": 10,
+      "n": 5562,
+      "mean_return": -0.0003463470467957265,
+      "median_return": -0.023914016872160933,
+      "win_rate": 0.4108234448040273,
+      "p25": -0.09431126849836025,
+      "p75": 0.06299455044107
+    },
+    {
+      "hold_days": 20,
+      "n": 5478,
+      "mean_return": 0.01116349494173766,
+      "median_return": -0.03430303030303028,
+      "win_rate": 0.4169404892296459,
+      "p25": -0.12580072769293235,
+      "p75": 0.09789608398207122
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-11-03",
+      "ticker": "6870",
+      "name": "騰雲",
+      "sector": "數位雲端",
+      "Close": 413.0,
+      "momentum_score": 0.65144,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 399.99,
+      "momentum_entry_limit": 413.0,
+      "momentum_entry_high": 419.195,
+      "price_vs_ma5": 0.0273631841,
+      "price_vs_ma20": 0.2154208358,
+      "price_vs_ma60": 0.3642745066,
+      "volume_ratio_20d": 4.1478541305,
+      "RSI_14": 70.151017143,
+      "MACDh_12_26_9": 9.2047586803,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-03",
+      "ticker": "4720",
+      "name": "德淵",
+      "sector": "化學工業",
+      "Close": 31.15,
+      "momentum_score": 0.632362,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 30.05975,
+      "momentum_entry_limit": 31.15,
+      "momentum_entry_high": 31.61725,
+      "price_vs_ma5": 0.0411096257,
+      "price_vs_ma20": 0.1574547144,
+      "price_vs_ma60": 0.448949531,
+      "volume_ratio_20d": 2.350571563,
+      "RSI_14": 63.0379635256,
+      "MACDh_12_26_9": 0.1483580847,
+      "missed_gap_up": false
+    }
+  ]
+}
