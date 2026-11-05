@@ -17154,14 +17154,14 @@
 00929,2026-10-21,TWSE,ex_right_dividend,29.26,28.88,28.88,0.9870129870129868,0.9870129870129868,https://www.twse.com.tw/rwd/zh/exRight/TWT49U
 00986D,2026-10-21,TPEX,ex_right_dividend,14.23,14.14,14.14,0.9936753338018272,0.9936753338018272,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 0056,2026-10-22,TWSE,ex_right_dividend,58.75,57.03,57.05,0.9707234042553192,0.971063829787234,https://www.twse.com.tw/rwd/zh/exRight/TWT49U
-00719B,2026-10-22,TPEX,ex_right_dividend,31.68,31.41,31.41,0.9914772727272727,0.9914772727272727,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
-00720B,2026-10-22,TPEX,ex_right_dividend,31.88,31.42,31.42,0.9855708908406525,0.9855708908406525,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
+00719B,2026-10-22,TPEX,ex_right_dividend,31.68,31.41,31.41,0.9914772727272728,0.9914772727272728,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
+00720B,2026-10-22,TPEX,ex_right_dividend,31.88,31.42,31.42,0.9855708908406524,0.9855708908406524,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 00788B,2026-10-22,TPEX,ex_right_dividend,29.33,28.96,28.96,0.987384930105694,0.987384930105694,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
-00834B,2026-10-22,TPEX,ex_right_dividend,33.11,32.7,32.7,0.9876170341286621,0.9876170341286621,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
+00834B,2026-10-22,TPEX,ex_right_dividend,33.11,32.7,32.7,0.987617034128662,0.987617034128662,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 00870B,2026-10-22,TPEX,ex_right_dividend,27.12,26.74,26.74,0.9859882005899704,0.9859882005899704,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 00967B,2026-10-22,TPEX,ex_right_dividend,8.87,8.84,8.84,0.9966178128523112,0.9966178128523112,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 00968B,2026-10-22,TPEX,ex_right_dividend,8.9,8.86,8.86,0.995505617977528,0.995505617977528,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
-00981B,2026-10-22,TPEX,ex_right_dividend,9.0,8.94,8.94,0.9933333333333333,0.9933333333333333,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
+00981B,2026-10-22,TPEX,ex_right_dividend,9.0,8.94,8.94,0.9933333333333332,0.9933333333333332,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 8102,2026-10-22,TPEX,ex_right_dividend,56.9,56.0,56.0,0.984182776801406,0.984182776801406,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 8936,2026-10-22,TPEX,ex_right_dividend,51.2,48.2,48.2,0.94140625,0.94140625,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 2028,2026-10-23,TWSE,ex_right_dividend,16.55,16.35,16.35,0.9879154078549849,0.9879154078549849,https://www.twse.com.tw/rwd/zh/exRight/TWT49U
@@ -17199,6 +17199,8 @@
 8467,2026-11-04,TWSE,ex_right_dividend,92.9,90.9,90.9,0.9784714747039828,0.9784714747039828,https://www.twse.com.tw/rwd/zh/exRight/TWT49U
 3289,2026-11-05,TPEX,ex_right_dividend,127.0,125.4,125.5,0.9874015748031496,0.9881889763779528,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
 5523,2026-11-05,TPEX,ex_right_dividend,30.35,29.85,29.85,0.9835255354200988,0.9835255354200988,https://www.tpex.org.tw/www/zh-tw/bulletin/exDailyQ
+00400A,2026-11-06,TWSE,ex_right_dividend,12.06,11.94,11.94,0.990049751243781,0.990049751243781,https://www.twse.com.tw/rwd/zh/exRight/TWT49U
+2414,2026-11-06,TWSE,ex_right_dividend,48.3,48.04,48.3,0.9946169772256729,1.0,https://www.twse.com.tw/rwd/zh/exRight/TWT49U
 4207,2026-11-09,TPEX,capital_reduction,19.25,19.74,19.75,1.0254545454545454,1.025974025974026,https://www.tpex.org.tw/www/zh-tw/bulletin/revivt
 5355,2026-11-09,TPEX,capital_reduction,6.79,14.55,14.55,2.142857142857143,2.142857142857143,https://www.tpex.org.tw/www/zh-tw/bulletin/revivt
 8176,2026-11-09,TPEX,capital_reduction,9.69,11.62,11.6,1.1991744066047472,1.1971104231166152,https://www.tpex.org.tw/www/zh-tw/bulletin/revivt
