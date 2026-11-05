@@ -134,3 +134,15 @@ Layer 3: API/ML    app.py (FastAPI) + ml/ (LightGBM 預測)
   V1 分類翻轉率 1.93%；事前估計比為 0.81x / 1.09x，未命中 >2x 停手條件。
 - RETRAIN-03 正式稽核為 `ml/reports/retrain03_price_integrity_20260717.md`：2020 年後
   OHLC / 非正價格 / duplicate 違規均 0，公司行動日假跳幅 0，新未解釋跳幅 0。
+
+## 開發工具：CodeGraph（程式碼圖譜 MCP，2026-11-05 安裝）
+- 來源 `colbymchenry/codegraph`（repo 本機備份於 `F:\codegraph`），CLI 裝在
+  `%LOCALAPPDATA%\codegraph\current\bin`（已加入 user PATH），升級 `codegraph upgrade`、
+  移除 `codegraph uninstall`。telemetry 已永久關閉（`codegraph telemetry off`）。
+- MCP server 已接入 Claude Code（`~/.claude.json` 全域 mcpServers）與 Codex CLI
+  （`~/.codex/config.toml`）；重啟 agent 後生效，工具名 `codegraph_*`。
+- 本專案索引在 `F:\stock\.codegraph\`（601 檔 / 13,927 nodes / 33,667 edges，建立 1.7s），
+  機器本地、不入版控（頂層 .gitignore 已加 `.codegraph/`）；檔案變更自動同步，不需重跑。
+- 常用 CLI：`codegraph callers <符號>`（誰呼叫）、`codegraph impact <符號>`（改動影響面）、
+  `codegraph explore <主題>`、`codegraph node <符號>`、`codegraph status`。
+  改 pipeline / 防呆層 / 共用工具前先用 `impact` 查影響範圍,可大幅降低漏改下游的風險。

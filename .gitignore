@@ -141,3 +141,6 @@ venv/
 kol_tracker.db
 ml/reports/cache/
 ml/models/_quarantine_dirty_cache/
+
+# CodeGraph local index (machine-local, see docs/SYSTEM_reference.md)
+.codegraph/
