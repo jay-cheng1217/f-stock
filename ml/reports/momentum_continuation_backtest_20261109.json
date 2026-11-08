@@ -1,0 +1,156 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20261109"
+  },
+  "rows": 1357565,
+  "setup_count": 6516,
+  "filled_count": 5659,
+  "missed_gap_up_count": 543,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5659,
+      "mean_return": -0.008677119145152224,
+      "median_return": -0.012196721311475419,
+      "win_rate": 0.34705778406078813,
+      "p25": -0.03327849780589859,
+      "p75": 0.010048622947878342
+    },
+    {
+      "hold_days": 2,
+      "n": 5652,
+      "mean_return": -0.008083929898016255,
+      "median_return": -0.015134421309564435,
+      "win_rate": 0.3777423920736023,
+      "p25": -0.045735193049324,
+      "p75": 0.02022952280121876
+    },
+    {
+      "hold_days": 3,
+      "n": 5644,
+      "mean_return": -0.00728809495797475,
+      "median_return": -0.01804750746158212,
+      "win_rate": 0.3825301204819277,
+      "p25": -0.055426626621007086,
+      "p75": 0.028346794001434087
+    },
+    {
+      "hold_days": 5,
+      "n": 5630,
+      "mean_return": -0.005183578375357264,
+      "median_return": -0.020858669496182033,
+      "win_rate": 0.3964476021314387,
+      "p25": -0.07050130719996175,
+      "p75": 0.039478260869565185
+    },
+    {
+      "hold_days": 10,
+      "n": 5590,
+      "mean_return": -0.0009653249591646385,
+      "median_return": -0.0241488268238898,
+      "win_rate": 0.40966010733452596,
+      "p25": -0.09490909090909094,
+      "p75": 0.06273768939393931
+    },
+    {
+      "hold_days": 20,
+      "n": 5504,
+      "mean_return": 0.009871393056269127,
+      "median_return": -0.03530444250871084,
+      "win_rate": 0.4153343023255814,
+      "p25": -0.1265165562913907,
+      "p75": 0.0966515542283154
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-11-06",
+      "ticker": "2254",
+      "name": "",
+      "sector": "",
+      "Close": 110.0,
+      "momentum_score": 0.649762,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 107.3605,
+      "momentum_entry_limit": 110.0,
+      "momentum_entry_high": 111.65,
+      "price_vs_ma5": 0.0194624652,
+      "price_vs_ma20": 0.1102699975,
+      "price_vs_ma60": 0.3783309665,
+      "volume_ratio_20d": 1.0696294144,
+      "RSI_14": 83.5743317589,
+      "MACDh_12_26_9": 0.3300360573,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-06",
+      "ticker": "4741",
+      "name": "泓瀚",
+      "sector": "化學工業",
+      "Close": 57.3,
+      "momentum_score": 0.638663,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 55.2945,
+      "momentum_entry_limit": 57.3,
+      "momentum_entry_high": 58.1595,
+      "price_vs_ma5": 0.0410610465,
+      "price_vs_ma20": 0.2130835186,
+      "price_vs_ma60": 0.3360017098,
+      "volume_ratio_20d": 2.3869270464,
+      "RSI_14": 62.8297095337,
+      "MACDh_12_26_9": 0.8842198481,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-06",
+      "ticker": "2465",
+      "name": "麗臺",
+      "sector": "電腦及週邊設備業",
+      "Close": 113.0,
+      "momentum_score": 0.633039,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 111.305,
+      "momentum_entry_limit": 113.0,
+      "momentum_entry_high": 114.695,
+      "price_vs_ma5": -0.0317052271,
+      "price_vs_ma20": 0.1602833967,
+      "price_vs_ma60": 0.199341954,
+      "volume_ratio_20d": 1.6926457586,
+      "RSI_14": 59.7408280229,
+      "MACDh_12_26_9": 2.7790417262,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-06",
+      "ticker": "6199",
+      "name": "天品",
+      "sector": "其他業",
+      "Close": 163.5,
+      "momentum_score": 0.588011,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 161.0475,
+      "momentum_entry_limit": 163.5,
+      "momentum_entry_high": 165.9525,
+      "price_vs_ma5": -0.0066828676,
+      "price_vs_ma20": 0.0758348413,
+      "price_vs_ma60": 0.3593093988,
+      "volume_ratio_20d": 2.5708332306,
+      "RSI_14": 77.5155538457,
+      "MACDh_12_26_9": 0.0992829276,
+      "missed_gap_up": false
+    }
+  ]
+}

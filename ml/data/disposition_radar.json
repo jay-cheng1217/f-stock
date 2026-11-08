@@ -1,42 +1,12 @@
 {
-  "date": "2026-11-06",
+  "date": "2026-11-09",
   "hits": [
-    {
-      "ticker": "5205",
-      "name": "中茂",
-      "sector": "綠能環保",
-      "released": "2026-10-30",
-      "days_since": 7,
-      "known_yoy": -93.23,
-      "rev_window": true,
-      "dual_fuse": false
-    },
-    {
-      "ticker": "8358",
-      "name": "金居",
-      "sector": "電子零組件業",
-      "released": "2026-10-30",
-      "days_since": 7,
-      "known_yoy": 64.63,
-      "rev_window": true,
-      "dual_fuse": true
-    },
-    {
-      "ticker": "8437",
-      "name": "大地-KY",
-      "sector": "其他業",
-      "released": "2026-10-30",
-      "days_since": 7,
-      "known_yoy": 47.48,
-      "rev_window": true,
-      "dual_fuse": true
-    },
     {
       "ticker": "3354",
       "name": "律勝",
       "sector": "電子零組件業",
       "released": "2026-11-03",
-      "days_since": 3,
+      "days_since": 6,
       "known_yoy": 37.5,
       "rev_window": true,
       "dual_fuse": true
@@ -46,7 +16,7 @@
       "name": "科嶠",
       "sector": "電子零組件業",
       "released": "2026-11-03",
-      "days_since": 3,
+      "days_since": 6,
       "known_yoy": -7.59,
       "rev_window": true,
       "dual_fuse": false
@@ -56,7 +26,7 @@
       "name": "德宏",
       "sector": "電子零組件業",
       "released": "2026-11-03",
-      "days_since": 3,
+      "days_since": 6,
       "known_yoy": 227.61,
       "rev_window": true,
       "dual_fuse": true
@@ -66,7 +36,7 @@
       "name": "智聯服務",
       "sector": "資訊服務業",
       "released": "2026-11-03",
-      "days_since": 3,
+      "days_since": 6,
       "known_yoy": 158.43,
       "rev_window": true,
       "dual_fuse": true
@@ -76,7 +46,7 @@
       "name": "意藍",
       "sector": "數位雲端",
       "released": "2026-11-03",
-      "days_since": 3,
+      "days_since": 6,
       "known_yoy": 21.37,
       "rev_window": true,
       "dual_fuse": false
@@ -86,8 +56,28 @@
       "name": "達航科技",
       "sector": "其他電子業",
       "released": "2026-11-05",
-      "days_since": 1,
+      "days_since": 4,
       "known_yoy": 55.23,
+      "rev_window": true,
+      "dual_fuse": true
+    },
+    {
+      "ticker": "3441",
+      "name": "聯一光",
+      "sector": "光電業",
+      "released": "2026-11-06",
+      "days_since": 3,
+      "known_yoy": 8.83,
+      "rev_window": true,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "3691",
+      "name": "碩禾",
+      "sector": "光電業",
+      "released": "2026-11-06",
+      "days_since": 3,
+      "known_yoy": 64.21,
       "rev_window": true,
       "dual_fuse": true
     }
