@@ -1,0 +1,118 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20261110"
+  },
+  "rows": 1359641,
+  "setup_count": 6521,
+  "filled_count": 5662,
+  "missed_gap_up_count": 547,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5662,
+      "mean_return": -0.008668859272984735,
+      "median_return": -0.01218354680156419,
+      "win_rate": 0.34740374425997883,
+      "p25": -0.03326674114069386,
+      "p75": 0.010066564995065922
+    },
+    {
+      "hold_days": 2,
+      "n": 5659,
+      "mean_return": -0.007989257846937462,
+      "median_return": -0.015090573012939031,
+      "win_rate": 0.37815868528008484,
+      "p25": -0.04573931963806066,
+      "p75": 0.020303803699100568
+    },
+    {
+      "hold_days": 3,
+      "n": 5652,
+      "mean_return": -0.007356604564494028,
+      "median_return": -0.018093535572408777,
+      "win_rate": 0.38251946213729654,
+      "p25": -0.055470588235293966,
+      "p75": 0.028279356967954864
+    },
+    {
+      "hold_days": 5,
+      "n": 5638,
+      "mean_return": -0.005180760741880532,
+      "median_return": -0.020858669496182033,
+      "win_rate": 0.39659453706988296,
+      "p25": -0.07045196832219563,
+      "p75": 0.039478260869565185
+    },
+    {
+      "hold_days": 10,
+      "n": 5599,
+      "mean_return": -0.0011473321980898599,
+      "median_return": -0.024253164556962022,
+      "win_rate": 0.40918021075191996,
+      "p25": -0.09506130256217815,
+      "p75": 0.062181131857999006
+    },
+    {
+      "hold_days": 20,
+      "n": 5514,
+      "mean_return": 0.0093930904011478,
+      "median_return": -0.035544034214890496,
+      "win_rate": 0.41458106637649617,
+      "p25": -0.12677643828276738,
+      "p75": 0.09656083123548093
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-11-09",
+      "ticker": "3609",
+      "name": "三一東林",
+      "sector": "電子零組件業",
+      "Close": 29.45,
+      "momentum_score": 0.656211,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 28.41925,
+      "momentum_entry_limit": 29.45,
+      "momentum_entry_high": 29.89175,
+      "price_vs_ma5": 0.0443262411,
+      "price_vs_ma20": 0.1358596085,
+      "price_vs_ma60": 0.2763652124,
+      "volume_ratio_20d": 2.609963548,
+      "RSI_14": 69.4523807042,
+      "MACDh_12_26_9": 0.3492559018,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-09",
+      "ticker": "4155",
+      "name": "訊映",
+      "sector": "生技醫療業",
+      "Close": 18.5,
+      "momentum_score": 0.583754,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 17.8525,
+      "momentum_entry_limit": 18.5,
+      "momentum_entry_high": 18.7775,
+      "price_vs_ma5": 0.0730858469,
+      "price_vs_ma20": 0.1367144604,
+      "price_vs_ma60": 0.2069661288,
+      "volume_ratio_20d": 2.5842681861,
+      "RSI_14": 68.8741495626,
+      "MACDh_12_26_9": 0.1567766688,
+      "missed_gap_up": false
+    }
+  ]
+}
