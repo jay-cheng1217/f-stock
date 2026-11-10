@@ -1,64 +1,24 @@
 {
-  "date": "2026-11-10",
+  "date": "2026-11-11",
   "hits": [
-    {
-      "ticker": "3354",
-      "name": "律勝",
-      "sector": "電子零組件業",
-      "released": "2026-11-03",
-      "days_since": 7,
-      "known_yoy": 37.5,
-      "rev_window": true,
-      "dual_fuse": true
-    },
-    {
-      "ticker": "5475",
-      "name": "德宏",
-      "sector": "電子零組件業",
-      "released": "2026-11-03",
-      "days_since": 7,
-      "known_yoy": 227.61,
-      "rev_window": true,
-      "dual_fuse": true
-    },
-    {
-      "ticker": "6751",
-      "name": "智聯服務",
-      "sector": "資訊服務業",
-      "released": "2026-11-03",
-      "days_since": 7,
-      "known_yoy": 158.43,
-      "rev_window": true,
-      "dual_fuse": true
-    },
-    {
-      "ticker": "6925",
-      "name": "意藍",
-      "sector": "數位雲端",
-      "released": "2026-11-03",
-      "days_since": 7,
-      "known_yoy": 21.37,
-      "rev_window": true,
-      "dual_fuse": false
-    },
     {
       "ticker": "4577",
       "name": "達航科技",
       "sector": "其他電子業",
       "released": "2026-11-05",
-      "days_since": 5,
-      "known_yoy": 55.23,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 6,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "3441",
       "name": "聯一光",
       "sector": "光電業",
       "released": "2026-11-06",
-      "days_since": 4,
-      "known_yoy": 8.83,
-      "rev_window": true,
+      "days_since": 5,
+      "known_yoy": null,
+      "rev_window": false,
       "dual_fuse": false
     },
     {
@@ -66,29 +26,49 @@
       "name": "碩禾",
       "sector": "光電業",
       "released": "2026-11-06",
-      "days_since": 4,
-      "known_yoy": 64.21,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 5,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "4526",
       "name": "東台",
       "sector": "電機機械",
       "released": "2026-11-09",
-      "days_since": 1,
-      "known_yoy": 81.03,
-      "rev_window": true,
-      "dual_fuse": true
+      "days_since": 2,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
     },
     {
       "ticker": "8291",
       "name": "尚茂",
       "sector": "電子零組件業",
       "released": "2026-11-09",
+      "days_since": 2,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "2466",
+      "name": "冠西電",
+      "sector": "光電業",
+      "released": "2026-11-10",
       "days_since": 1,
-      "known_yoy": 12.5,
-      "rev_window": true,
+      "known_yoy": null,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "3374",
+      "name": "精材",
+      "sector": "半導體業",
+      "released": "2026-11-10",
+      "days_since": 1,
+      "known_yoy": null,
+      "rev_window": false,
       "dual_fuse": false
     }
   ]
