@@ -1,0 +1,137 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20261112"
+  },
+  "rows": 1363760,
+  "setup_count": 6535,
+  "filled_count": 5673,
+  "missed_gap_up_count": 549,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5673,
+      "mean_return": -0.008625749583452311,
+      "median_return": -0.012130081300813052,
+      "win_rate": 0.34796404019037547,
+      "p25": -0.03326208651399487,
+      "p75": 0.010150943396226356
+    },
+    {
+      "hold_days": 2,
+      "n": 5666,
+      "mean_return": -0.00795842622205705,
+      "median_return": -0.015072153910907934,
+      "win_rate": 0.37857394987645604,
+      "p25": -0.045729954521699506,
+      "p75": 0.020309956560796486
+    },
+    {
+      "hold_days": 3,
+      "n": 5662,
+      "mean_return": -0.007177810268688692,
+      "median_return": -0.017965308353772077,
+      "win_rate": 0.38343341575415046,
+      "p25": -0.055443000430397266,
+      "p75": 0.02840079365079368
+    },
+    {
+      "hold_days": 5,
+      "n": 5652,
+      "mean_return": -0.005112125377588937,
+      "median_return": -0.020784784133026143,
+      "win_rate": 0.3975583864118896,
+      "p25": -0.07042801617423228,
+      "p75": 0.03954791076237796
+    },
+    {
+      "hold_days": 10,
+      "n": 5616,
+      "mean_return": -0.0011989254259577918,
+      "median_return": -0.024270284729875743,
+      "win_rate": 0.4093660968660969,
+      "p25": -0.09528123446519696,
+      "p75": 0.0628046237982231
+    },
+    {
+      "hold_days": 20,
+      "n": 5532,
+      "mean_return": 0.00872201022102259,
+      "median_return": -0.03584986734640788,
+      "win_rate": 0.4135936370209689,
+      "p25": -0.12776675220986602,
+      "p75": 0.09600000000000009
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-11-11",
+      "ticker": "4526",
+      "name": "東台",
+      "sector": "電機機械",
+      "Close": 57.4,
+      "momentum_score": 0.698015,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 55.391,
+      "momentum_entry_limit": 57.4,
+      "momentum_entry_high": 58.261,
+      "price_vs_ma5": 0.0434466461,
+      "price_vs_ma20": 0.2307692308,
+      "price_vs_ma60": 0.5717773772,
+      "volume_ratio_20d": 2.3074116384,
+      "RSI_14": 66.0617950228,
+      "MACDh_12_26_9": 0.6710476519,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-11",
+      "ticker": "6689",
+      "name": "伊雲谷",
+      "sector": "數位雲端",
+      "Close": 78.0,
+      "momentum_score": 0.580471,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 75.27,
+      "momentum_entry_limit": 78.0,
+      "momentum_entry_high": 79.17,
+      "price_vs_ma5": 0.0560519903,
+      "price_vs_ma20": 0.0846891948,
+      "price_vs_ma60": 0.1803278689,
+      "volume_ratio_20d": 1.1663134504,
+      "RSI_14": 61.352324865,
+      "MACDh_12_26_9": 0.1881732614,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-11",
+      "ticker": "3703",
+      "name": "欣陸",
+      "sector": "建材營造業",
+      "Close": 23.85,
+      "momentum_score": 0.577559,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 23.01525,
+      "momentum_entry_limit": 23.85,
+      "momentum_entry_high": 24.20775,
+      "price_vs_ma5": 0.069027342,
+      "price_vs_ma20": 0.1289940828,
+      "price_vs_ma60": 0.1826446281,
+      "volume_ratio_20d": 1.4648533782,
+      "RSI_14": 77.0721683176,
+      "MACDh_12_26_9": 0.3005531643,
+      "missed_gap_up": false
+    }
+  ]
+}
