@@ -1204,3 +1204,4 @@ NVIDIA 概念 tags 吻合),同發「籌碼K 團購最後期限」。曬漲停+�
   383 訊號 83% 集中四個崩盤反彈月=市場 beta 不是選股 alpha。GIS 是右尾個案。
 - 判決:系統 miss GIS 屬設計取捨(Champion 不做崩後抄底擇時),非缺陷;融資斷頭廣度作為市場 regime 指標
   與融資特徵入模型留作另案假設。全文 `docs/RESEARCH_margin_washout_ignition_20261112.md`。
+- 事後探索補記(2026-11-12):H1 的 383 訊號中,「相對洗盤 rel<=-12%(個股比大盤多跌)」子群 T+20 超額 +3.8pp/勝率 52%,只跟大盤跌的子群 -2.1pp/31%——beta/alpha 分水嶺找到;GIS rel -18.5% 落在最優帶。已凍結登記 H2(H1+rel<=-12%),走 60 交易日 forward paper cohort,達標才開票。詳 docs/RESEARCH_margin_washout_ignition_20261112.md。
