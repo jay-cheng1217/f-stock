@@ -1,22 +1,12 @@
 {
-  "date": "2026-11-12",
+  "date": "2026-11-13",
   "hits": [
-    {
-      "ticker": "4577",
-      "name": "達航科技",
-      "sector": "其他電子業",
-      "released": "2026-11-05",
-      "days_since": 7,
-      "known_yoy": 41.89,
-      "rev_window": false,
-      "dual_fuse": false
-    },
     {
       "ticker": "3441",
       "name": "聯一光",
       "sector": "光電業",
       "released": "2026-11-06",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": 8.52,
       "rev_window": false,
       "dual_fuse": false
@@ -26,7 +16,7 @@
       "name": "碩禾",
       "sector": "光電業",
       "released": "2026-11-06",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": 59.21,
       "rev_window": false,
       "dual_fuse": false
@@ -36,7 +26,7 @@
       "name": "東台",
       "sector": "電機機械",
       "released": "2026-11-09",
-      "days_since": 3,
+      "days_since": 4,
       "known_yoy": -12.06,
       "rev_window": false,
       "dual_fuse": false
@@ -46,7 +36,7 @@
       "name": "尚茂",
       "sector": "電子零組件業",
       "released": "2026-11-09",
-      "days_since": 3,
+      "days_since": 4,
       "known_yoy": -23.1,
       "rev_window": false,
       "dual_fuse": false
@@ -56,7 +46,7 @@
       "name": "冠西電",
       "sector": "光電業",
       "released": "2026-11-10",
-      "days_since": 2,
+      "days_since": 3,
       "known_yoy": 54.17,
       "rev_window": false,
       "dual_fuse": false
@@ -66,7 +56,7 @@
       "name": "精材",
       "sector": "半導體業",
       "released": "2026-11-10",
-      "days_since": 2,
+      "days_since": 3,
       "known_yoy": 38.98,
       "rev_window": false,
       "dual_fuse": false
@@ -76,7 +66,7 @@
       "name": "聯茂",
       "sector": "電子零組件業",
       "released": "2026-11-11",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": 119.53,
       "rev_window": false,
       "dual_fuse": false
@@ -86,7 +76,7 @@
       "name": "大世科",
       "sector": "資訊服務業",
       "released": "2026-11-11",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": 87.01,
       "rev_window": false,
       "dual_fuse": false
@@ -96,7 +86,7 @@
       "name": "全景軟體",
       "sector": "資訊服務業",
       "released": "2026-11-11",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": 11.41,
       "rev_window": false,
       "dual_fuse": false
