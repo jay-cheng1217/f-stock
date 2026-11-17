@@ -1,0 +1,137 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20261118"
+  },
+  "rows": 1372008,
+  "setup_count": 6570,
+  "filled_count": 5700,
+  "missed_gap_up_count": 555,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5700,
+      "mean_return": -0.00877374487400849,
+      "median_return": -0.012196721311475419,
+      "win_rate": 0.3475438596491228,
+      "p25": -0.03341176470588228,
+      "p75": 0.010030680900690762
+    },
+    {
+      "hold_days": 2,
+      "n": 5693,
+      "mean_return": -0.008160356434566281,
+      "median_return": -0.015160714285714302,
+      "win_rate": 0.3780080800983664,
+      "p25": -0.045845493562231776,
+      "p75": 0.02025373134328357
+    },
+    {
+      "hold_days": 3,
+      "n": 5684,
+      "mean_return": -0.007293946558166315,
+      "median_return": -0.01799300699300704,
+      "win_rate": 0.3830049261083744,
+      "p25": -0.055612903225806476,
+      "p75": 0.02841764995083579
+    },
+    {
+      "hold_days": 5,
+      "n": 5673,
+      "mean_return": -0.004892415240382057,
+      "median_return": -0.02066666666666672,
+      "win_rate": 0.39820200951877316,
+      "p25": -0.07031762652705065,
+      "p75": 0.03993939393939394
+    },
+    {
+      "hold_days": 10,
+      "n": 5644,
+      "mean_return": -0.0008336809301170777,
+      "median_return": -0.02408635486896354,
+      "win_rate": 0.41105598866052445,
+      "p25": -0.09522136911224863,
+      "p75": 0.06345099061522419
+    },
+    {
+      "hold_days": 20,
+      "n": 5561,
+      "mean_return": 0.008082066318262748,
+      "median_return": -0.036208588957055254,
+      "win_rate": 0.41305520589821976,
+      "p25": -0.12825149700598804,
+      "p75": 0.09557325746799439
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-11-17",
+      "ticker": "5209",
+      "name": "新鼎",
+      "sector": "其他業",
+      "Close": 218.5,
+      "momentum_score": 0.656624,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 215.2225,
+      "momentum_entry_limit": 218.5,
+      "momentum_entry_high": 221.7775,
+      "price_vs_ma5": -0.0157657658,
+      "price_vs_ma20": 0.0786128594,
+      "price_vs_ma60": 0.2182316592,
+      "volume_ratio_20d": 1.3868522431,
+      "RSI_14": 60.7961991779,
+      "MACDh_12_26_9": 1.5666287614,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-17",
+      "ticker": "5230",
+      "name": "雷笛克光學",
+      "sector": "光電業",
+      "Close": 34.5,
+      "momentum_score": 0.656327,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 33.9825,
+      "momentum_entry_limit": 34.5,
+      "momentum_entry_high": 35.0175,
+      "price_vs_ma5": -0.0057636888,
+      "price_vs_ma20": 0.1993742395,
+      "price_vs_ma60": 0.4756727856,
+      "volume_ratio_20d": 3.8281080215,
+      "RSI_14": 63.9388412694,
+      "MACDh_12_26_9": 0.5860976215,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-17",
+      "ticker": "4155",
+      "name": "訊映",
+      "sector": "生技醫療業",
+      "Close": 18.55,
+      "momentum_score": 0.569503,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 17.90075,
+      "momentum_entry_limit": 18.55,
+      "momentum_entry_high": 18.82825,
+      "price_vs_ma5": 0.0654796094,
+      "price_vs_ma20": 0.0887747616,
+      "price_vs_ma60": 0.1885493808,
+      "volume_ratio_20d": 2.4233151605,
+      "RSI_14": 63.9655640202,
+      "MACDh_12_26_9": 0.0509431363,
+      "missed_gap_up": false
+    }
+  ]
+}

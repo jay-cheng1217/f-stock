@@ -3,231 +3,231 @@
   "rank": 1,
   "pct": 1.0,
   "tier": "strong",
-  "median_20d": 0.0421,
+  "median_20d": -0.0024,
   "n": 44
  },
- "玻璃陶瓷": {
+ "油電燃氣業": {
   "rank": 2,
   "pct": 0.969,
   "tier": "strong",
-  "median_20d": -0.0122,
-  "n": 5
- },
- "油電燃氣業": {
-  "rank": 3,
-  "pct": 0.938,
-  "tier": "strong",
-  "median_20d": -0.0307,
+  "median_20d": -0.027,
   "n": 12
  },
  "文化創意業": {
-  "rank": 4,
-  "pct": 0.906,
+  "rank": 3,
+  "pct": 0.938,
   "tier": "strong",
-  "median_20d": -0.0325,
+  "median_20d": -0.0343,
   "n": 26
  },
  "食品工業": {
+  "rank": 4,
+  "pct": 0.906,
+  "tier": "strong",
+  "median_20d": -0.0393,
+  "n": 34
+ },
+ "水泥工業": {
   "rank": 5,
   "pct": 0.875,
   "tier": "strong",
-  "median_20d": -0.0343,
-  "n": 34
+  "median_20d": -0.0456,
+  "n": 7
  },
- "建材營造業": {
+ "居家生活": {
   "rank": 6,
   "pct": 0.844,
   "tier": "strong",
-  "median_20d": -0.0372,
-  "n": 87
+  "median_20d": -0.0456,
+  "n": 33
  },
- "數位雲端": {
+ "建材營造業": {
   "rank": 7,
   "pct": 0.812,
   "tier": "strong",
-  "median_20d": -0.038,
-  "n": 37
+  "median_20d": -0.0477,
+  "n": 87
  },
- "貿易百貨業": {
+ "紡織纖維": {
   "rank": 8,
   "pct": 0.781,
   "tier": "strong",
-  "median_20d": -0.0407,
-  "n": 19
+  "median_20d": -0.0483,
+  "n": 52
  },
- "水泥工業": {
+ "貿易百貨業": {
   "rank": 9,
   "pct": 0.75,
   "tier": "strong",
-  "median_20d": -0.0428,
-  "n": 7
+  "median_20d": -0.0491,
+  "n": 19
  },
  "金融保險業": {
   "rank": 10,
   "pct": 0.719,
   "tier": "strong",
-  "median_20d": -0.0453,
+  "median_20d": -0.0509,
   "n": 41
  },
- "紡織纖維": {
+ "航運業": {
   "rank": 11,
   "pct": 0.688,
   "tier": "strong",
-  "median_20d": -0.0469,
-  "n": 52
- },
- "航運業": {
-  "rank": 12,
-  "pct": 0.656,
-  "tier": "neutral",
-  "median_20d": -0.0488,
-  "n": 33
- },
- "居家生活": {
-  "rank": 13,
-  "pct": 0.625,
-  "tier": "neutral",
-  "median_20d": -0.053,
+  "median_20d": -0.0585,
   "n": 33
  },
  "鋼鐵工業": {
-  "rank": 14,
-  "pct": 0.594,
+  "rank": 12,
+  "pct": 0.656,
   "tier": "neutral",
-  "median_20d": -0.0536,
+  "median_20d": -0.0632,
   "n": 49
  },
  "觀光餐旅": {
-  "rank": 15,
-  "pct": 0.562,
+  "rank": 13,
+  "pct": 0.625,
   "tier": "neutral",
-  "median_20d": -0.0564,
+  "median_20d": -0.0647,
   "n": 51
  },
  "生技醫療業": {
-  "rank": 16,
-  "pct": 0.531,
+  "rank": 14,
+  "pct": 0.594,
   "tier": "neutral",
-  "median_20d": -0.0599,
+  "median_20d": -0.066,
   "n": 155
  },
  "其他業": {
-  "rank": 17,
-  "pct": 0.5,
+  "rank": 15,
+  "pct": 0.562,
   "tier": "neutral",
-  "median_20d": -0.0627,
+  "median_20d": -0.0703,
   "n": 97
  },
  "運動休閒": {
+  "rank": 16,
+  "pct": 0.531,
+  "tier": "neutral",
+  "median_20d": -0.0744,
+  "n": 27
+ },
+ "造紙工業": {
+  "rank": 17,
+  "pct": 0.5,
+  "tier": "neutral",
+  "median_20d": -0.0758,
+  "n": 7
+ },
+ "橡膠工業": {
   "rank": 18,
   "pct": 0.469,
   "tier": "neutral",
-  "median_20d": -0.0739,
-  "n": 27
+  "median_20d": -0.0864,
+  "n": 11
  },
- "橡膠工業": {
+ "玻璃陶瓷": {
   "rank": 19,
   "pct": 0.438,
   "tier": "neutral",
-  "median_20d": -0.0743,
-  "n": 11
+  "median_20d": -0.0885,
+  "n": 5
  },
- "電機機械": {
+ "數位雲端": {
   "rank": 20,
   "pct": 0.406,
   "tier": "neutral",
-  "median_20d": -0.086,
-  "n": 98
+  "median_20d": -0.0916,
+  "n": 37
  },
- "造紙工業": {
+ "電機機械": {
   "rank": 21,
   "pct": 0.375,
   "tier": "neutral",
-  "median_20d": -0.1032,
-  "n": 7
+  "median_20d": -0.0982,
+  "n": 98
  },
- "塑膠工業": {
+ "綠能環保": {
   "rank": 22,
   "pct": 0.344,
   "tier": "neutral",
-  "median_20d": -0.1104,
-  "n": 25
+  "median_20d": -0.1167,
+  "n": 41
  },
  "汽車工業": {
   "rank": 23,
   "pct": 0.312,
   "tier": "weak",
-  "median_20d": -0.1107,
+  "median_20d": -0.1184,
   "n": 41
  },
- "綠能環保": {
+ "塑膠工業": {
   "rank": 24,
   "pct": 0.281,
   "tier": "weak",
-  "median_20d": -0.1197,
-  "n": 41
+  "median_20d": -0.1248,
+  "n": 25
  },
- "電器電纜": {
+ "化學工業": {
   "rank": 25,
   "pct": 0.25,
   "tier": "weak",
-  "median_20d": -0.1221,
-  "n": 17
+  "median_20d": -0.1259,
+  "n": 42
  },
- "化學工業": {
+ "電器電纜": {
   "rank": 26,
   "pct": 0.219,
   "tier": "weak",
-  "median_20d": -0.1321,
-  "n": 42
+  "median_20d": -0.1279,
+  "n": 17
  },
- "通信網路業": {
+ "電子通路業": {
   "rank": 27,
   "pct": 0.188,
   "tier": "weak",
-  "median_20d": -0.1362,
-  "n": 93
+  "median_20d": -0.1524,
+  "n": 37
  },
- "光電業": {
+ "通信網路業": {
   "rank": 28,
   "pct": 0.156,
   "tier": "weak",
-  "median_20d": -0.1445,
-  "n": 118
+  "median_20d": -0.1532,
+  "n": 93
  },
- "電子通路業": {
+ "光電業": {
   "rank": 29,
   "pct": 0.125,
   "tier": "weak",
-  "median_20d": -0.1465,
-  "n": 37
+  "median_20d": -0.1716,
+  "n": 118
  },
  "其他電子業": {
   "rank": 30,
   "pct": 0.094,
   "tier": "weak",
-  "median_20d": -0.1468,
+  "median_20d": -0.1748,
   "n": 95
  },
  "電腦及週邊設備業": {
   "rank": 31,
   "pct": 0.062,
   "tier": "weak",
-  "median_20d": -0.155,
+  "median_20d": -0.1798,
   "n": 109
  },
  "半導體業": {
   "rank": 32,
   "pct": 0.031,
   "tier": "weak",
-  "median_20d": -0.1903,
+  "median_20d": -0.2172,
   "n": 201
  },
  "電子零組件業": {
   "rank": 33,
   "pct": 0.0,
   "tier": "weak",
-  "median_20d": -0.1974,
+  "median_20d": -0.2387,
   "n": 211
  }
 }
