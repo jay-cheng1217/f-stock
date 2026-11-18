@@ -1,0 +1,118 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20261119"
+  },
+  "rows": 1374070,
+  "setup_count": 6574,
+  "filled_count": 5705,
+  "missed_gap_up_count": 555,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5705,
+      "mean_return": -0.008794161806759704,
+      "median_return": -0.012196721311475419,
+      "win_rate": 0.347239263803681,
+      "p25": -0.03341176470588236,
+      "p75": 0.010000000000000012
+    },
+    {
+      "hold_days": 2,
+      "n": 5700,
+      "mean_return": -0.008248020446329628,
+      "median_return": -0.015162494303941672,
+      "win_rate": 0.377719298245614,
+      "p25": -0.04602508861626117,
+      "p75": 0.02022952280121876
+    },
+    {
+      "hold_days": 3,
+      "n": 5693,
+      "mean_return": -0.007541410778647451,
+      "median_return": -0.018117647058823568,
+      "win_rate": 0.3823994379062006,
+      "p25": -0.05579282868525892,
+      "p75": 0.02835747303543901
+    },
+    {
+      "hold_days": 5,
+      "n": 5679,
+      "mean_return": -0.005065366842572153,
+      "median_return": -0.020748768472906406,
+      "win_rate": 0.3977812995245642,
+      "p25": -0.07048885293203361,
+      "p75": 0.039581537381349285
+    },
+    {
+      "hold_days": 10,
+      "n": 5652,
+      "mean_return": -0.0009517578441066187,
+      "median_return": -0.02411038131727788,
+      "win_rate": 0.410828025477707,
+      "p25": -0.09528123446519696,
+      "p75": 0.06336219336219329
+    },
+    {
+      "hold_days": 20,
+      "n": 5572,
+      "mean_return": 0.007882306442722977,
+      "median_return": -0.03628287841191069,
+      "win_rate": 0.4129576453697057,
+      "p25": -0.12848283504900757,
+      "p75": 0.09567994310099581
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-11-18",
+      "ticker": "3701",
+      "name": "大眾控",
+      "sector": "電腦及週邊設備業",
+      "Close": 63.2,
+      "momentum_score": 0.586747,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 62.252,
+      "momentum_entry_limit": 63.2,
+      "momentum_entry_high": 64.148,
+      "price_vs_ma5": -0.0189382179,
+      "price_vs_ma20": 0.1024858264,
+      "price_vs_ma60": 0.2529945314,
+      "volume_ratio_20d": 1.3074464605,
+      "RSI_14": 55.7111726863,
+      "MACDh_12_26_9": 0.4394151696,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-18",
+      "ticker": "2355",
+      "name": "敬鵬",
+      "sector": "電子零組件業",
+      "Close": 58.6,
+      "momentum_score": 0.556552,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 57.721,
+      "momentum_entry_limit": 58.6,
+      "momentum_entry_high": 59.479,
+      "price_vs_ma5": -0.0298013245,
+      "price_vs_ma20": 0.0987671682,
+      "price_vs_ma60": 0.2472286763,
+      "volume_ratio_20d": 2.5599415257,
+      "RSI_14": 59.3880669544,
+      "MACDh_12_26_9": 0.6095382102,
+      "missed_gap_up": false
+    }
+  ]
+}
