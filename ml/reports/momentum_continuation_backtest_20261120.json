@@ -1,0 +1,137 @@
+{
+  "strategy_version": "momentum_continuation_v1_20260625",
+  "config": {
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "max_signals_per_day": 10,
+    "friction": 0.004,
+    "hold_days": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      20
+    ],
+    "asof": "20261120"
+  },
+  "rows": 1376138,
+  "setup_count": 6577,
+  "filled_count": 5710,
+  "missed_gap_up_count": 555,
+  "summary": [
+    {
+      "hold_days": 1,
+      "n": 5710,
+      "mean_return": -0.008836116738913439,
+      "median_return": -0.01221358699318625,
+      "win_rate": 0.34728546409807354,
+      "p25": -0.033444251927575164,
+      "p75": 0.009996503496503498
+    },
+    {
+      "hold_days": 2,
+      "n": 5706,
+      "mean_return": -0.008342183292117708,
+      "median_return": -0.015195428623516579,
+      "win_rate": 0.37732211706975116,
+      "p25": -0.046089374636544445,
+      "p75": 0.0201909073396262
+    },
+    {
+      "hold_days": 3,
+      "n": 5700,
+      "mean_return": -0.007710216881535114,
+      "median_return": -0.01815511771581235,
+      "win_rate": 0.3821052631578947,
+      "p25": -0.0558958346476946,
+      "p75": 0.028346794001434087
+    },
+    {
+      "hold_days": 5,
+      "n": 5684,
+      "mean_return": -0.00521937140145349,
+      "median_return": -0.020769150013122902,
+      "win_rate": 0.3976073187895848,
+      "p25": -0.07066666666666666,
+      "p75": 0.039555111126457765
+    },
+    {
+      "hold_days": 10,
+      "n": 5659,
+      "mean_return": -0.0009603171490356561,
+      "median_return": -0.024105820105820183,
+      "win_rate": 0.4108499734935501,
+      "p25": -0.09527469243606163,
+      "p75": 0.06338431938431932
+    },
+    {
+      "hold_days": 20,
+      "n": 5581,
+      "mean_return": 0.007535218885735297,
+      "median_return": -0.0364129651860744,
+      "win_rate": 0.4126500627127755,
+      "p25": -0.12864589235127477,
+      "p75": 0.09532885906040267
+    }
+  ],
+  "latest_setups": [
+    {
+      "Date": "2026-11-19",
+      "ticker": "9933",
+      "name": "中鼎",
+      "sector": "其他業",
+      "Close": 56.6,
+      "momentum_score": 0.70019,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 54.619,
+      "momentum_entry_limit": 56.6,
+      "momentum_entry_high": 57.449,
+      "price_vs_ma5": 0.0336011687,
+      "price_vs_ma20": 0.1618597968,
+      "price_vs_ma60": 0.2904851299,
+      "volume_ratio_20d": 1.7888273122,
+      "RSI_14": 71.6875234528,
+      "MACDh_12_26_9": 0.9721992644,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-19",
+      "ticker": "8089",
+      "name": "康全電訊",
+      "sector": "通信網路業",
+      "Close": 35.9,
+      "momentum_score": 0.648797,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 34.825,
+      "momentum_entry_limit": 35.9,
+      "momentum_entry_high": 36.4385,
+      "price_vs_ma5": 0.0257142857,
+      "price_vs_ma20": 0.1982643525,
+      "price_vs_ma60": 0.5863897481,
+      "volume_ratio_20d": 2.9121125497,
+      "RSI_14": 69.5654099155,
+      "MACDh_12_26_9": 0.4786912079,
+      "missed_gap_up": false
+    },
+    {
+      "Date": "2026-11-19",
+      "ticker": "4807",
+      "name": "日成-KY",
+      "sector": "貿易百貨業",
+      "Close": 37.0,
+      "momentum_score": 0.573913,
+      "momentum_setup_age_days": 0.0,
+      "momentum_entry_low": 35.705,
+      "momentum_entry_limit": 37.0,
+      "momentum_entry_high": 37.555,
+      "price_vs_ma5": 0.0644418872,
+      "price_vs_ma20": 0.1873245086,
+      "price_vs_ma60": 0.2211892843,
+      "volume_ratio_20d": 3.0690706894,
+      "RSI_14": 72.4070077617,
+      "MACDh_12_26_9": 0.7427423581,
+      "missed_gap_up": false
+    }
+  ]
+}

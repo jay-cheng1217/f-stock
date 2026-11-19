@@ -1,12 +1,12 @@
 {
-  "date": "2026-11-19",
+  "date": "2026-11-20",
   "hits": [
     {
       "ticker": "2360",
       "name": "致茂",
       "sector": "其他電子業",
       "released": "2026-11-13",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": 163.26,
       "rev_window": false,
       "dual_fuse": false
@@ -16,7 +16,7 @@
       "name": "台勝科",
       "sector": "半導體業",
       "released": "2026-11-13",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": 28.84,
       "rev_window": false,
       "dual_fuse": false
@@ -26,7 +26,7 @@
       "name": "景碩",
       "sector": "半導體業",
       "released": "2026-11-16",
-      "days_since": 3,
+      "days_since": 4,
       "known_yoy": 49.05,
       "rev_window": false,
       "dual_fuse": false
@@ -36,7 +36,7 @@
       "name": "科嶠",
       "sector": "電子零組件業",
       "released": "2026-11-16",
-      "days_since": 3,
+      "days_since": 4,
       "known_yoy": 77.47,
       "rev_window": false,
       "dual_fuse": false
@@ -46,7 +46,7 @@
       "name": "全新",
       "sector": "通信網路業",
       "released": "2026-11-17",
-      "days_since": 2,
+      "days_since": 3,
       "known_yoy": 32.66,
       "rev_window": false,
       "dual_fuse": false
