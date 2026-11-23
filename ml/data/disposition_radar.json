@@ -1,33 +1,43 @@
 {
-  "date": "2026-11-23",
+  "date": "2026-11-24",
   "hits": [
-    {
-      "ticker": "3189",
-      "name": "景碩",
-      "sector": "半導體業",
-      "released": "2026-11-16",
-      "days_since": 7,
-      "known_yoy": 49.05,
-      "rev_window": false,
-      "dual_fuse": false
-    },
-    {
-      "ticker": "4542",
-      "name": "科嶠",
-      "sector": "電子零組件業",
-      "released": "2026-11-16",
-      "days_since": 7,
-      "known_yoy": 77.47,
-      "rev_window": false,
-      "dual_fuse": false
-    },
     {
       "ticker": "2455",
       "name": "全新",
       "sector": "通信網路業",
       "released": "2026-11-17",
-      "days_since": 6,
+      "days_since": 7,
       "known_yoy": 32.66,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "2466",
+      "name": "冠西電",
+      "sector": "光電業",
+      "released": "2026-11-23",
+      "days_since": 1,
+      "known_yoy": 54.17,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "6108",
+      "name": "競國",
+      "sector": "電子零組件業",
+      "released": "2026-11-23",
+      "days_since": 1,
+      "known_yoy": 86.67,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "6751",
+      "name": "智聯服務",
+      "sector": "資訊服務業",
+      "released": "2026-11-23",
+      "days_since": 1,
+      "known_yoy": 187.93,
       "rev_window": false,
       "dual_fuse": false
     }
