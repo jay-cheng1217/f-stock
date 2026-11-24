@@ -1,22 +1,12 @@
 {
-  "date": "2026-11-24",
+  "date": "2026-11-25",
   "hits": [
-    {
-      "ticker": "2455",
-      "name": "全新",
-      "sector": "通信網路業",
-      "released": "2026-11-17",
-      "days_since": 7,
-      "known_yoy": 32.66,
-      "rev_window": false,
-      "dual_fuse": false
-    },
     {
       "ticker": "2466",
       "name": "冠西電",
       "sector": "光電業",
       "released": "2026-11-23",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": 54.17,
       "rev_window": false,
       "dual_fuse": false
@@ -26,7 +16,7 @@
       "name": "競國",
       "sector": "電子零組件業",
       "released": "2026-11-23",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": 86.67,
       "rev_window": false,
       "dual_fuse": false
@@ -36,8 +26,48 @@
       "name": "智聯服務",
       "sector": "資訊服務業",
       "released": "2026-11-23",
-      "days_since": 1,
+      "days_since": 2,
       "known_yoy": 187.93,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "4174",
+      "name": "浩鼎",
+      "sector": "生技醫療業",
+      "released": "2026-11-24",
+      "days_since": 1,
+      "known_yoy": -58.66,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "6140",
+      "name": "訊達",
+      "sector": "資訊服務業",
+      "released": "2026-11-24",
+      "days_since": 1,
+      "known_yoy": 276.28,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "7717",
+      "name": "萊德光電-KY",
+      "sector": "通信網路業",
+      "released": "2026-11-24",
+      "days_since": 1,
+      "known_yoy": 168.82,
+      "rev_window": false,
+      "dual_fuse": false
+    },
+    {
+      "ticker": "8084",
+      "name": "巨虹",
+      "sector": "電子通路業",
+      "released": "2026-11-24",
+      "days_since": 1,
+      "known_yoy": 236.31,
       "rev_window": false,
       "dual_fuse": false
     }
